@@ -1,0 +1,223 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<Prebuild xmlns="http://dnpb.sourceforge.net/schemas/prebuild-1.7.xsd" version="1.7">
+  <Solution name="Mono.Xna">
+    <Configuration name="Debug">
+      <Options>
+        <CompilerDefines>DEBUG;TRACE</CompilerDefines>
+        <OptimizeCode>false</OptimizeCode>
+        <AllowUnsafe>false</AllowUnsafe>
+        <OutputPath>bin/Debug</OutputPath>
+        <DebugInformation>true</DebugInformation>
+        <WarningLevel>4</WarningLevel>
+        <SuppressWarnings></SuppressWarnings>
+      </Options>
+    </Configuration>
+    <Configuration name="Release">
+      <Options>
+        <CompilerDefines>TRACE</CompilerDefines>
+        <OptimizeCode>true</OptimizeCode>
+        <AllowUnsafe>false</AllowUnsafe>
+        <OutputPath>bin/Release</OutputPath>
+        <DebugInformation>false</DebugInformation>
+        <WarningLevel>1</WarningLevel>
+        <SuppressWarnings></SuppressWarnings>
+      </Options>
+    </Configuration>
+    <Files>
+      <File buildAction="Content">Prebuild.xml</File>
+      <File buildAction="Content">COPYING</File>
+      <File buildAction="Content">README</File>
+      <File buildAction="Content">AUTHORS</File>
+      <File buildAction="Content">INSTALL</File>
+      <File buildAction="Content">NEWS</File>
+    </Files>
+    <Project name="Microsoft.Xna.Framework" path="src/Microsoft.Xna.Framework" language="C#" type="Library" assemblyName="Microsoft.Xna.Framework" rootNamespace="Microsoft.Xna.Framework">
+      <Configuration name="Debug">
+        <Options>
+          <CompilerDefines>DEBUG;TRACE</CompilerDefines>
+          <OptimizeCode>false</OptimizeCode>
+          <AllowUnsafe>false</AllowUnsafe>
+          <OutputPath>bin/Debug</OutputPath>
+          <DebugInformation>true</DebugInformation>
+          <KeyFile>Microsoft.Xna.snk</KeyFile>
+          <XmlDocFile></XmlDocFile>
+          <WarningLevel>4</WarningLevel>
+          <SuppressWarnings>3019,0649,1591</SuppressWarnings>
+        </Options>
+      </Configuration>
+      <Configuration name="Release">
+        <Options>
+          <CompilerDefines>TRACE</CompilerDefines>
+          <OptimizeCode>true</OptimizeCode>
+          <AllowUnsafe>false</AllowUnsafe>
+          <OutputPath>bin/Release</OutputPath>
+          <KeyFile>Microsoft.Xna.snk</KeyFile>
+          <XmlDocFile>Microsoft.Xna.Framework.xml</XmlDocFile>
+          <DebugInformation>false</DebugInformation>
+          <WarningLevel>1</WarningLevel>
+          <SuppressWarnings>3019,0649</SuppressWarnings>
+        </Options>
+      </Configuration>
+      <Reference name="System" />
+      <Reference name="System.Drawing" />
+      <?if framework = "NET_2_0" ?>
+      <Reference name="Tao.OpenGl" localCopy="true" path="../../lib/net-2.0" />
+      <Reference name="SdlDotNet" localCopy="true" path="../../lib/net-2.0" />
+      <Reference name="Mono.Posix" localCopy="true" path="../../lib/net-2.0" />
+      <?else ?>
+      <Reference name="Tao.OpenGl" localCopy="true" path="../../lib/mono-2.0" />
+      <Reference name="SdlDotNet" localCopy="true" path="../../lib/mono-2.0" />
+      <Reference name="Mono.Posix" localCopy="true" path="../../lib/mono-2.0" />
+      <?endif ?>
+      <Files>
+        <Match path="." pattern="*.cs" recurse="true"/>
+      </Files>
+    </Project>
+    <Project name="Microsoft.Xna.Framework.Game" path="src/Microsoft.Xna.Framework.Game" language="C#" type="Library" assemblyName="Microsoft.Xna.Framework.Game" rootNamespace="Microsoft.Xna.Framework">
+      <Configuration name="Debug">
+        <Options>
+          <CompilerDefines>DEBUG;TRACE</CompilerDefines>
+          <OptimizeCode>false</OptimizeCode>
+          <AllowUnsafe>false</AllowUnsafe>
+          <OutputPath>bin/Debug</OutputPath>
+          <DebugInformation>true</DebugInformation>
+          <XmlDocFile></XmlDocFile>
+          <KeyFile>Microsoft.Xna.Game.snk</KeyFile>
+          <WarningLevel>4</WarningLevel>
+          <SuppressWarnings>3019,0649,1591</SuppressWarnings>
+        </Options>
+      </Configuration>
+      <Configuration name="Release">
+        <Options>
+          <CompilerDefines>TRACE</CompilerDefines>
+          <OptimizeCode>true</OptimizeCode>
+          <AllowUnsafe>false</AllowUnsafe>
+          <OutputPath>bin/Release</OutputPath>
+          <XmlDocFile>Microsoft.Xna.Framework.Game.xml</XmlDocFile>
+          <KeyFile>Microsoft.Xna.Game.snk</KeyFile>
+          <DebugInformation>false</DebugInformation>
+          <WarningLevel>1</WarningLevel>
+          <SuppressWarnings>3019,0649</SuppressWarnings>
+        </Options>
+      </Configuration>
+      <Reference name="System" />
+      <Reference name="System.Drawing" />
+      <Reference name="Microsoft.Xna.Framework" localCopy="true"/>
+      <?if framework = "NET_2_0" ?>
+      <Reference name="Tao.OpenGl" localCopy="true" path="../../lib/net-2.0" />
+      <Reference name="SdlDotNet" localCopy="true" path="../../lib/net-2.0" />
+      <?else ?>
+      <Reference name="Tao.OpenGl" localCopy="true" path="../../lib/mono-2.0" />
+      <Reference name="SdlDotNet" localCopy="true" path="../../lib/mono-2.0" />
+      <?endif ?>
+      <Files>
+        <File buildAction="EmbeddedResource">Microsoft.Xna.Framework.Game.ico</File>
+        <Match path="." pattern="*.cs" recurse="true"/>
+      </Files>
+    </Project>
+    <Project name="SimpleExample" path="examples/SimpleExample" language="C#" type="WinExe" assemblyName="SimpleExample" rootNamespace="SimpleExample"  icon="Game.ico">
+      <Configuration name="Debug">
+        <Options>
+          <CompilerDefines>DEBUG;TRACE</CompilerDefines>
+          <OptimizeCode>false</OptimizeCode>
+          <AllowUnsafe>false</AllowUnsafe>
+          <OutputPath>bin/Debug</OutputPath>
+          <DebugInformation>true</DebugInformation>
+          <XmlDocFile></XmlDocFile>
+          <WarningLevel>4</WarningLevel>
+          <SuppressWarnings></SuppressWarnings>
+        </Options>
+      </Configuration>
+      <Configuration name="Release">
+        <Options>
+          <CompilerDefines>TRACE</CompilerDefines>
+          <OptimizeCode>true</OptimizeCode>
+          <AllowUnsafe>false</AllowUnsafe>
+          <OutputPath>bin/Release</OutputPath>
+          <XmlDocFile></XmlDocFile>
+          <DebugInformation>false</DebugInformation>
+          <WarningLevel>1</WarningLevel>
+          <SuppressWarnings></SuppressWarnings>
+        </Options>
+      </Configuration>
+      <Reference name="System" />
+      <Reference name="Microsoft.Xna.Framework" localCopy="true"/>
+      <Reference name="Microsoft.Xna.Framework.Game" localCopy="true"/>
+      <Files>
+        <File buildAction="EmbeddedResource">Game.ico</File>
+        <Match path="." pattern="*.cs" recurse="true"/>
+      </Files>
+    </Project>
+    <Project name="Pong" path="examples/Pong" language="C#" type="WinExe" assemblyName="Pong" rootNamespace="Pong" icon="Game.ico" >
+      <Configuration name="Debug">
+        <Options>
+          <CompilerDefines>DEBUG;TRACE</CompilerDefines>
+          <OptimizeCode>false</OptimizeCode>
+          <AllowUnsafe>false</AllowUnsafe>
+          <OutputPath>bin/Debug</OutputPath>
+          <DebugInformation>true</DebugInformation>
+          <XmlDocFile></XmlDocFile>
+          <WarningLevel>4</WarningLevel>
+          <SuppressWarnings></SuppressWarnings>
+        </Options>
+      </Configuration>
+      <Configuration name="Release">
+        <Options>
+          <CompilerDefines>TRACE</CompilerDefines>
+          <OptimizeCode>true</OptimizeCode>
+          <AllowUnsafe>false</AllowUnsafe>
+          <OutputPath>bin/Release</OutputPath>
+          <XmlDocFile></XmlDocFile>
+          <DebugInformation>false</DebugInformation>
+          <WarningLevel>1</WarningLevel>
+          <SuppressWarnings></SuppressWarnings>
+        </Options>
+      </Configuration>
+      <Reference name="System" />
+      <Reference name="Microsoft.Xna.Framework" localCopy="true"/>
+      <Reference name="Microsoft.Xna.Framework.Game" localCopy="true"/>
+      <Files>
+        <File buildAction="EmbeddedResource">Game.ico</File>
+        <Match path="." pattern="*.cs" recurse="true"/>
+        <Match path="Graphics" pattern="*.png" buildAction="Content" copyToOutput="PreserveNewest"/>
+      </Files>
+    </Project>
+    <Project name="XnaTests" path="tests" language="C#" type="Library" assemblyName="XnaTests" rootNamespace="XnaTests" designerFolder="Properties">
+      <Configuration name="Debug">
+        <Options>
+          <CompilerDefines>DEBUG;TRACE</CompilerDefines>
+          <OptimizeCode>false</OptimizeCode>
+          <AllowUnsafe>false</AllowUnsafe>
+          <OutputPath>bin/Debug</OutputPath>
+          <DebugInformation>true</DebugInformation>
+          <KeyFile>XnaTests.snk</KeyFile>
+          <WarningLevel>4</WarningLevel>
+          <SuppressWarnings>1595</SuppressWarnings>
+        </Options>
+      </Configuration>
+      <Configuration name="Release">
+        <Options>
+          <CompilerDefines>TRACE</CompilerDefines>
+          <OptimizeCode>true</OptimizeCode>
+          <AllowUnsafe>false</AllowUnsafe>
+          <OutputPath>bin/Release</OutputPath>
+          <DebugInformation>false</DebugInformation>
+          <KeyFile>XnaTests.snk</KeyFile>
+          <WarningLevel>1</WarningLevel>
+          <SuppressWarnings>1595</SuppressWarnings>
+        </Options>
+      </Configuration>
+      <Reference name="System" />
+      <Reference name="System.Drawing" />
+      <Reference name="Microsoft.Xna.Framework" localCopy="true"/>
+      <Reference name="Microsoft.Xna.Framework.Game" localCopy="true"/>
+      <Reference name="nunit.framework" localCopy="true" path="../lib/net-2.0"/>
+      <Files>
+        <File buildAction="Content">XnaTests.nunit</File>
+        <Match path="." pattern="*.cs" recurse="true"/>
+        <Match path="./Resources" pattern="*.xnb" buildAction="EmbeddedResource" recurse="true"/> 
+        <Match path="./Resources" pattern="*.jpg" buildAction="EmbeddedResource" recurse="true"/> 
+      </Files>
+    </Project>
+  </Solution>
+</Prebuild>

@@ -1,0 +1,9 @@
+2007-01-06 Rob Loach <http://www.robloach.net>
+	+ Pong example (builds but doesn't run)
+
+2006-11-03  C.J. Adams-Collier  <cjcollier@colliertech.org>
+	* ChangeLog
+	- Created initial log entry; please add items to this file in
+	roughly this format when you make major changes.  Small things
+	will be fine without an entry here if you add an entry when
+	commiting to the repository
