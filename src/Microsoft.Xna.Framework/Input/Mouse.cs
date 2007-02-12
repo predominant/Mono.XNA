@@ -72,8 +72,8 @@ namespace Microsoft.Xna.Framework.Input
 
         private static void Events_MouseMotion(object sender, MouseMotionEventArgs e)
         {
-            mouseState.x = e.X;
-            mouseState.y = e.Y;
+            mouseState.X = e.X;
+            mouseState.Y = e.Y;
         }
 
         private static void Events_MouseButtonUp(object sender, MouseButtonEventArgs e)
@@ -91,21 +91,21 @@ namespace Microsoft.Xna.Framework.Input
             switch (button)
             {
                 case MouseButton.PrimaryButton:
-                    mouseState.left = state;
+                    mouseState.LeftButton = state;
                     break;
                 case MouseButton.SecondaryButton:
-                    mouseState.right = state;
+                    mouseState.RightButton = state;
                     break;
                 case MouseButton.MiddleButton:
-                    mouseState.middle = state;
+                    mouseState.MiddleButton = state;
                     break;
                 case MouseButton.WheelUp:
                     if (state == ButtonState.Released)
-                        mouseState.wheel += 120;
+                        mouseState.ScrollWheelValue += 120;
                     break;
                 case MouseButton.WheelDown:
                     if (state == ButtonState.Released)
-                        mouseState.wheel -= 120;
+                        mouseState.ScrollWheelValue -= 120;
                     break;
             }
         }

@@ -55,41 +55,49 @@ namespace Microsoft.Xna.Framework.Input
         public ButtonState LeftButton
         {
             get { return this.left; }
+            internal set { this.left = value; }
         }
 
         public ButtonState MiddleButton
         {
             get { return this.middle; }
+            internal set { this.middle = value; }
         }
 
         public ButtonState RightButton
         {
             get { return this.right; }
+            internal set { this.right = value; }
         }
 
         public int ScrollWheelValue
         {
             get { return this.wheel; }
+            internal set { this.wheel = value; }
         }
 
         public int X
         {
             get { return this.x; }
+            internal set { this.x = value; }
         }
 
         public ButtonState XButton1
         {
             get { return this.xb1; }
+            internal set { this.xb1 = value; }
         }
 
         public ButtonState XButton2
         {
             get { return this.xb2; }
+            internal set { this.xb2 = value; }
         }
 
         public int Y
         {
             get { return this.y; }
+            internal set { this.y = value; }
         }
 
         #endregion Public Properties

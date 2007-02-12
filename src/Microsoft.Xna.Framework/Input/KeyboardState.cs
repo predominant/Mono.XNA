@@ -45,6 +45,7 @@ namespace Microsoft.Xna.Framework.Input
         public KeyState this[Keys key]
         {
             get { return keyStates[(int)key] ? KeyState.Down : KeyState.Up; }
+            internal set { this.keyStates[(int)key] = (value == KeyState.Down) ? true : false; }
         }
 
         #endregion

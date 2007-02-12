@@ -215,7 +215,7 @@ namespace Microsoft.Xna.Framework.Input
         private static void Events_KeyboardAction(object sender, SdlDotNet.Input.KeyboardEventArgs e)
         {
             // Get the corresponding XNA key from the SDL key and set it's state
-            state.keyStates[(int)keyDictionary[(int)e.Key]] = e.Down;
+            state[keyDictionary[(int)e.Key]] = e.Down ? KeyState.Down : KeyState.Up;
         }
 
         public static KeyboardState GetState()
