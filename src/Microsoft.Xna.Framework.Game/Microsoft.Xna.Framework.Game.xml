@@ -1,0 +1,375 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>Microsoft.Xna.Framework.Game</name>
+    </assembly>
+    <members>
+        <member name="T:Microsoft.Xna.Framework.GameWindow">
+            <summary>
+            The system window associated with a Game.
+            </summary>
+        </member>
+        <member name="M:Microsoft.Xna.Framework.GameWindow.BeginScreenDeviceChange(System.Boolean)">
+            <summary>
+            Starts a device transition (windowed to fullscreen or vice versa).
+            </summary>
+            <param name="willBeFullScreen">Specifies whether the device will be in fullscreen mode upon completion of the change.</param>
+        </member>
+        <member name="M:Microsoft.Xna.Framework.GameWindow.EndScreenDeviceChange(System.String)">
+            <summary>Completes a device transition.</summary>
+            <param name="screenDeviceName">
+            The desktop screen to move the window to.
+            This should be the screen device name of the graphics device that has transitioned to fullscreen.
+            </param>
+        </member>
+        <member name="M:Microsoft.Xna.Framework.GameWindow.EndScreenDeviceChange(System.String,System.Int32,System.Int32)">
+            <summary>Completes a device transition.</summary>
+            <param name="screenDeviceName">
+            The desktop screen to move the window to.
+            This should be the screen device name of the graphics device that has transitioned to fullscreen.
+            </param>
+            <param name="clientWidth">The new width of the game's client window.</param>
+            <param name="clientHeight">The new height of the game's client window.</param>
+        </member>
+        <member name="M:Microsoft.Xna.Framework.GameWindow.OnActivated">
+            <summary>Called when the GameWindow gets focus.</summary>
+        </member>
+        <member name="M:Microsoft.Xna.Framework.GameWindow.OnClientSizeChanged">
+            <summary>
+            Called when the size of the client window changes.
+            </summary>
+        </member>
+        <member name="M:Microsoft.Xna.Framework.GameWindow.OnDeactivated">
+            <summary>
+            Called when the GameWindow loses focus.
+            </summary>
+        </member>
+        <member name="M:Microsoft.Xna.Framework.GameWindow.OnPaint">
+            <summary>
+            Called when the GameWindow needs to be painted.
+            </summary>
+        </member>
+        <member name="M:Microsoft.Xna.Framework.GameWindow.OnScreenDeviceNameChanged">
+            <summary>
+            Called when the GameWindow is moved to a different screen.
+            </summary>
+        </member>
+        <member name="M:Microsoft.Xna.Framework.GameWindow.SetTitle(System.String)">
+            <summary>
+            Sets the title of the GameWindow.
+            </summary>
+            <param name="title">The new title of the GameWindow.</param>
+        </member>
+        <member name="P:Microsoft.Xna.Framework.GameWindow.AllowUserResizing">
+            <summary>
+            Specifies whether to allow the user to resize the game window.
+            </summary>
+            <returns>true if user resizing is allowed; false otherwise.</returns>
+        </member>
+        <member name="P:Microsoft.Xna.Framework.GameWindow.ClientBounds">
+            <summary>
+            The screen dimensions of the game window's client rectangle.
+            </summary>
+            <returns>Screen dimensions of the game window's client rectangle.</returns>
+        </member>
+        <member name="P:Microsoft.Xna.Framework.GameWindow.Handle">
+            <summary>
+            Gets the handle to the system window.
+            </summary>
+            <returns>The handle to the system window.</returns>
+        </member>
+        <member name="P:Microsoft.Xna.Framework.GameWindow.ScreenDeviceName">
+            <summary>
+            Gets the device name of the screen the window is currently in.
+            </summary>
+            <returns>The device name of the screen.</returns>
+        </member>
+        <member name="P:Microsoft.Xna.Framework.GameWindow.Title">
+            <summary>
+            Gets and sets the title of the system window.
+            </summary>
+            <returns>The title of the system window.</returns>
+        </member>
+        <member name="E:Microsoft.Xna.Framework.GameWindow.ClientSizeChanged">
+            <summary>
+            Triggered when the size of the GameWindow changes.
+            </summary>
+        </member>
+        <member name="E:Microsoft.Xna.Framework.GameWindow.ScreenDeviceNameChanged">
+            <summary>
+            Raised when the GameWindow moves to a different display.
+            </summary>
+        </member>
+        <member name="T:Microsoft.Xna.Framework.GameComponent">
+            <summary>
+            Base class for all XNA game components.
+            </summary>
+        </member>
+        <member name="M:Microsoft.Xna.Framework.GameComponent.#ctor(Microsoft.Xna.Framework.Game)">
+            <summary>
+            Initializes a new instance of this class.
+            </summary>
+        </member>
+        <member name="M:Microsoft.Xna.Framework.GameComponent.Dispose">
+            <summary>
+            Immediately releases the unmanaged resources used by this object.
+            </summary>
+        </member>
+        <member name="M:Microsoft.Xna.Framework.GameComponent.Dispose(System.Boolean)">
+            <summary>
+            Releases the unmanaged resources used by the GameComponent and optionally releases the managed resources.
+            </summary>
+            <param name="disposing">true to release both managed and unmanaged resources; false to release only unmanaged resources.
+            </param>
+        </member>
+        <member name="M:Microsoft.Xna.Framework.GameComponent.Finalize">
+            <summary>
+            Allows a GameComponent to attempt to free resources and perform other cleanup operations before garbage collection reclaims the GameComponent.
+            </summary>
+        </member>
+        <member name="F:Microsoft.Xna.Framework.GameComponent.game">
+            <summary>Raised when the GameComponent is disposed.</summary>
+        </member>
+        <member name="M:Microsoft.Xna.Framework.GameComponent.Initialize">
+            <summary>
+            Called when the GameComponent needs to be initialized.  Override to query for required services and load any non-graphics resources
+            </summary>
+        </member>
+        <member name="M:Microsoft.Xna.Framework.GameComponent.Update(Microsoft.Xna.Framework.GameTime)">
+            <summary>
+            Called when the GameComponent needs to be updated.  Override this method with component-specific update code.
+            </summary>
+            <param name="gameTime">Time elapsed since the last call to Microsoft.Xna.Framework.GameComponent.Update(Microsoft.Xna.Framework.GameTime)</param>
+        </member>
+        <member name="P:Microsoft.Xna.Framework.GameComponent.Game">
+            <summary>
+            Gets and sets the Game associated with this GameComponent.
+            </summary>
+            <returns>
+            The Game associated with this GameComponent.
+            </returns>
+        </member>
+        <member name="P:Microsoft.Xna.Framework.GameComponent.Enabled">
+            <summary>
+            Indicates whether GameComponent.Update should be called when Game.Update is called.
+            </summary>
+            <returns>true if GameComponent.Update should be called; false otherwise</returns>
+        </member>
+        <member name="P:Microsoft.Xna.Framework.GameComponent.UpdateOrder">
+            <summary>
+            Indicates the order the GameComponent should be updated in relative to other GameComponent instances.  Lower values are update first.
+            </summary>
+            <returns>The order the GameComponent should be updated in.</returns>
+        </member>
+        <member name="T:Microsoft.Xna.Framework.GameTime">
+            <summary>
+            Snapshot of the game timing state.
+            </summary>
+        </member>
+        <member name="T:Microsoft.Xna.Framework.UpdateOrderComparer">
+            <summary>
+            Compares the order of any IUpdatable
+            </summary>
+        </member>
+        <member name="T:Microsoft.Xna.Framework.PreparingDeviceSettingsEventArgs">
+            <summary>
+            Arguments for the GraphicsDeviceManager.PreparingDeviceSettings event.
+            </summary>
+        </member>
+        <member name="T:Microsoft.Xna.Framework.GameComponentCollectionEventArgs">
+            <summary>
+            Arguments used with events from the GameComponentCollection.
+            </summary>
+        </member>
+        <member name="T:Microsoft.Xna.Framework.DrawOrderComparer">
+            <summary>
+            Checks the order of any IDrawable.
+            </summary>
+        </member>
+        <member name="T:Microsoft.Xna.Framework.GameComponentCollection">
+            <summary>
+            A collection of game components.
+            </summary>
+        </member>
+        <member name="E:Microsoft.Xna.Framework.GameComponentCollection.ComponentAdded">
+            <summary>Raised when a component is added to the GameComponentCollection.</summary>
+        </member>
+        <member name="E:Microsoft.Xna.Framework.GameComponentCollection.ComponentRemoved">
+            <summary>
+            Raised when a component is removed from the GameComponentCollection.
+            </summary>
+        </member>
+        <member name="T:Microsoft.Xna.Framework.NoSuitableGraphicsDeviceException">
+            <summary>
+            Thrown when no available graphics device fits the given device preferences.
+            </summary>
+        </member>
+        <member name="T:Microsoft.Xna.Framework.GraphicsDeviceInformation">
+            <summary>
+            Holds the settings for creating a graphics device on Windows.
+            </summary>
+        </member>
+        <member name="M:Microsoft.Xna.Framework.Game.Dispose">
+            <summary>
+            Overloaded. Immediately releases the unmanaged resources used by this object. 
+            </summary>
+        </member>
+        <member name="M:Microsoft.Xna.Framework.Game.Exit">
+            <summary>
+            Exits the game. 
+            </summary>
+        </member>
+        <member name="M:Microsoft.Xna.Framework.Game.Run">
+            <summary>
+            Starts the game.
+            </summary>
+        </member>
+        <member name="M:Microsoft.Xna.Framework.Game.Tick">
+            <summary>
+            Updates the game's clock and calls Update and Draw.
+            </summary>
+        </member>
+        <member name="P:Microsoft.Xna.Framework.Game.Components">
+            <summary>
+            Gets the collection of GameComponents owned by the game.
+            </summary>
+        </member>
+        <member name="P:Microsoft.Xna.Framework.Game.InactiveSleepTime">
+            <summary>
+            Gets or sets the time to sleep when the game is inactive.
+            </summary>
+        </member>
+        <member name="P:Microsoft.Xna.Framework.Game.IsActive">
+            <summary>
+            Indicates whether the game is currently the active application.
+            </summary>
+        </member>
+        <member name="P:Microsoft.Xna.Framework.Game.IsFixedTimeStep">
+            <summary>
+            Gets or sets a value indicating whether to use fixed time steps.
+            </summary>
+        </member>
+        <member name="P:Microsoft.Xna.Framework.Game.IsMouseVisible">
+            <summary>
+            Gets or sets a value indicating whether the mouse cursor should be visible. 
+            </summary>
+        </member>
+        <member name="P:Microsoft.Xna.Framework.Game.Services">
+            <summary>
+            Gets the GameServiceContainer holding all the service providers attached to the Game.
+            </summary>
+        </member>
+        <member name="P:Microsoft.Xna.Framework.Game.TargetElapsedTime">
+            <summary>
+            Gets or sets the target time between calls to Update when IsFixedTimeStep is true.
+            </summary>
+        </member>
+        <member name="P:Microsoft.Xna.Framework.Game.Window">
+            <summary>
+            Gets the underlying operating system window.
+            </summary>
+        </member>
+        <member name="T:Microsoft.Xna.Framework.GraphicsDeviceManager">
+            <summary>
+            Handles the configuration and management of the graphics device.
+            </summary>
+        </member>
+        <member name="F:Microsoft.Xna.Framework.GraphicsDeviceManager.DefaultBackBufferHeight">
+            <summary>
+            Specifies the default minimum back-buffer height.
+            </summary>
+        </member>
+        <member name="F:Microsoft.Xna.Framework.GraphicsDeviceManager.DefaultBackBufferWidth">
+            <summary>
+            Specifies the default minimum back-buffer width.
+            </summary>
+        </member>
+        <member name="F:Microsoft.Xna.Framework.GraphicsDeviceManager.ValidAdapterFormats">
+            <summary>
+            Specifies the set of adapter formats supported by the GraphicsDeviceManager.
+            </summary>
+        </member>
+        <member name="F:Microsoft.Xna.Framework.GraphicsDeviceManager.ValidBackBufferFormats">
+            <summary>
+            Specifies the set of back buffer formats supported by the GraphicsDeviceManager.
+            </summary>
+        </member>
+        <member name="F:Microsoft.Xna.Framework.GraphicsDeviceManager.ValidDeviceTypes">
+            <summary>
+            Specifies the set of valid device types supported by the GraphicsDeviceManager.
+            </summary>
+        </member>
+        <member name="E:Microsoft.Xna.Framework.GraphicsDeviceManager.DeviceCreated">
+            <summary>
+            Raised when a new graphics device is created.
+            </summary>
+        </member>
+        <member name="E:Microsoft.Xna.Framework.GraphicsDeviceManager.DeviceDisposing">
+            <summary>
+            Raised when the GraphicsDeviceManager is being disposed.
+            </summary>
+        </member>
+        <member name="E:Microsoft.Xna.Framework.GraphicsDeviceManager.DeviceReset">
+            <summary>
+            Raised when the GraphicsDeviceManager is reset.
+            </summary>
+        </member>
+        <member name="E:Microsoft.Xna.Framework.GraphicsDeviceManager.DeviceResetting">
+            <summary>
+            Raised when the GraphicsDeviceManager is about to be reset.
+            </summary>
+        </member>
+        <member name="E:Microsoft.Xna.Framework.GraphicsDeviceManager.Disposed">
+            <summary>
+            Raised when the GraphicsDeviceManager is disposed.
+            </summary>
+        </member>
+        <member name="E:Microsoft.Xna.Framework.GraphicsDeviceManager.PreparingDeviceSettings">
+            <summary>
+            Raised when the GraphicsDeviceManager is changing the Graphics.GraphicsDevice settings (during reset or recreation of the Graphics.GraphicsDevice).
+            </summary>
+        </member>
+        <member name="P:Microsoft.Xna.Framework.GraphicsDeviceManager.GraphicsDevice">
+            <summary>
+            Gets the Framework.Graphics.GraphicsDevice associated with the GraphicsDeviceManager.
+            </summary>
+        </member>
+        <member name="P:Microsoft.Xna.Framework.GraphicsDeviceManager.IsFullScreen">
+            <summary>
+            Gets or sets a value that indicates whether the device should start in full screen mode.
+            </summary>
+        </member>
+        <member name="P:Microsoft.Xna.Framework.GraphicsDeviceManager.MinimumPixelShaderProfile">
+            <summary>
+            Gets or sets the minimum pixel shader version required by the GraphicsDeviceManager.
+            </summary>
+        </member>
+        <member name="P:Microsoft.Xna.Framework.GraphicsDeviceManager.MinimumVertexShaderProfile">
+            <summary>
+            Gets or sets the minimum vertex shader version required by the GraphicsDeviceManager.
+            </summary>
+        </member>
+        <member name="P:Microsoft.Xna.Framework.GraphicsDeviceManager.PreferMultiSampling">
+            <summary>
+            Gets or sets a value that indicates whether to enable a multisampled back buffer
+            </summary>
+        </member>
+        <member name="M:Microsoft.Xna.Framework.GameServiceContainer.#ctor">
+            <summary>Initializes a new instance of this class.</summary>
+        </member>
+        <member name="M:Microsoft.Xna.Framework.GameServiceContainer.AddService(System.Type,System.Object)">
+            <summary>Adds a service to the GameServiceContainer.</summary>
+            <param name="type">The type of service to add.</param>
+            <param name="provider">The service provider to add.</param>
+        </member>
+        <member name="M:Microsoft.Xna.Framework.GameServiceContainer.GetService(System.Type)">
+            <summary>Gets the object providing a specified service.</summary>
+            <param name="type">The type of service.</param>
+            <returns>The object providing the service.</returns>
+        </member>
+        <member name="M:Microsoft.Xna.Framework.GameServiceContainer.RemoveService(System.Type)">
+            <summary>Removes the object providing a specified service.</summary>
+            <param name="type">The type of service.</param>
+        </member>
+    </members>
+</doc>
