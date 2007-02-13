@@ -48,6 +48,7 @@ namespace Microsoft.Xna.Framework
 
     public enum CurveContinuity
     {
+        Default,
         Smooth,
         Step
     }

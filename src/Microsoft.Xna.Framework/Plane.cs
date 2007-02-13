@@ -68,7 +68,7 @@ namespace Microsoft.Xna.Framework
         }
 
         public Plane(float a, float b, float c, float d)
-            : this(new Vector2(a,b,c), d)
+            : this(new Vector3(a, b, c), d)
         {
 
         }
