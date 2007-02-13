@@ -36,7 +36,41 @@ namespace Microsoft.Xna.Framework.Graphics
     [Serializable]
     public struct DisplayMode
     {
+        #region Private Fields
+
+        private SurfaceFormat format;
+        private int height;
+        private int refreshRate;
+        private int width;
+
+        #endregion Private Fields
+
+        #region Public Properties
+
+        public SurfaceFormat Format
+        {
+            get { return this.format; }
+        }
+
+        public int Height
+        {
+            get { return this.height; }
+        }
+
+        public int RefreshRate
+        {
+            get { return this.refreshRate; }
+        }
+
+        public int Width
+        {
+            get { return this.width; }
+        }
+
+        #endregion Public Properties
+
         #region Constructors
+
         internal DisplayMode(int width, int height, int refreshRate, SurfaceFormat format)
         {
             this.width = width;
@@ -44,9 +78,11 @@ namespace Microsoft.Xna.Framework.Graphics
             this.refreshRate = refreshRate;
             this.format = format;
         }
+
         #endregion Constructors
 
         #region Operators
+
         public static bool operator !=(DisplayMode left, DisplayMode right)
         {
             return !(left == right);
@@ -59,53 +95,26 @@ namespace Microsoft.Xna.Framework.Graphics
                 (left.refreshRate == right.refreshRate) &&
                 (left.width == right.width);
         }
+
         #endregion Operators
 
-        #region Public Properties
-        public SurfaceFormat Format 
-        {
-            get { return format; } 
-        }
-        
-        public int Height 
-        {
-            get { return height; }
-        }
-
-        public int RefreshRate 
-        {
-            get { return refreshRate; }
-        }
-        
-        public int Width 
-        {
-            get { return width; } 
-        }
-
-        #endregion Public Properties
-
         #region Public Methods
+
         public override bool Equals(object obj)
         {
             return obj is DisplayMode && this == (DisplayMode)obj;
         }
-        
+
         public override int GetHashCode()
         {
-            return (width.GetHashCode() ^ height.GetHashCode() ^ refreshRate.GetHashCode() ^ format.GetHashCode());
+            return (this.width.GetHashCode() ^ this.height.GetHashCode() ^ this.refreshRate.GetHashCode() ^ this.format.GetHashCode());
         }
 
         public override string ToString()
         {
-            return string.Format(CultureInfo.CurrentCulture, "{{Width:{0} Height:{1} Format:{2} RefreshRate{3}}}", new object[] { width, height, format, refreshRate });
+            return string.Format(CultureInfo.CurrentCulture, "{{Width:{0} Height:{1} Format:{2} RefreshRate{3}}}", new object[] { this.width, this.height, this.format, this.refreshRate });
         }
+
         #endregion Public Methods
-
-        #region Private Fields
-
-        private int width, height, refreshRate;
-        private SurfaceFormat format;
-
-        #endregion Private Fields
     }
 }
