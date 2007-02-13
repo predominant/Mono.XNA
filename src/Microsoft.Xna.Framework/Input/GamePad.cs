@@ -6,7 +6,6 @@ http://www.taoframework.com
 All rights reserved.
 
 Authors:
- * Rob Loach
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal

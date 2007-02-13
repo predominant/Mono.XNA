@@ -27,7 +27,6 @@ SOFTWARE.
 */
 #endregion License
 
-using Microsoft.Xna.Framework;
 using System;
 using System.IO;
 using System.Runtime.Remoting.Messaging;

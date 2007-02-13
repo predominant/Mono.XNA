@@ -30,10 +30,6 @@ SOFTWARE.
 
 using System;
 using System.Collections.Generic;
-using System.ComponentModel;
-using System.Globalization;
-using System.Runtime.InteropServices;
-using Microsoft.Xna.Framework.Design;
 
 namespace Microsoft.Xna.Framework
 {

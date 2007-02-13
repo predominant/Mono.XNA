@@ -26,10 +26,8 @@ SOFTWARE.
 #endregion License
 
 using System;
-using System.Globalization;
-using System.Runtime.InteropServices;
-using System.Text;
 using System.ComponentModel;
+using System.Runtime.InteropServices;
 using Microsoft.Xna.Framework.Design;
 
 namespace Microsoft.Xna.Framework

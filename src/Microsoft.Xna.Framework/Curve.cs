@@ -190,9 +190,9 @@ namespace Microsoft.Xna.Framework
             return (int)cycle;
         }
 
-        //only for position in curve
         private float GetCurvePosition(float position)
         {
+            //only for position in curve
             CurveKey prev = this.keys[0];
             CurveKey next;
             for (int i = 1; i < this.keys.Count; i++)

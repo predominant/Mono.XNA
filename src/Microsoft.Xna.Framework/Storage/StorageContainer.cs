@@ -27,10 +27,9 @@ SOFTWARE.
 */
 #endregion License
 
-using Microsoft.Xna.Framework;
 using System;
-using System.Reflection;
 using System.IO;
+using System.Reflection;
 
 namespace Microsoft.Xna.Framework.Storage
 {

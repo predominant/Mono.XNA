@@ -38,11 +38,11 @@ namespace Microsoft.Xna.Framework
     {
         #region Private Fields
 
-        private CurveContinuity m_continuity;
-        private float m_position;
-        private float m_tangentIn;
-        private float m_tangentOut;
-        private float m_value;
+        private CurveContinuity continuity;
+        private float position;
+        private float tangentIn;
+        private float tangentOut;
+        private float value;
 
         #endregion Private Fields
 
@@ -51,31 +51,31 @@ namespace Microsoft.Xna.Framework
 
         public CurveContinuity Continuity
         {
-            get { return m_continuity; }
-            set { m_continuity = value; }
+            get { return this.continuity; }
+            set { this.continuity = value; }
         }
 
         public float Position
         {
-            get { return m_position; }
+            get { return this.position; }
         }
 
         public float TangentIn
         {
-            get { return m_tangentIn; }
-            set { m_tangentIn = value; }
+            get { return this.tangentIn; }
+            set { this.tangentIn = value; }
         }
 
         public float TangentOut
         {
-            get { return m_tangentOut; }
-            set { m_tangentOut = value; }
+            get { return this.tangentOut; }
+            set { this.tangentOut = value; }
         }
 
         public float Value
         {
-            get { return m_value; }
-            set { m_value = value; }
+            get { return this.value; }
+            set { this.value = value; }
         }
 
         #endregion
@@ -97,11 +97,11 @@ namespace Microsoft.Xna.Framework
 
         public CurveKey(float position, float value, float tangentIn, float tangentOut, CurveContinuity continuity)
         {
-            this.m_position = position;
-            this.m_value = value;
-            this.m_tangentIn = tangentIn;
-            this.m_tangentOut = tangentOut;
-            this.m_continuity = continuity;
+            this.position = position;
+            this.value = value;
+            this.tangentIn = tangentIn;
+            this.tangentOut = tangentOut;
+            this.continuity = continuity;
         }
 
         #endregion Constructors
@@ -122,21 +122,21 @@ namespace Microsoft.Xna.Framework
             if (object.Equals(b, null))
                 return object.Equals(a, null);
 
-            return (a.m_position == b.m_position)
-                && (a.m_value == b.m_value)
-                && (a.m_tangentIn == b.m_tangentIn)
-                && (a.m_tangentOut == b.m_tangentOut)
-                && (a.m_continuity == b.m_continuity);
+            return (a.position == b.position)
+                && (a.value == b.value)
+                && (a.tangentIn == b.tangentIn)
+                && (a.tangentOut == b.tangentOut)
+                && (a.continuity == b.continuity);
         }
 
         public CurveKey Clone()
         {
-            return new CurveKey(m_position, m_value, m_tangentIn, m_tangentOut, m_continuity);
+            return new CurveKey(this.position, this.value, this.tangentIn, this.tangentOut, this.continuity);
         }
 
         public int CompareTo(CurveKey other)
         {
-            return m_position.CompareTo(other.m_position);
+            return this.position.CompareTo(other.position);
         }
 
         public bool Equals(CurveKey other)
@@ -151,9 +151,9 @@ namespace Microsoft.Xna.Framework
 
         public override int GetHashCode()
         {
-            return m_position.GetHashCode() ^ m_value.GetHashCode() ^ m_tangentIn.GetHashCode() ^
-                m_tangentOut.GetHashCode() ^ m_continuity.GetHashCode();
-        }
+            return this.position.GetHashCode() ^ this.value.GetHashCode() ^ this.tangentIn.GetHashCode() ^
+                this.tangentOut.GetHashCode() ^ this.continuity.GetHashCode();
+       } 
 
         #endregion
     }
