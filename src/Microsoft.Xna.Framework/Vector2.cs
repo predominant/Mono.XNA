@@ -36,14 +36,25 @@ namespace Microsoft.Xna.Framework
     [TypeConverter(typeof(Vector2Converter))]
     public struct Vector2 : IEquatable<Vector2>
     {
-        public float X;
-        public float Y;
+        #region Private Fields
 
         private static Vector2 zeroVector = new Vector2(0f, 0f);
         private static Vector2 unitVector = new Vector2(1f, 1f);
         private static Vector2 unitXVector = new Vector2(1f, 0f);
         private static Vector2 unitYVector = new Vector2(0f, 1f);
 
+        #endregion Private Fields
+
+
+        #region Public Fields
+
+        public float X;
+        public float Y;
+
+        #endregion Public Fields
+
+
+        #region Properties
 
         public static Vector2 Zero { get { return zeroVector; } }
 
@@ -53,366 +64,384 @@ namespace Microsoft.Xna.Framework
 
         public static Vector2 UnitY { get { return unitYVector; } }
 
+        #endregion Properties
+
+
+        #region Constructors
+
         public Vector2(float x, float y)
         {
-            throw new NotImplementedException();
+            this.X = x;
+            this.Y = y;
         }
 
         public Vector2(float value)
         {
-            throw new NotImplementedException();
+            this.X = value;
+            this.Y = value;
         }
 
-        public override string ToString()
+        #endregion Constructors
+
+
+        #region Public Methods
+
+        public static Vector2 Add(Vector2 value1, Vector2 value2)
         {
-            throw new NotImplementedException();
+            value1.X += value2.X;
+            value1.Y += value2.Y;
+            return value1;
         }
 
-
-        public bool Equals(Vector2 other)
+        public static void Add(ref Vector2 value1, ref Vector2 value2, out Vector2 result)
         {
-            throw new NotImplementedException();
+            result.X = value1.X + value2.X;
+            result.Y = value1.Y + value2.Y;
         }
-
-
-        public override bool Equals(object obj)
-        {
-            throw new NotImplementedException();
-        }
-
-
-        public override int GetHashCode()
-        {
-            throw new NotImplementedException();
-        }
-
-
-        public float Length()
-        {
-            throw new NotImplementedException();
-        }
-
-
-        public float LengthSquared()
-        {
-            throw new NotImplementedException();
-        }
-
-
-        public static float Distance(Vector2 value1, Vector2 value2)
-        {
-            throw new NotImplementedException();
-        }
-
-
-        public static void Distance(ref Vector2 value1, ref Vector2 value2, out float result)
-        {
-            throw new NotImplementedException();
-        }
-
-
-        public static float DistanceSquared(Vector2 value1, Vector2 value2)
-        {
-            throw new NotImplementedException();
-        }
-
-
-        public static void DistanceSquared(ref Vector2 value1, ref Vector2 value2, out float result)
-        {
-            throw new NotImplementedException();
-        }
-
-
-        public static float Dot(Vector2 value1, Vector2 value2)
-        {
-            throw new NotImplementedException();
-        }
-
-
-        public static void Dot(ref Vector2 value1, ref Vector2 value2, out float result)
-        {
-            throw new NotImplementedException();
-        }
-
-
-        public static Vector2 Normalize(Vector2 value)
-        {
-            throw new NotImplementedException();
-        }
-
-
-        public static void Normalize(ref Vector2 value, out Vector2 result)
-        {
-            throw new NotImplementedException();
-        }
-
-
-        public void Normalize()
-        {
-            throw new NotImplementedException();
-        }
-
-
-        public static Vector2 Min(Vector2 value1, Vector2 value2)
-        {
-            throw new NotImplementedException();
-        }
-
-
-        public static void Min(ref Vector2 value1, ref Vector2 value2, out Vector2 result)
-        {
-            throw new NotImplementedException();
-        }
-
-
-        public static Vector2 Max(Vector2 value1, Vector2 value2)
-        {
-            throw new NotImplementedException();
-        }
-
-
-        public static void Max(ref Vector2 value1, ref Vector2 value2, out Vector2 result)
-        {
-            throw new NotImplementedException();
-        }
-
-
-        public static Vector2 Clamp(Vector2 value1, Vector2 min, Vector2 max)
-        {
-            throw new NotImplementedException();
-        }
-
-
-        public static void Clamp(ref Vector2 value1, ref Vector2 min, ref Vector2 max, out Vector2 result)
-        {
-            throw new NotImplementedException();
-        }
-
-
-        public static Vector2 Lerp(Vector2 value1, Vector2 value2, float amount)
-        {
-            throw new NotImplementedException();
-        }
-
-
-        public static void Lerp(ref Vector2 value1, ref Vector2 value2, float amount, out Vector2 result)
-        {
-            throw new NotImplementedException();
-        }
-
 
         public static Vector2 Barycentric(Vector2 value1, Vector2 value2, Vector2 value3, float amount1, float amount2)
         {
             throw new NotImplementedException();
         }
 
-
         public static void Barycentric(ref Vector2 value1, ref Vector2 value2, ref Vector2 value3, float amount1, float amount2, out Vector2 result)
         {
             throw new NotImplementedException();
         }
-
-
-        public static Vector2 SmoothStep(Vector2 value1, Vector2 value2, float amount)
-        {
-            throw new NotImplementedException();
-        }
-
-
-        public static void SmoothStep(ref Vector2 value1, ref Vector2 value2, float amount, out Vector2 result)
-        {
-            throw new NotImplementedException();
-        }
-
 
         public static Vector2 CatmullRom(Vector2 value1, Vector2 value2, Vector2 value3, Vector2 value4, float amount)
         {
             throw new NotImplementedException();
         }
 
-
         public static void CatmullRom(ref Vector2 value1, ref Vector2 value2, ref Vector2 value3, ref Vector2 value4, float amount, out Vector2 result)
         {
             throw new NotImplementedException();
         }
 
+        public static Vector2 Clamp(Vector2 value1, Vector2 min, Vector2 max)
+        {
+            Clamp(ref value1, ref min, ref max, out value1);
+            return value1;
+        }
+
+        public static void Clamp(ref Vector2 value1, ref Vector2 min, ref Vector2 max, out Vector2 result)
+        {
+            result.X = MathHelper.Clamp(value1.X, min.X, max.X);
+            result.Y = MathHelper.Clamp(value1.Y, min.Y, max.Y);
+        }
+
+        public static float Distance(Vector2 value1, Vector2 value2)
+        {
+            float result;
+            DistanceSquared(ref value1, ref value2, out result);
+            return (float)Math.Sqrt(result);
+        }
+
+        public static void Distance(ref Vector2 value1, ref Vector2 value2, out float result)
+        {
+            DistanceSquared(ref value1, ref value2, out result);
+            result = (float)Math.Sqrt(result);
+        }
+
+        public static float DistanceSquared(Vector2 value1, Vector2 value2)
+        {
+            float result;
+            DistanceSquared(ref value1, ref value2, out result);
+            return result;
+        }
+
+        public static void DistanceSquared(ref Vector2 value1, ref Vector2 value2, out float result)
+        {
+            value1.X -= value2.X;
+            value1.Y -= value2.Y;
+            result = value1.X * value1.X + value1.Y * value1.Y;
+        }
+
+        public static Vector2 Divide(Vector2 value1, Vector2 value2)
+        {
+            value1.X /= value2.X;
+            value1.Y /= value2.Y;
+            return value1;
+        }
+
+        public static void Divide(ref Vector2 value1, ref Vector2 value2, out Vector2 result)
+        {
+            result.X = value1.X / value2.X;
+            result.Y = value1.Y / value2.Y;
+        }
+
+        public static Vector2 Divide(Vector2 value1, float divider)
+        {
+            float factor = 1 / divider;
+            value1.X *= factor;
+            value1.Y *= factor;
+            return value1;
+        }
+
+        public static void Divide(ref Vector2 value1, float divider, out Vector2 result)
+        {
+            float factor = 1 / divider;
+            result.X = value1.X * factor;
+            result.Y = value1.Y * factor;
+        }
+
+        public static float Dot(Vector2 value1, Vector2 value2)
+        {
+            float result;
+            Dot(ref value1, ref value2, out result);
+            return result;
+        }
+
+        public static void Dot(ref Vector2 value1, ref Vector2 value2, out float result)
+        {
+            result = value1.X * value2.X + value1.Y * value2.Y;
+        }
+
+        public bool Equals(Vector2 other)
+        {
+            return this == other;
+        }
+
+        public override bool Equals(object obj)
+        {
+            return (obj is Vector2) ? this == ((Vector2)obj) : false;
+        }
+
+        public override int GetHashCode()
+        {
+            throw new NotImplementedException();
+        }
 
         public static Vector2 Hermite(Vector2 value1, Vector2 tangent1, Vector2 value2, Vector2 tangent2, float amount)
         {
             throw new NotImplementedException();
         }
 
-
         public static void Hermite(ref Vector2 value1, ref Vector2 tangent1, ref Vector2 value2, ref Vector2 tangent2, float amount, out Vector2 result)
         {
             throw new NotImplementedException();
         }
 
+        public float Length()
+        {
+            throw new NotImplementedException();
+        }
+
+        public float LengthSquared()
+        {
+            throw new NotImplementedException();
+        }
+
+        public static Vector2 Lerp(Vector2 value1, Vector2 value2, float amount)
+        {
+            throw new NotImplementedException();
+        }
+
+        public static void Lerp(ref Vector2 value1, ref Vector2 value2, float amount, out Vector2 result)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void Normalize()
+        {
+            throw new NotImplementedException();
+        }
+
+        public static Vector2 Normalize(Vector2 value)
+        {
+            throw new NotImplementedException();
+        }
+
+        public static void Normalize(ref Vector2 value, out Vector2 result)
+        {
+            throw new NotImplementedException();
+        }
+
+        public static Vector2 Max(Vector2 value1, Vector2 value2)
+        {
+            throw new NotImplementedException();
+        }
+
+        public static void Max(ref Vector2 value1, ref Vector2 value2, out Vector2 result)
+        {
+            throw new NotImplementedException();
+        }
+
+        public static Vector2 Min(Vector2 value1, Vector2 value2)
+        {
+            throw new NotImplementedException();
+        }
+
+        public static void Min(ref Vector2 value1, ref Vector2 value2, out Vector2 result)
+        {
+            throw new NotImplementedException();
+        }
+
+        public static Vector2 Multiply(Vector2 value1, Vector2 value2)
+        {
+            value1.X *= value2.X;
+            value1.Y *= value2.Y;
+            return value1;
+        }
+
+        public static Vector2 Multiply(Vector2 value1, float scaleFactor)
+        {
+            value1.X *= scaleFactor;
+            value1.Y *= scaleFactor;
+            return value1;
+        }
+
+        public static void Multiply(ref Vector2 value1, float scaleFactor, out Vector2 result)
+        {
+            result.X = value1.X * scaleFactor;
+            result.Y = value1.Y * scaleFactor;
+        }
+
+        public static void Multiply(ref Vector2 value1, ref Vector2 value2, out Vector2 result)
+        {
+            result.X = value1.X * value2.X;
+            result.Y = value1.Y * value2.Y;
+        }
+
+        public static Vector2 Negate(Vector2 value)
+        {
+            value.X = -value.X;
+            value.Y = -value.Y;
+            return value;
+        }
+
+        public static void Negate(ref Vector2 value, out Vector2 result)
+        {
+            result.X = -value.X;
+            result.Y = -value.Y;
+        }
+
+        public static Vector2 SmoothStep(Vector2 value1, Vector2 value2, float amount)
+        {
+            throw new NotImplementedException();
+        }
+
+        public static void SmoothStep(ref Vector2 value1, ref Vector2 value2, float amount, out Vector2 result)
+        {
+            throw new NotImplementedException();
+        }
+
+        public static Vector2 Subtract(Vector2 value1, Vector2 value2)
+        {
+            value1.X -= value2.X;
+            value1.Y -= value2.Y;
+            return value1;
+        }
+
+        public static void Subtract(ref Vector2 value1, ref Vector2 value2, out Vector2 result)
+        {
+            result.X = value1.X - value2.X;
+            result.Y = value1.Y - value2.Y;
+        }
 
         public static Vector2 Transform(Vector2 position, Matrix matrix)
         {
             throw new NotImplementedException();
         }
 
-
         public static void Transform(ref Vector2 position, ref Matrix matrix, out Vector2 result)
         {
             throw new NotImplementedException();
         }
 
-
         public static Vector2 TransformNormal(Vector2 normal, Matrix matrix)
         {
-            throw new NotImplementedException();
+            Vector2.TransformNormal(ref normal, ref matrix, out normal);
+            return normal;
         }
-
 
         public static void TransformNormal(ref Vector2 normal, ref Matrix matrix, out Vector2 result)
         {
-            throw new NotImplementedException();
+            result = new Vector2((normal.X * matrix.M11) + (normal.Y * matrix.M21), (normal.X * matrix.M12) + (normal.Y * matrix.M22));
         }
 
-
-        public static Vector2 Negate(Vector2 value)
-        {
-            throw new NotImplementedException();
-        }
+        #endregion Public Methods
 
 
-        public static void Negate(ref Vector2 value, out Vector2 result)
-        {
-            throw new NotImplementedException();
-        }
-
-
-        public static Vector2 Add(Vector2 value1, Vector2 value2)
-        {
-            throw new NotImplementedException();
-        }
-
-
-        public static void Add(ref Vector2 value1, ref Vector2 value2, out Vector2 result)
-        {
-            throw new NotImplementedException();
-        }
-
-
-        public static Vector2 Subtract(Vector2 value1, Vector2 value2)
-        {
-            throw new NotImplementedException();
-        }
-
-
-        public static void Subtract(ref Vector2 value1, ref Vector2 value2, out Vector2 result)
-        {
-            throw new NotImplementedException();
-        }
-
-
-        public static Vector2 Multiply(Vector2 value1, Vector2 value2)
-        {
-            throw new NotImplementedException();
-        }
-
-
-        public static Vector2 Multiply(Vector2 value1, float scaleFactor)
-        {
-            throw new NotImplementedException();
-        }
-
-
-        public static void Multiply(ref Vector2 value1, float scaleFactor, out Vector2 result)
-        {
-            throw new NotImplementedException();
-        }
-
-
-        public static void Multiply(ref Vector2 value1, ref Vector2 value2, out Vector2 result)
-        {
-            throw new NotImplementedException();
-        }
-
-
-        public static Vector2 Divide(Vector2 value1, Vector2 value2)
-        {
-            throw new NotImplementedException();
-        }
-
-
-        public static Vector2 Divide(Vector2 value1, float divider)
-        {
-            throw new NotImplementedException();
-        }
-
-
-        public static void Divide(ref Vector2 value1, float divider, out Vector2 result)
-        {
-            throw new NotImplementedException();
-        }
-
-
-        public static void Divide(ref Vector2 value1, ref Vector2 value2, out Vector2 result)
-        {
-            throw new NotImplementedException();
-        }
-
+        #region Operators
 
         public static Vector2 operator -(Vector2 value)
         {
-            throw new NotImplementedException();
+            value.X = -value.X;
+            value.Y = -value.Y;
+            return value;
         }
 
 
         public static bool operator ==(Vector2 value1, Vector2 value2)
         {
-            throw new NotImplementedException();
+            return value1.X == value2.X && value1.Y == value2.Y;
         }
 
 
         public static bool operator !=(Vector2 value1, Vector2 value2)
         {
-            throw new NotImplementedException();
+            return value1.X != value2.X || value1.Y != value2.Y;
         }
 
 
         public static Vector2 operator +(Vector2 value1, Vector2 value2)
         {
-            throw new NotImplementedException();
+            value1.X += value2.X;
+            value1.Y += value2.Y;
+            return value1;
         }
+
 
         public static Vector2 operator -(Vector2 value1, Vector2 value2)
         {
-            throw new NotImplementedException();
+            value1.X -= value2.X;
+            value1.Y -= value2.Y;
+            return value1;
         }
 
 
         public static Vector2 operator *(Vector2 value1, Vector2 value2)
         {
-            throw new NotImplementedException();
+            value1.X *= value2.X;
+            value1.Y *= value2.Y;
+            return value1;
         }
 
 
         public static Vector2 operator *(Vector2 value, float scaleFactor)
         {
-            throw new NotImplementedException();
+            value.X *= scaleFactor;
+            value.Y *= scaleFactor;
+            return value;
         }
 
 
         public static Vector2 operator *(float scaleFactor, Vector2 value)
         {
-            throw new NotImplementedException();
+            value.X *= scaleFactor;
+            value.Y *= scaleFactor;
+            return value;
         }
 
 
         public static Vector2 operator /(Vector2 value1, Vector2 value2)
         {
-            throw new NotImplementedException();
+            value1.X /= value2.X;
+            value1.Y /= value2.Y;
+            return value1;
         }
 
 
         public static Vector2 operator /(Vector2 value1, float divider)
         {
-            throw new NotImplementedException();
+            float factor = 1 / divider;
+            value1.X *= factor;
+            value1.Y *= factor;
+            return value1;
         }
+
+        #endregion Operators
     }
 }
