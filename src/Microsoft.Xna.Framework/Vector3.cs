@@ -41,79 +41,79 @@ namespace Microsoft.Xna.Framework
         public float Y;
         public float Z;
 
-        private static Vector3 m_Zero = new Vector3(0f, 0f, 0f);
-        private static Vector3 m_One = new Vector3(1f, 1f, 1f);
-        private static Vector3 m_UnitX = new Vector3(1f, 0f, 0f);
-        private static Vector3 m_UnitY = new Vector3(0f, 1f, 0f);
-        private static Vector3 m_UnitZ = new Vector3(0f, 0f, 1f);
-        private static Vector3 m_Up = new Vector3(0f, 1f, 0f);
-        private static Vector3 m_Down = new Vector3(0f, -1f, 0f);
-        private static Vector3 m_Right = new Vector3(1f, 0f, 0f);
-        private static Vector3 m_Left = new Vector3(-1f, 0f, 0f);
-        private static Vector3 m_Forward = new Vector3(0f, 0f, -1f);
-        private static Vector3 m_Backward = new Vector3(0f, 0f, 1f);
+        private static Vector3 zero = new Vector3(0f, 0f, 0f);
+        private static Vector3 one = new Vector3(1f, 1f, 1f);
+        private static Vector3 unitX = new Vector3(1f, 0f, 0f);
+        private static Vector3 unitY = new Vector3(0f, 1f, 0f);
+        private static Vector3 unitZ = new Vector3(0f, 0f, 1f);
+        private static Vector3 up = new Vector3(0f, 1f, 0f);
+        private static Vector3 down = new Vector3(0f, -1f, 0f);
+        private static Vector3 right = new Vector3(1f, 0f, 0f);
+        private static Vector3 left = new Vector3(-1f, 0f, 0f);
+        private static Vector3 forward = new Vector3(0f, 0f, -1f);
+        private static Vector3 backward = new Vector3(0f, 0f, 1f);
 
         public static Vector3 Zero
         {
-            get { throw new NotImplementedException(); }
+            get { return zero; }
         }
 
 
         public static Vector3 One
         {
-            get { throw new NotImplementedException(); }
+            get { return one; }
         }
 
 
         public static Vector3 UnitX
         {
-            get { throw new NotImplementedException(); }
+            get { return unitX; }
         }
 
         public static Vector3 UnitY
         {
-            get { throw new NotImplementedException(); }
+            get { return unitY; }
         }
 
         public static Vector3 UnitZ
         {
-            get { throw new NotImplementedException(); }
+            get { return unitZ; }
         }
 
 
         public static Vector3 Up
         {
-            get { throw new NotImplementedException(); }
+            get { return up; }
         }
 
 
         public static Vector3 Down
         {
-            get { throw new NotImplementedException(); }
+            get { return down; }
         }
 
 
         public static Vector3 Right
         {
-            get { throw new NotImplementedException(); }
+            get { return right; }
         }
 
 
         public static Vector3 Left
         {
-            get { throw new NotImplementedException(); }
+            get { return left; }
         }
 
 
         public static Vector3 Forward
         {
-            get { throw new NotImplementedException(); }
+            get { return forward; }
         }
 
 
         public static Vector3 Backward
         {
-            get { throw new NotImplementedException(); }
+            get { return backward; }
         }
 
 
