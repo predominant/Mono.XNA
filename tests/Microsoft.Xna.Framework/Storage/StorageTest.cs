@@ -55,6 +55,28 @@ namespace Microsoft.Xna.Framework.Storage.Tests
 			Directory.Delete(Environment.GetFolderPath(Environment.SpecialFolder.Personal) + Path.DirectorySeparatorChar
 				+ "SavedGames", true);
 		}
+
+        [Test]
+        public void ShowStorageDeviceTwice()
+        {
+            sd = StorageDevice.ShowStorageDeviceGuide();
+            StorageDevice sd2 = StorageDevice.ShowStorageDeviceGuide();
+
+            Assert.AreNotEqual(sd, sd2, "#1");
+        }
+
+        [Test]
+        public void OpenContainerTwice()
+        {
+            
+            StorageContainer c1 = sd.OpenContainer("Test");
+            StorageContainer c2 = sd.OpenContainer("Test1");
+            StorageContainer c3 = sd.OpenContainer("Test");
+
+            Assert.AreNotEqual(c1, c3, "#1");
+            Assert.AreNotSame(c1, c3, "#2");
+            Assert.AreNotEqual(c1, c2, "#3");
+        }
 		
 		[Test]
 		public void TestSpaceValue()

@@ -44,7 +44,6 @@ namespace Microsoft.Xna.Framework.Storage
         private DriveInfo driveInfo;
         private PlayerIndex playerIndex;
         private bool playerSpecified;
-        private StorageContainer tempContainer;
         private delegate StorageDevice showStorage();
         private delegate StorageDevice showStorage2(PlayerIndex index);
 
@@ -124,10 +123,7 @@ namespace Microsoft.Xna.Framework.Storage
             if (string.IsNullOrEmpty(titleName))
                 throw new ArgumentNullException("You must pass in a non-null title name");
 
-            if (tempContainer == null)
-                tempContainer = new StorageContainer(this, titleName, playerSpecified, playerIndex);
-
-            return tempContainer;
+            return new StorageContainer(this, titleName, playerSpecified, playerIndex);
         }
 
         public static StorageDevice ShowStorageDeviceGuide()
