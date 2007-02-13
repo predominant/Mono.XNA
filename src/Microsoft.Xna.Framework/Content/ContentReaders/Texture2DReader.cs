@@ -5,9 +5,9 @@ using Microsoft.Xna.Framework.Graphics;
 
 namespace Microsoft.Xna.Framework.Content
 {
-    public class Texture2DReader : ContentTypeReader<Texture2D>
+    internal class Texture2DReader : ContentTypeReader<Texture2D>
     {
-        public Texture2DReader()
+        internal Texture2DReader()
         {
             // Do nothing
         }
