@@ -47,7 +47,7 @@ namespace Microsoft.Xna.Framework.Content
 
         public virtual int TypeVersion
         {
-            get { return 0; }
+            get { return 0; }   // The default version (unless overridden) is zero
         }
 
         #endregion Public Properties
@@ -74,12 +74,13 @@ namespace Microsoft.Xna.Framework.Content
 
         #endregion Protected Methods
     }
-   
+
     public abstract class ContentTypeReader<T> : ContentTypeReader
     {
         #region Protected Constructors
 
-        protected ContentTypeReader() : base(typeof(T))
+        protected ContentTypeReader()
+            : base(typeof(T))
         {
             // Nothing
         }
@@ -91,7 +92,8 @@ namespace Microsoft.Xna.Framework.Content
 
         protected internal override object Read(ContentReader input, object existingInstance)
         {
-            throw new NotImplementedException();
+            ContentTypeReader<T> reader = typeReader as ContentTypeReader<T>;
+            reader.Read(input, existingInstance);
         }
 
         protected internal abstract T Read(ContentReader input, T existingInstance);
@@ -99,4 +101,3 @@ namespace Microsoft.Xna.Framework.Content
         #endregion Protected Methods
     }
 }
-

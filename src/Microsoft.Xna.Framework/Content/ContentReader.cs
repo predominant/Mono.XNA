@@ -71,10 +71,6 @@ namespace Microsoft.Xna.Framework.Content
 
         public T ReadObject<T>(ContentTypeReader typeReader)
         {
-            // I don't really understand why i need to cast from ContentTypeReader to ContentTypeReader<T>
-            // but unless i do that, C# doesn't call the correct .Read method. It just
-            // calls the method from the basic ContentTypeReader<T>.
-            ContentTypeReader<T> reader = typeReader as ContentTypeReader<T>;
             return reader.Read(this, default(T));
         }
 

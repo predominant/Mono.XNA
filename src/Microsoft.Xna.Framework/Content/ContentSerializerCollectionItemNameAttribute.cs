@@ -38,14 +38,16 @@ namespace Microsoft.Xna.Framework.Content
 
         #endregion Private Member Variables
 
+
         #region Public Properties
 
         public string CollectionItemName
         {
-            get { return collectionItemName; }
+            get { return this.collectionItemName; }
         }
 
         #endregion Public Properties
+
 
         #region Public Constructors
 

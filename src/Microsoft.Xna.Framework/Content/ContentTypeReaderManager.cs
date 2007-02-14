@@ -27,7 +27,6 @@ SOFTWARE.
 
 using System;
 using System.Collections.Generic;
-using System.Diagnostics.CodeAnalysis;
 
 namespace Microsoft.Xna.Framework.Content
 {
@@ -38,7 +37,6 @@ namespace Microsoft.Xna.Framework.Content
             throw new NotImplementedException();
         }
 
-        [SuppressMessage("Microsoft.Performance", "CA1822:MarkMembersAsStatic")]
         public ContentTypeReader GetTypeReader(Type targetType)
         {
             throw new NotImplementedException();
