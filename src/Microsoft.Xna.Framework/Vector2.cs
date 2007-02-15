@@ -29,6 +29,7 @@ using System;
 using System.ComponentModel;
 using System.Runtime.InteropServices;
 using Microsoft.Xna.Framework.Design;
+using System.Text;
 
 namespace Microsoft.Xna.Framework
 {
@@ -56,13 +57,25 @@ namespace Microsoft.Xna.Framework
 
         #region Properties
 
-        public static Vector2 Zero { get { return zeroVector; } }
+        public static Vector2 Zero
+        {
+            get { return zeroVector; }
+        }
 
-        public static Vector2 One { get { return unitVector; } }
+        public static Vector2 One
+        {
+            get { return unitVector; }
+        }
 
-        public static Vector2 UnitX { get { return unitXVector; } }
+        public static Vector2 UnitX
+        {
+            get { return unitXVector; }
+        }
 
-        public static Vector2 UnitY { get { return unitYVector; } }
+        public static Vector2 UnitY
+        {
+            get { return unitYVector; }
+        }
 
         #endregion Properties
 
@@ -153,9 +166,7 @@ namespace Microsoft.Xna.Framework
 
         public static void DistanceSquared(ref Vector2 value1, ref Vector2 value2, out float result)
         {
-            value1.X -= value2.X;
-            value1.Y -= value2.Y;
-            result = value1.X * value1.X + value1.Y * value1.Y;
+            result = (value1.X - value2.X) * (value1.X - value2.X) + (value1.Y - value2.Y) * (value1.Y - value2.Y);
         }
 
         public static Vector2 Divide(Vector2 value1, Vector2 value2)
@@ -188,9 +199,7 @@ namespace Microsoft.Xna.Framework
 
         public static float Dot(Vector2 value1, Vector2 value2)
         {
-            float result;
-            Dot(ref value1, ref value2, out result);
-            return result;
+            return value1.X * value2.X + value1.Y * value2.Y;
         }
 
         public static void Dot(ref Vector2 value1, ref Vector2 value2, out float result)
@@ -210,7 +219,7 @@ namespace Microsoft.Xna.Framework
 
         public override int GetHashCode()
         {
-            throw new NotImplementedException();
+            return (int)(this.X + this.Y);
         }
 
         public static Vector2 Hermite(Vector2 value1, Vector2 tangent1, Vector2 value2, Vector2 tangent2, float amount)
@@ -225,12 +234,16 @@ namespace Microsoft.Xna.Framework
 
         public float Length()
         {
-            throw new NotImplementedException();
+            float result;
+            DistanceSquared(ref this, ref zeroVector, out result);
+            return (float)Math.Sqrt(result);
         }
 
         public float LengthSquared()
         {
-            throw new NotImplementedException();
+            float result;
+            DistanceSquared(ref this, ref zeroVector, out result);
+            return result;
         }
 
         public static Vector2 Lerp(Vector2 value1, Vector2 value2, float amount)
@@ -245,37 +258,46 @@ namespace Microsoft.Xna.Framework
 
         public void Normalize()
         {
-            throw new NotImplementedException();
+            Normalize(ref this, out this);
         }
 
         public static Vector2 Normalize(Vector2 value)
         {
-            throw new NotImplementedException();
+            Normalize(ref value, out value);
+            return value;
         }
 
         public static void Normalize(ref Vector2 value, out Vector2 result)
         {
-            throw new NotImplementedException();
+            float factor;
+            Distance(ref value, ref zeroVector, out factor);
+            factor = 1 / factor;
+            result.X = value.X * factor;
+            result.Y = value.Y * factor;
         }
 
         public static Vector2 Max(Vector2 value1, Vector2 value2)
         {
-            throw new NotImplementedException();
+            Max(ref value1, ref value2, out value1);
+            return value1;
         }
 
         public static void Max(ref Vector2 value1, ref Vector2 value2, out Vector2 result)
         {
-            throw new NotImplementedException();
+            result = new Vector2(value1.X > value2.X ? value1.X : value2.X,
+                                 value1.Y > value2.Y ? value1.Y : value2.Y);
         }
 
         public static Vector2 Min(Vector2 value1, Vector2 value2)
         {
-            throw new NotImplementedException();
+            Min(ref value1, ref value2, out value1);
+            return value1;
         }
 
         public static void Min(ref Vector2 value1, ref Vector2 value2, out Vector2 result)
         {
-            throw new NotImplementedException();
+            result = new Vector2(value1.X < value2.X ? value1.X : value2.X,
+                     value1.Y < value2.Y ? value1.Y : value2.Y);
         }
 
         public static Vector2 Multiply(Vector2 value1, Vector2 value2)
@@ -358,9 +380,20 @@ namespace Microsoft.Xna.Framework
 
         public static void TransformNormal(ref Vector2 normal, ref Matrix matrix, out Vector2 result)
         {
-            result = new Vector2((normal.X * matrix.M11) + (normal.Y * matrix.M21), (normal.X * matrix.M12) + (normal.Y * matrix.M22));
+            result = new Vector2((normal.X * matrix.M11) + (normal.Y * matrix.M21),
+                                 (normal.X * matrix.M12) + (normal.Y * matrix.M22));
         }
 
+        public override string ToString()
+        {
+            StringBuilder sb = new StringBuilder(24);
+            sb.Append("{X:");
+            sb.Append(this.X);
+            sb.Append(" Y:");
+            sb.Append(this.Y);
+            sb.Append("}");
+            return sb.ToString();
+        }
         #endregion Public Methods
 
 
