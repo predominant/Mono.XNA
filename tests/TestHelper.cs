@@ -15,7 +15,7 @@ namespace Microsoft.Xna.Framework.Tests
         /// <returns></returns>
         public static bool ApproximatelyEquals(float value1, float value2)
         {
-            return ApproximatelyEquals(value1, value2, 1 / 10000.0f);
+            return ApproximatelyEquals(value1, value2, value1/100.0f);
         }
 
         public static bool ApproximatelyEquals(float? value1, float? value2)
@@ -30,7 +30,6 @@ namespace Microsoft.Xna.Framework.Tests
                 return true;
 
             float epsilon = 1 / 10000.0f;
-            Console.WriteLine("Value1: " + value1 + ". Value2: " + value2 + ". Result: " + Math.Abs((float)value1 - (float)value2));
             return ApproximatelyEquals((float)value1, (float)value2);
         }
 
@@ -38,12 +37,23 @@ namespace Microsoft.Xna.Framework.Tests
         {
             float epsilon = tolerance;
 
+            float result = Math.Abs(value1 / value2);
+            Console.WriteLine("Value1: " + value1 + ". Value2: " + value2 + ". Epsilon: " + epsilon + ". Result: " + result);
+
             //If both numbers are NaN, return true
             if (value1.Equals(float.NaN) && value2.Equals(float.NaN))
                 return true;
 
-            Console.WriteLine("Value1: " + value1 + ". Value2: " + value2 + ". Result: " + Math.Abs(value1 - value2));
-            return Math.Abs(value1 - value2) < epsilon;
+            if (value1 == 0 && value2 == 0)
+                return true;
+
+            if (value1 == 0)
+                return Math.Abs(value2) < epsilon;
+
+            if (value2 == 0)
+                return Math.Abs(value1) < epsilon;
+
+            return (result > 0.98 && result < 1.02);
         }
 
         public static bool ApproximatelyEquals(Vector3 value1, Vector3 value2)
@@ -66,6 +76,14 @@ namespace Microsoft.Xna.Framework.Tests
                 return false;
 
             return ApproximatelyEquals(value1.Normal, value2.Normal);
+        }
+
+        public static bool ApproximatelyEquals(Vector2 value1, Vector2 value2)
+        {
+            if(!ApproximatelyEquals(value1.X, value2.X))
+                return false;
+
+            return ApproximatelyEquals(value1.Y, value2.Y);
         }
     }
 }
