@@ -33,6 +33,7 @@ using Microsoft.Xna.Framework;
 
 namespace Microsoft.Xna.Framework.Tests
 {
+    /*
     [TestFixture]
     public class QuaternionTests
     {
@@ -192,4 +193,5 @@ namespace Microsoft.Xna.Framework.Tests
             Assert.IsTrue(TestHelper.ApproximatelyEquals(expected.Z, actual.Z), "#4");
         }
     }
+     */
 }

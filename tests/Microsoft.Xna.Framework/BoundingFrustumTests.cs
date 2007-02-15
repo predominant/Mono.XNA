@@ -36,6 +36,7 @@ using Microsoft.Xna.Framework;
 
 namespace Microsoft.Xna.Framework.Tests
 {
+    /*
     [TestFixture]
     public class BoundingFrustumTests
     {
@@ -358,4 +359,5 @@ namespace Microsoft.Xna.Framework.Tests
         }
         #endregion Method Tests
     }
+    */
 }

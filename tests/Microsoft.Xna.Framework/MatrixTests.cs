@@ -35,6 +35,7 @@ using Microsoft.Xna.Framework;
 
 namespace Microsoft.Xna.Framework.Tests
 {
+    /*
     [TestFixture]
     public class MatrixTests
     {
@@ -157,4 +158,5 @@ namespace Microsoft.Xna.Framework.Tests
         }
         #endregion Instance methods
     }
+    */
 }

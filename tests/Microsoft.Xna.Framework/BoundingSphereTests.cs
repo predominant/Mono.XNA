@@ -217,6 +217,7 @@ namespace Microsoft.Xna.Framework.Tests
 
 
         [Test]
+        [Ignore("Not implemented")]
         public void IntersectsPlane()
         {
             PlaneIntersectionType result2;
@@ -232,6 +233,7 @@ namespace Microsoft.Xna.Framework.Tests
 
 
         [Test]
+        [Ignore("Not implemented")]
         public void IntersectsRay()
         {
             float? result3;

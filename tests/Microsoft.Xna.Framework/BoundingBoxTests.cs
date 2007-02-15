@@ -353,6 +353,7 @@ namespace Microsoft.Xna.Framework.Tests
         }
 
         [Test]
+        [Ignore("Not implemented")]
         public void IntersectsPlane()
         {
             PlaneIntersectionType planeResult;
