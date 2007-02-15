@@ -56,20 +56,6 @@ namespace Microsoft.Xna.Framework.Tests
             return (result > 0.98 && result < 1.02);
         }
 
-        public static bool ApproximatelyEquals(Vector3 value1, Vector3 value2)
-        {
-            if (!ApproximatelyEquals(value1.X, value2.X))
-                return false;
-
-            if (!ApproximatelyEquals(value1.Y, value2.Y))
-                return false;
-
-            if (!ApproximatelyEquals(value1.Z, value2.Z))
-                return false;
-
-            return true;
-        }
-
         public static bool ApproximatelyEquals(Plane value1, Plane value2)
         {
             if (!ApproximatelyEquals(value1.D, value2.D))
@@ -84,6 +70,37 @@ namespace Microsoft.Xna.Framework.Tests
                 return false;
 
             return ApproximatelyEquals(value1.Y, value2.Y);
+        }
+
+        public static bool ApproximatelyEquals(Vector3 value1, Vector3 value2)
+        {
+            if (!ApproximatelyEquals(value1.X, value2.X))
+                return false;
+
+            if (!ApproximatelyEquals(value1.Y, value2.Y))
+                return false;
+
+            if (!ApproximatelyEquals(value1.Z, value2.Z))
+                return false;
+
+            return true;
+        }
+
+        public static bool ApproximatelyEquals(Vector4 value1, Vector4 value2)
+        {
+            if (!ApproximatelyEquals(value1.W, value2.W))
+                return false;
+
+            if (!ApproximatelyEquals(value1.X, value2.X))
+                return false;
+
+            if (!ApproximatelyEquals(value1.Y, value2.Y))
+                return false;
+
+            if (!ApproximatelyEquals(value1.Z, value2.Z))
+                return false;
+
+            return true;
         }
     }
 }
