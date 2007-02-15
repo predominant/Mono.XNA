@@ -2,7 +2,7 @@
 /*
 MIT License
 Copyright © 2006 The Mono.Xna Team
-http://www.taoframework.com
+
 All rights reserved.
 
 Authors:

@@ -39,7 +39,7 @@ using System.Resources;
 #endif
 [assembly: AssemblyCompany("The Mono.Xna Team")]
 [assembly: AssemblyCopyright("Copyright © 2006 - 2007 The Mono.Xna Team")]
-[assembly: AssemblyTrademark("http://www.taoframework.com")]
+[assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 [assembly: ComVisible(false)]
 [assembly: CLSCompliant(true)]

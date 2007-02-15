@@ -2,7 +2,7 @@
 /*
 MIT License
 Copyright © 2006 The Mono.Xna Team
-http://www.taoframework.com
+
 All rights reserved.
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -47,7 +47,7 @@ using System.IO;
 #endif
 [assembly: AssemblyCompany("The Mono.Xna Team")]
 [assembly: AssemblyCopyright("Copyright 2006 - 2007 The Mono.Xna Team")]
-[assembly: AssemblyTrademark("http://www.taoframework.com")]
+[assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 
 // Setting ComVisible to false makes the types in this assembly not visible 
