@@ -2,7 +2,7 @@
 /*
 MIT License
 Copyright © 2006 The Mono.Xna Team
-http://www.taoframework.com
+
 All rights reserved.
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -71,7 +71,7 @@ namespace Microsoft.Xna.Framework.Content
 
         public T ReadObject<T>(ContentTypeReader typeReader)
         {
-            return reader.Read(this, default(T));
+            return (T)typeReader.Read(this, default(T));
         }
 
         public T ReadObject<T>(T existingInstance)

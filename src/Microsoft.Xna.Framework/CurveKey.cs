@@ -84,13 +84,13 @@ namespace Microsoft.Xna.Framework
         #region Constructors
 
         public CurveKey(float position, float value)
-            : this(position, value, 0, 0, CurveContinuity.Default)
+            : this(position, value, 0, 0, CurveContinuity.Smooth)
         {
 
         }
 
         public CurveKey(float position, float value, float tangentIn, float tangentOut)
-            : this(position, value, tangentIn, tangentOut, CurveContinuity.Default)
+            : this(position, value, tangentIn, tangentOut, CurveContinuity.Smooth)
         {
 
         }

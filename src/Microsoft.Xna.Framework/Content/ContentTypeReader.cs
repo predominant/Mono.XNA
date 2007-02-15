@@ -2,7 +2,7 @@
 /*
 MIT License
 Copyright © 2006 The Mono.Xna Team
-http://www.taoframework.com
+
 All rights reserved.
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -92,8 +92,8 @@ namespace Microsoft.Xna.Framework.Content
 
         protected internal override object Read(ContentReader input, object existingInstance)
         {
-            ContentTypeReader<T> reader = typeReader as ContentTypeReader<T>;
-            reader.Read(input, existingInstance);
+            ContentTypeReader<T> reader = input as ContentTypeReader<T>;
+           return reader.Read(input, existingInstance);
         }
 
         protected internal abstract T Read(ContentReader input, T existingInstance);

@@ -2,7 +2,7 @@
 /*
 MIT License
 Copyright © 2006 The Mono.Xna Team
-http://www.taoframework.com
+
 All rights reserved.
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -56,14 +56,14 @@ namespace Microsoft.Xna.Framework
 
         public static float Clamp(float value, float min, float max)
         {
-            if (value > max)
-                return max;
+            // First we check to see if we're greater than the max
+            value = (value > max) ? max : value;
 
-            else if (value < min)
-                return min;
+            // Then we check to see if we're less than the min.
+            value = (value < min) ? min : value;
 
-            else
-                return value;
+            // There's no check to see if min > max.
+            return value;
         }
         
         
