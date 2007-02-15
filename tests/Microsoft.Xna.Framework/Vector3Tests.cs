@@ -2,7 +2,7 @@
 /*
 MIT License
 Copyright © 2006 The Mono.Xna Team
-http://www.taoframework.com
+
 All rights reserved.
 
 Authors: Alan McGovern
@@ -57,33 +57,6 @@ namespace Microsoft.Xna.Framework.Tests
 
         #endregion
 
-        #region Public Fields Test
-
-        [Test]
-        public void XComponent()
-        {
-            Assert.AreEqual(1, a.X, "XComponent#1");
-            Assert.AreEqual(4.5f, b.X, "XComponent#2");
-            Assert.AreEqual(-124, c.X, "XComponent#3");
-        }
-
-        [Test]
-        public void YComponent()
-        {
-            Assert.AreEqual(2, a.Y, "YComponent#1");
-            Assert.AreEqual(6f, b.Y, "YComponent#2");
-            Assert.AreEqual(352.234f, c.Y, "YComponent#3");
-        }
-
-        [Test]
-        public void ZComponent()
-        {
-            Assert.AreEqual(3, a.Z, "ZComponent#1");
-            Assert.AreEqual(7f, b.Z, "ZComponent#2");
-            Assert.AreEqual(123.123f, c.Z, "ZComponent#3");
-        }
-
-        #endregion
 
         #region Public Properties Tests
 
@@ -163,6 +136,7 @@ namespace Microsoft.Xna.Framework.Tests
 
         #endregion
 
+
         #region Public Methods Test
 
         [Test]
@@ -205,7 +179,7 @@ namespace Microsoft.Xna.Framework.Tests
         }
 
         [Test]
-        public void Add()
+        public void AddTest()
         {
             // Normal use
             Vector3 v = Vector3.Add(new Vector3(1, 1, 1), new Vector3(1, 1, 1));
@@ -237,8 +211,9 @@ namespace Microsoft.Xna.Framework.Tests
             Assert.AreEqual(-4, v.Z, "Add#4.Z");
         }
 
+        [Ignore("Not implemented")]
         [Test]
-        public void Barycentric()
+        public void BarycentricTest()
         {
             a = Vector3.UnitX;
             b = Vector3.UnitY;
@@ -257,8 +232,9 @@ namespace Microsoft.Xna.Framework.Tests
             Assert.AreEqual(0.5f, v.Z, "Barycentric#2.Z");
         }
 
+        [Ignore("Not implemented")]
         [Test]
-        public void CatmullRom()
+        public void CatmullRomTest()
         {
             // Tests with positive vectors
 
@@ -308,11 +284,11 @@ namespace Microsoft.Xna.Framework.Tests
         }
 
         [Test]
-        public void Clamp()
+        public void ClampTest()
         {
             Vector3 min = new Vector3(-10, -10, -10);
             Vector3 max = new Vector3(10, 10, 10);
-            
+                        Assert.AreEqual(new Vector3(10, 10, 10), Vector3.Clamp(new Vector3(1, 1, 1), max, min), "Clamp#6");
             // Test normal use with min vector first ant max vector last
             Assert.AreEqual(new Vector3(1, 1, 1), Vector3.Clamp(new Vector3(1, 1, 1), min, max), "Clamp#1");
             Assert.AreEqual(new Vector3(-10, -10, -10), Vector3.Clamp(new Vector3(-10, -10, -10), min, max), "Clamp#2");
@@ -329,7 +305,7 @@ namespace Microsoft.Xna.Framework.Tests
         }
 
         [Test]
-        public void Cross()
+        public void CrossTest()
         {
             Vector3 v1 = new Vector3(5, 1, 9);
             Vector3 v2 = new Vector3(-5, -1, -9);
@@ -348,7 +324,7 @@ namespace Microsoft.Xna.Framework.Tests
         }
 
         [Test]
-        public void Distance()
+        public void DistanceTest()
         {
             Vector3 origin = new Vector3(0, 0, 0);
 
@@ -357,20 +333,11 @@ namespace Microsoft.Xna.Framework.Tests
             Assert.AreEqual(1, Vector3.Distance(Vector3.UnitY, origin), "Distance#2");
             Assert.AreEqual(1, Vector3.Distance(Vector3.UnitZ, origin), "Distance#3");
 
-            Assert.AreEqual(1.73205078f, Vector3.Distance(Vector3.One, origin), "Distance#4");
-            Assert.AreEqual(0, Vector3.Distance(origin, origin), "Distance#5");
-
-            // Origin as destination vector
-            Assert.AreEqual(1, Vector3.Distance(origin, Vector3.UnitX), "Distance#6");
-            Assert.AreEqual(1, Vector3.Distance(origin, Vector3.UnitY), "Distance#7");
-            Assert.AreEqual(1, Vector3.Distance(origin, Vector3.UnitZ), "Distance#8");
-
-            Assert.AreEqual(1.73205078f, Vector3.Distance(origin, Vector3.One), "Distance#9");
-            Assert.AreEqual(0, Vector3.Distance(origin, origin), "Distance#10");
+            Assert.IsTrue(TestHelper.ApproximatelyEquals(6.652067f, Vector3.Distance(a, b)), "#4");
         }
 
         [Test]
-        public void DistanceSquared()
+        public void DistanceSquaredTest()
         {
             Vector3 origin = new Vector3(0, 0, 0);
             Vector3 v1 = new Vector3(2, 2, 2);
@@ -395,7 +362,7 @@ namespace Microsoft.Xna.Framework.Tests
         }
 
         [Test]
-        public void DivideByScalar()
+        public void DivideByScalarTest()
         {
             // Normal tests
 
@@ -456,7 +423,7 @@ namespace Microsoft.Xna.Framework.Tests
         }
 
         [Test]
-        public void DivideByVector()
+        public void DivideByVectorTest()
         {
             Assert.AreEqual(new Vector3(1, 2, -0.5f),
                             Vector3.Divide(new Vector3(2, 2, 2),
@@ -539,6 +506,98 @@ namespace Microsoft.Xna.Framework.Tests
                                                        float.PositiveInfinity,
                                                        float.PositiveInfinity)).ToString(),
                             "DivideByVectorPositiveInfinity#2");
+        }
+
+        [Test]
+        public void LengthTest()
+        {
+            Assert.IsTrue(TestHelper.ApproximatelyEquals(3.741657f, a.Length()), "#1");
+            Assert.IsTrue(TestHelper.ApproximatelyEquals(10.25914f, b.Length()), "#2");
+            Assert.IsTrue(TestHelper.ApproximatelyEquals(393.1972f, c.Length()), "#3");
+        }
+
+        [Test]
+        public void LengthSquaredTest()
+        {
+            Assert.IsTrue(TestHelper.ApproximatelyEquals(14, a.LengthSquared()), "#1");
+            Assert.IsTrue(TestHelper.ApproximatelyEquals(105.25f, b.LengthSquared()), "#2");
+            Assert.IsTrue(TestHelper.ApproximatelyEquals(154604.1f, c.LengthSquared()), "#3");
+        }
+
+        [Test]
+        public void MaxTest()
+        {
+            a = new Vector3(1, 2, 3);
+            b = new Vector3(4.5f, 6f, 7f);
+            c = new Vector3(-124, 352.234f, 123.123f);
+
+            Vector3 expected;
+
+            expected = new Vector3(4.5f, 6f, 7f);
+            Assert.IsTrue(TestHelper.ApproximatelyEquals(expected, Vector3.Max(a, b)), "#1");
+            Assert.IsTrue(TestHelper.ApproximatelyEquals(expected, Vector3.Max(b, a)), "#2");
+
+            expected = new Vector3(4.5f, 352.234f, 123.123f);
+            Assert.IsTrue(TestHelper.ApproximatelyEquals(expected, Vector3.Max(c, b)), "#3");
+        }
+
+        [Test]
+        public void MinTest()
+        {
+            Vector3 expected;
+
+            expected = new Vector3(1,2,3);
+            Assert.IsTrue(TestHelper.ApproximatelyEquals(expected, Vector3.Min(a, b)), "#1");
+            Assert.IsTrue(TestHelper.ApproximatelyEquals(expected, Vector3.Min(b, a)), "#2");
+
+            expected = new Vector3(-124, 6f, 7f);
+            Assert.IsTrue(TestHelper.ApproximatelyEquals(expected, Vector3.Min(c, b)), "#3");
+        }
+
+        [Test]
+        public void NegateTest()
+        {
+            Vector3 output;
+            Vector3 expected = new Vector3(124, -352.234f, -123.123f); ;
+            Assert.IsTrue(TestHelper.ApproximatelyEquals(expected, -c), "#1");
+
+            Assert.IsTrue(TestHelper.ApproximatelyEquals(expected, Vector3.Negate(c)), "#2");
+
+
+            Vector3.Negate(ref c, out output);
+            Assert.IsTrue(TestHelper.ApproximatelyEquals(expected, output), "#3");
+            Assert.IsTrue(TestHelper.ApproximatelyEquals(expected, -c), "#4");
+
+        }
+
+        [Test]
+        public void NormalizeTest()
+        {
+            Vector3 expected = new Vector3(0.2672612f, 0.5345225f, 0.8017837f);
+            Vector3 cloneOfA = a;
+            cloneOfA.Normalize();
+
+            Assert.IsTrue(TestHelper.ApproximatelyEquals(expected, cloneOfA), "#1");
+            Assert.IsTrue(TestHelper.ApproximatelyEquals(expected, Vector3.Normalize(a)), "#2");
+            
+            Vector3.Normalize(ref a, out a);
+            Assert.IsTrue(TestHelper.ApproximatelyEquals(expected, a), "#3");
+        }
+
+        [Test]
+        public void SubtractTest()
+        {
+            a = new Vector3(1, 2, 3);
+            b = new Vector3(4.5f, 6f, 7f);
+            c = new Vector3(-124, 352.234f, 123.123f);
+            Vector3 expected = new Vector3(-3.5f, -4, -4);
+
+            Assert.IsTrue(TestHelper.ApproximatelyEquals(expected, a - b), "#1");
+            Assert.IsTrue(TestHelper.ApproximatelyEquals(expected, -(b - a)), "#2");
+            Assert.IsTrue(TestHelper.ApproximatelyEquals(expected, Vector3.Subtract(a, b)), "#3");
+
+            Vector3.Subtract(ref a, ref b, out a);
+            Assert.IsTrue(TestHelper.ApproximatelyEquals(expected, a), "#4");
         }
 
         [Test]
