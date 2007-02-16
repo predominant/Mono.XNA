@@ -51,7 +51,7 @@ namespace Microsoft.Xna.Framework.Graphics.Tests
         {
             DisplayMode mode = new DisplayMode();
             Assert.AreEqual(mode.RefreshRate, 0, "#1");
-            Assert.AreEqual(mode.Format, (SurfaceFormat)0, "#2");
+            Assert.AreEqual(SurfaceFormat.Unknown, mode.Format, "#2");
             Assert.AreEqual(mode.Height, 0, "#3");
             Assert.AreEqual(mode.Width, 0, "#4");
         }
