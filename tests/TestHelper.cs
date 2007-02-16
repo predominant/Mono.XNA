@@ -88,9 +88,6 @@ namespace Microsoft.Xna.Framework.Tests
 
         public static bool ApproximatelyEquals(Vector4 value1, Vector4 value2)
         {
-            if (!ApproximatelyEquals(value1.W, value2.W))
-                return false;
-
             if (!ApproximatelyEquals(value1.X, value2.X))
                 return false;
 
@@ -100,6 +97,8 @@ namespace Microsoft.Xna.Framework.Tests
             if (!ApproximatelyEquals(value1.Z, value2.Z))
                 return false;
 
+            if (!ApproximatelyEquals(value1.W, value2.W))
+                return false;
             return true;
         }
     }
