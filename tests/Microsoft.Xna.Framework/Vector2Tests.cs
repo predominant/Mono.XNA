@@ -75,6 +75,19 @@ namespace Microsoft.Xna.Framework.Tests
         }
 
         [Test]
+        public void BarycentricTests()
+        {
+            Vector2 expected = new Vector2(-9.757494f, 46.27595f);
+            Assert.IsTrue(TestHelper.ApproximatelyEquals(expected, Vector2.Barycentric(this.v1, this.v2, this.v3, 0.15f, 0.73f)), "#1");
+
+            expected = new Vector2(-126.5385f, -501.2646f);
+            Assert.IsTrue(TestHelper.ApproximatelyEquals(expected, Vector2.Barycentric(this.v1, this.v2, this.v3, 15.15f, 0.73f)), "#2");
+
+            expected = new Vector2(-153.0115f, 296.2759f);
+            Assert.IsTrue(TestHelper.ApproximatelyEquals(expected, Vector2.Barycentric(this.v1, this.v2, this.v3, 0.15f, 5.73f)), "#3");
+        }
+
+        [Test]
         public void ClampTest()
         {
             Vector2 actual;
@@ -258,6 +271,38 @@ namespace Microsoft.Xna.Framework.Tests
         }
 
         [Test]
+        public void SmoothStep()
+        {
+            v1 = new Vector2(12.3254f, 15.2513531f);
+            v2 = new Vector2(4.54f, -21.251353f);
+            v3 = new Vector2(-16.3254f, 65.251353f);
+
+            Vector2 expected = new Vector2(4.54f, -21.25135f);
+            Assert.IsTrue(TestHelper.ApproximatelyEquals(expected, Vector2.SmoothStep(v1, v2, 10)), "#1");
+
+            expected = new Vector2(-16.3254f, 65.25135f);
+            Assert.IsTrue(TestHelper.ApproximatelyEquals(expected, Vector2.SmoothStep(v2, v3, 100)), "#2");
+
+            expected = new Vector2(-16.3254f, 65.25135f);
+            Assert.IsTrue(TestHelper.ApproximatelyEquals(expected, Vector2.SmoothStep(v2, v3, 10)), "#3");
+
+            expected = new Vector2(4.54f, -21.25135f);
+            Assert.IsTrue(TestHelper.ApproximatelyEquals(expected, Vector2.SmoothStep(v2, v3, 0)), "#4");
+
+            expected = new Vector2(4.54f, -21.25135f);
+            Assert.IsTrue(TestHelper.ApproximatelyEquals(expected, Vector2.SmoothStep(v2, v3, -10)), "#5");
+
+            expected = new Vector2(4.54f, -21.25135f);
+            Assert.IsTrue(TestHelper.ApproximatelyEquals(expected, Vector2.SmoothStep(v2, v3, -100)), "#6");
+
+            expected = new Vector2(4.54f, -21.25135f);
+            Assert.IsTrue(TestHelper.ApproximatelyEquals(expected, Vector2.SmoothStep(v2, v3, -1000)), "#7");
+
+            expected = new Vector2(12.3254f, 15.25135f);
+            Assert.IsTrue(TestHelper.ApproximatelyEquals(expected, Vector2.SmoothStep(v3, v1, 512.13251f)), "#8");
+        }
+
+        [Test]
         public void SubtractTest()
         {
             Vector2 actual;
@@ -289,11 +334,20 @@ namespace Microsoft.Xna.Framework.Tests
         }
 
         [Test]
+        public void TransformTest()
+        {
+            Matrix m = new Matrix(1, 2, 3, 4, 5, 4, 5, 4, 3, 4, 5, 4, 7, 5, 3, 5);
+
+            Vector2 expected = new Vector2(95.58217f, 90.65621f);
+            Assert.IsTrue(TestHelper.ApproximatelyEquals(expected, Vector2.Transform(v1, m)), "#1");
+        }
+
+        [Test]
         public void TransformNormalTest()
         {
             Matrix m = new Matrix(1, 2, 3, 4, 5, 4, 5, 4, 3, 4, 5, 4, 7, 5, 3, 5);
-            Vector2 expected = new Vector2(88.58217f, 85.65621f);
 
+            Vector2 expected = new Vector2(88.58217f, 85.65621f);
             Assert.IsTrue(TestHelper.ApproximatelyEquals(expected, Vector2.TransformNormal(v1, m)), "#1");
         }
     }

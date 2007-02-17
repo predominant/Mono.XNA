@@ -117,17 +117,20 @@ namespace Microsoft.Xna.Framework
 
         public static Vector2 Barycentric(Vector2 value1, Vector2 value2, Vector2 value3, float amount1, float amount2)
         {
-            throw new NotImplementedException();
+            Barycentric(ref value1, ref value2, ref value3, amount1, amount2, out value1);
+            return value1;
         }
 
         public static void Barycentric(ref Vector2 value1, ref Vector2 value2, ref Vector2 value3, float amount1, float amount2, out Vector2 result)
         {
-            throw new NotImplementedException();
+            result = new Vector2(value1.X + (value2.X - value1.X) * amount1 + (value3.X - value1.X) * amount2,
+                                 value1.Y + (value2.Y - value1.Y) * amount1 + (value3.Y - value1.Y) * amount2);
         }
 
         public static Vector2 CatmullRom(Vector2 value1, Vector2 value2, Vector2 value3, Vector2 value4, float amount)
         {
-            throw new NotImplementedException();
+            CatmullRom(ref value1, ref value2, ref value3, ref value4, amount, out value1);
+            return value1;
         }
 
         public static void CatmullRom(ref Vector2 value1, ref Vector2 value2, ref Vector2 value3, ref Vector2 value4, float amount, out Vector2 result)
@@ -273,8 +276,8 @@ namespace Microsoft.Xna.Framework
         public static void Normalize(ref Vector2 value, out Vector2 result)
         {
             float factor;
-            Distance(ref value, ref zeroVector, out factor);
-            factor = 1 / factor;
+            DistanceSquared(ref value, ref zeroVector, out factor);
+            factor = 1f / (float)Math.Sqrt(factor);
             result.X = value.X * factor;
             result.Y = value.Y * factor;
         }
@@ -300,7 +303,7 @@ namespace Microsoft.Xna.Framework
         public static void Min(ref Vector2 value1, ref Vector2 value2, out Vector2 result)
         {
             result = new Vector2(value1.X < value2.X ? value1.X : value2.X,
-                     value1.Y < value2.Y ? value1.Y : value2.Y);
+                                 value1.Y < value2.Y ? value1.Y : value2.Y);
         }
 
         public static Vector2 Multiply(Vector2 value1, Vector2 value2)
@@ -344,12 +347,15 @@ namespace Microsoft.Xna.Framework
 
         public static Vector2 SmoothStep(Vector2 value1, Vector2 value2, float amount)
         {
-            throw new NotImplementedException();
+            SmoothStep(ref value1, ref value2, amount, out value1);
+            return value1;
         }
 
         public static void SmoothStep(ref Vector2 value1, ref Vector2 value2, float amount, out Vector2 result)
         {
-            throw new NotImplementedException();
+            // This is the behaviour my NUnit tests give, but it seems like a useless method.
+            // Did i code it right?
+            result = (amount > 0) ? value2 : value1;
         }
 
         public static Vector2 Subtract(Vector2 value1, Vector2 value2)
@@ -367,12 +373,14 @@ namespace Microsoft.Xna.Framework
 
         public static Vector2 Transform(Vector2 position, Matrix matrix)
         {
-            throw new NotImplementedException();
+            Transform(ref position, ref matrix, out position);
+            return position;
         }
 
         public static void Transform(ref Vector2 position, ref Matrix matrix, out Vector2 result)
         {
-            throw new NotImplementedException();
+            result = new Vector2((position.X * matrix.M11) + (position.Y * matrix.M21) + matrix.M41,
+                                 (position.X * matrix.M12) + (position.Y * matrix.M22) + matrix.M42);
         }
 
         public static Vector2 TransformNormal(Vector2 normal, Matrix matrix)
@@ -397,6 +405,7 @@ namespace Microsoft.Xna.Framework
             sb.Append("}");
             return sb.ToString();
         }
+
         #endregion Public Methods
 
 

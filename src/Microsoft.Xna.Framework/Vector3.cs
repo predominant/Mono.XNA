@@ -481,22 +481,28 @@ namespace Microsoft.Xna.Framework
 
         public static Vector3 Transform(Vector3 position, Matrix matrix)
         {
-            throw new NotImplementedException();
+            Transform(ref position, ref matrix, out position);
+            return position;
         }
 
         public static void Transform(ref Vector3 position, ref Matrix matrix, out Vector3 result)
         {
-            throw new NotImplementedException();
+            result = new Vector3((position.X * matrix.M11) + (position.Y * matrix.M21) + (position.Z * matrix.M31) + matrix.M41,
+                                 (position.X * matrix.M12) + (position.Y * matrix.M22) + (position.Z * matrix.M32) + matrix.M42,
+                                 (position.X * matrix.M13) + (position.Y * matrix.M23) + (position.Z * matrix.M33) + matrix.M43);
         }
 
         public static Vector3 TransformNormal(Vector3 normal, Matrix matrix)
         {
-            throw new NotImplementedException();
+            TransformNormal(ref normal, ref matrix, out normal);
+            return normal;
         }
 
         public static void TransformNormal(ref Vector3 normal, ref Matrix matrix, out Vector3 result)
         {
-            throw new NotImplementedException();
+            result = new Vector3((normal.X * matrix.M11) + (normal.Y * matrix.M21) + (normal.Z * matrix.M31),
+                                 (normal.X * matrix.M12) + (normal.Y * matrix.M22) + (normal.Z * matrix.M32),
+                                 (normal.X * matrix.M13) + (normal.Y * matrix.M23) + (normal.Z * matrix.M33));
         }
 
         #endregion Public methods

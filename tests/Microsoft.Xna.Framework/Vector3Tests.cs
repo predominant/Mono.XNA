@@ -614,6 +614,24 @@ namespace Microsoft.Xna.Framework.Tests
             Assert.AreEqual("{X:1324,235 Y:1324,235 Z:1324,235}", v.ToString(), "#3");
         }
 
+        [Test]
+        public void TransformTest()
+        {
+            Matrix m = new Matrix(15, 1245.7643f, 124, 6, 123, 5, 2, 72, 37, 23, 6, 37, 1, 84, 72, 354);
+
+            Vector3 expected = new Vector3(373, 1408.764f, 218);
+            Assert.IsTrue(TestHelper.ApproximatelyEquals(expected, Vector3.Transform(a, m)), "#1");
+        }
+
+        [Test]
+        public void TransformNormalTest()
+        {
+            Matrix m = new Matrix(15, 1245.7643f, 124, 6, 123, 5, 2, 72, 37, 23, 6, 37, 1, 84, 72, 354);
+
+            Vector3 expected = new Vector3(373, 1324.764f, 146);
+            Assert.IsTrue(TestHelper.ApproximatelyEquals(expected, Vector3.TransformNormal(a, m)), "#1");
+        }
+
         #endregion
     }
 }

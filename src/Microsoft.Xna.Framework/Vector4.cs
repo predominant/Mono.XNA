@@ -2,7 +2,7 @@
 /*
 MIT License
 Copyright © 2006 The Mono.Xna Team
-http://www.taoframework.com
+
 All rights reserved.
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -28,6 +28,7 @@ SOFTWARE.
 using System;
 using System.ComponentModel;
 using Microsoft.Xna.Framework.Design;
+using System.Text;
 
 namespace Microsoft.Xna.Framework
 {
@@ -35,10 +36,7 @@ namespace Microsoft.Xna.Framework
     [TypeConverter(typeof(Vector4Converter))]
     public struct Vector4 : IEquatable<Vector4>
     {
-        public float X;
-        public float Y;
-        public float Z;
-        public float W;
+        #region Private Fields
 
         private static Vector4 zeroVector = new Vector4();
         private static Vector4 unitVector = new Vector4(1f, 1f, 1f, 1f);
@@ -47,170 +45,108 @@ namespace Microsoft.Xna.Framework
         private static Vector4 unitZVector = new Vector4(0f, 0f, 1f, 0f);
         private static Vector4 unitWVector = new Vector4(0f, 0f, 0f, 1f);
 
+        #endregion Private Fields
+
+
+        #region Public Fields
+
+        public float X;
+        public float Y;
+        public float Z;
+        public float W;
+
+        #endregion Public Fields
+
+
+        #region Properties
 
         public static Vector4 Zero
         {
-            get { throw new NotImplementedException(); }
+            get { return zeroVector; }
         }
 
         public static Vector4 One
         {
-            get { throw new NotImplementedException(); }
+            get { return unitVector; }
         }
 
         public static Vector4 UnitX
         {
-            get { throw new NotImplementedException(); }
+            get { return unitXVector; }
         }
 
         public static Vector4 UnitY
         {
-            get { throw new NotImplementedException(); }
+            get { return unitYVector; }
         }
-        
+
         public static Vector4 UnitZ
         {
-            get { throw new NotImplementedException(); }
+            get { return unitZVector; }
         }
 
         public static Vector4 UnitW
         {
-            get { throw new NotImplementedException(); }
+            get { return unitWVector; }
         }
+
+        #endregion Properties
+
+
+        #region Constructors
 
         public Vector4(float x, float y, float z, float w)
         {
-            throw new NotImplementedException();
+            this.X = x;
+            this.Y = y;
+            this.Z = z;
+            this.W = w;
         }
 
         public Vector4(Vector2 value, float z, float w)
         {
-            throw new NotImplementedException();
+            this.X = value.X;
+            this.Y = value.Y;
+            this.Z = z;
+            this.W = w;
         }
 
         public Vector4(Vector3 value, float w)
         {
-            throw new NotImplementedException();
+            this.X = value.X;
+            this.Y = value.Y;
+            this.Z = value.Z;
+            this.W = w;
         }
 
         public Vector4(float value)
         {
-            throw new NotImplementedException();
+            this.X = value;
+            this.Y = value;
+            this.Z = value;
+            this.W = value;
         }
 
-        public override string ToString()
+        #endregion
+
+
+        #region Public Methods
+
+        public static Vector4 Add(Vector4 value1, Vector4 value2)
         {
-            throw new NotImplementedException();
+            value1.W += value2.W;
+            value1.X += value2.X;
+            value1.Y += value2.Y;
+            value1.Z += value2.Z;
+            return value1;
         }
 
-        public bool Equals(Vector4 other)
+        public static void Add(ref Vector4 value1, ref Vector4 value2, out Vector4 result)
         {
-            throw new NotImplementedException();
-        }
-
-        public override bool Equals(object obj)
-        {
-            throw new NotImplementedException();
-        }
-
-        public override int GetHashCode()
-        {
-            throw new NotImplementedException();
-        }
-
-        public float Length()
-        {
-            throw new NotImplementedException();
-        }
-
-        public float LengthSquared()
-        {
-            throw new NotImplementedException();
-        }
-
-        public static float Distance(Vector4 value1, Vector4 value2)
-        {
-            throw new NotImplementedException();
-        }
-
-        public static void Distance(ref Vector4 value1, ref Vector4 value2, out float result)
-        {
-            throw new NotImplementedException();
-        }
-
-        public static float DistanceSquared(Vector4 value1, Vector4 value2)
-        {
-            throw new NotImplementedException();
-        }
-
-        public static void DistanceSquared(ref Vector4 value1, ref Vector4 value2, out float result)
-        {
-            throw new NotImplementedException();
-        }
-
-        public static float Dot(Vector4 vector1, Vector4 vector2)
-        {
-            throw new NotImplementedException();
-        }
-
-        public static void Dot(ref Vector4 vector1, ref Vector4 vector2, out float result)
-        {
-            throw new NotImplementedException();
-        }
-
-        public void Normalize()
-        {
-            throw new NotImplementedException();
-        }
-
-        public static Vector4 Normalize(Vector4 vector)
-        {
-            throw new NotImplementedException();
-        }
-
-        public static void Normalize(ref Vector4 vector, out Vector4 result)
-        {
-            throw new NotImplementedException();
-        }
-
-        public static Vector4 Min(Vector4 value1, Vector4 value2)
-        {
-            throw new NotImplementedException();
-        }
-
-        public static void Min(ref Vector4 value1, ref Vector4 value2, out Vector4 result)
-        {
-            throw new NotImplementedException();
-        }
-
-        public static Vector4 Max(Vector4 value1, Vector4 value2)
-        {
-            throw new NotImplementedException();
-        }
-
-        public static void Max(ref Vector4 value1, ref Vector4 value2, out Vector4 result)
-        {
-            throw new NotImplementedException();
-        }
-
-        public static Vector4 Clamp(Vector4 value1, Vector4 min, Vector4 max)
-        {
-            throw new NotImplementedException();
-        }
-
-        public static void Clamp(ref Vector4 value1, ref Vector4 min, ref Vector4 max, out Vector4 result)
-        {
-            throw new NotImplementedException();
-        }
-
-        public static Vector4 Lerp(Vector4 value1, Vector4 value2, float amount)
-        {
-            throw new NotImplementedException();
-        }
-
-        public static void Lerp(ref Vector4 value1, ref Vector4 value2, float amount, out Vector4 result)
-        {
-            throw new NotImplementedException();
+            result.W = value1.W + value2.W;
+            result.X = value1.X + value2.X;
+            result.Y = value1.Y + value2.Y;
+            result.Z = value1.Z + value2.Z;
         }
 
         public static Vector4 Barycentric(Vector4 value1, Vector4 value2, Vector4 value3, float amount1, float amount2)
@@ -219,16 +155,6 @@ namespace Microsoft.Xna.Framework
         }
 
         public static void Barycentric(ref Vector4 value1, ref Vector4 value2, ref Vector4 value3, float amount1, float amount2, out Vector4 result)
-        {
-            throw new NotImplementedException();
-        }
-
-        public static Vector4 SmoothStep(Vector4 value1, Vector4 value2, float amount)
-        {
-            throw new NotImplementedException();
-        }
-
-        public static void SmoothStep(ref Vector4 value1, ref Vector4 value2, float amount, out Vector4 result)
         {
             throw new NotImplementedException();
         }
@@ -243,6 +169,115 @@ namespace Microsoft.Xna.Framework
             throw new NotImplementedException();
         }
 
+        public static Vector4 Clamp(Vector4 value1, Vector4 min, Vector4 max)
+        {
+            value1 = new Vector4(MathHelper.Clamp(value1.X, min.X, max.X),
+                                 MathHelper.Clamp(value1.Y, min.Y, max.Y),
+                                 MathHelper.Clamp(value1.Z, min.Z, max.Z),
+                                 MathHelper.Clamp(value1.W, min.W, max.W));
+            return value1;
+        }
+
+        public static void Clamp(ref Vector4 value1, ref Vector4 min, ref Vector4 max, out Vector4 result)
+        {
+            result.W = MathHelper.Clamp(value1.W, min.W, max.W);
+            result.X = MathHelper.Clamp(value1.X, min.X, max.X);
+            result.Y = MathHelper.Clamp(value1.Y, min.Y, max.Y);
+            result.Z = MathHelper.Clamp(value1.Z, min.Z, max.Z);
+        }
+
+        public static float Distance(Vector4 value1, Vector4 value2)
+        {
+            float result;
+            DistanceSquared(ref value1, ref value2, out result);
+            return (float)Math.Sqrt(result);
+        }
+
+        public static void Distance(ref Vector4 value1, ref Vector4 value2, out float result)
+        {
+            DistanceSquared(ref value1, ref value2, out result);
+            result = (float)Math.Sqrt(result);
+        }
+
+        public static float DistanceSquared(Vector4 value1, Vector4 value2)
+        {
+            float result;
+            DistanceSquared(ref value1, ref value2, out result);
+            return result;
+        }
+
+        public static void DistanceSquared(ref Vector4 value1, ref Vector4 value2, out float result)
+        {
+            result = (value1.W - value2.W) * (value1.W - value2.W) +
+                     (value1.X - value2.X) * (value1.X - value2.X) +
+                     (value1.Y - value2.Y) * (value1.Y - value2.Y) +
+                     (value1.Z - value2.Z) * (value1.Z - value2.Z);
+        }
+
+        public static Vector4 Divide(Vector4 value1, Vector4 value2)
+        {
+            value1.W /= value2.W;
+            value1.X /= value2.X;
+            value1.Y /= value2.Y;
+            value1.Z /= value2.Z;
+            return value1;
+        }
+
+        public static Vector4 Divide(Vector4 value1, float divider)
+        {
+            float factor = 1f / divider;
+            value1.W *= factor;
+            value1.X *= factor;
+            value1.Y *= factor;
+            value1.Z *= factor;
+            return value1;
+        }
+
+        public static void Divide(ref Vector4 value1, float divider, out Vector4 result)
+        {
+            float factor = 1f / divider;
+            result.W = value1.W * factor;
+            result.X = value1.X * factor;
+            result.Y = value1.Y * factor;
+            result.Z = value1.Z * factor;
+        }
+
+        public static void Divide(ref Vector4 value1, ref Vector4 value2, out Vector4 result)
+        {
+            result.W = value1.W / value2.W;
+            result.X = value1.X / value2.X;
+            result.Y = value1.Y / value2.Y;
+            result.Z = value1.Z / value2.Z;
+        }
+
+        public static float Dot(Vector4 vector1, Vector4 vector2)
+        {
+            throw new NotImplementedException();
+        }
+
+        public static void Dot(ref Vector4 vector1, ref Vector4 vector2, out float result)
+        {
+            throw new NotImplementedException();
+        }
+
+        public override bool Equals(object obj)
+        {
+            return (obj is Vector4) ? this == (Vector4)obj : false;
+        }
+
+        public bool Equals(Vector4 other)
+        {
+            return this.W == other.W
+                && this.X == other.X
+                && this.Y == other.Y
+                && this.Z == other.Z;
+        }
+
+        public override int GetHashCode()
+        {
+            return (int)(this.W + this.X + this.Y + this.Y);
+        }
+
         public static Vector4 Hermite(Vector4 value1, Vector4 tangent1, Vector4 value2, Vector4 tangent2, float amount)
         {
             throw new NotImplementedException();
@@ -253,105 +288,216 @@ namespace Microsoft.Xna.Framework
             throw new NotImplementedException();
         }
 
-        public static Vector4 Transform(Vector2 position, Matrix matrix)
+        public float Length()
+        {
+            float result;
+            DistanceSquared(ref this, ref zeroVector, out result);
+            return (float)Math.Sqrt(result);
+        }
+
+        public float LengthSquared()
+        {
+            float result;
+            DistanceSquared(ref this, ref zeroVector, out result);
+            return result;
+        }
+
+        public static Vector4 Lerp(Vector4 value1, Vector4 value2, float amount)
         {
             throw new NotImplementedException();
         }
 
-        public static Vector4 Transform(Vector3 position, Matrix matrix)
+        public static void Lerp(ref Vector4 value1, ref Vector4 value2, float amount, out Vector4 result)
         {
             throw new NotImplementedException();
         }
 
-        public static Vector4 Transform(Vector4 vector, Matrix matrix)
+        public static Vector4 Max(Vector4 value1, Vector4 value2)
         {
-            throw new NotImplementedException();
+            Max(ref value1, ref value2, out value1);
+            return value1;
         }
 
-        public static void Transform(ref Vector2 position, ref Matrix matrix, out Vector4 result)
+        public static void Max(ref Vector4 value1, ref Vector4 value2, out Vector4 result)
         {
-            throw new NotImplementedException();
+            result = new Vector4(value1.X > value2.X ? value1.X : value2.X,
+                                 value1.Y > value2.Y ? value1.Y : value2.Y,
+                                 value1.Z > value2.Z ? value1.Z : value2.Z,
+                                 value1.W > value2.W ? value1.W : value2.W);
         }
 
-        public static void Transform(ref Vector3 position, ref Matrix matrix, out Vector4 result)
+        public static Vector4 Min(Vector4 value1, Vector4 value2)
         {
-            throw new NotImplementedException();
+            Min(ref value1, ref value2, out value1);
+            return value1;
         }
 
-        public static void Transform(ref Vector4 vector, ref Matrix matrix, out Vector4 result)
+        public static void Min(ref Vector4 value1, ref Vector4 value2, out Vector4 result)
         {
-            throw new NotImplementedException();
+            result = new Vector4(value1.X < value2.X ? value1.X : value2.X,
+                                 value1.Y < value2.Y ? value1.Y : value2.Y,
+                                 value1.Z < value2.Z ? value1.Z : value2.Z,
+                                 value1.W < value2.W ? value1.W : value2.W);
+        }
+
+        public static Vector4 Multiply(Vector4 value1, Vector4 value2)
+        {
+            value1.W *= value2.W;
+            value1.X *= value2.X;
+            value1.Y *= value2.Y;
+            value1.Z *= value2.Z;
+            return value1;
+        }
+
+        public static Vector4 Multiply(Vector4 value1, float scaleFactor)
+        {
+            value1.W *= scaleFactor;
+            value1.X *= scaleFactor;
+            value1.Y *= scaleFactor;
+            value1.Z *= scaleFactor;
+            return value1;
+        }
+
+        public static void Multiply(ref Vector4 value1, float scaleFactor, out Vector4 result)
+        {
+            result.W = value1.W * scaleFactor;
+            result.X = value1.X * scaleFactor;
+            result.Y = value1.Y * scaleFactor;
+            result.Z = value1.Z * scaleFactor;
+        }
+
+        public static void Multiply(ref Vector4 value1, ref Vector4 value2, out Vector4 result)
+        {
+            result.W = value1.W * value2.W;
+            result.X = value1.X * value2.X;
+            result.Y = value1.Y * value2.Y;
+            result.Z = value1.Z * value2.Z;
         }
 
         public static Vector4 Negate(Vector4 value)
         {
-            throw new NotImplementedException();
+            value = new Vector4(-value.X, -value.Y, -value.Z, -value.W);
+            return value;
         }
 
         public static void Negate(ref Vector4 value, out Vector4 result)
         {
-            throw new NotImplementedException();
+            result = new Vector4(-value.X, -value.Y, -value.Z,-value.W);
         }
 
-        public static Vector4 Add(Vector4 value1, Vector4 value2)
+        public void Normalize()
+        {
+            Normalize(ref this, out this);
+        }
+
+        public static Vector4 Normalize(Vector4 vector)
+        {
+            Normalize(ref vector, out vector);
+            return vector;
+        }
+
+        public static void Normalize(ref Vector4 vector, out Vector4 result)
+        {
+            float factor;
+            DistanceSquared(ref vector, ref zeroVector, out factor);
+            factor = 1f / (float)Math.Sqrt(factor);
+
+            result.W = vector.W * factor;
+            result.X = vector.X * factor;
+            result.Y = vector.Y * factor;
+            result.Z = vector.Z * factor;
+        }
+
+        public static Vector4 SmoothStep(Vector4 value1, Vector4 value2, float amount)
         {
             throw new NotImplementedException();
         }
 
-        public static void Add(ref Vector4 value1, ref Vector4 value2, out Vector4 result)
+        public static void SmoothStep(ref Vector4 value1, ref Vector4 value2, float amount, out Vector4 result)
         {
             throw new NotImplementedException();
         }
 
         public static Vector4 Subtract(Vector4 value1, Vector4 value2)
         {
-            throw new NotImplementedException();
+            value1.W -= value2.W;
+            value1.X -= value2.X;
+            value1.Y -= value2.Y;
+            value1.Z -= value2.Z;
+            return value1;
         }
 
         public static void Subtract(ref Vector4 value1, ref Vector4 value2, out Vector4 result)
         {
-            throw new NotImplementedException();
+            result.W = value1.W - value2.W;
+            result.X = value1.X - value2.X;
+            result.Y = value1.Y - value2.Y;
+            result.Z = value1.Z - value2.Z;
         }
 
-        public static Vector4 Multiply(Vector4 value1, Vector4 value2)
+        public static Vector4 Transform(Vector2 position, Matrix matrix)
         {
-            throw new NotImplementedException();
+            Vector4 result;
+            Transform(ref position, ref matrix, out result);
+            return result;
         }
 
-        public static Vector4 Multiply(Vector4 value1, float scaleFactor)
+        public static Vector4 Transform(Vector3 position, Matrix matrix)
         {
-            throw new NotImplementedException();
+            Vector4 result;
+            Transform(ref position, ref matrix, out result);
+            return result;
         }
 
-        public static void Multiply(ref Vector4 value1, float scaleFactor, out Vector4 result)
+        public static Vector4 Transform(Vector4 vector, Matrix matrix)
         {
-            throw new NotImplementedException();
+            Transform(ref vector, ref matrix, out vector);
+            return vector;
         }
 
-        public static void Multiply(ref Vector4 value1, ref Vector4 value2, out Vector4 result)
+        public static void Transform(ref Vector2 position, ref Matrix matrix, out Vector4 result)
         {
-            throw new NotImplementedException();
+            result = new Vector4((position.X * matrix.M11) + (position.Y * matrix.M21) + matrix.M41,
+                                 (position.X * matrix.M12) + (position.Y * matrix.M22) + matrix.M42,
+                                 (position.X * matrix.M13) + (position.Y * matrix.M23) + matrix.M43,
+                                 (position.X * matrix.M14) + (position.Y * matrix.M24) + matrix.M44);
         }
 
-        public static Vector4 Divide(Vector4 value1, Vector4 value2)
+        public static void Transform(ref Vector3 position, ref Matrix matrix, out Vector4 result)
         {
-            throw new NotImplementedException();
+            result = new Vector4((position.X * matrix.M11) + (position.Y * matrix.M21) + (position.Z * matrix.M31) + matrix.M41,
+                                 (position.X * matrix.M12) + (position.Y * matrix.M22) + (position.Z * matrix.M32) + matrix.M42,
+                                 (position.X * matrix.M13) + (position.Y * matrix.M23) + (position.Z * matrix.M33) + matrix.M43,
+                                 (position.X * matrix.M14) + (position.Y * matrix.M24) + (position.Z * matrix.M34) + matrix.M44);
         }
 
-        public static Vector4 Divide(Vector4 value1, float divider)
+        public static void Transform(ref Vector4 vector, ref Matrix matrix, out Vector4 result)
         {
-            throw new NotImplementedException();
+            result = new Vector4((vector.X * matrix.M11) + (vector.Y * matrix.M21) + (vector.Z * matrix.M31) + (vector.W * matrix.M41),
+                                 (vector.X * matrix.M12) + (vector.Y * matrix.M22) + (vector.Z * matrix.M32) + (vector.W * matrix.M42),
+                                 (vector.X * matrix.M13) + (vector.Y * matrix.M23) + (vector.Z * matrix.M33) + (vector.W * matrix.M43),
+                                 (vector.X * matrix.M14) + (vector.Y * matrix.M24) + (vector.Z * matrix.M34) + (vector.W * matrix.M44));
         }
 
-        public static void Divide(ref Vector4 value1, float divider, out Vector4 result)
+        public override string ToString()
         {
-            throw new NotImplementedException();
+            StringBuilder sb = new StringBuilder(32);
+            sb.Append("{X:");
+            sb.Append(this.X);
+            sb.Append(" Y:");
+            sb.Append(this.Y);
+            sb.Append(" Z:");
+            sb.Append(this.Z);
+            sb.Append(" W:");
+            sb.Append(this.W);
+            sb.Append("}");
+            return sb.ToString();
         }
 
-        public static void Divide(ref Vector4 value1, ref Vector4 value2, out Vector4 result)
-        {
-            throw new NotImplementedException();
-        }
+        #endregion Public Methods
+
+
+        #region Operators
 
         public static Vector4 operator -(Vector4 value)
         {
@@ -360,47 +506,81 @@ namespace Microsoft.Xna.Framework
 
         public static bool operator ==(Vector4 value1, Vector4 value2)
         {
-            throw new NotImplementedException();
+            return value1.W == value2.W
+                && value1.X == value2.X
+                && value1.Y == value2.Y
+                && value1.Z == value2.Z;
         }
 
         public static bool operator !=(Vector4 value1, Vector4 value2)
         {
-            throw new NotImplementedException();
+            return !(value1 == value2);
         }
 
         public static Vector4 operator +(Vector4 value1, Vector4 value2)
         {
-            throw new NotImplementedException();
+            value1.W += value2.W;
+            value1.X += value2.X;
+            value1.Y += value2.Y;
+            value1.Z += value2.Z;
+            return value1;
         }
 
         public static Vector4 operator -(Vector4 value1, Vector4 value2)
         {
-            throw new NotImplementedException();
+            value1.W -= value2.W;
+            value1.X -= value2.X;
+            value1.Y -= value2.Y;
+            value1.Z -= value2.Z;
+            return value1;
         }
 
         public static Vector4 operator *(Vector4 value1, Vector4 value2)
         {
-            throw new NotImplementedException();
+            value1.W *= value2.W;
+            value1.X *= value2.X;
+            value1.Y *= value2.Y;
+            value1.Z *= value2.Z;
+            return value1;
         }
 
         public static Vector4 operator *(Vector4 value1, float scaleFactor)
         {
-            throw new NotImplementedException();
+            value1.W *= scaleFactor;
+            value1.X *= scaleFactor;
+            value1.Y *= scaleFactor;
+            value1.Z *= scaleFactor;
+            return value1;
         }
 
         public static Vector4 operator *(float scaleFactor, Vector4 value1)
         {
-            throw new NotImplementedException();
+            value1.W *= scaleFactor;
+            value1.X *= scaleFactor;
+            value1.Y *= scaleFactor;
+            value1.Z *= scaleFactor;
+            return value1;
         }
 
         public static Vector4 operator /(Vector4 value1, Vector4 value2)
         {
-            throw new NotImplementedException();
+            value1.W /= value2.W;
+            value1.X /= value2.X;
+            value1.Y /= value2.Y;
+            value1.Z /= value2.Z;
+            return value1;
         }
-        
+
         public static Vector4 operator /(Vector4 value1, float divider)
         {
-            throw new NotImplementedException();
+            float factor = 1f / divider;
+            value1.W *= factor;
+            value1.X *= factor;
+            value1.Y *= factor;
+            value1.Z *= factor;
+            return value1;
         }
+
+        #endregion Operators
     }
 }

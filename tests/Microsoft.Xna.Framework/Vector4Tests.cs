@@ -1,0 +1,277 @@
+#region License
+/*
+MIT License
+Copyright © 2006 The Mono.Xna Team
+
+All rights reserved.
+
+Authors:
+ * Alan McGovern
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
+*/
+#endregion
+
+using System;
+using System.Collections.Generic;
+using System.Text;
+using NUnit.Framework;
+using Microsoft.Xna.Framework;
+using System.Globalization;
+
+
+namespace Microsoft.Xna.Framework.Tests
+{
+    [TestFixture]
+    public class Vector4Tests
+    {
+        #region Setup
+
+        Vector4 a;
+        Vector4 b;
+        Vector4 c;
+
+        [SetUp]
+        public void Setup()
+        {
+            a = new Vector4(1, 2, 3, 4);
+            b = new Vector4(4.5f, 6f, 7f, -1.5363f);
+            c = new Vector4(-124, 352.234f, 123.123f, -108.32532f);
+        }
+
+        #endregion
+
+
+        #region Public Methods Test
+
+        [Test]
+        public void Constructors()
+        {
+            // Default constructor
+            Vector4 v = new Vector4();
+            Assert.AreEqual(0, v.X, "Constructor#1.X");
+            Assert.AreEqual(0, v.Y, "Constructor#1.Y");
+            Assert.AreEqual(0, v.Z, "Constructor#1.Z");
+            Assert.AreEqual(0, v.W, "Constructor#1.W");
+
+            // Overloaded constructor, argument float
+            v = new Vector4(1.2f);
+            Assert.AreEqual(1.2f, v.X, "Constructor#2.X");
+            Assert.AreEqual(1.2f, v.Y, "Constructor#2.Y");
+            Assert.AreEqual(1.2f, v.Z, "Constructor#2.Z");
+            Assert.AreEqual(1.2f, v.W, "Constructor#2.W");
+
+            // Overloaded constructor, three coordinates float
+            v = new Vector4(1.2f, 2.2f, 3.2f, 4.6f);
+            Assert.AreEqual(1.2f, v.X, "Constructor#3.X");
+            Assert.AreEqual(2.2f, v.Y, "Constructor#3.Y");
+            Assert.AreEqual(3.2f, v.Z, "Constructor#3.Z");
+            Assert.AreEqual(4.6f, v.W, "Constructor#3.W");
+
+            // Overloaded constructor, a Vector2 and a float
+            v = new Vector4(new Vector2(2.0f, -3.5f), 4.0f, 4.6f);
+            Assert.AreEqual(2.0f, v.X, "Constructor#6.X");
+            Assert.AreEqual(-3.5f, v.Y, "Constructor#6.Y");
+            Assert.AreEqual(4.0f, v.Z, "Constructor#6.Z");
+            Assert.AreEqual(4.6f, v.W, "Constructor#6.W");
+
+            // Overloaded constructor, a Vector2 and a float
+            v = new Vector4(new Vector3(2.0f, -3.5f, 4.0f), 4.6f);
+            Assert.AreEqual(2.0f, v.X, "Constructor#6.X");
+            Assert.AreEqual(-3.5f, v.Y, "Constructor#6.Y");
+            Assert.AreEqual(4.0f, v.Z, "Constructor#6.Z");
+            Assert.AreEqual(4.6f, v.W, "Constructor#6.W");
+        }
+
+        [Test]
+        public void AddTest()
+        {
+            Vector4 cloneOfA = a;
+            Vector4 expected = new Vector4(2, 4, 6, 8);
+            Assert.IsTrue(TestHelper.ApproximatelyEquals(expected, a + a), "#1");
+            Assert.IsTrue(TestHelper.ApproximatelyEquals(expected, Vector4.Add(a, a)), "#2");
+
+            Vector4.Add(ref a, ref a, out b);
+            Assert.IsTrue(TestHelper.ApproximatelyEquals(expected, b), "#3");
+            Assert.AreEqual(cloneOfA, a, "#4");
+        }
+
+        [Test]
+        public void ClampTest()
+        {
+            Vector4 cloneOfC = c;
+            Vector4 expected;
+            Vector4 result;
+            Vector4 max = new Vector4(10, 10, 10, 10);
+            Vector4 min = new Vector4(-10, -10, -10, -10);
+
+            expected = a;
+            Assert.IsTrue(TestHelper.ApproximatelyEquals(expected, Vector4.Clamp(a, min, max)), "#1");
+
+            expected = new Vector4(-10, 10, 10, -10);
+            Assert.IsTrue(TestHelper.ApproximatelyEquals(expected, Vector4.Clamp(c, min, max)), "#2");
+
+            expected = new Vector4(-10, 10, 10, -10);
+            Assert.IsTrue(TestHelper.ApproximatelyEquals(expected, Vector4.Clamp(c, max, min)), "#3");
+
+            expected = new Vector4(-10, 10, 10, -10);
+            Vector4.Clamp(ref c, ref max, ref min, out result);
+            Assert.IsTrue(TestHelper.ApproximatelyEquals(expected, result), "#4");
+            Assert.IsTrue(TestHelper.ApproximatelyEquals(new Vector4(10, 10, 10, 10), max), "#5");
+            Assert.IsTrue(TestHelper.ApproximatelyEquals(new Vector4(-10, -10, -10, -10), min), "#6");
+            Assert.IsTrue(TestHelper.ApproximatelyEquals(cloneOfC, c), "#7");
+        }
+
+        [Test]
+        public void DistanceTest()
+        {
+            Vector4 origin = new Vector4(0, 0, 0, 0);
+
+            // Origin as source vector
+            Assert.AreEqual(1, Vector4.Distance(Vector4.UnitX, origin), "Distance#1");
+            Assert.AreEqual(1, Vector4.Distance(Vector4.UnitY, origin), "Distance#2");
+            Assert.AreEqual(1, Vector4.Distance(Vector4.UnitZ, origin), "Distance#3");
+            Assert.AreEqual(1, Vector4.Distance(Vector4.UnitW, origin), "Distance#4");
+
+            Assert.IsTrue(TestHelper.ApproximatelyEquals(8.654514f, Vector4.Distance(a, b)), "#5");
+            Assert.IsTrue(TestHelper.ApproximatelyEquals(401.5952f, Vector4.Distance(b, c)), "#6");
+            Assert.IsTrue(TestHelper.ApproximatelyEquals(406.6145f, Vector4.Distance(c, a)), "#7");
+            Assert.IsTrue(TestHelper.ApproximatelyEquals(406.6145f, Vector4.Distance(a, c)), "#8");
+        }
+
+        [Test]
+        public void DistanceSquaredTest()
+        {
+            Assert.IsTrue(TestHelper.ApproximatelyEquals(74.90062f, Vector4.DistanceSquared(a, b)), "#1");
+            Assert.IsTrue(TestHelper.ApproximatelyEquals(161278.7f, Vector4.DistanceSquared(b, c)), "#2");
+            Assert.IsTrue(TestHelper.ApproximatelyEquals(165335.4f, Vector4.DistanceSquared(c, a)), "#3");
+            Assert.IsTrue(TestHelper.ApproximatelyEquals(165335.4f, Vector4.DistanceSquared(a, c)), "#4");
+        }
+
+        [Test]
+        public void DivideTest()
+        {
+            Vector4 cloneOfA = a;
+            Vector4 result;
+            Vector4 expected = new Vector4(0.5f, 1, 1.5f, 2);
+            Assert.IsTrue(TestHelper.ApproximatelyEquals(expected, a / 2), "#1");
+            Vector4.Divide(ref a, 2, out result);
+            Assert.IsTrue(TestHelper.ApproximatelyEquals(expected, result), "#2");
+            Assert.IsTrue(TestHelper.ApproximatelyEquals(cloneOfA, a), "#3");
+
+            expected = new Vector4(0.2222222f, 0.3333333f, 0.4285714f, -2.603658f);
+            Assert.IsTrue(TestHelper.ApproximatelyEquals(expected, a / b), "#4");
+            Assert.IsTrue(TestHelper.ApproximatelyEquals(expected, Vector4.Divide(a, b)), "#5");
+        }
+
+        [Test]
+        public void LengthTest()
+        {
+            Assert.IsTrue(TestHelper.ApproximatelyEquals(5.477226f, a.Length()), "#1");
+            Assert.IsTrue(TestHelper.ApproximatelyEquals(10.37353f, b.Length()), "#2");
+            Assert.IsTrue(TestHelper.ApproximatelyEquals(407.8461f, c.Length()), "#3");
+        }
+
+        [Test]
+        public void LengthSquaredTest()
+        {
+            Assert.IsTrue(TestHelper.ApproximatelyEquals(30, a.LengthSquared()), "#1");
+            Assert.IsTrue(TestHelper.ApproximatelyEquals(107.6102f, b.LengthSquared()), "#2");
+            Assert.IsTrue(TestHelper.ApproximatelyEquals(166338.4f, c.LengthSquared()), "#3");
+        }
+
+        [Test]
+        public void MaxTest()
+        {
+            Vector4 expected;
+
+            expected = new Vector4(4.5f, 6f, 7f, 4f);
+            Assert.IsTrue(TestHelper.ApproximatelyEquals(expected, Vector4.Max(a, b)), "#1");
+            Assert.IsTrue(TestHelper.ApproximatelyEquals(expected, Vector4.Max(b, a)), "#2");
+
+            expected = new Vector4(4.5f, 352.234f, 123.123f, -1.5363f);
+            Assert.IsTrue(TestHelper.ApproximatelyEquals(expected, Vector4.Max(c, b)), "#3");
+        }
+
+        [Test]
+        public void MinTest()
+        {
+            Vector4 expected;
+
+            expected = new Vector4(1, 2, 3, -1.5363f);
+            Assert.IsTrue(TestHelper.ApproximatelyEquals(expected, Vector4.Min(a, b)), "#1");
+            Assert.IsTrue(TestHelper.ApproximatelyEquals(expected, Vector4.Min(b, a)), "#2");
+
+            expected = new Vector4(-124, 6f, 7f, -108.3253f);
+            Assert.IsTrue(TestHelper.ApproximatelyEquals(expected, Vector4.Min(c, b)), "#3");
+        }
+
+        [Test]
+        public void NegateTest()
+        {
+            Vector4 expected = new Vector4(-1, -2, -3, -4);
+            Assert.IsTrue(TestHelper.ApproximatelyEquals(expected, -a), "#1");
+            Assert.IsTrue(TestHelper.ApproximatelyEquals(expected, Vector4.Negate(a)), "#1");
+        }
+
+        [Test]
+        public void NormalizeTest()
+        {
+            Vector4 expected = new Vector4(0.1825742f, 0.3651484f, 0.5477225f, 0.7302967f);
+            Vector4 cloneOfA = a;
+            cloneOfA.Normalize();
+
+            Assert.IsTrue(TestHelper.ApproximatelyEquals(expected, cloneOfA), "#1");
+            Assert.IsTrue(TestHelper.ApproximatelyEquals(expected, Vector4.Normalize(a)), "#2");
+
+            Vector4.Normalize(ref a, out a);
+            Assert.IsTrue(TestHelper.ApproximatelyEquals(expected, a), "#3");
+        }
+
+        [Test]
+        public void ToStringTest()
+        {
+            System.Threading.Thread.CurrentThread.CurrentCulture = CultureInfo.GetCultureInfo("en-IE");
+            Assert.AreEqual("{X:-124 Y:352.234 Z:123.123 W:-108.3253}", c.ToString(), "#1");
+
+            System.Threading.Thread.CurrentThread.CurrentCulture = CultureInfo.GetCultureInfo("de-DE");
+            Assert.AreEqual("{X:-124 Y:352,234 Z:123,123 W:-108,3253}", c.ToString(), "#2");
+
+            Vector4 v = new Vector4(1324.2353252353223f, 1324.2353252353223f, 1324.2353252353223f, -108.325345f);
+            Assert.AreEqual("{X:1324,235 Y:1324,235 Z:1324,235 W:-108,3253}", v.ToString(), "#3");
+        }
+
+        [Test]
+        public void TransformTest()
+        {
+            Matrix m = new Matrix(135,11,53,1,6,1,47,2,51,36,743,2,15,35,6,2);
+
+            Vector4 expected = new Vector4(1338.455f, 79.3959f, -5015.873f, -230.9282f);
+            Assert.IsTrue(TestHelper.ApproximatelyEquals(expected, Vector4.Transform(new Vector2(15.32f, -124.1241f), m)), "#1");
+
+            expected = new Vector4(2619.779f, 983.8599f, 13651.26f, -180.6802f);
+            Assert.IsTrue(TestHelper.ApproximatelyEquals(expected, Vector4.Transform(new Vector3(15.32f, -124.1241f, 25.124f), m)), "#2");
+
+            expected = new Vector4(4041.455f, 1987.396f, 34363.13f, -124.9282f);
+            Assert.IsTrue(TestHelper.ApproximatelyEquals(expected, Vector4.Transform(new Vector4(15.32f, -124.1241f, 53, 1), m)), "#3");
+        }
+
+        #endregion
+    }
+}
