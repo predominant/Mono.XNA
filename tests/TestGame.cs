@@ -17,7 +17,10 @@ namespace Microsoft.Xna.Framework.Tests
             graphics = new GraphicsDeviceManager(this);
             content = new ContentManager(Services);
         }
-
+        public GraphicsDeviceManager GraphicsDeviceManager
+        {
+            get { return graphics; }
+        }
         protected override void Initialize()
         {
 
