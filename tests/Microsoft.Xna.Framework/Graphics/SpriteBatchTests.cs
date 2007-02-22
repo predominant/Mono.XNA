@@ -67,7 +67,7 @@ namespace Microsoft.Xna.Framework.Graphics.Tests
         [SetUp]
         public void Setup()
         {
-            sprite = new SpriteBatch(game.GraphicMgr.GraphicsDevice);
+            sprite = new SpriteBatch(game.GraphicsDeviceManager.GraphicsDevice);
         }
 
         [Test]
