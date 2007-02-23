@@ -88,6 +88,19 @@ namespace Microsoft.Xna.Framework.Tests
         }
 
         [Test]
+        public void CatmullromTests()
+        {
+            Vector2 expected;
+            Vector2 v4 = new Vector2(12.2352f, -1.23525f);
+
+            expected = new Vector2(63970.55f, -277344.4f);
+            Assert.IsTrue(TestHelper.ApproximatelyEquals(expected, Vector2.CatmullRom(v1, v2, v3, v4, 13.125123f)), "#1");
+
+            expected = new Vector2(-124.6975f, 198.7086f);
+            Assert.IsTrue(TestHelper.ApproximatelyEquals(expected, Vector2.CatmullRom(v2, v4, v3, v1, -1.125123f)), "#1");
+        }
+
+        [Test]
         public void ClampTest()
         {
             Vector2 actual;
@@ -211,6 +224,18 @@ namespace Microsoft.Xna.Framework.Tests
         public void LengthSquaredTest()
         {
             Assert.IsTrue(TestHelper.ApproximatelyEquals(v1.LengthSquared(), 384.5193f));
+        }
+
+        [Test]
+        public void Lerp()
+        {
+            Vector2 expected;
+
+            expected = new Vector2(-4.219518f, -62.32132f);
+            Assert.IsTrue(TestHelper.ApproximatelyEquals(expected, Vector2.Lerp(v1, v2, 2.125121f)), "#1");
+
+            expected = new Vector2(-48.56102f, 121.5074f);
+            Assert.IsTrue(TestHelper.ApproximatelyEquals(expected, Vector2.Lerp(v1, v3, 2.125121f)), "#2");
         }
 
         [Test]

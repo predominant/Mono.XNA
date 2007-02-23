@@ -41,8 +41,6 @@ namespace Microsoft.Xna.Framework.Tests
     [TestFixture]
     public class Vector3Tests
     {
-        #region Setup
-
         Vector3 a;
         Vector3 b;
         Vector3 c;
@@ -54,11 +52,6 @@ namespace Microsoft.Xna.Framework.Tests
             b = new Vector3(4.5f, 6f, 7f);
             c = new Vector3(-124, 352.234f, 123.123f);
         }
-
-        #endregion
-
-
-        #region Public Properties Tests
 
         [Test]
         public void StaticDirections()
@@ -134,10 +127,6 @@ namespace Microsoft.Xna.Framework.Tests
             Assert.AreEqual(0, v.Z, "Zero#Z");
         }
 
-        #endregion
-
-
-        #region Public Methods Test
 
         [Test]
         public void Constructors()
@@ -211,7 +200,6 @@ namespace Microsoft.Xna.Framework.Tests
             Assert.AreEqual(-4, v.Z, "Add#4.Z");
         }
 
-        [Ignore("Not implemented")]
         [Test]
         public void BarycentricTest()
         {
@@ -232,7 +220,6 @@ namespace Microsoft.Xna.Framework.Tests
             Assert.AreEqual(0.5f, v.Z, "Barycentric#2.Z");
         }
 
-        [Ignore("Not implemented")]
         [Test]
         public void CatmullRomTest()
         {
@@ -288,12 +275,12 @@ namespace Microsoft.Xna.Framework.Tests
         {
             Vector3 min = new Vector3(-10, -10, -10);
             Vector3 max = new Vector3(10, 10, 10);
-                        Assert.AreEqual(new Vector3(10, 10, 10), Vector3.Clamp(new Vector3(1, 1, 1), max, min), "Clamp#6");
+            Assert.AreEqual(new Vector3(10, 10, 10), Vector3.Clamp(new Vector3(1, 1, 1), max, min), "Clamp#6");
             // Test normal use with min vector first ant max vector last
             Assert.AreEqual(new Vector3(1, 1, 1), Vector3.Clamp(new Vector3(1, 1, 1), min, max), "Clamp#1");
             Assert.AreEqual(new Vector3(-10, -10, -10), Vector3.Clamp(new Vector3(-10, -10, -10), min, max), "Clamp#2");
             Assert.AreEqual(new Vector3(-10, -5, -10), Vector3.Clamp(new Vector3(-20, -5, -15), min, max), "Clamp#3");
-            Assert.AreEqual(new Vector3(-10, 0, 10), Vector3.Clamp(new Vector3(-15, 0 ,15), min, max), "Clamp#4");
+            Assert.AreEqual(new Vector3(-10, 0, 10), Vector3.Clamp(new Vector3(-15, 0, 15), min, max), "Clamp#4");
             Assert.AreEqual(new Vector3(10, 10, 10), Vector3.Clamp(new Vector3(20, 20, 20), min, max), "Clamp#5");
 
             // Test wicked use with max first and min last
@@ -509,6 +496,16 @@ namespace Microsoft.Xna.Framework.Tests
         }
 
         [Test]
+        public void DotTest()
+        {
+            float expected = 37.5f;
+            Assert.IsTrue(TestHelper.ApproximatelyEquals(expected, Vector3.Dot(a, b)), "#1");
+
+            expected = 2417.265f;
+            Assert.IsTrue(TestHelper.ApproximatelyEquals(expected, Vector3.Dot(b, c)), "#2");
+        }
+
+        [Test]
         public void LengthTest()
         {
             Assert.IsTrue(TestHelper.ApproximatelyEquals(3.741657f, a.Length()), "#1");
@@ -522,6 +519,18 @@ namespace Microsoft.Xna.Framework.Tests
             Assert.IsTrue(TestHelper.ApproximatelyEquals(14, a.LengthSquared()), "#1");
             Assert.IsTrue(TestHelper.ApproximatelyEquals(105.25f, b.LengthSquared()), "#2");
             Assert.IsTrue(TestHelper.ApproximatelyEquals(154604.1f, c.LengthSquared()), "#3");
+        }
+
+        [Test]
+        public void Lerp()
+        {
+            Vector3 expected;
+
+            expected = new Vector3(8.437923f, 10.50048f, 11.50048f);
+            Assert.IsTrue(TestHelper.ApproximatelyEquals(expected, Vector3.Lerp(a, b, 2.125121f)), "#1");
+
+            expected = new Vector3(-264.6401f, 746.2897f, 258.2759f);
+            Assert.IsTrue(TestHelper.ApproximatelyEquals(expected, Vector3.Lerp(a, c, 2.125121f)), "#2");
         }
 
         [Test]
@@ -546,7 +555,7 @@ namespace Microsoft.Xna.Framework.Tests
         {
             Vector3 expected;
 
-            expected = new Vector3(1,2,3);
+            expected = new Vector3(1, 2, 3);
             Assert.IsTrue(TestHelper.ApproximatelyEquals(expected, Vector3.Min(a, b)), "#1");
             Assert.IsTrue(TestHelper.ApproximatelyEquals(expected, Vector3.Min(b, a)), "#2");
 
@@ -579,9 +588,30 @@ namespace Microsoft.Xna.Framework.Tests
 
             Assert.IsTrue(TestHelper.ApproximatelyEquals(expected, cloneOfA), "#1");
             Assert.IsTrue(TestHelper.ApproximatelyEquals(expected, Vector3.Normalize(a)), "#2");
-            
+
             Vector3.Normalize(ref a, out a);
             Assert.IsTrue(TestHelper.ApproximatelyEquals(expected, a), "#3");
+        }
+
+        [Test]
+        [Ignore("Not implemented")]
+        public void SmoothStepTest()
+        {
+            a = new Vector3(1, 2, 3);
+            b = new Vector3(4.5f, 6f, 7f);
+            c = new Vector3(-124, 352.234f, 123.123f);
+
+            Vector3 expected = a;
+            Assert.IsTrue(TestHelper.ApproximatelyEquals(expected, Vector3.SmoothStep(a, b, 0.001f)), "#1");
+
+            expected = a;
+            Assert.IsTrue(TestHelper.ApproximatelyEquals(expected, Vector3.SmoothStep(a, b, 0.010f)), "#2");
+
+            expected = b;
+            Assert.IsTrue(TestHelper.ApproximatelyEquals(expected, Vector3.SmoothStep(a, b, 2.000f)), "#3");
+
+            expected = a;
+            Assert.IsTrue(TestHelper.ApproximatelyEquals(expected, Vector3.SmoothStep(a, b, -0.001f)), "#4");
         }
 
         [Test]
@@ -631,7 +661,5 @@ namespace Microsoft.Xna.Framework.Tests
             Vector3 expected = new Vector3(373, 1324.764f, 146);
             Assert.IsTrue(TestHelper.ApproximatelyEquals(expected, Vector3.TransformNormal(a, m)), "#1");
         }
-
-        #endregion
     }
 }

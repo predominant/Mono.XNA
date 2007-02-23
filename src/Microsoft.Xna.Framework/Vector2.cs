@@ -30,13 +30,14 @@ SOFTWARE.
 
 using System;
 using System.ComponentModel;
-using System.Runtime.InteropServices;
 using Microsoft.Xna.Framework.Design;
 using System.Text;
+using System.Runtime.InteropServices;
 
 namespace Microsoft.Xna.Framework
 {
-    [Serializable, StructLayout(LayoutKind.Sequential)]
+    [Serializable]
+    [StructLayout(LayoutKind.Sequential)]
     [TypeConverter(typeof(Vector2Converter))]
     public struct Vector2 : IEquatable<Vector2>
     {
@@ -135,7 +136,19 @@ namespace Microsoft.Xna.Framework
 
         public static void CatmullRom(ref Vector2 value1, ref Vector2 value2, ref Vector2 value3, ref Vector2 value4, float amount, out Vector2 result)
         {
-            throw new NotImplementedException();
+            // Using formula from http://www.mvps.org/directx/articles/catmull/
+            float amountSquared = amount * amount;
+            float amountCubed = amountSquared * amount;
+
+            result.X = 0.5f * (2.0f * value2.X +
+                              (value3.X - value1.X) * amount +
+                              (2.0f * value1.X - 5.0f * value2.X + 4.0f * value3.X - value4.X) * amountSquared +
+                              (3.0f * value2.X - value1.X - 3.0f * value3.X + value4.X) * amountCubed);
+
+            result.Y = 0.5f * (2.0f * value2.Y +
+                              (value3.Y - value1.Y) * amount +
+                              (2.0f * value1.Y - 5.0f * value2.Y + 4.0f * value3.Y - value4.Y) * amountSquared +
+                              (3.0f * value2.Y - value1.Y - 3.0f * value3.Y + value4.Y) * amountCubed);
         }
 
         public static Vector2 Clamp(Vector2 value1, Vector2 min, Vector2 max)
@@ -213,14 +226,14 @@ namespace Microsoft.Xna.Framework
             result = value1.X * value2.X + value1.Y * value2.Y;
         }
 
-        public bool Equals(Vector2 other)
-        {
-            return this == other;
-        }
-
         public override bool Equals(object obj)
         {
             return (obj is Vector2) ? this == ((Vector2)obj) : false;
+        }
+
+        public bool Equals(Vector2 other)
+        {
+            return this == other;
         }
 
         public override int GetHashCode()
@@ -254,32 +267,14 @@ namespace Microsoft.Xna.Framework
 
         public static Vector2 Lerp(Vector2 value1, Vector2 value2, float amount)
         {
-            throw new NotImplementedException();
+            Lerp(ref value1, ref value2, amount, out value1);
+            return value1;
         }
 
         public static void Lerp(ref Vector2 value1, ref Vector2 value2, float amount, out Vector2 result)
         {
-            throw new NotImplementedException();
-        }
-
-        public void Normalize()
-        {
-            Normalize(ref this, out this);
-        }
-
-        public static Vector2 Normalize(Vector2 value)
-        {
-            Normalize(ref value, out value);
-            return value;
-        }
-
-        public static void Normalize(ref Vector2 value, out Vector2 result)
-        {
-            float factor;
-            DistanceSquared(ref value, ref zeroVector, out factor);
-            factor = 1f / (float)Math.Sqrt(factor);
-            result.X = value.X * factor;
-            result.Y = value.Y * factor;
+            result = new Vector2(value1.X + (value2.X - value1.X) * amount,
+                                 value1.Y + (value2.Y - value1.Y) * amount);
         }
 
         public static Vector2 Max(Vector2 value1, Vector2 value2)
@@ -343,6 +338,26 @@ namespace Microsoft.Xna.Framework
         {
             result.X = -value.X;
             result.Y = -value.Y;
+        }
+
+        public void Normalize()
+        {
+            Normalize(ref this, out this);
+        }
+
+        public static Vector2 Normalize(Vector2 value)
+        {
+            Normalize(ref value, out value);
+            return value;
+        }
+
+        public static void Normalize(ref Vector2 value, out Vector2 result)
+        {
+            float factor;
+            DistanceSquared(ref value, ref zeroVector, out factor);
+            factor = 1f / (float)Math.Sqrt(factor);
+            result.X = value.X * factor;
+            result.Y = value.Y * factor;
         }
 
         public static Vector2 SmoothStep(Vector2 value1, Vector2 value2, float amount)

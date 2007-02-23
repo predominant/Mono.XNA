@@ -29,10 +29,10 @@ SOFTWARE.
 #endregion License
 
 using System;
-using System.Runtime.InteropServices;
-using Microsoft.Xna.Framework.Design;
 using System.ComponentModel;
+using Microsoft.Xna.Framework.Design;
 using System.Text;
+using System.Runtime.InteropServices;
 
 namespace Microsoft.Xna.Framework
 {
@@ -175,22 +175,43 @@ namespace Microsoft.Xna.Framework
 
         public static Vector3 Barycentric(Vector3 value1, Vector3 value2, Vector3 value3, float amount1, float amount2)
         {
-            throw new NotImplementedException();
+            Barycentric(ref value1, ref value2, ref value3, amount1, amount2, out value1);
+            return value1;
         }
 
         public static void Barycentric(ref Vector3 value1, ref Vector3 value2, ref Vector3 value3, float amount1, float amount2, out Vector3 result)
         {
-            throw new NotImplementedException();
+            result = new Vector3(value1.X + (value2.X - value1.X) * amount1 + (value3.X - value1.X) * amount2,
+                                 value1.Y + (value2.Y - value1.Y) * amount1 + (value3.Y - value1.Y) * amount2,
+                                 value1.Z + (value2.Z - value1.Z) * amount1 + (value3.Z - value1.Z) * amount2);
         }
 
         public static Vector3 CatmullRom(Vector3 value1, Vector3 value2, Vector3 value3, Vector3 value4, float amount)
         {
-            throw new NotImplementedException();
+            CatmullRom(ref value1, ref value2, ref value3, ref value4, amount, out value1);
+            return value1;
         }
 
         public static void CatmullRom(ref Vector3 value1, ref Vector3 value2, ref Vector3 value3, ref Vector3 value4, float amount, out Vector3 result)
         {
-            throw new NotImplementedException();
+            // Using formula from http://www.mvps.org/directx/articles/catmull/
+            float amountSquared = amount * amount;
+            float amountCubed = amountSquared * amount;
+
+            result.X = 0.5f * ( 2.0f * value2.X +
+                               (value3.X - value1.X) * amount +
+                               (2.0f * value1.X - 5.0f * value2.X + 4.0f * value3.X - value4.X) * amountSquared +
+                               (3.0f * value2.X - value1.X - 3.0f * value3.X + value4.X) * amountCubed);
+
+            result.Y = 0.5f * ( 2.0f * value2.Y +
+                               (value3.Y - value1.Y) * amount +
+                               (2.0f * value1.Y - 5.0f * value2.Y + 4.0f * value3.Y - value4.Y) * amountSquared +
+                               (3.0f * value2.Y - value1.Y - 3.0f * value3.Y + value4.Y) * amountCubed);
+
+            result.Z = 0.5f * ( 2.0f * value2.Z +
+                               (value3.Z - value1.Z) * amount +
+                               (2.0f * value1.Z - 5.0f * value2.Z + 4.0f * value3.Z - value4.Z) * amountSquared +
+                               (3.0f * value2.Z - value1.Z - 3.0f * value3.Z + value4.Z) * amountCubed);
         }
 
         public static Vector3 Clamp(Vector3 value, Vector3 min, Vector3 max)
@@ -282,12 +303,12 @@ namespace Microsoft.Xna.Framework
 
         public static float Dot(Vector3 vector1, Vector3 vector2)
         {
-            throw new NotImplementedException();
+            return vector1.X * vector2.X + vector1.Y * vector2.Y + vector1.Z * vector2.Z;
         }
 
         public static void Dot(ref Vector3 vector1, ref Vector3 vector2, out float result)
         {
-            throw new NotImplementedException();
+            result = vector1.X * vector2.X + vector1.Y * vector2.Y + vector1.Z * vector2.Z;
         }
 
         public override bool Equals(object obj)
@@ -331,12 +352,15 @@ namespace Microsoft.Xna.Framework
 
         public static Vector3 Lerp(Vector3 value1, Vector3 value2, float amount)
         {
-            throw new NotImplementedException();
+            Lerp(ref value1, ref value2, amount, out value1);
+            return value1;
         }
 
         public static void Lerp(ref Vector3 value1, ref Vector3 value2, float amount, out Vector3 result)
         {
-            throw new NotImplementedException();
+            result = new Vector3(value1.X + (value2.X - value1.X) * amount,
+                                 value1.Y + (value2.Y - value1.Y) * amount,
+                                 value1.Z + (value2.Z - value1.Z) * amount);
         }
                 
         public static Vector3 Max(Vector3 value1, Vector3 value2)
@@ -443,7 +467,8 @@ namespace Microsoft.Xna.Framework
 
         public static Vector3 SmoothStep(Vector3 value1, Vector3 value2, float amount)
         {
-            throw new NotImplementedException();
+            SmoothStep(ref value1, ref value2, amount, out value1);
+            return value1;
         }
 
         public static void SmoothStep(ref Vector3 value1, ref Vector3 value2, float amount, out Vector3 result)

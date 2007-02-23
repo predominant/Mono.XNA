@@ -41,8 +41,6 @@ namespace Microsoft.Xna.Framework.Tests
     [TestFixture]
     public class Vector4Tests
     {
-        #region Setup
-
         Vector4 a;
         Vector4 b;
         Vector4 c;
@@ -55,10 +53,6 @@ namespace Microsoft.Xna.Framework.Tests
             c = new Vector4(-124, 352.234f, 123.123f, -108.32532f);
         }
 
-        #endregion
-
-
-        #region Public Methods Test
 
         [Test]
         public void Constructors()
@@ -110,6 +104,31 @@ namespace Microsoft.Xna.Framework.Tests
             Vector4.Add(ref a, ref a, out b);
             Assert.IsTrue(TestHelper.ApproximatelyEquals(expected, b), "#3");
             Assert.AreEqual(cloneOfA, a, "#4");
+        }
+
+        [Test]
+        public void BarycentricTest()
+        {
+            Vector4 expected;
+
+            expected = new Vector4(174.2175f, -454.0052f, -147.8177f, 141.2125f);
+            Assert.IsTrue(TestHelper.ApproximatelyEquals(expected, Vector4.Barycentric(a, b, c, 2.124215f, -1.326262f)), "#1");
+
+            expected = new Vector4(-263.8197f, 746.7805f, 258.9753f, -235.7217f);
+            Assert.IsTrue(TestHelper.ApproximatelyEquals(expected, Vector4.Barycentric(b, c, a, 2.124215f, -1.326262f)), "#2");
+        }
+
+        [Test]
+        public void CatmullromTests()
+        {
+            Vector4 expected;
+            Vector4 d = new Vector4(12.2352f, -1.23525f, 3.1234f, 51.3415f);
+
+            expected = new Vector4(402160.9f, -1056407f, -353251.4f, 374571.3f);
+            Assert.IsTrue(TestHelper.ApproximatelyEquals(expected, Vector4.CatmullRom(a, b, c, d, 13.125123f)), "#1");
+
+            expected = new Vector4(-551.6433f, 1464.028f, 505.8189f, -674.8631f);
+            Assert.IsTrue(TestHelper.ApproximatelyEquals(expected, Vector4.CatmullRom(b, d, c, a, -1.125123f)), "#1");
         }
 
         [Test]
@@ -181,6 +200,16 @@ namespace Microsoft.Xna.Framework.Tests
         }
 
         [Test]
+        public void DotTest()
+        {
+            float expected = 31.3548f;
+            Assert.IsTrue(TestHelper.ApproximatelyEquals(expected, Vector4.Dot(a, b)), "#1");
+
+            expected = 2583.685f;
+            Assert.IsTrue(TestHelper.ApproximatelyEquals(expected, Vector4.Dot(b, c)), "#2");
+        }
+
+        [Test]
         public void LengthTest()
         {
             Assert.IsTrue(TestHelper.ApproximatelyEquals(5.477226f, a.Length()), "#1");
@@ -194,6 +223,18 @@ namespace Microsoft.Xna.Framework.Tests
             Assert.IsTrue(TestHelper.ApproximatelyEquals(30, a.LengthSquared()), "#1");
             Assert.IsTrue(TestHelper.ApproximatelyEquals(107.6102f, b.LengthSquared()), "#2");
             Assert.IsTrue(TestHelper.ApproximatelyEquals(166338.4f, c.LengthSquared()), "#3");
+        }
+
+        [Test]
+        public void Lerp()
+        {
+            Vector4 expected;
+
+            expected = new Vector4(8.437923f, 10.50048f, 11.50048f, -7.765308f);
+            Assert.IsTrue(TestHelper.ApproximatelyEquals(expected, Vector4.Lerp(a, b, 2.125121f)), "#1");
+
+            expected = new Vector4(-264.6401f, 746.2897f, 258.2759f, -234.7049f);
+            Assert.IsTrue(TestHelper.ApproximatelyEquals(expected, Vector4.Lerp(a, c, 2.125121f)), "#2");
         }
 
         [Test]
@@ -245,6 +286,23 @@ namespace Microsoft.Xna.Framework.Tests
         }
 
         [Test]
+        [Ignore("Not implemented")]
+        public void SmoothStepTest()
+        {
+            Vector4 expected = a;
+            Assert.IsTrue(TestHelper.ApproximatelyEquals(expected, Vector4.SmoothStep(a, b, 0.001f)), "#1");
+
+            expected = a;
+            Assert.IsTrue(TestHelper.ApproximatelyEquals(expected, Vector4.SmoothStep(a, b, 0.010f)), "#2");
+
+            expected = b;
+            Assert.IsTrue(TestHelper.ApproximatelyEquals(expected, Vector4.SmoothStep(a, b, 2.000f)), "#3");
+
+            expected = a;
+            Assert.IsTrue(TestHelper.ApproximatelyEquals(expected, Vector4.SmoothStep(a, b, -0.001f)), "#4");
+        }
+
+        [Test]
         public void ToStringTest()
         {
             System.Threading.Thread.CurrentThread.CurrentCulture = CultureInfo.GetCultureInfo("en-IE");
@@ -260,7 +318,7 @@ namespace Microsoft.Xna.Framework.Tests
         [Test]
         public void TransformTest()
         {
-            Matrix m = new Matrix(135,11,53,1,6,1,47,2,51,36,743,2,15,35,6,2);
+            Matrix m = new Matrix(135, 11, 53, 1, 6, 1, 47, 2, 51, 36, 743, 2, 15, 35, 6, 2);
 
             Vector4 expected = new Vector4(1338.455f, 79.3959f, -5015.873f, -230.9282f);
             Assert.IsTrue(TestHelper.ApproximatelyEquals(expected, Vector4.Transform(new Vector2(15.32f, -124.1241f), m)), "#1");
@@ -271,7 +329,5 @@ namespace Microsoft.Xna.Framework.Tests
             expected = new Vector4(4041.455f, 1987.396f, 34363.13f, -124.9282f);
             Assert.IsTrue(TestHelper.ApproximatelyEquals(expected, Vector4.Transform(new Vector4(15.32f, -124.1241f, 53, 1), m)), "#3");
         }
-
-        #endregion
     }
 }
