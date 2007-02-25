@@ -36,6 +36,7 @@ using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Content.Tests;
 using System.Threading;
 using Microsoft.Xna.Framework.Tests;
+using System.IO;
 
 namespace Microsoft.Xna.Framework.Graphics.Tests
 {
@@ -52,9 +53,9 @@ namespace Microsoft.Xna.Framework.Graphics.Tests
             this.game = new TestGame();
             this.gameThread = new Thread(new ThreadStart(game.Run));
             this.gameThread.Start();
-
+            
             // I need to give the game enough time to initialise before letting the tests continue
-            System.Threading.Thread.Sleep(100);
+            System.Threading.Thread.Sleep(200);
         }
 
         [TestFixtureTearDown]
@@ -71,22 +72,45 @@ namespace Microsoft.Xna.Framework.Graphics.Tests
         }
 
         [Test]
-        [ExpectedException(typeof(InvalidOperationException),"test")]
+        [ExpectedException(typeof(InvalidOperationException), "Begin must be called successfully before End can be called.")]
         public void EndTest()
         {
             sprite.End();
         }
 
         [Test]
-        [ExpectedException(typeof(InvalidOperationException), "test")]
+        [ExpectedException(typeof(InvalidOperationException), "Begin must be called successfully before a Draw can be called.")]
         public void DrawTest()
         {
-            sprite.Draw(null, new Rectangle(), Color.White);
+            byte[] data;
+            try
+            {
+                using (Stream str = ResourceReader.GetResourceStream("texture2d.jpg"))
+                {
+                    data = new byte[str.Length];
+                    str.Read(data, 0, data.Length);
+                }
+            }
+
+            catch
+            {
+                throw new Exception("Can't load the game");
+            }
+
+            MemoryStream s = new MemoryStream();
+            s.Write(data, 0, data.Length);
+            s.Write(data, 0, data.Length);
+            s.Write(data, 0, data.Length);
+            s.Seek(0, SeekOrigin.Begin);
+
+            Texture2D texture = Texture2D.FromFile(game.GraphicsDeviceManager.GraphicsDevice, s);
+
+            sprite.Draw(texture, new Rectangle(), Color.White);
         }
 
 
         [Test]
-        [ExpectedException(typeof(InvalidOperationException), "test")]
+        [ExpectedException(typeof(InvalidOperationException), "Begin cannot be called again until End has been successfully called.")]
         public void BeginTest()
         {
             sprite.Begin();

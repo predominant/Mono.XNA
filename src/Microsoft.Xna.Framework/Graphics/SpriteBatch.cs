@@ -114,7 +114,7 @@ namespace Microsoft.Xna.Framework.Graphics
             //to respect order Begin/Draw/end
             if (isRunning)
             {
-                throw new InvalidOperationException("Ever Running");//fix msg
+                throw new InvalidOperationException("Begin cannot be called again until End has been successfully called.");
             }
 
             if (stateMode == SaveStateMode.SaveState)
@@ -130,7 +130,7 @@ namespace Microsoft.Xna.Framework.Graphics
         public void End()
         {
             if (!isRunning)
-                throw new InvalidOperationException("Begin must be call before End");//fix msg
+                throw new InvalidOperationException("Begin must be called successfully before End can be called.");
             if (sortMode == SpriteSortMode.Deferred)
             {
                 ApplyGraphicsDeviceSettings();
@@ -307,7 +307,7 @@ namespace Microsoft.Xna.Framework.Graphics
         public void Draw(Texture2D texture, Rectangle destinationRectangle, Nullable<Rectangle> sourceRectangle, Color color, float rotation, Vector2 origin, SpriteEffects effects, float layerDepth)
         {
             if (!isRunning)
-                throw new InvalidOperationException("Begin must be call before Draw");//fix msg
+                throw new InvalidOperationException("Begin must be called successfully before a Draw can be called.");
 
             Sprite sprite = new Sprite();
             sprite.texture = texture;
@@ -332,7 +332,7 @@ namespace Microsoft.Xna.Framework.Graphics
         public void Draw(Texture2D texture, Vector2 position, Nullable<Rectangle> sourceRectangle, Color color)
         {
             if (!isRunning)
-                throw new InvalidOperationException("Begin must be call before Draw");//fix msg
+                throw new InvalidOperationException("Begin must be called successfully before a Draw can be called.");
 
             Sprite sprite = new Sprite();
             sprite.texture = texture;

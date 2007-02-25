@@ -33,6 +33,8 @@ using System.Text;
 
 using NUnit.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using Microsoft.Xna.Framework.Tests;
+using System.Threading;
 
 namespace Microsoft.Xna.Framework.Graphics.Tests
 {
@@ -41,9 +43,31 @@ namespace Microsoft.Xna.Framework.Graphics.Tests
     {
         private VertexStreamCollection vsc;// = new VertexStreamCollection();
 
+        TestGame game;
+        Thread gameThread;
+
+        [TestFixtureSetUp]
+        public void TestFixtureSetup()
+        {
+            this.game = new TestGame();
+            this.gameThread = new Thread(new ThreadStart(game.Run));
+            this.gameThread.Start();
+
+            // I need to give the game enough time to initialise before letting the tests continue
+            System.Threading.Thread.Sleep(200);
+        }
+
+        [TestFixtureTearDown]
+        public void TestFixtureTeardown()
+        {
+            game.Exit();
+            gameThread.Join(500);
+        }
+
         [SetUp]
         public void SetUp()
         {
+            vsc = game.GraphicsDeviceManager.GraphicsDevice.Vertices;
         }
 
         [Test]
