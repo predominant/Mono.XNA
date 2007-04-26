@@ -1,4 +1,5 @@
 #region License
+
 /*
 MIT License
 Copyright © 2006 The Mono.Xna Team
@@ -23,40 +24,40 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 */
+
 #endregion License
 
 using System;
 using System.Collections.Generic;
-using System.Text;
 
 namespace Microsoft.Xna.Framework
 {
     public class GameServiceContainer : IServiceProvider
     {
-        private Dictionary<Type, object> services;
+        Dictionary<Type, object> services;
 
         public GameServiceContainer()
         {
-            this.services = new Dictionary<Type, object>();
+            services = new Dictionary<Type, object>();
         }
 
         public void AddService(Type type, object provider)
         {
-            this.services.Add(type, provider);
+            services.Add(type, provider);
         }
 
         public object GetService(Type type)
         {
-            if (!this.services.ContainsKey(type))
-                return null;
+            object service;
+            if (services.TryGetValue(type, out service))
+                return service;
 
-            return this.services[type];
+            return null;
         }
 
         public void RemoveService(Type type)
         {
-            this.services.Remove(type);
+            services.Remove(type);
         }
-
     }
 }

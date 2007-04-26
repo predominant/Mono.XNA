@@ -35,11 +35,20 @@ using Microsoft.Xna.Framework;
 
 namespace Microsoft.Xna.Framework.Tests
 {
-    /*
+    
     [TestFixture]
     public class GameComponentTests
     {
+        GameComponent gameComponent;
+
         #region Setup
+
+        [SetUp]
+        public void Setup()
+        {
+            gameComponent = new GameComponent(new Game());
+        }
+
         #endregion
 
         #region Public Constructors
@@ -47,7 +56,7 @@ namespace Microsoft.Xna.Framework.Tests
         [Test]
         public void Constructors()
         {
-            throw new NotImplementedException();
+            Assert.IsNotNull(gameComponent);
         }
 
         #endregion
@@ -60,112 +69,77 @@ namespace Microsoft.Xna.Framework.Tests
 
         #region Public Properties Tests
 
+        /// <summary>
+        /// Ensure default for GameComponent.Enabled is true
+        /// </summary>
         [Test]
-        public void Enabled()
+        public void DefaultEnabledIsTrueTest()
         {
-            throw new NotImplementedException();
+            Assert.IsTrue(gameComponent.Enabled);
         }
 
 
+        /// <summary>
+        /// Ensure default value for UpdateOrder is 0
+        /// </summary>
         [Test]
-        public void UpdateOrder()
+        public void DefaultUpdateOrderIsZeroTest()
         {
-            throw new NotImplementedException();
+            Assert.AreEqual(0, gameComponent.UpdateOrder);
         }
 
-        #endregion
-        
-        #region Protected Properties Tests
-
-        [Test]
-        public void Game()
-        {
-            throw new NotImplementedException();
-        }
-
-        #endregion
-
-        #region Public Methods Tests
-
-        [Test]
-        public void DisposeTest()
-        {
-            throw new NotImplementedException();
-        }
-
-        [Test]
-        public void EqualsTest()
-        {
-            throw new NotImplementedException();
-        }
-
-        [Test]
-        public void GetHashCode()
-        {
-            throw new NotImplementedException();
-        }
-
-        [Test]
-        public void GetType()
-        {
-            throw new NotImplementedException();
-        }
-
-        [Test]
-        public void Initialize()
-        {
-            throw new NotImplementedException();
-        }
-
-        [Test]
-        public void ReferenceEqualsTest()
-        {
-            throw new NotImplementedException();
-        }
-
-        [Test]
-        public void ToStringTest()
-        {
-            throw new NotImplementedException();
-        }
-
-        [Test]
-        public void Update()
-        {
-            throw new NotImplementedException();
-        }
-
-        #endregion
-
-        #region Protected Methods Tests
-
-        [Test]
-        public void FinalizeTest()
-        {
-            throw new NotImplementedException();
-        }
-
-        [Test]
-        public void MemberWiseCloneTest()
-        {
-            throw new NotImplementedException();
-        }
-
-        [Test]
-        public void OnEnableChangedTest()
-        {
-            throw new NotImplementedException();
-        }
-
-        [Test]
-        public void OnUpdateOrderChangedTest()
-        {
-            throw new NotImplementedException();
-        }
         #endregion
 
         #region Other tests
+
+        [Test]
+        public void EnableChangedFiredTest()
+        {
+            bool fired = false;
+            gameComponent.Enabled = false;
+            gameComponent.EnabledChanged += delegate { fired = true; };
+            gameComponent.Enabled = true;
+            Assert.IsTrue(fired);
+        }
+
+        [Test]
+        public void EnableChangedDoesNotFireWhenValueIsntChangedTest()
+        {
+            bool fired = false;
+            gameComponent.EnabledChanged += delegate { fired = true; };
+            gameComponent.Enabled = gameComponent.Enabled;
+            Assert.IsFalse(fired, "EnabledChanged should not have fired");
+        }
+
+        [Test]
+        public void UpdateOrderChangedFiredTest()
+        {
+            bool fired = false;
+            gameComponent.UpdateOrderChanged += delegate { fired = true; };
+            gameComponent.UpdateOrder = 100;
+            Assert.IsTrue(fired);
+        }
+
+        [Test]
+        public void UpdateOrderChangedDoesNotFireWhenValueIsntChangedTest()
+        {
+            bool fired = false;
+            gameComponent.UpdateOrder = 10;           
+            gameComponent.UpdateOrderChanged += delegate { fired = true; };
+            gameComponent.UpdateOrder = 10;
+            Assert.IsFalse(fired, "UpdateOrderChanged should not have fired");
+        }
+
+        [Test]
+        public void DisposedEventRaisedTest()
+        {
+            bool fired = false;
+            gameComponent.Disposed += delegate { fired = true; };
+            gameComponent.Dispose();
+            Assert.IsTrue(fired);
+        }
+
         #endregion
     }
-     */
+    
 }

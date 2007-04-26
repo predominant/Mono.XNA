@@ -35,19 +35,31 @@ using Microsoft.Xna.Framework;
 
 namespace Microsoft.Xna.Framework.Tests
 {
-    /*
+    
     [TestFixture]
     public class GameServiceContainerTests
     {
+        GameServiceContainer services;
+        TestGame game;
+
         #region Setup
+
+        [SetUp]
+        public void Init()
+        {
+            game = new TestGame(true);
+            services = game.Services;
+        }
+
         #endregion
+
 
         #region Public Constructors
 
         [Test]
         public void Constructors()
         {
-            throw new NotImplementedException();
+            Assert.IsNotNull(services);
         }
 
         #endregion
@@ -67,73 +79,48 @@ namespace Microsoft.Xna.Framework.Tests
         #region Public Methods Tests
 
         [Test]
-        public void AddService()
+        public void AddServiceAndGetServiceTest()
         {
-            throw new NotImplementedException();
+            string s = "Hello";
+            services.AddService(typeof(string), s);
+
+            string s2 = (string)services.GetService(typeof (string));
+            Assert.AreSame(s, s2, "Service was not correctly added");
         }
 
         [Test]
-        public void EqualsTest()
+        public void GetServiceThatDoesntExistTest()
         {
-            throw new NotImplementedException();
-        }
+            string s = "Hello";
+            services.AddService(typeof(string), s);
 
-        [Test]
-        public void GetHashCodeTest()
-        {
-            throw new NotImplementedException();
-        }
-
-        [Test]
-        public void GetTypeTest()
-        {
-            throw new NotImplementedException();
-        }
-
-        [Test]
-        public void GetService()
-        {
-            throw new NotImplementedException();
-        }
-
-        [Test]
-        public void ReferenceEqualsTest()
-        {
-            throw new NotImplementedException();
+            IServiceProvider sp = (IServiceProvider)services.GetService(typeof (IServiceProvider));
+            Assert.IsNull(sp);
         }
 
         [Test]
         public void RemoveService()
         {
-            throw new NotImplementedException();
+            string s = "Hello";
+            services.AddService(typeof(string), s);
+
+            services.RemoveService(typeof(string));
+            string s2 = (string)services.GetService(typeof(string));
+            Assert.IsNull(s2);
         }
 
+        [ExpectedException(typeof(ArgumentException))]
         [Test]
-        public void ToStringTest()
+        public void AddDuplicateServiceService()
         {
-            throw new NotImplementedException();
+            string s = "Hello";
+            services.AddService(typeof(string), s);
+
+            string s2 = "Hello Again";
+            services.AddService(typeof(string), s2);
         }
 
-        #endregion
-
-        #region Protected Methods Tests
-
-        [Test]
-        public void FinalizeTest()
-        {
-            throw new NotImplementedException();
-        }
-
-        [Test]
-        public void MemberWiseCloneTest()
-        {
-            throw new NotImplementedException();
-        }
-
-        #endregion
-
-        #region Other tests
-        #endregion
+        #endregion Public Methods Tests
     }
-     */
+     
 }

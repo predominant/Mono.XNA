@@ -1,4 +1,5 @@
 #region License
+
 /*
 MIT License
 Copyright © 2006-2007 The Mono.Xna Team
@@ -25,195 +26,143 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 */
+
 #endregion
 
-using System;
-using System.Collections.Generic;
-using System.Text;
 using NUnit.Framework;
-using Microsoft.Xna.Framework;
 
 namespace Microsoft.Xna.Framework.Tests
 {
-    /*
     [TestFixture]
     public class GameComponentCollectionTests
     {
-        
+        GameComponentCollection components;
+        TestGame game;
+
         #region Setup
+
+        [SetUp]
+        public void Init()
+        {
+            game = new TestGame(true);
+            components = game.Components;
+        }
+
         #endregion
 
         #region Public Constructors
 
         [Test]
-        public void Constructors()
+        public void ValidateComponents()
         {
-            throw new NotImplementedException();
+            Assert.IsInstanceOfType(typeof (GameComponentCollection), components);
         }
 
         #endregion
 
         #region Public Fields Tests
+
         #endregion
-        
+
         #region Protected Fields Tests
+
         #endregion
 
         #region Public Properties Tests
 
         [Test]
-        public void Count()
+        public void CountIsZeroTest()
         {
-            throw new NotImplementedException();
+            Assert.AreEqual(0, components.Count);
         }
 
         [Test]
         public void Item()
         {
-            throw new NotImplementedException();
+            MyComponent c = new MyComponent(game);
+            components.Add(c);
+            Assert.AreSame(c, components[0]);
         }
 
         #endregion
-        
-        #region Protected Properties Tests
-
-        [Test]
-        public void Items()
-        {
-            throw new NotImplementedException();
-        }
-
-        #endregion
-
-        #region Public Methods Tests
 
         [Test]
         public void Add()
         {
-            throw new NotImplementedException();
+            MyComponent c = new MyComponent(game);
+            components.Add(c);
+            Assert.AreSame(c, components[0]);
         }
 
         [Test]
         public void Clear()
         {
-            throw new NotImplementedException();
+            MyComponent c = new MyComponent(game);
+            components.Add(c);
+            Assert.AreEqual(1, components.Count, "Should contain 1 component");
+            components.Clear();
+            Assert.AreEqual(0, components.Count);
         }
 
         [Test]
         public void Contains()
         {
-            throw new NotImplementedException();
+            MyComponent c = new MyComponent(game);
+            components.Add(c);
+            Assert.IsTrue(components.Contains(c), "Failed to find MyComponent");
         }
 
         [Test]
-        public void CopyTo()
+        public void ComponentAddedEventTest()
         {
-            throw new NotImplementedException();
+            bool fired = false;
+            components.ComponentAdded += delegate(object sender, GameComponentCollectionEventArgs args) { fired = true; };
+            MyComponent c = new MyComponent(game);
+            components.Add(c);
+            Assert.IsTrue(fired, "ComponentAdded event did not fire.");
         }
 
         [Test]
-        public void EqualsTest()
+        public void ComponentAddedEventArgsEventTest()
         {
-            throw new NotImplementedException();
+            MyComponent c = new MyComponent(game);
+            
+            components.ComponentAdded += delegate(object sender, GameComponentCollectionEventArgs args)
+                                             {
+                                                 Assert.AreSame(c, args.GameComponent, "Unexpected component in args");
+                                             };
+            components.Add(c);
+            Assert.AreEqual(1, components.Count, "Component was not added to collection");
         }
 
         [Test]
-        public void GetEnumerator()
+        public void ComponentRemovedEventTest()
         {
-            throw new NotImplementedException();
+            bool fired = false;
+            components.ComponentRemoved += delegate(object sender, GameComponentCollectionEventArgs args) { fired = true; };
+            MyComponent c = new MyComponent(game);
+            components.Add(c);
+            components.Remove(c);
+            Assert.IsTrue(fired, "ComponentRemoved event did not fire.");
         }
 
         [Test]
-        public void GetHashCode()
+        public void ComponentRemovedEventArgsEventTest()
         {
-            throw new NotImplementedException();
+            MyComponent c = new MyComponent(game);
+            
+            components.ComponentAdded += delegate(object sender, GameComponentCollectionEventArgs args)
+                                             {
+                                                 Assert.AreSame(c, args.GameComponent, "Unexpected component in args");
+                                             };
+            components.Add(c);
+            Assert.AreEqual(1, components.Count, "Component was not added to collection");
+            components.Remove(c);
+            Assert.AreEqual(0, components.Count, "Component was not removed from collection");
         }
-
-        [Test]
-        public void GetType()
-        {
-            throw new NotImplementedException();
-        }
-
-        [Test]
-        public void IndexOf()
-        {
-            throw new NotImplementedException();
-        }
-
-        [Test]
-        public void Insert()
-        {
-            throw new NotImplementedException();
-        }
-
-        [Test]
-        public void ReferenceEqualsTest()
-        {
-            throw new NotImplementedException();
-        }
-
-        [Test]
-        public void Remove()
-        {
-            throw new NotImplementedException();
-        }
-
-        [Test]
-        public void RemoveAt()
-        {
-            throw new NotImplementedException();
-        }
-
-        [Test]
-        public void ToStringTest()
-        {
-            throw new NotImplementedException();
-        }
-
-        #endregion
-
-        #region Protected Methods Tests
-
-        [Test]
-        public void ClearItems()
-        {
-            throw new NotImplementedException();
-        }
-
-        [Test]
-        public void FinalizeTest()
-        {
-            throw new NotImplementedException();
-        }
-
-        [Test]
-        public void InsertItem()
-        {
-            throw new NotImplementedException();
-        }
-
-        [Test]
-        public void MemberWiseCloteTest()
-        {
-            throw new NotImplementedException();
-        }
-
-        [Test]
-        public void RemoveItem()
-        {
-            throw new NotImplementedException();
-        }
-
-        [Test]
-        public void SetItem()
-        {
-            throw new NotImplementedException();
-        }
-        #endregion
 
         #region Other tests
+
         #endregion
     }
-     */
 }

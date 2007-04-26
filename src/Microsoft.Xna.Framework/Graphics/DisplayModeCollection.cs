@@ -1,4 +1,5 @@
 #region License
+
 /*
 MIT License
 Copyright © 2006 The Mono.Xna Team
@@ -23,30 +24,48 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 */
+
 #endregion License
 
-
 using System;
+using System.Collections;
 using System.Collections.Generic;
-using System.Reflection;
 
 namespace Microsoft.Xna.Framework.Graphics
 {
     public struct DisplayModeCollection : IEnumerable<DisplayMode>
     {
-        public static bool operator !=(DisplayModeCollection l, DisplayModeCollection r){ throw new NotImplementedException(); }
-        
-        public static bool operator ==(DisplayModeCollection l, DisplayModeCollection r){ throw new NotImplementedException(); }
+        public static bool operator !=(DisplayModeCollection l, DisplayModeCollection r)
+        {
+            throw new NotImplementedException();
+        }
 
-        public IEnumerable<DisplayMode> this[SurfaceFormat format] { get{ throw new NotImplementedException(); } }
+        public static bool operator ==(DisplayModeCollection l, DisplayModeCollection r)
+        {
+            throw new NotImplementedException();
+        }
 
-        public override bool Equals(object obj){ throw new NotImplementedException(); }
-        
-        public IEnumerator<DisplayMode> GetEnumerator(){ throw new NotImplementedException(); }
-        
-        public override int GetHashCode(){ throw new NotImplementedException(); }
+        public IEnumerable<DisplayMode> this[SurfaceFormat format]
+        {
+            get { throw new NotImplementedException(); }
+        }
 
-        System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator()
+        public override bool Equals(object obj)
+        {
+            throw new NotImplementedException();
+        }
+
+        public IEnumerator<DisplayMode> GetEnumerator()
+        {
+            throw new NotImplementedException();
+        }
+
+        public override int GetHashCode()
+        {
+            throw new NotImplementedException();
+        }
+
+        IEnumerator IEnumerable.GetEnumerator()
         {
             throw new NotImplementedException();
         }

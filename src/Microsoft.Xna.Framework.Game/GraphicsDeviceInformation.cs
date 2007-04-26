@@ -27,53 +27,95 @@ SOFTWARE.
 
 using Microsoft.Xna.Framework.Graphics;
 using System;
+using SdlDotNet.Graphics;
 
 namespace Microsoft.Xna.Framework
 {
     public class GraphicsDeviceInformation
     {
+        DeviceType _deviceType;
+        CreateOptions _createOptions;
+        PresentationParameters _presentationParameters;
+        GraphicsAdapter _adapter;
+
         public GraphicsDeviceInformation()
         {
-            throw new NotImplementedException();
+            _deviceType = DeviceType.Hardware;
+            _createOptions = CreateOptions.HardwareVertexProcessing;
+            _adapter = GraphicsAdapter.DefaultAdapter;
+            _presentationParameters = new PresentationParameters();
+            _presentationParameters.BackBufferWidth = Video.Screen.Width;
+            _presentationParameters.BackBufferHeight = Video.Screen.Height;
+        }
+
+        internal GraphicsDeviceInformation(int width, int height)
+        {
+            _deviceType = DeviceType.Hardware;
+            _createOptions = CreateOptions.HardwareVertexProcessing;
+            _presentationParameters = new PresentationParameters();
+            _presentationParameters.BackBufferWidth = width;
+            _presentationParameters.BackBufferHeight = height;
+            _adapter = GraphicsAdapter.DefaultAdapter;
+        }
+
+        private GraphicsDeviceInformation(bool cloning)
+        {
+            
         }
 
         public GraphicsAdapter Adapter
         {
-            get { throw new NotImplementedException(); }
-            set { throw new NotImplementedException(); }
+            get { return _adapter; }
+            set { _adapter = value; }
         }
 
         public CreateOptions CreationOptions
         {
-            get { throw new NotImplementedException(); }
-            set { throw new NotImplementedException(); }
+            get { return _createOptions; }
+            set { _createOptions = value; }
         }
 
         public DeviceType DeviceType
         {
-            get { throw new NotImplementedException(); }
-            set { throw new NotImplementedException(); }
+            get { return _deviceType; }
+            set { _deviceType = value; }
         }
 
         public PresentationParameters PresentationParameters
         {
-            get { throw new NotImplementedException(); }
-            set { throw new NotImplementedException(); }
+            get { return _presentationParameters; }
+            set { _presentationParameters = value; }
         }
 
         public GraphicsDeviceInformation Clone()
         {
-            throw new NotImplementedException();
+            GraphicsDeviceInformation gdi = new GraphicsDeviceInformation(true);
+            gdi._adapter = Adapter;
+            gdi._createOptions = CreationOptions;
+            gdi._deviceType = DeviceType;
+            gdi._presentationParameters = PresentationParameters;
+            return gdi;
         }
 
         public override bool Equals(object obj)
         {
-            throw new NotImplementedException();
+            if (obj == null) 
+                return false;
+
+            GraphicsDeviceInformation gdi = obj as GraphicsDeviceInformation;
+            if (gdi == null)
+                return false;
+
+            return _deviceType == gdi._deviceType &&
+                _createOptions == gdi._createOptions &&
+                _presentationParameters == gdi._presentationParameters;
         }
 
         public override int GetHashCode()
         {
-            throw new NotImplementedException();
+            return _deviceType.GetHashCode() ^
+                   _createOptions.GetHashCode() ^
+                   PresentationParameters.GetHashCode();
         }
     }
 }

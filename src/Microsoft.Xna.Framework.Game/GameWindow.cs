@@ -33,6 +33,22 @@ namespace Microsoft.Xna.Framework
 {
     public abstract class GameWindow
     {
+        #region Private Fields
+
+        string _title;
+        Game _game;
+
+        #endregion Private Fields
+
+        #region Constructors
+
+        protected GameWindow(Game game)
+        {
+            _game = game;
+        }
+
+        #endregion Constructors
+
         public abstract void BeginScreenDeviceChange(bool willBeFullScreen);
 
         public void EndScreenDeviceChange(string screenDeviceName)
@@ -44,17 +60,16 @@ namespace Microsoft.Xna.Framework
 
         protected void OnActivated()
         {
-            throw new NotImplementedException();
         }
 
         protected void OnClientSizeChanged()
         {
-            throw new NotImplementedException();
+            if (ClientSizeChanged != null)
+                ClientSizeChanged(this, EventArgs.Empty);
         }
 
         protected void OnDeactivated()
         {
-            throw new NotImplementedException();
         }
 
         protected void OnPaint()
@@ -64,7 +79,8 @@ namespace Microsoft.Xna.Framework
 
         protected void OnScreenDeviceNameChanged()
         {
-            throw new NotImplementedException();
+            if (ScreenDeviceNameChanged != null)
+                ScreenDeviceNameChanged(this, EventArgs.Empty);
         }
 
         protected abstract void SetTitle(string title);
@@ -79,12 +95,28 @@ namespace Microsoft.Xna.Framework
 
         public string Title
         {
-            get { throw new NotImplementedException(); }
-            set { throw new NotImplementedException(); }
+            get { return _title; }
+            set
+            {
+                if (_title != value)
+                {
+                    _title = value;
+                    SetTitle(_title);
+                }
+            }
         }
 
         public event EventHandler ClientSizeChanged;
 
         public event EventHandler ScreenDeviceNameChanged;
+
+        #region Protected Members
+
+        protected Game Game
+        {
+            get { return _game; }
+        }
+
+        #endregion Protected Members
     }
 }

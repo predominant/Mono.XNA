@@ -41,6 +41,25 @@ namespace Microsoft.Xna.Framework.Graphics
 
         #endregion Constants
 
+        #region Private Fields
+
+        private DepthFormat autoDepthStencilFormat;
+        private int backBufferCount;
+        private SurfaceFormat backBufferFormat;
+        private int backBufferHeight;
+        private int backBufferWidth;
+        private IntPtr deviceWindowHandle;
+        private bool enableAutoDepthStencil;
+        private int fullScreenRefreshRateInHz;
+        private bool isFullScreen;
+        private int multiSampleQuality;
+        private MultiSampleType multiSampleType;
+        private PresentInterval presentationInterval;
+        private PresentOptions presentOptions;
+        private SwapEffect swapEffect;
+        private bool disposed;
+
+        #endregion Private Fields
 
         #region Constructors
 
@@ -63,8 +82,6 @@ namespace Microsoft.Xna.Framework.Graphics
         {
             return !(left == right);
         }
-
-
         
         public static bool operator ==(PresentationParameters left, PresentationParameters right)
         {
@@ -249,44 +266,7 @@ namespace Microsoft.Xna.Framework.Graphics
                 (parameters.swapEffect == this.swapEffect);
         }
 
-        public override int GetHashCode()
-        {
-            return (autoDepthStencilFormat.GetHashCode() ^
-                backBufferCount.GetHashCode() ^
-                backBufferFormat.GetHashCode() ^
-                backBufferHeight.GetHashCode() ^
-                backBufferWidth.GetHashCode() ^
-                deviceWindowHandle.GetHashCode() ^
-                enableAutoDepthStencil.GetHashCode() ^
-                fullScreenRefreshRateInHz.GetHashCode() ^
-                isFullScreen.GetHashCode() ^
-                multiSampleQuality.GetHashCode() ^
-                multiSampleType.GetHashCode() ^
-                presentationInterval.GetHashCode() ^
-                presentOptions.GetHashCode() ^
-                swapEffect.GetHashCode());
-        }
-
-
         #endregion Methods
 
-
-        #region Private Fields
-        private DepthFormat autoDepthStencilFormat;
-        private int backBufferCount;
-        private SurfaceFormat backBufferFormat;
-        private int backBufferHeight;
-        private int backBufferWidth;
-        private IntPtr deviceWindowHandle;
-        private bool enableAutoDepthStencil;
-        private int fullScreenRefreshRateInHz;
-        private bool isFullScreen;
-        private int multiSampleQuality;
-        private MultiSampleType multiSampleType;
-        private PresentInterval presentationInterval;
-        private PresentOptions presentOptions;
-        private SwapEffect swapEffect;
-        private bool disposed;
-        #endregion Private Fields
     }
 }

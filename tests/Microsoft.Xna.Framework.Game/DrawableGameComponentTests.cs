@@ -35,106 +35,166 @@ using Microsoft.Xna.Framework;
 
 namespace Microsoft.Xna.Framework.Tests
 {
-    /*
+
     [TestFixture]
     public class DrawableGameComponentTests
     {
+        DrawableGameComponent component;
+
         #region Setup
-            // Yet to implement
+
+        [SetUp]
+        public void Setup()
+        {
+            component = new DrawableGameComponent(new Game());
+        }
+
+        #endregion
+
+        #region Public Constructors
+
+        [Test]
+        public void Constructors()
+        {
+            Assert.IsNotNull(component);
+        }
+
+        #endregion
+
+        #region Public Fields Tests
+        #endregion
+
+        #region Protected Fields Tests
         #endregion
 
         #region Public Properties Tests
 
+        /// <summary>
+        /// Ensure default for GameComponent.Enabled is true
+        /// </summary>
         [Test]
-        public void DrawOrder()
+        public void DefaultEnabledIsTrueTest()
         {
-            throw new NotImplementedException();
+            Assert.IsTrue(component.Enabled);
         }
 
+        /// <summary>
+        /// Ensure default value for UpdateOrder is 0
+        /// </summary>
         [Test]
-        public void Enabled()
+        public void DefaultUpdateOrderIsZeroTest()
         {
-            throw new NotImplementedException();
-        }
+            Assert.AreEqual(0, component.UpdateOrder);
+        }        
 
+        /// <summary>
+        /// Ensure default value for DrawOrder is 0
+        /// </summary>
         [Test]
-        public void UpdateOrder()
+        public void DefaultDrawOrderIsZeroTest()
         {
-            throw new NotImplementedException();
-        }
-
+            Assert.AreEqual(0, component.DrawOrder);
+        }        
+        
+        /// <summary>
+        /// Ensure default value for Visible is true
+        /// </summary>
         [Test]
-        public void Visible()
+        public void DefaultVisibleIsTrueTest()
         {
-            throw new NotImplementedException();
-        }
-        #endregion
-
-        #region Public Methods Tests
-
-        [Test]
-        public void Constructor()
-        {   
-            throw new NotImplementedException();
+            Assert.IsTrue(component.Visible);
         }
 
-        [Test]
-        public void DisposeTest()
-        {
-            throw new NotImplementedException();
-        }
-
-        [Test]
-        public void Draw()
-        {
-            throw new NotImplementedException();
-        }
-
-        [Test]
-        public void EqualsTest()
-        {
-            throw new NotImplementedException();
-        }
-
-        [Test]
-        public void GethashCode()
-        {
-            throw new NotImplementedException();
-        }
-
-        [Test]
-        public void GetType()
-        {
-            throw new NotImplementedException();
-        }
-
-        [Test]
-        public void Initialize()
-        {
-            throw new NotImplementedException();
-        }
-
-        [Test]
-        public void ReferenceEquals()
-        {
-            throw new NotImplementedException();
-        }
-
-        [Test]
-        public void ToStringTest()
-        {
-            throw new NotImplementedException();
-        }
-
-        [Test]
-        public void Update()
-        {
-            throw new NotImplementedException();
-        }
         #endregion
 
         #region Other tests
+
+        [Test]
+        public void EnableChangedFiredTest()
+        {
+            bool fired = false;
+            component.Enabled = false;
+            component.EnabledChanged += delegate { fired = true; };
+            component.Enabled = true;
+            Assert.IsTrue(fired);
+        }
+
+        [Test]
+        public void EnableChangedDoesNotFireWhenValueIsntChangedTest()
+        {
+            bool fired = false;
+            component.EnabledChanged += delegate { fired = true; };
+            component.Enabled = component.Enabled;
+            Assert.IsFalse(fired, "EnabledChanged should not have fired");
+        }
+
+        [Test]
+        public void VisibleChangedFiredTest()
+        {
+            bool fired = false;
+            component.Visible = false;
+            component.VisibleChanged += delegate { fired = true; };
+            component.Visible = true;
+            Assert.IsTrue(fired);
+        }
+
+        [Test]
+        public void VisibleChangedDoesNotFireWhenValueIsntChangedTest()
+        {
+            bool fired = false;
+            component.VisibleChanged += delegate { fired = true; };
+            component.Visible = component.Visible;
+            Assert.IsFalse(fired, "VisibleChanged should not have fired");
+        }
+
+        [Test]
+        public void UpdateOrderChangedFiredTest()
+        {
+            bool fired = false;
+            component.UpdateOrderChanged += delegate { fired = true; };
+            component.UpdateOrder = 100;
+            Assert.IsTrue(fired);
+        }
+
+        [Test]
+        public void UpdateOrderChangedDoesNotFireWhenValueIsntChangedTest()
+        {
+            bool fired = false;
+            component.UpdateOrder = 10;
+            component.UpdateOrderChanged += delegate { fired = true; };
+            component.UpdateOrder = 10;
+            Assert.IsFalse(fired, "UpdateOrderChanged should not have fired");
+        }
+
+        [Test]
+        public void DrawOrderChangedFiredTest()
+        {
+            bool fired = false;
+            component.DrawOrderChanged += delegate { fired = true; };
+            component.DrawOrder = 100;
+            Assert.IsTrue(fired);
+        }
+
+        [Test]
+        public void DrawOrderChangedDoesNotFireWhenValueIsntChangedTest()
+        {
+            bool fired = false;
+            component.DrawOrder = 10;
+            component.DrawOrderChanged += delegate { fired = true; };
+            component.DrawOrder = 10;
+            Assert.IsFalse(fired, "UpdateOrderChanged should not have fired");
+        }
+
+        [Test]
+        public void DisposedEventRaisedTest()
+        {
+            bool fired = false;
+            component.Disposed += delegate { fired = true; };
+            component.Dispose();
+            Assert.IsTrue(fired);
+        }
+
         #endregion
     }
-    */
+    
 }

@@ -213,7 +213,8 @@ namespace Microsoft.Xna.Framework.Graphics
                 float x = (float)sp.sourceRectangle.X / (float)sp.texture.textureWidth;
                 float y = (float)sp.sourceRectangle.Y / (float)sp.texture.textureHeight;
                 float twidth = (float)sp.sourceRectangle.Width / (float)sp.texture.textureWidth;
-                float theight = (float)sp.sourceRectangle.Height / (float)sp.texture.textureHeight;
+                //float theight = (float)sp.sourceRectangle.Height / (float)sp.texture.textureHeight;
+                float theight = 1.0f;
 
                 // Draw
                 Gl.glBegin(Gl.GL_QUADS);

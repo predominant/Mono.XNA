@@ -1,0 +1,20 @@
+***************
+*** 49,55 ****
+  
+          public SurfaceFormat Format
+          {
+-             get { return this.format; }
+          }
+  
+          public int Height
+--- 50,59 ----
+  
+          public SurfaceFormat Format
+          {
++             get
++             {
++                 return this.format;
++             }
+          }
+  
+          public int Height

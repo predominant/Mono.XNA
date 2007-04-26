@@ -1,4 +1,5 @@
 #region License
+
 /*
 MIT License
 Copyright © 2006 The Mono.Xna Team
@@ -23,93 +24,100 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 */
+
 #endregion License
 
 using System;
-using System.Collections.Generic;
-using System.Text;
-using System.ComponentModel;
 
 namespace Microsoft.Xna.Framework
 {
-    
     public class GameComponent : IGameComponent, IUpdateable, IDisposable
     {
+        readonly Game _game;
+        bool _disposed;
+        bool _enabled;
+        int _updateOrder;
+
         public event EventHandler EnabledChanged;
         public event EventHandler UpdateOrderChanged;
         public event EventHandler Disposed;
 
-
         public bool Enabled
         {
-            get
-            {
-                throw new NotImplementedException();
-            }
+            get { return _enabled; }
             set
             {
-                throw new NotImplementedException();
+                if (_enabled != value)
+                {
+                    _enabled = value;
+                    OnEnabledChanged(this, EventArgs.Empty);
+                }
             }
         }
 
         protected Game Game
         {
-            get
-            {
-                throw new NotImplementedException();
-            }
+            get { return _game; }
         }
 
         public int UpdateOrder
         {
-            get
-            {
-                throw new NotImplementedException();
-            }
+            get { return _updateOrder; }
             set
             {
-                throw new NotImplementedException();
+                if (_updateOrder != value)
+                {
+                    _updateOrder = value;
+                    OnUpdateOrderChanged(this, EventArgs.Empty);
+                }
             }
         }
 
         public GameComponent(Game game)
         {
-            throw new NotImplementedException();
+            _game = game;
+            _enabled = true;
         }
 
         ~GameComponent()
         {
-
+            Dispose(false);
         }
 
         public void Dispose()
         {
-            throw new NotImplementedException();
+            Dispose(true);
+            GC.SuppressFinalize(this);
         }
 
         protected virtual void Dispose(bool disposing)
         {
-            throw new NotImplementedException();
+            if (!_disposed)
+            {
+                _disposed = true;
+                if (Disposed != null)
+                    Disposed(this, EventArgs.Empty);
+            }
         }
 
         public virtual void Initialize()
         {
-            throw new NotImplementedException();
         }
 
         protected virtual void OnEnabledChanged(object sender, EventArgs args)
         {
-            throw new NotImplementedException();
+            if (EnabledChanged != null)
+                EnabledChanged(this, args);
         }
 
         protected virtual void OnUpdateOrderChanged(object sender, EventArgs args)
         {
-            throw new NotImplementedException();
+            if (UpdateOrderChanged != null)
+                UpdateOrderChanged(this, args);
         }
 
         public virtual void Update(GameTime gameTime)
         {
-            throw new NotImplementedException();
         }
     }
 }

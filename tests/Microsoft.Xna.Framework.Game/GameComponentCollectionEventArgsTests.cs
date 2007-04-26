@@ -35,7 +35,7 @@ using Microsoft.Xna.Framework;
 
 namespace Microsoft.Xna.Framework.Tests
 {
-    /*
+    
     [TestFixture]
     public class GameComponentCollectionEventArgsTests
     {
@@ -47,7 +47,8 @@ namespace Microsoft.Xna.Framework.Tests
         [Test]
         public void Constructors()
         {
-            throw new NotImplementedException();
+            GameComponentCollectionEventArgs args = new GameComponentCollectionEventArgs(null);
+            Assert.IsNotNull(args, "Failed to create type");
         }
 
         #endregion
@@ -63,66 +64,14 @@ namespace Microsoft.Xna.Framework.Tests
         [Test]
         public void GameComponent()
         {
-            throw new NotImplementedException();
+            MyComponent c = new MyComponent(new TestGame());
+            GameComponentCollectionEventArgs args = new GameComponentCollectionEventArgs(c);
+            Assert.AreSame(c, args.GameComponent);
         }
 
         #endregion
         
-        #region Protected Properties Tests
-        #endregion
-
-        #region Public Methods Tests
-
-        [Test]
-        public void EqualsTest()
-        {
-            throw new NotImplementedException();
-        }
-
-        [Test]
-        public void GetHashCodeTest()
-        {
-            throw new NotImplementedException();
-        }
-
-        [Test]
-        public void GetTypeTest()
-        {
-            throw new NotImplementedException();
-        }
-
-        [Test]
-        public void ReferenceEqualsTest()
-        {
-            throw new NotImplementedException();
-        }
-
-        [Test]
-        public void ToStringTest()
-        {
-            throw new NotImplementedException();
-        }
-
-        #endregion
-
-        #region Protected Methods Tests
-
-        [Test]
-        public void FinalizeTest()
-        {
-            throw new NotImplementedException();
-        }
-
-        [Test]
-        public void MemberWiseCloneTest()
-        {
-            throw new NotImplementedException();
-        }
-
-        #endregion
-
-        #region Other tests
-        #endregion
+        
     }
-     */
+     
 }

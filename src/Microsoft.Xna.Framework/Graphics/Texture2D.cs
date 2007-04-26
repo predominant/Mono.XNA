@@ -135,8 +135,14 @@ namespace Microsoft.Xna.Framework.Graphics
 
         public new static Texture2D FromFile(GraphicsDevice graphicsDevice, string filename)
         {
-            using (FileStream stream = new FileStream(filename, FileMode.Open, FileAccess.Read))
-                return FromFile(graphicsDevice, stream);
+            EnsureDevice();
+            Texture2D texture = new Texture2D(graphicsDevice);
+            using (Surface surface = new Surface(filename))
+            {
+                texture.Load(surface);
+            }
+            graphicsDevice.Textures.textures.Add(texture);
+            return texture;
         }
 
 
@@ -308,7 +314,7 @@ namespace Microsoft.Xna.Framework.Graphics
             this.width = surface.Width;
             this.height = surface.Height;
             surface.FlipVertical();
-            surface.Resize();
+            //surface.Resize();
             this.textureWidth = surface.Width;
             this.textureHeight = surface.Height;
 

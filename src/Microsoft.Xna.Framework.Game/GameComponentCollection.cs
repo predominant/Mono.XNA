@@ -1,9 +1,13 @@
 #region License
+
 /*
 MIT License
 Copyright © 2006 The Mono.Xna Team
 
 All rights reserved.
+ 
+Authors:
+ * Stuart Carnie (stuart.carnie@gmail.com)
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
@@ -23,11 +27,10 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 */
+
 #endregion License
 
 using System;
-using System.Collections.Generic;
-using System.Text;
 using System.Collections.ObjectModel;
 
 namespace Microsoft.Xna.Framework
@@ -39,37 +42,52 @@ namespace Microsoft.Xna.Framework
 
         internal GameComponentCollection()
         {
-            throw new NotImplementedException();
         }
 
         protected override void ClearItems()
         {
-            throw new NotImplementedException();
+            foreach (IGameComponent component in this)
+            {
+                OnComponentRemoved(new GameComponentCollectionEventArgs(component));
+            }
+
+            base.ClearItems();
         }
 
         protected override void InsertItem(int index, IGameComponent item)
         {
-            throw new NotImplementedException();
+            base.InsertItem(index, item);
+            OnComponentAdded(new GameComponentCollectionEventArgs(item));
         }
 
-        private void OnComponentAdded(GameComponentCollectionEventArgs eventArgs)
+        void OnComponentAdded(GameComponentCollectionEventArgs eventArgs)
         {
-            throw new NotImplementedException();
+            if (ComponentAdded != null)
+                ComponentAdded(this, eventArgs);
         }
 
-        private void OnComponentRemoved(GameComponentCollectionEventArgs eventArgs)
+        void OnComponentRemoved(GameComponentCollectionEventArgs eventArgs)
         {
-            throw new NotImplementedException();
+            if (ComponentRemoved != null)
+                ComponentRemoved(this, eventArgs);
         }
 
         protected override void RemoveItem(int index)
         {
-            throw new NotImplementedException();
+            IGameComponent item = this[index];
+            base.RemoveItem(index);
+            OnComponentRemoved(new GameComponentCollectionEventArgs(item));
         }
 
         protected override void SetItem(int index, IGameComponent item)
         {
-            throw new NotImplementedException();
+            IGameComponent oldItem = this[index];
+            if (!oldItem.Equals(item))
+            {
+                OnComponentRemoved(new GameComponentCollectionEventArgs(oldItem));
+                base.SetItem(index, item);
+                OnComponentAdded(new GameComponentCollectionEventArgs(item));
+            }
         }
     }
 }

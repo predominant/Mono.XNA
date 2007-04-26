@@ -23,6 +23,17 @@
         <SuppressWarnings></SuppressWarnings>
       </Options>
     </Configuration>
+    <Configuration name="Unit Tests">
+      <Options>
+        <CompilerDefines>TRACE;NUNITTESTS</CompilerDefines>
+        <OptimizeCode>true</OptimizeCode>
+        <AllowUnsafe>false</AllowUnsafe>
+        <OutputPath>..\unittests</OutputPath>
+        <DebugInformation>true</DebugInformation>
+        <WarningLevel>1</WarningLevel>
+        <SuppressWarnings></SuppressWarnings>
+      </Options>
+    </Configuration>
     <Files>
       <File buildAction="Content">Prebuild.xml</File>
       <File buildAction="Content">COPYING</File>
@@ -56,6 +67,17 @@
           <DebugInformation>false</DebugInformation>
           <WarningLevel>1</WarningLevel>
           <SuppressWarnings>3019,0649</SuppressWarnings>
+        </Options>
+      </Configuration>
+      <Configuration name="Unit Tests">
+        <Options>
+          <CompilerDefines>TRACE;NUNITTESTS</CompilerDefines>
+          <OptimizeCode>true</OptimizeCode>
+          <AllowUnsafe>false</AllowUnsafe>
+          <OutputPath>..\unittests</OutputPath>
+          <DebugInformation>true</DebugInformation>
+          <WarningLevel>1</WarningLevel>
+          <SuppressWarnings></SuppressWarnings>
         </Options>
       </Configuration>
       <Reference name="System" />
@@ -98,6 +120,17 @@
           <DebugInformation>false</DebugInformation>
           <WarningLevel>1</WarningLevel>
           <SuppressWarnings>3019,0649</SuppressWarnings>
+        </Options>
+      </Configuration>
+      <Configuration name="Unit Tests">
+        <Options>
+          <CompilerDefines>TRACE;NUNITTESTS</CompilerDefines>
+          <OptimizeCode>true</OptimizeCode>
+          <AllowUnsafe>false</AllowUnsafe>
+          <OutputPath>..\unittests</OutputPath>
+          <DebugInformation>true</DebugInformation>
+          <WarningLevel>1</WarningLevel>
+          <SuppressWarnings></SuppressWarnings>
         </Options>
       </Configuration>
       <Reference name="System" />
@@ -205,6 +238,17 @@
           <KeyFile>XnaTests.snk</KeyFile>
           <WarningLevel>1</WarningLevel>
           <SuppressWarnings>1595</SuppressWarnings>
+        </Options>
+      </Configuration>
+      <Configuration name="Unit Tests">
+        <Options>
+          <CompilerDefines>TRACE;NUNITTESTS</CompilerDefines>
+          <OptimizeCode>true</OptimizeCode>
+          <AllowUnsafe>false</AllowUnsafe>
+          <OutputPath>..\unittests</OutputPath>
+          <DebugInformation>true</DebugInformation>
+          <WarningLevel>1</WarningLevel>
+          <SuppressWarnings></SuppressWarnings>
         </Options>
       </Configuration>
       <Reference name="System" />

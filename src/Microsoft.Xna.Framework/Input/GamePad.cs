@@ -41,9 +41,13 @@ namespace Microsoft.Xna.Framework.Input
     {
         #region Constructors
 
+        static List<Joystick> _sticks;
+
         static GamePad()
         {
-            throw new NotImplementedException();
+            Joysticks.Initialize();
+            _sticks = new List<Joystick>(Joysticks.NumberOfJoysticks);
+
         }
 
         #endregion Constructors
@@ -58,7 +62,17 @@ namespace Microsoft.Xna.Framework.Input
 
         public static GamePadState GetState(PlayerIndex playerIndex)
         {
-            throw new NotImplementedException();
+            GamePadState state = new GamePadState();
+            state.IsConnected = false;
+            
+            int number = (int)playerIndex;
+            if (Joysticks.IsValidJoystickNumber(number))
+            {
+                
+                Joystick j = new Joystick(number);
+            }
+
+            return state;
         }
 
         public static GamePadState GetState(PlayerIndex playerIndex, GamePadDeadZone deadZoneMode)

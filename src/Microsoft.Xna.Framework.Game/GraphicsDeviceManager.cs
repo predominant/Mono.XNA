@@ -5,6 +5,9 @@ Copyright © 2006 The Mono.Xna Team
 
 All rights reserved.
 
+Authors:
+ * Stuart Carnie (stuart.carnie@gmail.com)
+
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
 in the Software without restriction, including without limitation the rights
@@ -25,15 +28,45 @@ SOFTWARE.
 */
 #endregion License
 
+using System.Drawing;
 using Microsoft.Xna.Framework.Graphics;
 using System;
 using System.Collections.Generic;
 using System.Threading;
+using SdlDotNet.Graphics;
 
 namespace Microsoft.Xna.Framework
 {
     public class GraphicsDeviceManager : IGraphicsDeviceService, IDisposable, IGraphicsDeviceManager
     {
+        #region Public Static Fields
+
+        public static readonly int DefaultBackBufferHeight = 600;
+        public static readonly int DefaultBackBufferWidth = 800;
+        public static readonly SurfaceFormat[] ValidAdapterFormats = new SurfaceFormat[] { SurfaceFormat.Bgr32, SurfaceFormat.Bgr555, SurfaceFormat.Bgr565, SurfaceFormat.Bgra1010102 };
+        public static readonly SurfaceFormat[] ValidBackBufferFormats = new SurfaceFormat[] { SurfaceFormat.Bgr565, SurfaceFormat.Bgr555, SurfaceFormat.Bgra5551, SurfaceFormat.Bgr32, SurfaceFormat.Color, SurfaceFormat.Bgra1010102 };
+        public static readonly DeviceType[] ValidDeviceTypes = new DeviceType[] { DeviceType.Hardware };
+
+        #endregion Public Static Fields
+
+        #region Private Fields
+
+        List<GraphicsDeviceInformation> _graphicDeviceInfoList;
+        GraphicsDeviceInformation _defaultDeviceInformation;
+        GraphicsDevice _graphicsDevice;
+        bool _disposed;
+        ShaderProfile _minimumShaderProfile;
+        ShaderProfile _minimumVertexShaderProfile;
+        bool _preferMultiSampling;
+        SurfaceFormat _preferredBackBufferFormat;
+        int _preferredBackBufferHeight;
+        int _preferredBackBufferWidth;
+        DepthFormat _preferredDepthStencilFormat;
+        bool _synchronizeWithVerticalRetrace;
+        Game _game;
+
+        #endregion Private Fields
+
         #region Events
 
         public event EventHandler DeviceCreated;
@@ -43,77 +76,77 @@ namespace Microsoft.Xna.Framework
         public event EventHandler Disposed;
         public event EventHandler<PreparingDeviceSettingsEventArgs> PreparingDeviceSettings;
 
-        #endregion
-
-        #region Public Static Fields
-
-        public static readonly int DefaultBackBufferHeight = 0;
-        public static readonly int DefaultBackBufferWidth = 0;
-        public static readonly SurfaceFormat[] ValidAdapterFormats = new SurfaceFormat[] { SurfaceFormat.Bgr32, SurfaceFormat.Bgr555, SurfaceFormat.Bgr565, SurfaceFormat.Bgra1010102 };
-        public static readonly SurfaceFormat[] ValidBackBufferFormats = new SurfaceFormat[] { SurfaceFormat.Bgr565, SurfaceFormat.Bgr555, SurfaceFormat.Bgra5551, SurfaceFormat.Bgr32, SurfaceFormat.Color, SurfaceFormat.Bgra1010102 };
-        public static readonly DeviceType[] ValidDeviceTypes = new DeviceType[] { DeviceType.Hardware };
-
-        #endregion Public Static Fields
+        #endregion Events
 
         #region Public Properties
 
         public GraphicsDevice GraphicsDevice
         {
-            get { throw new NotImplementedException(); }
+            get { return _graphicsDevice; }
         }
 
         public bool IsFullScreen
         {
-            get { throw new NotImplementedException(); }
-           set { throw new NotImplementedException(); }
+            get
+            {
+                return Video.Screen.FullScreen;
+            }
+
+            set
+            {
+                if (Video.Screen.FullScreen != value)
+                {
+                    throw new NotImplementedException("IsFullScreen");
+                }
+            }
         }
 
         public ShaderProfile MinimumPixelShaderProfile
         {
-            get { throw new NotImplementedException(); }
-            set { throw new NotImplementedException(); }
+            get { return _minimumShaderProfile; }
+            set { _minimumShaderProfile = value; }
         }
 
         public ShaderProfile MinimumVertexShaderProfile
         {
-            get { throw new NotImplementedException(); }
-            set { throw new NotImplementedException(); }
+            get { return _minimumVertexShaderProfile; }
+            set { _minimumVertexShaderProfile = value; }
         }
 
         public bool PreferMultiSampling
         {
-            get { throw new NotImplementedException(); }
-            set { throw new NotImplementedException(); }
+            get { return _preferMultiSampling; }
+            set { _preferMultiSampling = value; }
         }
 
         public SurfaceFormat PreferredBackBufferFormat
         {
-            get { throw new NotImplementedException(); }
-            set { throw new NotImplementedException(); }
+            get { return _preferredBackBufferFormat; }
+            set { _preferredBackBufferFormat = value; }
         }
 
         public int PreferredBackBufferHeight
         {
-            get { throw new NotImplementedException(); }
-            set { throw new NotImplementedException(); }
+            get { return _preferredBackBufferHeight; }
+            set { _preferredBackBufferHeight = value; }
         }
 
         public int PreferredBackBufferWidth
         {
-            get { throw new NotImplementedException(); }
-            set { throw new NotImplementedException(); }
+            get { return _preferredBackBufferWidth; }
+            set { _preferredBackBufferWidth = value; }
         }
 
         public DepthFormat PreferredDepthStencilFormat
         {
-            get { throw new NotImplementedException(); }
-            set { throw new NotImplementedException(); }
+            get { return _preferredDepthStencilFormat; }
+            set { _preferredDepthStencilFormat = value; }
         }
 
         public bool SynchronizeWithVerticalRetrace
         {
-            get { throw new NotImplementedException(); }
-            set { throw new NotImplementedException(); }
+            get { return _synchronizeWithVerticalRetrace; }
+            set { _synchronizeWithVerticalRetrace = value; }
         }
 
         #endregion
@@ -122,7 +155,10 @@ namespace Microsoft.Xna.Framework
 
         public GraphicsDeviceManager(Game game)
         {
-            throw new NotImplementedException();
+            _game = game;
+            // as per test application on reference framework
+            _game.Services.AddService(typeof(IGraphicsDeviceManager), this);
+            _game.Services.AddService(typeof(IGraphicsDeviceService), this);
         }
 
         #endregion
@@ -136,23 +172,40 @@ namespace Microsoft.Xna.Framework
 
         public void Dispose()
         {
-            throw new NotImplementedException();
+            Dispose(true);
+            GC.SuppressFinalize(this);
         }
 
-        public bool BeginDraw()
+        #region IGraphicsDeviceManager Methods
+
+        bool IGraphicsDeviceManager.BeginDraw()
         {
-            throw new NotImplementedException();
+            return _game.IsActive;
         }
 
-        public void CreateDevice()
+        void IGraphicsDeviceManager.CreateDevice()
         {
-            throw new NotImplementedException();
+            GraphicsDeviceInformation info = FindBestDevice(true);
+            OnPreparingDeviceSettings(this, new PreparingDeviceSettingsEventArgs(info));
+            info.PresentationParameters.BackBufferWidth = PreferredBackBufferWidth;
+            info.PresentationParameters.BackBufferHeight = PreferredBackBufferHeight;
+            info.PresentationParameters.AutoDepthStencilFormat = PreferredDepthStencilFormat;
+            info.PresentationParameters.BackBufferFormat = PreferredBackBufferFormat;
+
+            _graphicsDevice = new GraphicsDevice(info.Adapter, info.DeviceType, Video.WindowHandle, info.CreationOptions, info.PresentationParameters);
+            _graphicsDevice.Disposing += new EventHandler(_graphicsDevice_Disposing);
+            _graphicsDevice.DeviceResetting += new EventHandler(_graphicsDevice_DeviceResetting);
+            _graphicsDevice.DeviceReset += new EventHandler(_graphicsDevice_DeviceReset);
+            
+            OnDeviceCreated(this, EventArgs.Empty);
         }
 
-        public void EndDraw()
+        void IGraphicsDeviceManager.EndDraw()
         {
-            throw new NotImplementedException();
+            _graphicsDevice.Present();
         }
+
+        #endregion IGraphicsDeviceManager Methods
 
         public void ToggleFullScreen()
         {
@@ -170,46 +223,98 @@ namespace Microsoft.Xna.Framework
 
         protected virtual void Dispose(bool disposing)
         {
-            throw new NotImplementedException();
+            if (!_disposed)
+            {
+                _disposed = true;
+
+                if (disposing && Disposed != null)
+                {
+                    Disposed(this, EventArgs.Empty);
+                }
+            }
         }
 
         protected virtual GraphicsDeviceInformation FindBestDevice(bool anySuitableDevice)
         {
-            throw new NotImplementedException();
+            if (_defaultDeviceInformation == null)
+            {
+                _defaultDeviceInformation = new GraphicsDeviceInformation();
+                Size[] modes = Video.ListModes();
+
+                _graphicDeviceInfoList = new List<GraphicsDeviceInformation>();
+                _graphicDeviceInfoList.Add(_defaultDeviceInformation);
+                foreach (Size mode in modes)
+                {
+                    if (mode.Width == _defaultDeviceInformation.PresentationParameters.BackBufferWidth &&
+                        mode.Height == _defaultDeviceInformation.PresentationParameters.BackBufferHeight)
+                        continue;
+
+                    _graphicDeviceInfoList.Add(new GraphicsDeviceInformation(mode.Width, mode.Height));
+                }
+            }
+
+            List<GraphicsDeviceInformation> di = new List<GraphicsDeviceInformation>(_graphicDeviceInfoList);
+            RankDevices(di);
+
+            if (di.Count == 0)
+                throw new NoSuitableGraphicsDeviceException("The process of ranking devices removed all compatible devices.");  // LOCALIZE
+
+            return di[0];
         }
 
         protected virtual void OnDeviceCreated(object sender, EventArgs args)
         {
-            throw new NotImplementedException();
+            if (DeviceCreated != null)
+                DeviceCreated(this, args);
         }
 
         protected virtual void OnDeviceDisposing(object sender, EventArgs args)
         {
-            throw new NotImplementedException();
+            if (DeviceDisposing != null)
+                DeviceDisposing(this, args);
         }
 
         protected virtual void OnDeviceReset(object sender, EventArgs args)
         {
-            throw new NotImplementedException();
+            if (DeviceReset != null)
+                DeviceReset(this, args);
         }
 
         protected virtual void OnDeviceResetting(object sender, EventArgs args)
         {
-            throw new NotImplementedException();
+            if (DeviceResetting != null)
+                DeviceResetting(this, args);
         }
 
         protected virtual void OnPreparingDeviceSettings(object sender, PreparingDeviceSettingsEventArgs args)
         {
-            throw new NotImplementedException();
+            if (PreparingDeviceSettings != null)
+                PreparingDeviceSettings(this, args);
         }
 
         protected virtual void RankDevices(List<GraphicsDeviceInformation> foundDevices)
         {
-            throw new NotImplementedException();
         }
 
         #endregion
 
-        
+        #region Private Members
+
+        void _graphicsDevice_Disposing(object sender, EventArgs e)
+        {
+            OnDeviceDisposing(sender, e);
+        }
+
+        void _graphicsDevice_DeviceReset(object sender, EventArgs e)
+        {
+            OnDeviceReset(sender, e);
+        }
+
+        void _graphicsDevice_DeviceResetting(object sender, EventArgs e)
+        {
+            OnDeviceResetting(sender, e);
+        }
+
+        #endregion Private Members
     }
 }

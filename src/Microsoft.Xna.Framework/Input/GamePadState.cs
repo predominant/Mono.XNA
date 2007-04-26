@@ -49,31 +49,37 @@ namespace Microsoft.Xna.Framework.Input
         public GamePadButtons Buttons
         {
             get { return this.buttons; }
+            internal set { buttons = value; }
         }
 
         public GamePadDPad DPad
         {
             get { return this.dPad; }
+            internal set { dPad = value; }
         }
 
         public bool IsConnected
         {
             get { return this.isConnected; }
+            internal set { isConnected = value; }
         }
 
         public int PacketNumber
         {
             get { return this.packetNumber; }
+            internal set { packetNumber = value; }
         }
 
         public GamePadThumbSticks ThumbSticks
         {
             get { return this.thumbSticks; }
+            internal set { thumbSticks = value; }
         }
 
         public GamePadTriggers Triggers
         {
             get { return this.triggers; }
+            internal set { triggers = value; }
         }
 
         #endregion Public Properties

@@ -1,4 +1,5 @@
 #region License
+
 /*
 MIT License
 Copyright © 2006 The Mono.Xna Team
@@ -25,19 +26,32 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 */
+
 #endregion License
 
-using Microsoft.Xna.Framework;
 using System;
-using Tao.OpenGl;
-using SdlDotNet;
+using Microsoft.Xna.Framework.Graphics.Internal;
 using SdlDotNet.Graphics;
+using Tao.OpenGl;
 
 namespace Microsoft.Xna.Framework.Graphics
 {
-
     public class GraphicsDevice : IDisposable
     {
+        #region Private Fields
+
+        GraphicsAdapter adapter;
+        DeviceType deviceType;
+        IntPtr renderWindowHandle;
+        CreateOptions creationOptions;
+        PresentationParameters _presentationParameters;
+        bool isDisposed;
+        TextureCollection textures = new TextureCollection();
+        Color clearColor = Color.Black;
+
+        #endregion Private Fields
+
+        #region Constructors
 
         public GraphicsDevice(GraphicsAdapter adapter, DeviceType deviceType, IntPtr renderWindowHandle, CreateOptions creationOptions, PresentationParameters presentationParameters)
         {
@@ -45,28 +59,49 @@ namespace Microsoft.Xna.Framework.Graphics
             this.deviceType = deviceType;
             this.renderWindowHandle = renderWindowHandle;
             this.creationOptions = creationOptions;
-            this.presentationParameters = presentationParameters;
+            _presentationParameters = presentationParameters;
+            GraphicsSubSystem.SetVideoMode(presentationParameters.BackBufferWidth, presentationParameters.BackBufferHeight, presentationParameters.IsFullScreen);
+            InitGl();
         }
+
+        void InitGl()
+        {
+            // Enable Smooth Shading
+            Gl.glShadeModel(Gl.GL_SMOOTH);
+            // Black Background
+            Gl.glClearColor(0.0F, 0.0F, 0.0F, 0.5F);
+            // Depth Buffer Setup
+            Gl.glClearDepth(1.0F);
+            // Enables Depth Testing
+            Gl.glEnable(Gl.GL_DEPTH_TEST);
+            // The Type Of Depth Testing To Do
+            Gl.glDepthFunc(Gl.GL_LEQUAL);
+            // Really Nice Perspective Calculations
+            Gl.glHint(Gl.GL_PERSPECTIVE_CORRECTION_HINT, Gl.GL_NICEST);
+        }
+
+        #endregion Constructors
 
         public void Dispose()
         {
-            this.Dispose(true);
+            Dispose(true);
             GC.SuppressFinalize(this);
         }
 
         protected virtual void Dispose(bool disposing)
         {
-            if (!this.isDisposed)
+            if (!isDisposed)
             {
                 if (disposing)
                 {
+                    
                     // Dispose managed resources
                     textures.Dispose();
                 }
 
                 // Dispose Unmanaged resources
 
-                this.isDisposed = true;
+                isDisposed = true;
             }
         }
 
@@ -77,12 +112,12 @@ namespace Microsoft.Xna.Framework.Graphics
 
         public static bool operator !=(GraphicsDevice left, GraphicsDevice right)
         {
-            return !object.Equals(left, right);
+            return !Equals(left, right);
         }
 
         public static bool operator ==(GraphicsDevice left, GraphicsDevice right)
         {
-            return object.Equals(left, right);
+            return Equals(left, right);
         }
 
         public ClipPlaneCollection ClipPlanes
@@ -133,7 +168,7 @@ namespace Microsoft.Xna.Framework.Graphics
 
         public bool IsDisposed
         {
-            get { throw new NotImplementedException(); }
+            get { return isDisposed; }
         }
 
         public PixelShader PixelShader
@@ -144,7 +179,7 @@ namespace Microsoft.Xna.Framework.Graphics
 
         public PresentationParameters PresentationParameters
         {
-            get { throw new NotImplementedException(); }
+            get { return _presentationParameters; }
         }
 
         public RasterStatus RasterStatus
@@ -157,7 +192,10 @@ namespace Microsoft.Xna.Framework.Graphics
             get { throw new NotImplementedException(); }
         }
 
-        public SamplerStateCollection SamplerStates { get { throw new NotImplementedException(); } }
+        public SamplerStateCollection SamplerStates
+        {
+            get { throw new NotImplementedException(); }
+        }
 
         public Rectangle ScissorRectangle
         {
@@ -227,10 +265,11 @@ namespace Microsoft.Xna.Framework.Graphics
         {
             if (color != clearColor)
             {
-                Gl.glClearColor((float)color.R / 255f, (float)color.G / 255f, (float)color.B / 255f, (float)color.A / 255f);
+                Gl.glClearColor((float)color.R/255f, (float)color.G/255f, (float)color.B/255f, (float)color.A/255f);
                 clearColor = color;
             }
             Gl.glClear(Gl.GL_COLOR_BUFFER_BIT);
+            Gl.glLoadIdentity();
         }
 
         public void Clear(ClearOptions options, Color color, float depth, int stencil)
@@ -254,7 +293,7 @@ namespace Microsoft.Xna.Framework.Graphics
         }
 
         public void DrawIndexedPrimitives(PrimitiveType primitiveType, int baseVertex, int minVertexIndex,
-            int numVertices, int startIndex, int primitiveCount)
+                                          int numVertices, int startIndex, int primitiveCount)
         {
             throw new NotImplementedException();
         }
@@ -265,13 +304,13 @@ namespace Microsoft.Xna.Framework.Graphics
         }
 
         public void DrawUserIndexedPrimitives<T>(PrimitiveType primitiveType, T[] vertexData, int vertexOffset,
-            int numVertices, int[] indexData, int indexOffset, int primitiveCount)
+                                                 int numVertices, int[] indexData, int indexOffset, int primitiveCount)
         {
             throw new NotImplementedException();
         }
 
         public void DrawUserIndexedPrimitives<T>(PrimitiveType primitiveType, T[] vertexData, int vertexOffset,
-            int numVertices, short[] indexData, int indexOffset, int primitiveCount)
+                                                 int numVertices, short[] indexData, int indexOffset, int primitiveCount)
         {
             throw new NotImplementedException();
         }
@@ -353,32 +392,38 @@ namespace Microsoft.Xna.Framework.Graphics
 
         protected void raise_DeviceLost(object sender, EventArgs e)
         {
-            throw new NotImplementedException();
+            if (DeviceLost != null)
+                DeviceLost(sender, e);
         }
 
         protected void raise_DeviceReset(object sender, EventArgs e)
         {
-            throw new NotImplementedException();
+            if (DeviceReset != null)
+                DeviceReset(sender, e);
         }
 
         protected void raise_DeviceResetting(object sender, EventArgs e)
         {
-            throw new NotImplementedException();
+            if (DeviceResetting != null)
+                DeviceResetting(sender, e);
         }
 
         protected void raise_Disposing(object sender, EventArgs e)
         {
-            throw new NotImplementedException();
+            if (Disposing != null)
+                Disposing(sender, e);
         }
 
         protected void raise_ResourceCreated(object sender, ResourceCreatedEventArgs e)
         {
-            throw new NotImplementedException();
+            if (ResourceCreated != null)
+                ResourceCreated(sender, e);
         }
 
         protected void raise_ResourceDestroyed(object sender, ResourceDestroyedEventArgs e)
         {
-            throw new NotImplementedException();
+            if (ResourceDestroyed != null)
+                ResourceDestroyed(sender, e);
         }
 
         public void Reset()
@@ -495,14 +540,5 @@ namespace Microsoft.Xna.Framework.Graphics
         {
             throw new NotImplementedException();
         }
-
-        private GraphicsAdapter adapter;
-        private DeviceType deviceType;
-        private IntPtr renderWindowHandle;
-        private CreateOptions creationOptions;
-        private PresentationParameters presentationParameters;
-        private bool isDisposed;
-        private TextureCollection textures = new TextureCollection();
-        private Color clearColor = Color.Black;
     }
 }

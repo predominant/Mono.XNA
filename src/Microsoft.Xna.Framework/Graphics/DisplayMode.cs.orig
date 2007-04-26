@@ -30,7 +30,6 @@ SOFTWARE.
 
 using System;
 using System.Globalization;
-using SdlDotNet.Graphics;
 
 namespace Microsoft.Xna.Framework.Graphics
 {

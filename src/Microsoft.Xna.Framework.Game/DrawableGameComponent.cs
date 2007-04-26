@@ -1,4 +1,5 @@
 #region License
+
 /*
 MIT License
 Copyright © 2006 The Mono.Xna Team
@@ -23,115 +24,138 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 */
+
 #endregion License
 
 using System;
-
 using Microsoft.Xna.Framework.Graphics;
 
 namespace Microsoft.Xna.Framework
 {
-	public class DrawableGameComponent : GameComponent, IDrawable
-	{
-		#region Public Constructors
+    public class DrawableGameComponent : GameComponent, IDrawable
+    {
+        #region Private Fields
 
-		public DrawableGameComponent(Game game) : base(game)
-		{
-			throw new NotImplementedException();
-		}
+        int _drawOrder;
+        bool _visible;
+        IGraphicsDeviceService _graphicsService;
 
-		#endregion Public Constructors
+        #endregion Private Fields
 
-		#region Private Fields
-		
-		private int drawOrder;
-		private bool visible;
-		
-		#endregion Private Fields
+        #region Public Constructors
 
-		#region Public Properties
+        public DrawableGameComponent(Game game) : base(game)
+        {
+            _visible = true;
+        }
 
-		public int DrawOrder
-		{
-			get {
-				return drawOrder;
-			}
-			set {
-				drawOrder = value;
-			}
-		}
-		
-		public bool Visible
-		{
-			get {
-				return visible;
-			}
-			set {
-				visible = value;
-			}
-		}
+        #endregion Public Constructors
 
-		#endregion Public Properties
-		
-		#region Protected Properties
-		
-		protected GraphicsDevice GraphicsDevice
-		{
-			get {
-				throw new NotImplementedException();
-			}
-		}
-		
-		#endregion Protected Properties
-		
-		#region Public Methods
+        #region Public Properties
 
-		public virtual void Draw(GameTime gameTime)
-		{
-			throw new NotImplementedException();
-		}
+        public int DrawOrder
+        {
+            get { return _drawOrder; }
+            set
+            {
+                if (_drawOrder != value)
+                {
+                    _drawOrder = value;
+                    OnDrawOrderChanged(this, EventArgs.Empty);
+                }
+            }
+        }
 
-		public override void Initialize()
-		{
-			throw new NotImplementedException();
-		}
-		
-		#endregion Public Methods
-		
-		#region Protected Methods
-		
-		protected override void Dispose(bool disposing)
-		{
-			throw new NotImplementedException();
-		}
-		
-		protected virtual void LoadGraphicsContent(bool loadAllContent)
-		{
-			throw new NotImplementedException(); 
-		}
-        
-		protected virtual void OnDrawOrderChanged(object sender, EventArgs args)
-		{
-			throw new NotImplementedException();
-		}
+        public bool Visible
+        {
+            get { return _visible; }
+            set
+            {
+                if (_visible != value)
+                {
+                    _visible = value;
+                    OnVisibleChanged(this, EventArgs.Empty);
+                }
+            }
+        }
 
-		protected virtual void OnVisibleChanged(object sender, EventArgs args)
-		{
-			throw new NotImplementedException();
-		}
-        
-		protected virtual void UnloadGraphicsContent(bool unloadAllContent)
-		{
-			throw new NotImplementedException();
-		}
-        
-		#endregion Protected Methods
+        #endregion Public Properties
 
-		#region Public Events
+        #region Protected Properties
 
-		public event EventHandler DrawOrderChanged;
-		public event EventHandler VisibleChanged;
+        protected GraphicsDevice GraphicsDevice
+        {
+            get { return _graphicsService.GraphicsDevice; }
+        }
 
-		#endregion Public Events
+        #endregion Protected Properties
+
+        #region Public Methods
+
+        public virtual void Draw(GameTime gameTime)
+        {
+        }
+
+        /// <summary>
+        /// Initializes this instance.
+        /// </summary>
+        public override void Initialize()
+        {
+            _graphicsService = (IGraphicsDeviceService)Game.Services.GetService(typeof(IGraphicsDeviceService));
+            if (_graphicsService == null)
+                throw new InvalidOperationException("Drawable components require IGraphicsDeviceService in the Services collection.");
+
+            _graphicsService.DeviceResetting += DeviceResetting;
+            _graphicsService.DeviceReset += DeviceReset;
+            
+            LoadGraphicsContent(true);
+        }
+
+        #endregion Public Methods
+
+        #region Protected Methods
+
+        protected virtual void LoadGraphicsContent(bool loadAllContent)
+        {
+        }
+
+        protected virtual void OnDrawOrderChanged(object sender, EventArgs args)
+        {
+            if (DrawOrderChanged != null)
+                DrawOrderChanged(sender, args);
+        }
+
+        protected virtual void OnVisibleChanged(object sender, EventArgs args)
+        {
+            if (VisibleChanged != null)
+                VisibleChanged(sender, args);
+        }
+
+        protected virtual void UnloadGraphicsContent(bool unloadAllContent)
+        {
+        }
+
+        #endregion Protected Methods
+
+        #region Private Methods
+
+        void DeviceReset(object sender, EventArgs e)
+        {
+            LoadGraphicsContent(false);
+        }
+
+        void DeviceResetting(object sender, EventArgs e)
+        {
+            UnloadGraphicsContent(false);
+        }
+
+        #endregion Private Methods
+
+        #region Public Events
+
+        public event EventHandler DrawOrderChanged;
+        public event EventHandler VisibleChanged;
+
+        #endregion Public Events
     }
 }
