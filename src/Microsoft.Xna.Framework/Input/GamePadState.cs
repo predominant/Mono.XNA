@@ -1,4 +1,5 @@
 #region License
+
 /*
 MIT License
 Copyright © 2006 The Mono.Xna Team
@@ -23,10 +24,8 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 */
-#endregion License
 
-using System;
-using System.Text;
+#endregion License
 
 namespace Microsoft.Xna.Framework.Input
 {
@@ -34,56 +33,49 @@ namespace Microsoft.Xna.Framework.Input
     {
         #region Private Fields
 
-        private GamePadButtons buttons;
-        private GamePadDPad dPad;
-        private bool isConnected;
-        private int packetNumber;
-        private GamePadThumbSticks thumbSticks;
-        private GamePadTriggers triggers;
+        internal GamePadButtons buttons;
+        internal GamePadDPad dPad;
+        internal bool isConnected;
+        int packetNumber;
+        internal GamePadThumbSticks thumbSticks;
+        internal GamePadTriggers triggers;
 
         #endregion Private Fields
-
 
         #region Public Properties
 
         public GamePadButtons Buttons
         {
-            get { return this.buttons; }
-            internal set { buttons = value; }
+            get { return buttons; }
         }
 
         public GamePadDPad DPad
         {
-            get { return this.dPad; }
-            internal set { dPad = value; }
+            get { return dPad; }
         }
 
         public bool IsConnected
         {
-            get { return this.isConnected; }
-            internal set { isConnected = value; }
+            get { return isConnected; }
         }
 
         public int PacketNumber
         {
-            get { return this.packetNumber; }
-            internal set { packetNumber = value; }
+            get { return packetNumber; }
+            internal set { packetNumber = value & 0x7FFFFFFF; } // ensures the packet number wraps back to zero, and not to 0x8000000
         }
 
         public GamePadThumbSticks ThumbSticks
         {
-            get { return this.thumbSticks; }
-            internal set { thumbSticks = value; }
+            get { return thumbSticks; }
         }
 
         public GamePadTriggers Triggers
         {
-            get { return this.triggers; }
-            internal set { triggers = value; }
+            get { return triggers; }
         }
 
         #endregion Public Properties
-
 
         #region Public Methods
 
@@ -95,11 +87,11 @@ namespace Microsoft.Xna.Framework.Input
         public static bool operator ==(GamePadState left, GamePadState right)
         {
             return (left.isConnected == right.isConnected)
-                 && (left.dPad == right.dPad)
-                 && (left.buttons == right.buttons)
-                 && (left.thumbSticks == right.thumbSticks)
-                 && (left.triggers == right.triggers)
-                 && (left.packetNumber == right.packetNumber);
+                   && (left.dPad == right.dPad)
+                   && (left.buttons == right.buttons)
+                   && (left.thumbSticks == right.thumbSticks)
+                   && (left.triggers == right.triggers)
+                   && (left.packetNumber == right.packetNumber);
         }
 
         public override bool Equals(object obj)
@@ -115,7 +107,7 @@ namespace Microsoft.Xna.Framework.Input
         public override int GetHashCode()
         {
             // Packetnumber should be unique
-            return this.packetNumber;
+            return packetNumber;
         }
 
         public override string ToString()

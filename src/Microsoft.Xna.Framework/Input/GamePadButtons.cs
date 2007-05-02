@@ -1,4 +1,5 @@
 #region License
+
 /*
 MIT License
 Copyright ? 2006 The Mono.Xna Team
@@ -23,10 +24,9 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 */
+
 #endregion License
 
-using System;
-using System.Collections.Generic;
 using System.Text;
 
 namespace Microsoft.Xna.Framework.Input
@@ -35,74 +35,82 @@ namespace Microsoft.Xna.Framework.Input
     {
         #region Private Fields
 
-        private ButtonState a;
-        private ButtonState b;
-        private ButtonState back;
-        private ButtonState leftShoulder;
-        private ButtonState rightShoulder;
-        private ButtonState leftStick;
-        private ButtonState rightStick;
-        private ButtonState start;
-        private ButtonState x;
-        private ButtonState y;
+        ButtonState a;
+        ButtonState b;
+        ButtonState back;
+        ButtonState leftShoulder;
+        ButtonState rightShoulder;
+        ButtonState leftStick;
+        ButtonState rightStick;
+        ButtonState start;
+        ButtonState x;
+        ButtonState y;
 
         #endregion Private Fields
-
 
         #region Public Properties
 
         public ButtonState A
         {
-            get { return this.a; }
+            get { return a; }
+            internal set { a = value; }
         }
 
         public ButtonState B
         {
-            get { return this.b; }
+            get { return b; }
+            internal set { b = value; }
         }
 
         public ButtonState Back
         {
-            get { return this.back; }
+            get { return back; }
+            internal set { back = value; }
         }
 
         public ButtonState LeftShoulder
         {
-            get { return this.leftShoulder; }
+            get { return leftShoulder; }
+            internal set { leftShoulder = value; }
         }
 
         public ButtonState RightShoulder
         {
-            get { return this.rightShoulder; }
+            get { return rightShoulder; }
+            internal set { rightShoulder = value; }
         }
 
         public ButtonState LeftStick
         {
-            get { return this.leftStick; }
+            get { return leftStick; }
+            internal set { leftStick = value; }
         }
 
         public ButtonState RightStick
         {
-            get { return this.rightStick; }
+            get { return rightStick; }
+            internal set { rightStick = value; }
         }
 
         public ButtonState Start
         {
-            get { return this.start; }
+            get { return start; }
+            internal set { start = value; }
         }
 
         public ButtonState X
         {
-            get { return this.x; }
+            get { return x; }
+            internal set { x = value; }
         }
 
         public ButtonState Y
         {
-            get { return this.y; }
+            get { return y; }
+            internal set { y = value; }
         }
 
         #endregion
-
 
         #region Public Methods
 
@@ -114,15 +122,15 @@ namespace Microsoft.Xna.Framework.Input
         public static bool operator ==(GamePadButtons left, GamePadButtons right)
         {
             return (left.a == right.a)
-                && (left.b == right.b)
-                && (left.back == right.back)
-                && (left.leftShoulder == right.leftShoulder)
-                && (left.leftStick == right.leftStick)
-                && (left.rightShoulder == right.rightShoulder)
-                && (left.rightStick == right.rightStick)
-                && (left.start == right.start)
-                && (left.x == right.x)
-                && (left.y == right.y);
+                   && (left.b == right.b)
+                   && (left.back == right.back)
+                   && (left.leftShoulder == right.leftShoulder)
+                   && (left.leftStick == right.leftStick)
+                   && (left.rightShoulder == right.rightShoulder)
+                   && (left.rightStick == right.rightStick)
+                   && (left.start == right.start)
+                   && (left.x == right.x)
+                   && (left.y == right.y);
         }
 
         public override bool Equals(object obj)
@@ -133,16 +141,16 @@ namespace Microsoft.Xna.Framework.Input
         public override int GetHashCode()
         {
             // TODO: Is this even worth doing? They're just bools...
-            return this.a.GetHashCode()
-                 ^ this.b.GetHashCode()
-                 ^ this.back.GetHashCode()
-                 ^ this.leftShoulder.GetHashCode()
-                 ^ this.leftStick.GetHashCode()
-                 ^ this.rightShoulder.GetHashCode()
-                 ^ this.rightStick.GetHashCode()
-                 ^ this.start.GetHashCode()
-                 ^ this.x.GetHashCode()
-                 ^ this.y.GetHashCode();
+            return a.GetHashCode()
+                   ^ b.GetHashCode()
+                   ^ back.GetHashCode()
+                   ^ leftShoulder.GetHashCode()
+                   ^ leftStick.GetHashCode()
+                   ^ rightShoulder.GetHashCode()
+                   ^ rightStick.GetHashCode()
+                   ^ start.GetHashCode()
+                   ^ x.GetHashCode()
+                   ^ y.GetHashCode();
         }
 
         public override string ToString()
@@ -150,34 +158,34 @@ namespace Microsoft.Xna.Framework.Input
             StringBuilder output = new StringBuilder(64);
 
             output.Append("{{Buttons:");
-            if (this.a == ButtonState.Pressed)
+            if (a == ButtonState.Pressed)
                 output.Append((output.Length == 0) ? "A" : " A");
 
-            if (this.b == ButtonState.Pressed)
+            if (b == ButtonState.Pressed)
                 output.Append((output.Length == 0) ? "B" : " B");
 
-            if (this.x == ButtonState.Pressed)
+            if (x == ButtonState.Pressed)
                 output.Append((output.Length == 0) ? "X" : " X");
 
-            if (this.y == ButtonState.Pressed)
+            if (y == ButtonState.Pressed)
                 output.Append((output.Length == 0) ? "Y" : " Y");
 
-            if (this.leftShoulder == ButtonState.Pressed)
+            if (leftShoulder == ButtonState.Pressed)
                 output.Append((output.Length == 0) ? "LeftShoulder" : " LeftShoulder");
 
-            if (this.rightShoulder == ButtonState.Pressed)
+            if (rightShoulder == ButtonState.Pressed)
                 output.Append((output.Length == 0) ? "RightShoulder" : " RightShoulder");
 
-            if (this.leftStick == ButtonState.Pressed)
+            if (leftStick == ButtonState.Pressed)
                 output.Append((output.Length == 0) ? "LeftStick" : " LeftStick");
 
-            if (this.rightStick == ButtonState.Pressed)
+            if (rightStick == ButtonState.Pressed)
                 output.Append((output.Length == 0) ? "RightStick" : " RightStick");
 
-            if (this.start == ButtonState.Pressed)
+            if (start == ButtonState.Pressed)
                 output.Append((output.Length == 0) ? "Start" : " Start");
 
-            if (this.back == ButtonState.Pressed)
+            if (back == ButtonState.Pressed)
                 output.Append((output.Length == 0) ? "Back" : " Back");
 
             if (output.Length == 10)

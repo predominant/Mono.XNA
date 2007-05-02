@@ -41,18 +41,15 @@ namespace Microsoft.Xna.Framework
         public const float PiOver4 = (float)(Math.PI / 4.0);
         public const float TwoPi = (float)(Math.PI * 2.0);
         
-
         public static float Barycentric(float value1, float value2, float value3, float amount1, float amount2)
         {
             throw new NotImplementedException();
         }
-        
 
         public static float CatmullRom(float value1, float value2, float value3, float value4, float amount)
         {
             throw new NotImplementedException();
         }
-
 
         public static float Clamp(float value, float min, float max)
         {
@@ -66,12 +63,10 @@ namespace Microsoft.Xna.Framework
             return value;
         }
         
-        
         public static float Distance(float value1, float value2)
         {
             return Math.Abs(value1 - value2);
         }
-        
         
         public static float Hermite(float value1, float tangent1, float value2, float tangent2, float amount)
         {
@@ -83,31 +78,26 @@ namespace Microsoft.Xna.Framework
         {
             throw new NotImplementedException();
         }
-        
-        
+
         public static float Max(float value1, float value2)
         {
-            return (value1 > value2) ? value1 : value2;
+            return Math.Max(value1, value2);
         }
-
         
         public static float Min(float value1, float value2)
         {
-            return (value1 < value2) ? value1 : value2;
+            return Math.Min(value1, value2);
         }
-
         
         public static float SmoothStep(float value1, float value2, float amount)
         {
             throw new NotImplementedException();
         }
         
-        
         public static float ToDegrees(float radians)
         {
             return (radians * 57.29578f);
         }
-        
         
         public static float ToRadians(float degrees)
         {

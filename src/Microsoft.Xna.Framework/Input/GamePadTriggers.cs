@@ -27,6 +27,7 @@ SOFTWARE.
 #endregion License
 
 using System;
+using SdlDotNet.Input;
 
 namespace Microsoft.Xna.Framework.Input
 {
@@ -34,10 +35,20 @@ namespace Microsoft.Xna.Framework.Input
     {
         #region Private Fields
 
-        private float left;
-        private float right;
+        internal float left;
+        internal float right;
 
         #endregion Private Fields
+
+        #region Constructors
+
+        public GamePadTriggers(float left, float right)
+        {
+            this.left = left;
+            this.right = right;
+        }
+
+        #endregion Constructors
 
 
         #region Public Properties

@@ -1,4 +1,5 @@
 #region License
+
 /*
 MIT License
 Copyright © 2006 The Mono.Xna Team
@@ -25,59 +26,207 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 */
+
 #endregion License
 
 using System;
-using System.Collections.Generic;
-using System.Text;
-using System.Runtime.InteropServices;
-
-using SdlDotNet.Input;
 using SdlDotNet.Core;
+using SdlDotNet.Input;
 
 namespace Microsoft.Xna.Framework.Input
 {
     public static class GamePad
     {
+        #region Button Constants
+
+        const int A = 2;
+        const int B = 3;
+        const int X = 1;
+        const int Y = 4;
+        const int BACK = 9;
+        const int START = 10;
+        const int LEFT_SHOULDER = 5;
+        const int RIGHT_SHOULDER = 6;
+        const int LEFT_STICK = 11;
+        const int RIGHT_STICK = 12;
+        const int LEFT_TRIGGER = 7;
+        const int RIGHT_TRIGGER = 8;
+
+        #endregion Button Constants
+
+        const int MAX_STICKS = 4;
+
         #region Constructors
 
-        static List<Joystick> _sticks;
+        static Joystick[] _sticks;
+        static GamePadState[] _state;
+        static int s_numJoysticks;
 
         static GamePad()
         {
+            // SDL currently does not detect new devices, so we'll statically initialize the array of available joysticks
             Joysticks.Initialize();
-            _sticks = new List<Joystick>(Joysticks.NumberOfJoysticks);
 
+            s_numJoysticks = Joysticks.NumberOfJoysticks > MAX_STICKS ? MAX_STICKS : Joysticks.NumberOfJoysticks;
+            _state = new GamePadState[MAX_STICKS];
+            _sticks = new Joystick[MAX_STICKS];
+
+            if (s_numJoysticks > 0)
+            {
+                for (int i = 0; i < s_numJoysticks; i++)
+                {
+                    _sticks[i] = Joysticks.OpenJoystick(i);
+                    _state[i].isConnected = true;
+                }
+
+                Events.JoystickButtonDown += new EventHandler<JoystickButtonEventArgs>(Events_JoystickButtonDown);
+                Events.JoystickButtonUp += new EventHandler<JoystickButtonEventArgs>(Events_JoystickButtonUp);
+                Events.JoystickAxisMotion += new EventHandler<JoystickAxisEventArgs>(Events_JoystickAxisMotion);
+                Events.JoystickHatMotion += new EventHandler<JoystickHatEventArgs>(Events_JoystickHatMotion);
+            }
+        }
+
+        static void Events_JoystickHatMotion(object sender, JoystickHatEventArgs e)
+        {
+            if (e.Device > MAX_STICKS) return;
+            _state[e.Device].PacketNumber++;        // integer wrapping is handled by setter
+        }
+
+        static void Events_JoystickAxisMotion(object sender, JoystickAxisEventArgs e)
+        {
+            if (e.Device > MAX_STICKS) return;
+            _state[e.Device].PacketNumber++;        // integer wrapping is handled by setter
+        }
+
+        static void Events_JoystickButtonUp(object sender, JoystickButtonEventArgs e)
+        {
+            if (e.Device > MAX_STICKS) return;
+            _state[e.Device].PacketNumber++;        // integer wrapping is handled by setter
+        }
+
+        static void Events_JoystickButtonDown(object sender, JoystickButtonEventArgs e)
+        {
+            if (e.Device > MAX_STICKS) return;
+            _state[e.Device].PacketNumber++;        // integer wrapping is handled by setter
         }
 
         #endregion Constructors
-
 
         #region Public Methods
 
         public static GamePadCapabilities GetCapabilities(PlayerIndex playerIndex)
         {
-            throw new NotImplementedException();
+            if (playerIndex < PlayerIndex.One || playerIndex > PlayerIndex.Four)
+                throw new InvalidOperationException();
+
+            GamePadCapabilities caps = new GamePadCapabilities();
+            Joystick stick = _sticks[(int)playerIndex];
+            if (stick != null)
+            {
+                caps.hasAButton = stick.NumberOfButtons > 1;
+                caps.hasBButton = stick.NumberOfButtons > 0;
+                caps.hasDPadDownButton = caps.hasDPadLeftButton = caps.hasDPadRightButton = caps.hasDPadUpButton = stick.NumberOfHats > 0;
+                caps.hasLeftShoulderButton = stick.NumberOfButtons > 4;
+                caps.hasRightShoulderButton = stick.NumberOfButtons > 5;
+                caps.hasStartButton = stick.NumberOfButtons > 7;
+                caps.hasXButton = stick.NumberOfButtons > 2;
+                caps.hasYButton = stick.NumberOfButtons > 3;
+                caps.isConnected = true;
+                caps.gamePadType = GamePadType.GamePad;
+            }
+            return caps;
         }
 
         public static GamePadState GetState(PlayerIndex playerIndex)
         {
-            GamePadState state = new GamePadState();
-            state.IsConnected = false;
-            
-            int number = (int)playerIndex;
-            if (Joysticks.IsValidJoystickNumber(number))
-            {
-                
-                Joystick j = new Joystick(number);
-            }
-
-            return state;
+            return GetState(playerIndex, GamePadDeadZone.IndependentAxes);
         }
 
         public static GamePadState GetState(PlayerIndex playerIndex, GamePadDeadZone deadZoneMode)
         {
-            throw new NotImplementedException();
+            if (playerIndex < PlayerIndex.One || playerIndex > PlayerIndex.Four)
+                throw new InvalidOperationException();
+
+            int number = (int)playerIndex;
+            if (number < s_numJoysticks)
+            {
+                Joystick j = _sticks[number];
+
+                _state[number].buttons.A = (ButtonState)j.GetButtonState(A);
+                _state[number].buttons.B = (ButtonState)j.GetButtonState(B);
+                _state[number].buttons.X = (ButtonState)j.GetButtonState(X);
+                _state[number].buttons.Y = (ButtonState)j.GetButtonState(Y);
+                _state[number].buttons.Back = (ButtonState)j.GetButtonState(BACK);
+                _state[number].buttons.Start = (ButtonState)j.GetButtonState(START);
+                _state[number].buttons.LeftShoulder = (ButtonState)j.GetButtonState(LEFT_SHOULDER);
+                _state[number].buttons.LeftStick = (ButtonState)j.GetButtonState(LEFT_STICK);
+                _state[number].buttons.RightShoulder = (ButtonState)j.GetButtonState(RIGHT_SHOULDER);
+                _state[number].buttons.RightStick = (ButtonState)j.GetButtonState(RIGHT_STICK);
+
+                float x1 = Rescale(j.GetAxisPosition(JoystickAxis.Horizontal));
+                float y1 = Rescale(j.GetAxisPosition(JoystickAxis.Vertical));
+                float x2 = Rescale(j.GetAxisPosition(JoystickAxis.Axis3));
+                float y2 = Rescale(j.GetAxisPosition(JoystickAxis.Axis4));
+
+                switch (deadZoneMode)
+                {
+                    case GamePadDeadZone.IndependentAxes:
+                        _state[number].thumbSticks.left = IndependentAxisDeadZone(x1, y1);
+                        _state[number].thumbSticks.right = IndependentAxisDeadZone(x2, y2);
+                        break;
+
+                    case GamePadDeadZone.Circular:
+                        _state[number].thumbSticks.left = CircularAxisDeadZone(x1, y1);
+                        _state[number].thumbSticks.right = CircularAxisDeadZone(x2, y2);
+                        break;
+
+                    case GamePadDeadZone.None:
+                        _state[number].thumbSticks.left = new Vector2(x1, y1);
+                        _state[number].thumbSticks.right = new Vector2(x2, y2);
+                        break;
+                }
+                GamePadDPad.ToGamePadDPad(ref _state[number].dPad, j.GetHatState(0));
+
+                // converts ButtonKeyState.Pressed ( = 1) to float of 1.0f
+                // since SDL doesn't support reading the position of the trigger.  Will review this later
+                _state[number].triggers.left = (int)j.GetButtonState(LEFT_TRIGGER)*1.0f;
+                _state[number].triggers.right = (int)j.GetButtonState(RIGHT_TRIGGER)*1.0f;
+            }
+
+            return _state[number];
+        }
+
+        const float DEADZONE = 0.2f;
+        const double EPSILON = 1 / 100000;
+
+        /// <summary>
+        /// As per http://blogs.msdn.com/shawnhar/archive/2007/03/28/gamepads-suck.aspx
+        /// <paramref name="x"/> and <paramref name="y"/> are assumed to be between -1.0 and 1.0
+        /// </summary>
+        static Vector2 IndependentAxisDeadZone(float x, float y)
+        {
+            return new Vector2(
+                Math.Max(Math.Abs(x) - DEADZONE, 0) * Math.Sign(x) / (1 - DEADZONE),
+                Math.Max(Math.Abs(y) - DEADZONE, 0) * Math.Sign(y) / (1 - DEADZONE));
+        }
+
+        // for the circular axis dead zone, this value is the maximum distance for x² + y², when x = y = 1 | -1
+        const float MAX_DIST = 1.4142135623730951f;
+
+        /// <summary>
+        /// As per http://blogs.msdn.com/shawnhar/archive/2007/03/28/gamepads-suck.aspx
+        /// Both <paramref name="x"/> and <paramref name="y"/> parameters assumed to be between -1.0 and 1.0
+        /// </summary>
+        static Vector2 CircularAxisDeadZone(float x, float y)
+        {
+            float dist = (float)Math.Max(Math.Sqrt(x * x + y * y), EPSILON);
+            float deadZone = Math.Max(dist - DEADZONE, 0)/(MAX_DIST - DEADZONE)/dist;
+            return new Vector2(x*deadZone, y*deadZone);
+        }
+
+        static float Rescale(float p)
+        {
+            return (0.5f - p)*2f;
         }
 
         public static bool SetVibration(PlayerIndex playerIndex, float leftMotor, float rightMotor)

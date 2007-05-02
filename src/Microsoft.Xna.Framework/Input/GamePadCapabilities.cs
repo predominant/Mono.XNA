@@ -33,23 +33,23 @@ namespace Microsoft.Xna.Framework.Input
     {
         #region Private Fields
 
-        private GamePadType gamePadType;
+        internal GamePadType gamePadType;
 
         // TODO: Change to a BitArray maybe?
-        private bool hasAButton; 
-        private bool hasBButton;
-        private bool hasXButton;
-        private bool hasYButton;
-        private bool hasBackButton;
-        private bool hasStartButton;
-        private bool hasLeftShoulderButton;
-        private bool hasRightShoulderButton;
-        private bool hasDPadLeftButton;
-        private bool hasDPadDownButton;
-        private bool hasDPadRightButton;
-        private bool hasDPadUpButton;
-        private bool isConnected;
-        private bool hasVoiceSupport;
+        internal bool hasAButton; 
+        internal bool hasBButton;
+        internal bool hasXButton;
+        internal bool hasYButton;
+        internal bool hasBackButton;
+        internal bool hasStartButton;
+        internal bool hasLeftShoulderButton;
+        internal bool hasRightShoulderButton;
+        internal bool hasDPadLeftButton;
+        internal bool hasDPadDownButton;
+        internal bool hasDPadRightButton;
+        internal bool hasDPadUpButton;
+        internal bool isConnected;
+        internal bool hasVoiceSupport;
 
         #endregion Private Fields
 

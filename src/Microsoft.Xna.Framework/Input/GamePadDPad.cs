@@ -1,4 +1,5 @@
 #region License
+
 /*
 MIT License
 Copyright © 2006 The Mono.Xna Team
@@ -25,10 +26,12 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 */
+
 #endregion License
 
 using System;
 using System.Text;
+using SdlDotNet.Input;
 
 namespace Microsoft.Xna.Framework.Input
 {
@@ -36,38 +39,57 @@ namespace Microsoft.Xna.Framework.Input
     {
         #region Private Fields
 
-        private ButtonState down;
-        private ButtonState left;
-        private ButtonState right;
-        private ButtonState up;
+        ButtonState _down;
+        ButtonState _left;
+        ButtonState _right;
+        ButtonState _up;
 
         #endregion Private Fields
 
+        internal GamePadDPad(ButtonState up, ButtonState right, ButtonState down, ButtonState left)
+        {
+            _down = down;
+            _left = left;
+            _right = right;
+            _up = up;
+        }
+
+#if NUNITTESTS
+        public
+#else
+        internal 
+#endif
+        static void ToGamePadDPad(ref GamePadDPad pad, JoystickHatStates state)
+        {
+            pad._up = (ButtonState)Math.Sign((int)(state & JoystickHatStates.Up));
+            pad._right = (ButtonState)Math.Sign((int)(state & JoystickHatStates.Right));
+            pad._down = (ButtonState)Math.Sign((int)(state & JoystickHatStates.Down));
+            pad._left = (ButtonState)Math.Sign((int)(state & JoystickHatStates.Left));
+        }
 
         #region Public Fields
 
         public ButtonState Down
         {
-            get { return this.down; }
+            get { return _down; }
         }
 
         public ButtonState Left
         {
-            get { return this.left; }
+            get { return _left; }
         }
 
         public ButtonState Right
         {
-            get { return this.right; }
+            get { return _right; }
         }
 
         public ButtonState Up
         {
-            get { return this.up; }
+            get { return _up; }
         }
 
         #endregion Public Fields
-
 
         #region Public Methods
 
@@ -78,10 +100,10 @@ namespace Microsoft.Xna.Framework.Input
 
         public static bool operator ==(GamePadDPad left, GamePadDPad right)
         {
-            return (left.Down == right.Down)
-                && (left.Up == right.Up)
-                && (left.Left == right.Left)
-                && (left.Right == right.Right);
+            return (left._down == right._down)
+                   && (left._up == right._up)
+                   && (left._left == right._left)
+                   && (left._right == right._right);
         }
 
         public override bool Equals(object obj)
@@ -91,7 +113,7 @@ namespace Microsoft.Xna.Framework.Input
 
         public override int GetHashCode()
         {
-            return (int)left ^ (int)right ^ (int)up ^ (int)down;
+            return (int)_left ^ (int)_right ^ (int)_up ^ (int)_down;
         }
 
         public override string ToString()
@@ -99,16 +121,16 @@ namespace Microsoft.Xna.Framework.Input
             StringBuilder output = new StringBuilder(20);
             output.Append("{{DPad:");
 
-            if (this.up == ButtonState.Pressed)
+            if (_up == ButtonState.Pressed)
                 output.Append((output.Length == 0) ? "Up" : " Up");
 
-            if (this.down == ButtonState.Pressed)
+            if (_down == ButtonState.Pressed)
                 output.Append((output.Length == 0) ? "Down" : " Down");
 
-            if (this.left == ButtonState.Pressed)
+            if (_left == ButtonState.Pressed)
                 output.Append((output.Length == 0) ? "Left" : " Left");
 
-            if (this.right == ButtonState.Pressed)
+            if (_right == ButtonState.Pressed)
                 output.Append((output.Length == 0) ? "Right" : " Right");
 
             if (output.Length == 0)

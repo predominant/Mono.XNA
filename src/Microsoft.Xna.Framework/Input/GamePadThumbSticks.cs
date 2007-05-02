@@ -35,11 +35,10 @@ namespace Microsoft.Xna.Framework.Input
     {
         #region Private Fields
 
-        private Vector2 left;
-        private Vector2 right;
+        internal Vector2 left;
+        internal Vector2 right;
 
         #endregion Private Fields
-
 
         #region Public Properties
 
