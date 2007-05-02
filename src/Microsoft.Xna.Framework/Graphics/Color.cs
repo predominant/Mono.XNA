@@ -1,9 +1,13 @@
 #region License
+
 /*
 MIT License
 Copyright © 2006 The Mono.Xna Team
 
 All rights reserved.
+
+Authors:
+ * Stuart Carnie
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
@@ -23,10 +27,11 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 */
+
 #endregion License
 
-
 #region Original License
+
 //
 // System.Drawing.Color.cs
 //
@@ -60,260 +65,47 @@ SOFTWARE.
 // OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
 // WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 //
+
 #endregion Original License
 
-using System.Collections;
-using System.Runtime.InteropServices;
-using System.ComponentModel;
-using System.Reflection;
 using System;
-using Microsoft.Xna.Framework;
+using System.Collections;
 using Microsoft.Xna.Framework.Graphics.PackedVector;
-using System.Drawing;
 
 namespace Microsoft.Xna.Framework.Graphics
 {
     public struct Color : IPackedVector<uint>, IPackedVector, IEquatable<Color>
     {
-        private static Hashtable namedColors;
-        private static Hashtable systemColors;
-        static Color[] knownColors;
+        #region Private Fields
 
-        // Private transparency (A) and R,G,B fields.
-        private uint value;
-        private static string creatingColorNames = "creatingColorNames";
+        uint _packedValue;
 
-        // The specs also indicate that all three of these properties are true
-        // if created with FromKnownColor or FromNamedColor, false otherwise (FromARGB).
-        // Per Microsoft and ECMA specs these varibles are set by which constructor is used, not by their values.
-        public Color(Vector3 vector) { throw new NotImplementedException(); }
+        #endregion Private Fields
 
-        public Color(Vector4 vector) { throw new NotImplementedException(); }
-
-        public Color(byte r, byte g, byte b) { throw new NotImplementedException(); }
-
-        public Color(byte r, byte g, byte b, byte a) { throw new NotImplementedException(); }
-
-
-        [Flags]
-        enum ColorType : short
+        public Color(Vector3 vector)
         {
-            Empty = 0,
-            Known = 1,
-            ARGB = 2,
-            Named = 4,
-            System = 8
-        }
-        private short state;
-        private short knownColor;
-
-        private string name;
-
-        private string Name
-        {
-            get
-            {
-                if (name == null)
-                {
-                    if (IsNamedColor)
-                    { // Can happen with stuff deserialized from MS
-                        FillColorNames();
-                        object o = knownColors[knownColor];
-                        if (o != null)
-                            return ((Color)o).name;
-                    }
-                    return String.Format("{0:x}", ToArgb());
-                }
-                return name;
-            }
+            _packedValue = InitializeFromVector3(vector);
         }
 
-        internal bool IsKnownColor
+        public Color(Vector4 vector)
         {
-            get
-            {
-                return (state & ((short)ColorType.Known)) != 0;
-            }
+            _packedValue = InitializeFromVector4(vector);
         }
 
-        internal bool IsSystemColor
+        public Color(byte r, byte g, byte b)
         {
-            get
-            {
-                return (state & ((short)ColorType.System)) != 0;
-            }
+            _packedValue = InitializeFromArgb(255, r, g, b);
         }
 
-        internal bool IsNamedColor
+        public Color(byte r, byte g, byte b, byte a)
         {
-            get
-            {
-                return (state & (short)(ColorType.Known | ColorType.Named)) != 0;
-            }
+            _packedValue = InitializeFromArgb(a, r, g, b);
         }
 
-
-        internal static Color FromArgb(int red, int green, int blue)
+        internal Color(uint packedValue)
         {
-            return FromArgb(255, red, green, blue);
+            _packedValue = packedValue;
         }
-
-        internal static Color FromArgb(int alpha, int red, int green, int blue)
-        {
-            CheckARGBValues(alpha, red, green, blue);
-            Color color = new Color();
-            color.state = (short)ColorType.ARGB;
-            color.value = (uint)(((uint)alpha << 24) + (red << 16) + (green << 8) + blue);
-            return color;
-        }
-
-        private static Color FromArgbNamed(int alpha, int red, int green, int blue, string name, KnownColor knownColor)
-        {
-            Color color = FromArgb(alpha, red, green, blue);
-            color.state = (short)(ColorType.Known | ColorType.Named);
-            //color.issystemcolor = false; //???
-            color.name = name;
-            // FIXME: here happens SEGFAULT.
-            //color.knownColor = (KnownColor) Enum.Parse (typeof (KnownColor), name, false);
-            color.knownColor = (short)knownColor;
-            return color;
-        }
-
-        internal static Color FromArgbSystem(int alpha, int red, int green, int blue, string name, KnownColor knownColor)
-        {
-            Color color = FromArgbNamed(alpha, red, green, blue, name, knownColor);
-            color.state |= (short)ColorType.System;
-            return color;
-        }
-
-        internal int ToArgb()
-        {
-            return (int)value;
-        }
-
-        internal static Color FromArgb(int alpha, Color baseColor)
-        {
-            return FromArgb(alpha, baseColor.R, baseColor.G, baseColor.B);
-        }
-
-        internal static Color FromArgb(int argb)
-        {
-            return FromArgb((argb >> 24) & 0x0FF, (argb >> 16) & 0x0FF, (argb >> 8) & 0x0FF, argb & 0x0FF);
-        }
-
-        internal static Color FromKnownColor(KnownColor c)
-        {
-            if (knownColors == null)
-                FillColorNames();
-
-            if (c < KnownColor.ActiveBorder || c > KnownColor.MenuHighlight)
-            {
-                // This is what it returns!
-                Color d = FromArgb(0, 0, 0, 0);
-                d.name = c.ToString();
-                d.state |= (short)ColorType.Named;
-                d.knownColor = (short)c;
-                return d;
-            }
-
-            return knownColors[(int)c];
-        }
-
-        private static Hashtable GetColorHashtableFromType(Type type)
-        {
-            Hashtable colorHash = new Hashtable(CaseInsensitiveHashCodeProvider.Default,
-                                 CaseInsensitiveComparer.Default);
-
-            PropertyInfo[] props = type.GetProperties();
-            foreach (PropertyInfo prop in props)
-            {
-                if (prop.PropertyType != typeof(Color))
-                    continue;
-
-                MethodInfo getget = prop.GetGetMethod();
-                if (getget == null || getget.IsStatic == false)
-                    continue;
-
-                object o = prop.GetValue(null, null);
-                colorHash.Add(prop.Name, o);
-
-                Color c = (Color)o;
-                knownColors[(int)c.knownColor] = c;
-            }
-            return colorHash;
-        }
-
-        private static void FillColorNames()
-        {
-            lock (creatingColorNames)
-            {
-                if (systemColors != null)
-                    return;
-                knownColors = new Color[(int)KnownColor.MenuHighlight + 1];
-                Hashtable colorHash = GetColorHashtableFromType(typeof(Color));
-                namedColors = colorHash;
-
-                colorHash = GetColorHashtableFromType(typeof(SystemColors));
-                systemColors = colorHash;
-            }
-        }
-
-        internal static void UpdateKnownColor(int alpha, int red, int green, int blue, string name, KnownColor known_color)
-        {
-            FillColorNames();
-            knownColors[(int)known_color] = Color.FromArgbSystem(alpha, red, green, blue, name, known_color);
-        }
-
-        internal static Color FromName(string colorName)
-        {
-            object c = NamedColors[colorName];
-            if (c == null)
-            {
-                c = SystemColors[colorName];
-                if (c == null)
-                {
-                    // This is what it returns!
-                    Color d = FromArgb(0, 0, 0, 0);
-                    d.name = colorName;
-                    d.state |= (short)ColorType.Named;
-                    c = d;
-                }
-            }
-
-            return (Color)c;
-        }
-
-        internal static Hashtable NamedColors
-        {
-            get
-            {
-                FillColorNames();
-                return namedColors;
-            }
-        }
-
-        internal static Hashtable SystemColors
-        {
-            get
-            {
-                FillColorNames();
-                return systemColors;
-            }
-        }
-
-        // -----------------------
-        // Public Shared Members
-        // -----------------------
-
-        /// <summary>
-        ///	Empty Shared Field
-        /// </summary>
-        ///
-        /// <remarks>
-        ///	An uninitialized Color Structure
-        /// </remarks>
-
-        private static readonly Color Empty;
 
         /// <summary>
         ///	Equality Operator
@@ -324,20 +116,9 @@ namespace Microsoft.Xna.Framework.Graphics
         ///	based on the equivalence of the A,R,G,B properties 
         ///	of the two Colors.
         /// </remarks>
-
         public static bool operator ==(Color colorA, Color colorB)
         {
-            if (colorA.value != colorB.value)
-                return false;
-            if (colorA.IsNamedColor != colorB.IsNamedColor)
-                return false;
-            if (colorA.IsSystemColor != colorB.IsSystemColor)
-                return false;
-            if (colorA.Name != colorB.Name)
-                return false;
-            if (colorA.IsEmpty != colorB.IsEmpty)
-                return false;
-            return true;
+            return colorA._packedValue == colorB._packedValue;
         }
 
         /// <summary>
@@ -349,11 +130,12 @@ namespace Microsoft.Xna.Framework.Graphics
         ///	based on the equivalence of the A,R,G,B properties 
         ///	of the two colors.
         /// </remarks>
-
         public static bool operator !=(Color colorA, Color colorB)
         {
             return !(colorA == colorB);
         }
+
+        #region Internal Members
 
         internal float GetBrightness()
         {
@@ -405,39 +187,11 @@ namespace Microsoft.Xna.Framework.Graphics
                 hue = hue - 360.0f;
 
             return hue;
-        }
+        } 
 
-        // -----------------------
-        // Public Instance Members
-        // -----------------------
+        #endregion Internal Members
 
-        /// <summary>
-        ///	ToKnownColor method
-        /// </summary>
-        ///
-        /// <remarks>
-        ///	Returns the KnownColor enum value for this color, 0 if is not known.
-        /// </remarks>
-        internal KnownColor ToKnownColor()
-        {
-            return (KnownColor)knownColor;
-        }
-
-        /// <summary>
-        ///	IsEmpty Property
-        /// </summary>
-        ///
-        /// <remarks>
-        ///	Indicates transparent black. R,G,B = 0; A=0?
-        /// </remarks>
-
-        internal bool IsEmpty
-        {
-            get
-            {
-                return state == (short)ColorType.Empty;
-            }
-        }
+        #region Public Members
 
         /// <summary>
         ///	A Property
@@ -446,24 +200,9 @@ namespace Microsoft.Xna.Framework.Graphics
         /// <remarks>
         ///	The transparancy of the Color.
         /// </remarks>
-
         public byte A
         {
-            get
-            {
-                // Optimization for known colors that were deserialized
-                // from an MS serialized stream.  
-                if (value == 0 && IsKnownColor)
-                {
-                    FillColorNames();
-                    object o = knownColors[knownColor];
-                    if (o != null)
-                    {
-                        value = (uint)((Color)o).ToArgb();
-                    }
-                }
-                return (byte)((value >> 24 & 0x0ff));
-            }
+            get { return (byte)((_packedValue >> 24 & 0xff)); }
         }
 
         /// <summary>
@@ -473,24 +212,9 @@ namespace Microsoft.Xna.Framework.Graphics
         /// <remarks>
         ///	The red value of the Color.
         /// </remarks>
-
         public byte R
         {
-            get
-            {
-                // Optimization for known colors that were deserialized
-                // from an MS serialized stream.  
-                if (value == 0 && IsKnownColor)
-                {
-                    FillColorNames();
-                    object o = knownColors[knownColor];
-                    if (o != null)
-                    {
-                        value = (uint)((Color)o).ToArgb();
-                    }
-                }
-                return (byte)((value >> 16 & 0x0ff));
-            }
+            get { return (byte)((_packedValue >> 16 & 0xff)); }
         }
 
         /// <summary>
@@ -500,24 +224,9 @@ namespace Microsoft.Xna.Framework.Graphics
         /// <remarks>
         ///	The green value of the Color.
         /// </remarks>
-
         public byte G
         {
-            get
-            {
-                // Optimization for known colors that were deserialized
-                // from an MS serialized stream.  
-                if (value == 0 && IsKnownColor)
-                {
-                    FillColorNames();
-                    object o = knownColors[knownColor];
-                    if (o != null)
-                    {
-                        value = (uint)((Color)o).ToArgb();
-                    }
-                }
-                return (byte)((value >> 8 & 0x0ff));
-            }
+            get { return (byte)((_packedValue >> 8 & 0xff)); }
         }
 
         /// <summary>
@@ -527,24 +236,9 @@ namespace Microsoft.Xna.Framework.Graphics
         /// <remarks>
         ///	The blue value of the Color.
         /// </remarks>
-
         public byte B
         {
-            get
-            {
-                // Optimization for known colors that were deserialized
-                // from an MS serialized stream.  
-                if (value == 0 && IsKnownColor)
-                {
-                    FillColorNames();
-                    object o = knownColors[knownColor];
-                    if (o != null)
-                    {
-                        value = (uint)((Color)o).ToArgb();
-                    }
-                }
-                return (byte)(value & 0x0ff);
-            }
+            get { return (byte)(_packedValue & 0xff); }
         }
 
         /// <summary>
@@ -554,7 +248,6 @@ namespace Microsoft.Xna.Framework.Graphics
         /// <remarks>
         ///	Checks equivalence of this Color and another object.
         /// </remarks>
-
         public override bool Equals(object o)
         {
             if (!(o is Color))
@@ -564,33 +257,15 @@ namespace Microsoft.Xna.Framework.Graphics
         }
 
         /// <summary>
-        ///	Reference Equals Method
-        ///	Is commented out because this is handled by the base class.
-        ///	TODO: Is it correct to let the base class handel reference equals
-        /// </summary>
-        ///
-        /// <remarks>
-        ///	Checks equivalence of this Color and another object.
-        /// </remarks>
-        //public bool ReferenceEquals (object o)
-        //{
-        //	if (!(o is Color))return false;
-        //	return (this == (Color) o);
-        //}
-
-
-
-        /// <summary>
         ///	GetHashCode Method
         /// </summary>
         ///
         /// <remarks>
         ///	Calculates a hashing value.
         /// </remarks>
-
         public override int GetHashCode()
         {
-            return ((int)value) ^ Name.GetHashCode();
+            return (int)_packedValue;
         }
 
         /// <summary>
@@ -600,1262 +275,806 @@ namespace Microsoft.Xna.Framework.Graphics
         /// <remarks>
         ///	Formats the Color as a string in ARGB notation.
         /// </remarks>
-
         public override string ToString()
         {
-            if (IsEmpty)
-                return "Color [Empty]";
+            return String.Format("{{R:{0} G:{1} B:{2} A:{3}}}", R, G, B, A);
+        } 
 
-            // Use the property here, not the field.
-            if (IsNamedColor)
-                return "Color [" + Name + "]";
+        #endregion Public Members
 
-            return String.Format("Color [A={0}, R={1}, G={2}, B={3}]", A, R, G, B);
-        }
+        #region Static Color Values
 
-        private static void CheckRGBValues(int red, int green, int blue)
+        static Color Transparent
         {
-            if ((red > 255) || (red < 0))
-                throw CreateColorArgumentException(red, "red");
-            if ((green > 255) || (green < 0))
-                throw CreateColorArgumentException(green, "green");
-            if ((blue > 255) || (blue < 0))
-                throw CreateColorArgumentException(blue, "blue");
-        }
-
-        private static ArgumentException CreateColorArgumentException(int value, string color)
-        {
-            return new ArgumentException(string.Format("'{0}' is not a valid"
-                + " value for '{1}'. '{1}' should be greater or equal to 0 and"
-                + " less than or equal to 255.", value, color));
-        }
-
-        private static void CheckARGBValues(int alpha, int red, int green, int blue)
-        {
-            if ((alpha > 255) || (alpha < 0))
-                throw CreateColorArgumentException(alpha, "alpha");
-            CheckRGBValues(red, green, blue);
-        }
-
-        //Documentation, do not remove!
-        //This is the program that was used to generate the C# source code below.
-        //using System;
-        //using System.Diagnostics;
-        //using System.Drawing;
-        //using System.Reflection;
-        //public class m {
-        //static void Main(string[] args)
-        //{
-        //	Type cType = typeof (Color);
-        //	PropertyInfo [] properties = cType.GetProperties ();
-        //	foreach (PropertyInfo property in properties) {
-        //		MethodInfo method = property.GetGetMethod();
-        //		if (method != null && method.IsStatic && method.ReturnType == cType) {
-        //			Color c = (Color) method.Invoke( null, new object[0] );
-        //			Console.WriteLine("static public Color " + property.Name);
-        //			Console.WriteLine("{\t\n\tget {");
-        //			Console.WriteLine("\t\treturn Color.FromArgbNamed ({0}, {1}, {2}, {3}, \"{4}\", KnownColor.{4});",
-        //						c.A, c.R, c.G, c.B, property.Name);
-        //			Console.WriteLine("\t}");
-        //			Console.WriteLine("}\n");
-        //		}
-        //	}
-        //}
-        //}
-
-        static private Color Transparent
-        {
-            get
-            {
-                return Color.FromArgbNamed(0, 255, 255, 255, "Transparent", KnownColor.Transparent);
-            }
+            get { return new Color(((uint)0 << 24) + ((uint)255 << 16) + ((uint)255 << 8) + 255); }
         }
 
         /// <summary>Gets a system-defined color.</summary>
         /// <returns>A system-defined color.</returns>
-        static public Color TransparentBlack
+        public static Color TransparentBlack
         {
-            get
-            {
-                return Transparent;
-            }
+            get { return Transparent; }
         }
 
         /// <summary>Gets a system-defined color.</summary>
         /// <returns>A system-defined color.</returns>
-        static public Color TransparentWhite
+        public static Color TransparentWhite
         {
-            get
-            {
-                return Transparent;
-            }
+            get { return Transparent; }
         }
 
-        static public Color AliceBlue
+        public static Color AliceBlue
         {
-            get
-            {
-                return Color.FromArgbNamed(255, 240, 248, 255, "AliceBlue", KnownColor.AliceBlue);
-            }
+            get { return new Color(((uint)255 << 24) + ((uint)240 << 16) + ((uint)248 << 8) + 255); }
         }
 
-        static public Color AntiqueWhite
+        public static Color AntiqueWhite
         {
-            get
-            {
-                return Color.FromArgbNamed(255, 250, 235, 215, "AntiqueWhite", KnownColor.AntiqueWhite);
-            }
+            get { return new Color(((uint)255 << 24) + ((uint)250 << 16) + ((uint)235 << 8) + 215); }
         }
 
-        static public Color Aqua
+        public static Color Aqua
         {
-            get
-            {
-                return Color.FromArgbNamed(255, 0, 255, 255, "Aqua", KnownColor.Aqua);
-            }
+            get { return new Color(((uint)255 << 24) + ((uint)0 << 16) + ((uint)255 << 8) + 255); }
         }
 
-        static public Color Aquamarine
+        public static Color Aquamarine
         {
-            get
-            {
-                return Color.FromArgbNamed(255, 127, 255, 212, "Aquamarine", KnownColor.Aquamarine);
-            }
+            get { return new Color(((uint)255 << 24) + ((uint)127 << 16) + ((uint)255 << 8) + 212); }
         }
 
-        static public Color Azure
+        public static Color Azure
         {
-            get
-            {
-                return Color.FromArgbNamed(255, 240, 255, 255, "Azure", KnownColor.Azure);
-            }
+            get { return new Color(((uint)255 << 24) + ((uint)240 << 16) + ((uint)255 << 8) + 255); }
         }
 
-        static public Color Beige
+        public static Color Beige
         {
-            get
-            {
-                return Color.FromArgbNamed(255, 245, 245, 220, "Beige", KnownColor.Beige);
-            }
+            get { return new Color(((uint)255 << 24) + ((uint)245 << 16) + ((uint)245 << 8) + 220); }
         }
 
-        static public Color Bisque
+        public static Color Bisque
         {
-            get
-            {
-                return Color.FromArgbNamed(255, 255, 228, 196, "Bisque", KnownColor.Bisque);
-            }
+            get { return new Color(((uint)255 << 24) + ((uint)255 << 16) + ((uint)228 << 8) + 196); }
         }
 
-        static public Color Black
+        public static Color Black
         {
-            get
-            {
-                return Color.FromArgbNamed(255, 0, 0, 0, "Black", KnownColor.Black);
-            }
+            get { return new Color(((uint)255 << 24) + ((uint)0 << 16) + ((uint)0 << 8) + 0); }
         }
 
-        static public Color BlanchedAlmond
+        public static Color BlanchedAlmond
         {
-            get
-            {
-                return Color.FromArgbNamed(255, 255, 235, 205, "BlanchedAlmond", KnownColor.BlanchedAlmond);
-            }
+            get { return new Color(((uint)255 << 24) + ((uint)255 << 16) + ((uint)235 << 8) + 205); }
         }
 
-        static public Color Blue
+        public static Color Blue
         {
-            get
-            {
-                return Color.FromArgbNamed(255, 0, 0, 255, "Blue", KnownColor.Blue);
-            }
+            get { return new Color(((uint)255 << 24) + ((uint)0 << 16) + ((uint)0 << 8) + 255); }
         }
 
-        static public Color BlueViolet
+        public static Color BlueViolet
         {
-            get
-            {
-                return Color.FromArgbNamed(255, 138, 43, 226, "BlueViolet", KnownColor.BlueViolet);
-            }
+            get { return new Color(((uint)255 << 24) + ((uint)138 << 16) + ((uint)43 << 8) + 226); }
         }
 
-        static public Color Brown
+        public static Color Brown
         {
-            get
-            {
-                return Color.FromArgbNamed(255, 165, 42, 42, "Brown", KnownColor.Brown);
-            }
+            get { return new Color(((uint)255 << 24) + ((uint)165 << 16) + ((uint)42 << 8) + 42); }
         }
 
-        static public Color BurlyWood
+        public static Color BurlyWood
         {
-            get
-            {
-                return Color.FromArgbNamed(255, 222, 184, 135, "BurlyWood", KnownColor.BurlyWood);
-            }
+            get { return new Color(((uint)255 << 24) + ((uint)222 << 16) + ((uint)184 << 8) + 135); }
         }
 
-        static public Color CadetBlue
+        public static Color CadetBlue
         {
-            get
-            {
-                return Color.FromArgbNamed(255, 95, 158, 160, "CadetBlue", KnownColor.CadetBlue);
-            }
+            get { return new Color(((uint)255 << 24) + ((uint)95 << 16) + ((uint)158 << 8) + 160); }
         }
 
-        static public Color Chartreuse
+        public static Color Chartreuse
         {
-            get
-            {
-                return Color.FromArgbNamed(255, 127, 255, 0, "Chartreuse", KnownColor.Chartreuse);
-            }
+            get { return new Color(((uint)255 << 24) + ((uint)127 << 16) + ((uint)255 << 8) + 0); }
         }
 
-        static public Color Chocolate
+        public static Color Chocolate
         {
-            get
-            {
-                return Color.FromArgbNamed(255, 210, 105, 30, "Chocolate", KnownColor.Chocolate);
-            }
+            get { return new Color(((uint)255 << 24) + ((uint)210 << 16) + ((uint)105 << 8) + 30); }
         }
 
-        static public Color Coral
+        public static Color Coral
         {
-            get
-            {
-                return Color.FromArgbNamed(255, 255, 127, 80, "Coral", KnownColor.Coral);
-            }
+            get { return new Color(((uint)255 << 24) + ((uint)255 << 16) + ((uint)127 << 8) + 80); }
         }
 
-        static public Color CornflowerBlue
+        public static Color CornflowerBlue
         {
-            get
-            {
-                return Color.FromArgbNamed(255, 100, 149, 237, "CornflowerBlue", KnownColor.CornflowerBlue);
-            }
+            get { return new Color(((uint)255 << 24) + ((uint)100 << 16) + ((uint)149 << 8) + 237); }
         }
 
-        static public Color Cornsilk
+        public static Color Cornsilk
         {
-            get
-            {
-                return Color.FromArgbNamed(255, 255, 248, 220, "Cornsilk", KnownColor.Cornsilk);
-            }
+            get { return new Color(((uint)255 << 24) + ((uint)255 << 16) + ((uint)248 << 8) + 220); }
         }
 
-        static public Color Crimson
+        public static Color Crimson
         {
-            get
-            {
-                return Color.FromArgbNamed(255, 220, 20, 60, "Crimson", KnownColor.Crimson);
-            }
+            get { return new Color(((uint)255 << 24) + ((uint)220 << 16) + ((uint)20 << 8) + 60); }
         }
 
-        static public Color Cyan
+        public static Color Cyan
         {
-            get
-            {
-                return Color.FromArgbNamed(255, 0, 255, 255, "Cyan", KnownColor.Cyan);
-            }
+            get { return new Color(((uint)255 << 24) + ((uint)0 << 16) + ((uint)255 << 8) + 255); }
         }
 
-        static public Color DarkBlue
+        public static Color DarkBlue
         {
-            get
-            {
-                return Color.FromArgbNamed(255, 0, 0, 139, "DarkBlue", KnownColor.DarkBlue);
-            }
+            get { return new Color(((uint)255 << 24) + ((uint)0 << 16) + ((uint)0 << 8) + 139); }
         }
 
-        static public Color DarkCyan
+        public static Color DarkCyan
         {
-            get
-            {
-                return Color.FromArgbNamed(255, 0, 139, 139, "DarkCyan", KnownColor.DarkCyan);
-            }
+            get { return new Color(((uint)255 << 24) + ((uint)0 << 16) + ((uint)139 << 8) + 139); }
         }
 
-        static public Color DarkGoldenrod
+        public static Color DarkGoldenrod
         {
-            get
-            {
-                return Color.FromArgbNamed(255, 184, 134, 11, "DarkGoldenrod", KnownColor.DarkGoldenrod);
-            }
+            get { return new Color(((uint)255 << 24) + ((uint)184 << 16) + ((uint)134 << 8) + 11); }
         }
 
-        static public Color DarkGray
+        public static Color DarkGray
         {
-            get
-            {
-                return Color.FromArgbNamed(255, 169, 169, 169, "DarkGray", KnownColor.DarkGray);
-            }
+            get { return new Color(((uint)255 << 24) + ((uint)169 << 16) + ((uint)169 << 8) + 169); }
         }
 
-        static public Color DarkGreen
+        public static Color DarkGreen
         {
-            get
-            {
-                return Color.FromArgbNamed(255, 0, 100, 0, "DarkGreen", KnownColor.DarkGreen);
-            }
+            get { return new Color(((uint)255 << 24) + ((uint)0 << 16) + ((uint)100 << 8) + 0); }
         }
 
-        static public Color DarkKhaki
+        public static Color DarkKhaki
         {
-            get
-            {
-                return Color.FromArgbNamed(255, 189, 183, 107, "DarkKhaki", KnownColor.DarkKhaki);
-            }
+            get { return new Color(((uint)255 << 24) + ((uint)189 << 16) + ((uint)183 << 8) + 107); }
         }
 
-        static public Color DarkMagenta
+        public static Color DarkMagenta
         {
-            get
-            {
-                return Color.FromArgbNamed(255, 139, 0, 139, "DarkMagenta", KnownColor.DarkMagenta);
-            }
+            get { return new Color(((uint)255 << 24) + ((uint)139 << 16) + ((uint)0 << 8) + 139); }
         }
 
-        static public Color DarkOliveGreen
+        public static Color DarkOliveGreen
         {
-            get
-            {
-                return Color.FromArgbNamed(255, 85, 107, 47, "DarkOliveGreen", KnownColor.DarkOliveGreen);
-            }
+            get { return new Color(((uint)255 << 24) + ((uint)85 << 16) + ((uint)107 << 8) + 47); }
         }
 
-        static public Color DarkOrange
+        public static Color DarkOrange
         {
-            get
-            {
-                return Color.FromArgbNamed(255, 255, 140, 0, "DarkOrange", KnownColor.DarkOrange);
-            }
+            get { return new Color(((uint)255 << 24) + ((uint)255 << 16) + ((uint)140 << 8) + 0); }
         }
 
-        static public Color DarkOrchid
+        public static Color DarkOrchid
         {
-            get
-            {
-                return Color.FromArgbNamed(255, 153, 50, 204, "DarkOrchid", KnownColor.DarkOrchid);
-            }
+            get { return new Color(((uint)255 << 24) + ((uint)153 << 16) + ((uint)50 << 8) + 204); }
         }
 
-        static public Color DarkRed
+        public static Color DarkRed
         {
-            get
-            {
-                return Color.FromArgbNamed(255, 139, 0, 0, "DarkRed", KnownColor.DarkRed);
-            }
+            get { return new Color(((uint)255 << 24) + ((uint)139 << 16) + ((uint)0 << 8) + 0); }
         }
 
-        static public Color DarkSalmon
+        public static Color DarkSalmon
         {
-            get
-            {
-                return Color.FromArgbNamed(255, 233, 150, 122, "DarkSalmon", KnownColor.DarkSalmon);
-            }
+            get { return new Color(((uint)255 << 24) + ((uint)233 << 16) + ((uint)150 << 8) + 122); }
         }
 
-        static public Color DarkSeaGreen
+        public static Color DarkSeaGreen
         {
-            get
-            {
-                return Color.FromArgbNamed(255, 143, 188, 139, "DarkSeaGreen", KnownColor.DarkSeaGreen);
-            }
+            get { return new Color(((uint)255 << 24) + ((uint)143 << 16) + ((uint)188 << 8) + 139); }
         }
 
-        static public Color DarkSlateBlue
+        public static Color DarkSlateBlue
         {
-            get
-            {
-                return Color.FromArgbNamed(255, 72, 61, 139, "DarkSlateBlue", KnownColor.DarkSlateBlue);
-            }
+            get { return new Color(((uint)255 << 24) + ((uint)72 << 16) + ((uint)61 << 8) + 139); }
         }
 
-        static public Color DarkSlateGray
+        public static Color DarkSlateGray
         {
-            get
-            {
-                return Color.FromArgbNamed(255, 47, 79, 79, "DarkSlateGray", KnownColor.DarkSlateGray);
-            }
+            get { return new Color(((uint)255 << 24) + ((uint)47 << 16) + ((uint)79 << 8) + 79); }
         }
 
-        static public Color DarkTurquoise
+        public static Color DarkTurquoise
         {
-            get
-            {
-                return Color.FromArgbNamed(255, 0, 206, 209, "DarkTurquoise", KnownColor.DarkTurquoise);
-            }
+            get { return new Color(((uint)255 << 24) + ((uint)0 << 16) + ((uint)206 << 8) + 209); }
         }
 
-        static public Color DarkViolet
+        public static Color DarkViolet
         {
-            get
-            {
-                return Color.FromArgbNamed(255, 148, 0, 211, "DarkViolet", KnownColor.DarkViolet);
-            }
+            get { return new Color(((uint)255 << 24) + ((uint)148 << 16) + ((uint)0 << 8) + 211); }
         }
 
-        static public Color DeepPink
+        public static Color DeepPink
         {
-            get
-            {
-                return Color.FromArgbNamed(255, 255, 20, 147, "DeepPink", KnownColor.DeepPink);
-            }
+            get { return new Color(((uint)255 << 24) + ((uint)255 << 16) + ((uint)20 << 8) + 147); }
         }
 
-        static public Color DeepSkyBlue
+        public static Color DeepSkyBlue
         {
-            get
-            {
-                return Color.FromArgbNamed(255, 0, 191, 255, "DeepSkyBlue", KnownColor.DeepSkyBlue);
-            }
+            get { return new Color(((uint)255 << 24) + ((uint)0 << 16) + ((uint)191 << 8) + 255); }
         }
 
-        static public Color DimGray
+        public static Color DimGray
         {
-            get
-            {
-                return Color.FromArgbNamed(255, 105, 105, 105, "DimGray", KnownColor.DimGray);
-            }
+            get { return new Color(((uint)255 << 24) + ((uint)105 << 16) + ((uint)105 << 8) + 105); }
         }
 
-        static public Color DodgerBlue
+        public static Color DodgerBlue
         {
-            get
-            {
-                return Color.FromArgbNamed(255, 30, 144, 255, "DodgerBlue", KnownColor.DodgerBlue);
-            }
+            get { return new Color(((uint)255 << 24) + ((uint)30 << 16) + ((uint)144 << 8) + 255); }
         }
 
-        static public Color Firebrick
+        public static Color Firebrick
         {
-            get
-            {
-                return Color.FromArgbNamed(255, 178, 34, 34, "Firebrick", KnownColor.Firebrick);
-            }
+            get { return new Color(((uint)255 << 24) + ((uint)178 << 16) + ((uint)34 << 8) + 34); }
         }
 
-        static public Color FloralWhite
+        public static Color FloralWhite
         {
-            get
-            {
-                return Color.FromArgbNamed(255, 255, 250, 240, "FloralWhite", KnownColor.FloralWhite);
-            }
+            get { return new Color(((uint)255 << 24) + ((uint)255 << 16) + ((uint)250 << 8) + 240); }
         }
 
-        static public Color ForestGreen
+        public static Color ForestGreen
         {
-            get
-            {
-                return Color.FromArgbNamed(255, 34, 139, 34, "ForestGreen", KnownColor.ForestGreen);
-            }
+            get { return new Color(((uint)255 << 24) + ((uint)34 << 16) + ((uint)139 << 8) + 34); }
         }
 
-        static public Color Fuchsia
+        public static Color Fuchsia
         {
-            get
-            {
-                return Color.FromArgbNamed(255, 255, 0, 255, "Fuchsia", KnownColor.Fuchsia);
-            }
+            get { return new Color(((uint)255 << 24) + ((uint)255 << 16) + ((uint)0 << 8) + 255); }
         }
 
-        static public Color Gainsboro
+        public static Color Gainsboro
         {
-            get
-            {
-                return Color.FromArgbNamed(255, 220, 220, 220, "Gainsboro", KnownColor.Gainsboro);
-            }
+            get { return new Color(((uint)255 << 24) + ((uint)220 << 16) + ((uint)220 << 8) + 220); }
         }
 
-        static public Color GhostWhite
+        public static Color GhostWhite
         {
-            get
-            {
-                return Color.FromArgbNamed(255, 248, 248, 255, "GhostWhite", KnownColor.GhostWhite);
-            }
+            get { return new Color(((uint)255 << 24) + ((uint)248 << 16) + ((uint)248 << 8) + 255); }
         }
 
-        static public Color Gold
+        public static Color Gold
         {
-            get
-            {
-                return Color.FromArgbNamed(255, 255, 215, 0, "Gold", KnownColor.Gold);
-            }
+            get { return new Color(((uint)255 << 24) + ((uint)255 << 16) + ((uint)215 << 8) + 0); }
         }
 
-        static public Color Goldenrod
+        public static Color Goldenrod
         {
-            get
-            {
-                return Color.FromArgbNamed(255, 218, 165, 32, "Goldenrod", KnownColor.Goldenrod);
-            }
+            get { return new Color(((uint)255 << 24) + ((uint)218 << 16) + ((uint)165 << 8) + 32); }
         }
 
-        static public Color Gray
+        public static Color Gray
         {
-            get
-            {
-                return Color.FromArgbNamed(255, 128, 128, 128, "Gray", KnownColor.Gray);
-            }
+            get { return new Color(((uint)255 << 24) + ((uint)128 << 16) + ((uint)128 << 8) + 128); }
         }
 
-        static public Color Green
+        public static Color Green
         {
             get
             {
                 // LAMESPEC: MS uses A=255, R=0, G=128, B=0 for Green Color,
                 // which is seems to be wrong. G must be 255.
-                return Color.FromArgbNamed(255, 0, 128, 0, "Green", KnownColor.Green);
+                return new Color(((uint)255 << 24) + ((uint)0 << 16) + ((uint)128 << 8) + 0);
             }
         }
 
-        static public Color GreenYellow
+        public static Color GreenYellow
         {
-            get
-            {
-                return Color.FromArgbNamed(255, 173, 255, 47, "GreenYellow", KnownColor.GreenYellow);
-            }
+            get { return new Color(((uint)255 << 24) + ((uint)173 << 16) + ((uint)255 << 8) + 47); }
         }
 
-        static public Color Honeydew
+        public static Color Honeydew
         {
-            get
-            {
-                return Color.FromArgbNamed(255, 240, 255, 240, "Honeydew", KnownColor.Honeydew);
-            }
+            get { return new Color(((uint)255 << 24) + ((uint)240 << 16) + ((uint)255 << 8) + 240); }
         }
 
-        static public Color HotPink
+        public static Color HotPink
         {
-            get
-            {
-                return Color.FromArgbNamed(255, 255, 105, 180, "HotPink", KnownColor.HotPink);
-            }
+            get { return new Color(((uint)255 << 24) + ((uint)255 << 16) + ((uint)105 << 8) + 180); }
         }
 
-        static public Color IndianRed
+        public static Color IndianRed
         {
-            get
-            {
-                return Color.FromArgbNamed(255, 205, 92, 92, "IndianRed", KnownColor.IndianRed);
-            }
+            get { return new Color(((uint)255 << 24) + ((uint)205 << 16) + ((uint)92 << 8) + 92); }
         }
 
-        static public Color Indigo
+        public static Color Indigo
         {
-            get
-            {
-                return Color.FromArgbNamed(255, 75, 0, 130, "Indigo", KnownColor.Indigo);
-            }
+            get { return new Color(((uint)255 << 24) + ((uint)75 << 16) + ((uint)0 << 8) + 130); }
         }
 
-        static public Color Ivory
+        public static Color Ivory
         {
-            get
-            {
-                return Color.FromArgbNamed(255, 255, 255, 240, "Ivory", KnownColor.Ivory);
-            }
+            get { return new Color(((uint)255 << 24) + ((uint)255 << 16) + ((uint)255 << 8) + 240); }
         }
 
-        static public Color Khaki
+        public static Color Khaki
         {
-            get
-            {
-                return Color.FromArgbNamed(255, 240, 230, 140, "Khaki", KnownColor.Khaki);
-            }
+            get { return new Color(((uint)255 << 24) + ((uint)240 << 16) + ((uint)230 << 8) + 140); }
         }
 
-        static public Color Lavender
+        public static Color Lavender
         {
-            get
-            {
-                return Color.FromArgbNamed(255, 230, 230, 250, "Lavender", KnownColor.Lavender);
-            }
+            get { return new Color(((uint)255 << 24) + ((uint)230 << 16) + ((uint)230 << 8) + 250); }
         }
 
-        static public Color LavenderBlush
+        public static Color LavenderBlush
         {
-            get
-            {
-                return Color.FromArgbNamed(255, 255, 240, 245, "LavenderBlush", KnownColor.LavenderBlush);
-            }
+            get { return new Color(((uint)255 << 24) + ((uint)255 << 16) + ((uint)240 << 8) + 245); }
         }
 
-        static public Color LawnGreen
+        public static Color LawnGreen
         {
-            get
-            {
-                return Color.FromArgbNamed(255, 124, 252, 0, "LawnGreen", KnownColor.LawnGreen);
-            }
+            get { return new Color(((uint)255 << 24) + ((uint)124 << 16) + ((uint)252 << 8) + 0); }
         }
 
-        static public Color LemonChiffon
+        public static Color LemonChiffon
         {
-            get
-            {
-                return Color.FromArgbNamed(255, 255, 250, 205, "LemonChiffon", KnownColor.LemonChiffon);
-            }
+            get { return new Color(((uint)255 << 24) + ((uint)255 << 16) + ((uint)250 << 8) + 205); }
         }
 
-        static public Color LightBlue
+        public static Color LightBlue
         {
-            get
-            {
-                return Color.FromArgbNamed(255, 173, 216, 230, "LightBlue", KnownColor.LightBlue);
-            }
+            get { return new Color(((uint)255 << 24) + ((uint)173 << 16) + ((uint)216 << 8) + 230); }
         }
 
-        static public Color LightCoral
-        {
-            get
-            {
-                return Color.FromArgbNamed(255, 240, 128, 128, "LightCoral", KnownColor.LightCoral);
-            }
+        public static Color LightCoral
+        {
+            get { return new Color(((uint)255 << 24) + ((uint)240 << 16) + ((uint)128 << 8) + 128); }
         }
 
-        static public Color LightCyan
+        public static Color LightCyan
         {
-            get
-            {
-                return Color.FromArgbNamed(255, 224, 255, 255, "LightCyan", KnownColor.LightCyan);
-            }
+            get { return new Color(((uint)255 << 24) + ((uint)224 << 16) + ((uint)255 << 8) + 255); }
         }
 
-        static public Color LightGoldenrodYellow
+        public static Color LightGoldenrodYellow
         {
-            get
-            {
-                return Color.FromArgbNamed(255, 250, 250, 210, "LightGoldenrodYellow", KnownColor.LightGoldenrodYellow);
-            }
+            get { return new Color(((uint)255 << 24) + ((uint)250 << 16) + ((uint)250 << 8) + 210); }
         }
 
-        static public Color LightGreen
+        public static Color LightGreen
         {
-            get
-            {
-                return Color.FromArgbNamed(255, 144, 238, 144, "LightGreen", KnownColor.LightGreen);
-            }
+            get { return new Color(((uint)255 << 24) + ((uint)144 << 16) + ((uint)238 << 8) + 144); }
         }
 
-        static public Color LightGray
+        public static Color LightGray
         {
-            get
-            {
-                return Color.FromArgbNamed(255, 211, 211, 211, "LightGray", KnownColor.LightGray);
-            }
+            get { return new Color(((uint)255 << 24) + ((uint)211 << 16) + ((uint)211 << 8) + 211); }
         }
 
-        static public Color LightPink
+        public static Color LightPink
         {
-            get
-            {
-                return Color.FromArgbNamed(255, 255, 182, 193, "LightPink", KnownColor.LightPink);
-            }
+            get { return new Color(((uint)255 << 24) + ((uint)255 << 16) + ((uint)182 << 8) + 193); }
         }
 
-        static public Color LightSalmon
+        public static Color LightSalmon
         {
-            get
-            {
-                return Color.FromArgbNamed(255, 255, 160, 122, "LightSalmon", KnownColor.LightSalmon);
-            }
+            get { return new Color(((uint)255 << 24) + ((uint)255 << 16) + ((uint)160 << 8) + 122); }
         }
 
-        static public Color LightSeaGreen
+        public static Color LightSeaGreen
         {
-            get
-            {
-                return Color.FromArgbNamed(255, 32, 178, 170, "LightSeaGreen", KnownColor.LightSeaGreen);
-            }
+            get { return new Color(((uint)255 << 24) + ((uint)32 << 16) + ((uint)178 << 8) + 170); }
         }
 
-        static public Color LightSkyBlue
+        public static Color LightSkyBlue
         {
-            get
-            {
-                return Color.FromArgbNamed(255, 135, 206, 250, "LightSkyBlue", KnownColor.LightSkyBlue);
-            }
+            get { return new Color(((uint)255 << 24) + ((uint)135 << 16) + ((uint)206 << 8) + 250); }
         }
 
-        static public Color LightSlateGray
+        public static Color LightSlateGray
         {
-            get
-            {
-                return Color.FromArgbNamed(255, 119, 136, 153, "LightSlateGray", KnownColor.LightSlateGray);
-            }
+            get { return new Color(((uint)255 << 24) + ((uint)119 << 16) + ((uint)136 << 8) + 153); }
         }
 
-        static public Color LightSteelBlue
+        public static Color LightSteelBlue
         {
-            get
-            {
-                return Color.FromArgbNamed(255, 176, 196, 222, "LightSteelBlue", KnownColor.LightSteelBlue);
-            }
+            get { return new Color(((uint)255 << 24) + ((uint)176 << 16) + ((uint)196 << 8) + 222); }
         }
 
-        static public Color LightYellow
+        public static Color LightYellow
         {
-            get
-            {
-                return Color.FromArgbNamed(255, 255, 255, 224, "LightYellow", KnownColor.LightYellow);
-            }
+            get { return new Color(((uint)255 << 24) + ((uint)255 << 16) + ((uint)255 << 8) + 224); }
         }
 
-        static public Color Lime
+        public static Color Lime
         {
-            get
-            {
-                return Color.FromArgbNamed(255, 0, 255, 0, "Lime", KnownColor.Lime);
-            }
+            get { return new Color(((uint)255 << 24) + ((uint)0 << 16) + ((uint)255 << 8) + 0); }
         }
 
-        static public Color LimeGreen
+        public static Color LimeGreen
         {
-            get
-            {
-                return Color.FromArgbNamed(255, 50, 205, 50, "LimeGreen", KnownColor.LimeGreen);
-            }
+            get { return new Color(((uint)255 << 24) + ((uint)50 << 16) + ((uint)205 << 8) + 50); }
         }
 
-        static public Color Linen
+        public static Color Linen
         {
-            get
-            {
-                return Color.FromArgbNamed(255, 250, 240, 230, "Linen", KnownColor.Linen);
-            }
+            get { return new Color(((uint)255 << 24) + ((uint)250 << 16) + ((uint)240 << 8) + 230); }
         }
 
-        static public Color Magenta
+        public static Color Magenta
         {
-            get
-            {
-                return Color.FromArgbNamed(255, 255, 0, 255, "Magenta", KnownColor.Magenta);
-            }
+            get { return new Color(((uint)255 << 24) + ((uint)255 << 16) + ((uint)0 << 8) + 255); }
         }
 
-        static public Color Maroon
+        public static Color Maroon
         {
-            get
-            {
-                return Color.FromArgbNamed(255, 128, 0, 0, "Maroon", KnownColor.Maroon);
-            }
+            get { return new Color(((uint)255 << 24) + ((uint)128 << 16) + ((uint)0 << 8) + 0); }
         }
 
-        static public Color MediumAquamarine
+        public static Color MediumAquamarine
         {
-            get
-            {
-                return Color.FromArgbNamed(255, 102, 205, 170, "MediumAquamarine", KnownColor.MediumAquamarine);
-            }
+            get { return new Color(((uint)255 << 24) + ((uint)102 << 16) + ((uint)205 << 8) + 170); }
         }
 
-        static public Color MediumBlue
+        public static Color MediumBlue
         {
-            get
-            {
-                return Color.FromArgbNamed(255, 0, 0, 205, "MediumBlue", KnownColor.MediumBlue);
-            }
+            get { return new Color(((uint)255 << 24) + ((uint)0 << 16) + ((uint)0 << 8) + 205); }
         }
 
-        static public Color MediumOrchid
+        public static Color MediumOrchid
         {
-            get
-            {
-                return Color.FromArgbNamed(255, 186, 85, 211, "MediumOrchid", KnownColor.MediumOrchid);
-            }
+            get { return new Color(((uint)255 << 24) + ((uint)186 << 16) + ((uint)85 << 8) + 211); }
         }
 
-        static public Color MediumPurple
+        public static Color MediumPurple
         {
-            get
-            {
-                return Color.FromArgbNamed(255, 147, 112, 219, "MediumPurple", KnownColor.MediumPurple);
-            }
+            get { return new Color(((uint)255 << 24) + ((uint)147 << 16) + ((uint)112 << 8) + 219); }
         }
 
-        static public Color MediumSeaGreen
+        public static Color MediumSeaGreen
         {
-            get
-            {
-                return Color.FromArgbNamed(255, 60, 179, 113, "MediumSeaGreen", KnownColor.MediumSeaGreen);
-            }
+            get { return new Color(((uint)255 << 24) + ((uint)60 << 16) + ((uint)179 << 8) + 113); }
         }
 
-        static public Color MediumSlateBlue
+        public static Color MediumSlateBlue
         {
-            get
-            {
-                return Color.FromArgbNamed(255, 123, 104, 238, "MediumSlateBlue", KnownColor.MediumSlateBlue);
-            }
+            get { return new Color(((uint)255 << 24) + ((uint)123 << 16) + ((uint)104 << 8) + 238); }
         }
 
-        static public Color MediumSpringGreen
+        public static Color MediumSpringGreen
         {
-            get
-            {
-                return Color.FromArgbNamed(255, 0, 250, 154, "MediumSpringGreen", KnownColor.MediumSpringGreen);
-            }
+            get { return new Color(((uint)255 << 24) + ((uint)0 << 16) + ((uint)250 << 8) + 154); }
         }
 
-        static public Color MediumTurquoise
+        public static Color MediumTurquoise
         {
-            get
-            {
-                return Color.FromArgbNamed(255, 72, 209, 204, "MediumTurquoise", KnownColor.MediumTurquoise);
-            }
+            get { return new Color(((uint)255 << 24) + ((uint)72 << 16) + ((uint)209 << 8) + 204); }
         }
 
-        static public Color MediumVioletRed
+        public static Color MediumVioletRed
         {
-            get
-            {
-                return Color.FromArgbNamed(255, 199, 21, 133, "MediumVioletRed", KnownColor.MediumVioletRed);
-            }
+            get { return new Color(((uint)255 << 24) + ((uint)199 << 16) + ((uint)21 << 8) + 133); }
         }
 
-        static public Color MidnightBlue
+        public static Color MidnightBlue
         {
-            get
-            {
-                return Color.FromArgbNamed(255, 25, 25, 112, "MidnightBlue", KnownColor.MidnightBlue);
-            }
+            get { return new Color(((uint)255 << 24) + ((uint)25 << 16) + ((uint)25 << 8) + 112); }
         }
 
-        static public Color MintCream
+        public static Color MintCream
         {
-            get
-            {
-                return Color.FromArgbNamed(255, 245, 255, 250, "MintCream", KnownColor.MintCream);
-            }
+            get { return new Color(((uint)255 << 24) + ((uint)245 << 16) + ((uint)255 << 8) + 250); }
         }
 
-        static public Color MistyRose
+        public static Color MistyRose
         {
-            get
-            {
-                return Color.FromArgbNamed(255, 255, 228, 225, "MistyRose", KnownColor.MistyRose);
-            }
+            get { return new Color(((uint)255 << 24) + ((uint)255 << 16) + ((uint)228 << 8) + 225); }
         }
 
-        static public Color Moccasin
+        public static Color Moccasin
         {
-            get
-            {
-                return Color.FromArgbNamed(255, 255, 228, 181, "Moccasin", KnownColor.Moccasin);
-            }
+            get { return new Color(((uint)255 << 24) + ((uint)255 << 16) + ((uint)228 << 8) + 181); }
         }
 
-        static public Color NavajoWhite
+        public static Color NavajoWhite
         {
-            get
-            {
-                return Color.FromArgbNamed(255, 255, 222, 173, "NavajoWhite", KnownColor.NavajoWhite);
-            }
+            get { return new Color(((uint)255 << 24) + ((uint)255 << 16) + ((uint)222 << 8) + 173); }
         }
 
-        static public Color Navy
+        public static Color Navy
         {
-            get
-            {
-                return Color.FromArgbNamed(255, 0, 0, 128, "Navy", KnownColor.Navy);
-            }
+            get { return new Color(((uint)255 << 24) + ((uint)0 << 16) + ((uint)0 << 8) + 128); }
         }
 
-        static public Color OldLace
+        public static Color OldLace
         {
-            get
-            {
-                return Color.FromArgbNamed(255, 253, 245, 230, "OldLace", KnownColor.OldLace);
-            }
+            get { return new Color(((uint)255 << 24) + ((uint)253 << 16) + ((uint)245 << 8) + 230); }
         }
 
-        static public Color Olive
+        public static Color Olive
         {
-            get
-            {
-                return Color.FromArgbNamed(255, 128, 128, 0, "Olive", KnownColor.Olive);
-            }
+            get { return new Color(((uint)255 << 24) + ((uint)128 << 16) + ((uint)128 << 8) + 0); }
         }
 
-        static public Color OliveDrab
+        public static Color OliveDrab
         {
-            get
-            {
-                return Color.FromArgbNamed(255, 107, 142, 35, "OliveDrab", KnownColor.OliveDrab);
-            }
+            get { return new Color(((uint)255 << 24) + ((uint)107 << 16) + ((uint)142 << 8) + 35); }
         }
 
-        static public Color Orange
+        public static Color Orange
         {
-            get
-            {
-                return Color.FromArgbNamed(255, 255, 165, 0, "Orange", KnownColor.Orange);
-            }
+            get { return new Color(((uint)255 << 24) + ((uint)255 << 16) + ((uint)165 << 8) + 0); }
         }
 
-        static public Color OrangeRed
+        public static Color OrangeRed
         {
-            get
-            {
-                return Color.FromArgbNamed(255, 255, 69, 0, "OrangeRed", KnownColor.OrangeRed);
-            }
+            get { return new Color(((uint)255 << 24) + ((uint)255 << 16) + ((uint)69 << 8) + 0); }
         }
 
-        static public Color Orchid
+        public static Color Orchid
         {
-            get
-            {
-                return Color.FromArgbNamed(255, 218, 112, 214, "Orchid", KnownColor.Orchid);
-            }
+            get { return new Color(((uint)255 << 24) + ((uint)218 << 16) + ((uint)112 << 8) + 214); }
         }
 
-        static public Color PaleGoldenrod
+        public static Color PaleGoldenrod
         {
-            get
-            {
-                return Color.FromArgbNamed(255, 238, 232, 170, "PaleGoldenrod", KnownColor.PaleGoldenrod);
-            }
+            get { return new Color(((uint)255 << 24) + ((uint)238 << 16) + ((uint)232 << 8) + 170); }
         }
 
-        static public Color PaleGreen
+        public static Color PaleGreen
         {
-            get
-            {
-                return Color.FromArgbNamed(255, 152, 251, 152, "PaleGreen", KnownColor.PaleGreen);
-            }
+            get { return new Color(((uint)255 << 24) + ((uint)152 << 16) + ((uint)251 << 8) + 152); }
         }
 
-        static public Color PaleTurquoise
+        public static Color PaleTurquoise
         {
-            get
-            {
-                return Color.FromArgbNamed(255, 175, 238, 238, "PaleTurquoise", KnownColor.PaleTurquoise);
-            }
+            get { return new Color(((uint)255 << 24) + ((uint)175 << 16) + ((uint)238 << 8) + 238); }
         }
 
-        static public Color PaleVioletRed
+        public static Color PaleVioletRed
         {
-            get
-            {
-                return Color.FromArgbNamed(255, 219, 112, 147, "PaleVioletRed", KnownColor.PaleVioletRed);
-            }
+            get { return new Color(((uint)255 << 24) + ((uint)219 << 16) + ((uint)112 << 8) + 147); }
         }
 
-        static public Color PapayaWhip
+        public static Color PapayaWhip
         {
-            get
-            {
-                return Color.FromArgbNamed(255, 255, 239, 213, "PapayaWhip", KnownColor.PapayaWhip);
-            }
+            get { return new Color(((uint)255 << 24) + ((uint)255 << 16) + ((uint)239 << 8) + 213); }
         }
 
-        static public Color PeachPuff
+        public static Color PeachPuff
         {
-            get
-            {
-                return Color.FromArgbNamed(255, 255, 218, 185, "PeachPuff", KnownColor.PeachPuff);
-            }
+            get { return new Color(((uint)255 << 24) + ((uint)255 << 16) + ((uint)218 << 8) + 185); }
         }
 
-        static public Color Peru
+        public static Color Peru
         {
-            get
-            {
-                return Color.FromArgbNamed(255, 205, 133, 63, "Peru", KnownColor.Peru);
-            }
+            get { return new Color(((uint)255 << 24) + ((uint)205 << 16) + ((uint)133 << 8) + 63); }
         }
 
-        static public Color Pink
+        public static Color Pink
         {
-            get
-            {
-                return Color.FromArgbNamed(255, 255, 192, 203, "Pink", KnownColor.Pink);
-            }
+            get { return new Color(((uint)255 << 24) + ((uint)255 << 16) + ((uint)192 << 8) + 203); }
         }
 
-        static public Color Plum
+        public static Color Plum
         {
-            get
-            {
-                return Color.FromArgbNamed(255, 221, 160, 221, "Plum", KnownColor.Plum);
-            }
+            get { return new Color(((uint)255 << 24) + ((uint)221 << 16) + ((uint)160 << 8) + 221); }
         }
 
-        static public Color PowderBlue
+        public static Color PowderBlue
         {
-            get
-            {
-                return Color.FromArgbNamed(255, 176, 224, 230, "PowderBlue", KnownColor.PowderBlue);
-            }
+            get { return new Color(((uint)255 << 24) + ((uint)176 << 16) + ((uint)224 << 8) + 230); }
         }
 
-        static public Color Purple
+        public static Color Purple
         {
-            get
-            {
-                return Color.FromArgbNamed(255, 128, 0, 128, "Purple", KnownColor.Purple);
-            }
+            get { return new Color(((uint)255 << 24) + ((uint)128 << 16) + ((uint)0 << 8) + 128); }
         }
 
-        static public Color Red
+        public static Color Red
         {
-            get
-            {
-                return Color.FromArgbNamed(255, 255, 0, 0, "Red", KnownColor.Red);
-            }
+            get { return new Color(((uint)255 << 24) + ((uint)255 << 16) + ((uint)0 << 8) + 0); }
         }
 
-        static public Color RosyBrown
+        public static Color RosyBrown
         {
-            get
-            {
-                return Color.FromArgbNamed(255, 188, 143, 143, "RosyBrown", KnownColor.RosyBrown);
-            }
+            get { return new Color(((uint)255 << 24) + ((uint)188 << 16) + ((uint)143 << 8) + 143); }
         }
 
-        static public Color RoyalBlue
+        public static Color RoyalBlue
         {
-            get
-            {
-                return Color.FromArgbNamed(255, 65, 105, 225, "RoyalBlue", KnownColor.RoyalBlue);
-            }
+            get { return new Color(((uint)255 << 24) + ((uint)65 << 16) + ((uint)105 << 8) + 225); }
         }
 
-        static public Color SaddleBrown
+        public static Color SaddleBrown
         {
-            get
-            {
-                return Color.FromArgbNamed(255, 139, 69, 19, "SaddleBrown", KnownColor.SaddleBrown);
-            }
+            get { return new Color(((uint)255 << 24) + ((uint)139 << 16) + ((uint)69 << 8) + 19); }
         }
 
-        static public Color Salmon
+        public static Color Salmon
         {
-            get
-            {
-                return Color.FromArgbNamed(255, 250, 128, 114, "Salmon", KnownColor.Salmon);
-            }
+            get { return new Color(((uint)255 << 24) + ((uint)250 << 16) + ((uint)128 << 8) + 114); }
         }
 
-        static public Color SandyBrown
+        public static Color SandyBrown
         {
-            get
-            {
-                return Color.FromArgbNamed(255, 244, 164, 96, "SandyBrown", KnownColor.SandyBrown);
-            }
+            get { return new Color(((uint)255 << 24) + ((uint)244 << 16) + ((uint)164 << 8) + 96); }
         }
 
-        static public Color SeaGreen
+        public static Color SeaGreen
         {
-            get
-            {
-                return Color.FromArgbNamed(255, 46, 139, 87, "SeaGreen", KnownColor.SeaGreen);
-            }
+            get { return new Color(((uint)255 << 24) + ((uint)46 << 16) + ((uint)139 << 8) + 87); }
         }
 
-        static public Color SeaShell
+        public static Color SeaShell
         {
-            get
-            {
-                return Color.FromArgbNamed(255, 255, 245, 238, "SeaShell", KnownColor.SeaShell);
-            }
+            get { return new Color(((uint)255 << 24) + ((uint)255 << 16) + ((uint)245 << 8) + 238); }
         }
 
-        static public Color Sienna
+        public static Color Sienna
         {
-            get
-            {
-                return Color.FromArgbNamed(255, 160, 82, 45, "Sienna", KnownColor.Sienna);
-            }
+            get { return new Color(((uint)255 << 24) + ((uint)160 << 16) + ((uint)82 << 8) + 45); }
         }
 
-        static public Color Silver
+        public static Color Silver
         {
-            get
-            {
-                return Color.FromArgbNamed(255, 192, 192, 192, "Silver", KnownColor.Silver);
-            }
+            get { return new Color(((uint)255 << 24) + ((uint)192 << 16) + ((uint)192 << 8) + 192); }
         }
 
-        static public Color SkyBlue
+        public static Color SkyBlue
         {
-            get
-            {
-                return Color.FromArgbNamed(255, 135, 206, 235, "SkyBlue", KnownColor.SkyBlue);
-            }
+            get { return new Color(((uint)255 << 24) + ((uint)135 << 16) + ((uint)206 << 8) + 235); }
         }
 
-        static public Color SlateBlue
+        public static Color SlateBlue
         {
-            get
-            {
-                return Color.FromArgbNamed(255, 106, 90, 205, "SlateBlue", KnownColor.SlateBlue);
-            }
+            get { return new Color(((uint)255 << 24) + ((uint)106 << 16) + ((uint)90 << 8) + 205); }
         }
 
-        static public Color SlateGray
+        public static Color SlateGray
         {
-            get
-            {
-                return Color.FromArgbNamed(255, 112, 128, 144, "SlateGray", KnownColor.SlateGray);
-            }
+            get { return new Color(((uint)255 << 24) + ((uint)112 << 16) + ((uint)128 << 8) + 144); }
         }
 
-        static public Color Snow
+        public static Color Snow
         {
-            get
-            {
-                return Color.FromArgbNamed(255, 255, 250, 250, "Snow", KnownColor.Snow);
-            }
+            get { return new Color(((uint)255 << 24) + ((uint)255 << 16) + ((uint)250 << 8) + 250); }
         }
 
-        static public Color SpringGreen
+        public static Color SpringGreen
         {
-            get
-            {
-                return Color.FromArgbNamed(255, 0, 255, 127, "SpringGreen", KnownColor.SpringGreen);
-            }
+            get { return new Color(((uint)255 << 24) + ((uint)0 << 16) + ((uint)255 << 8) + 127); }
         }
 
-        static public Color SteelBlue
+        public static Color SteelBlue
         {
-            get
-            {
-                return Color.FromArgbNamed(255, 70, 130, 180, "SteelBlue", KnownColor.SteelBlue);
-            }
+            get { return new Color(((uint)255 << 24) + ((uint)70 << 16) + ((uint)130 << 8) + 180); }
         }
 
-        static public Color Tan
+        public static Color Tan
         {
-            get
-            {
-                return Color.FromArgbNamed(255, 210, 180, 140, "Tan", KnownColor.Tan);
-            }
+            get { return new Color(((uint)255 << 24) + ((uint)210 << 16) + ((uint)180 << 8) + 140); }
         }
 
-        static public Color Teal
+        public static Color Teal
         {
-            get
-            {
-                return Color.FromArgbNamed(255, 0, 128, 128, "Teal", KnownColor.Teal);
-            }
+            get { return new Color(((uint)255 << 24) + ((uint)0 << 16) + ((uint)128 << 8) + 128); }
         }
 
-        static public Color Thistle
+        public static Color Thistle
         {
-            get
-            {
-                return Color.FromArgbNamed(255, 216, 191, 216, "Thistle", KnownColor.Thistle);
-            }
+            get { return new Color(((uint)255 << 24) + ((uint)216 << 16) + ((uint)191 << 8) + 216); }
         }
 
-        static public Color Tomato
+        public static Color Tomato
         {
-            get
-            {
-                return Color.FromArgbNamed(255, 255, 99, 71, "Tomato", KnownColor.Tomato);
-            }
+            get { return new Color(((uint)255 << 24) + ((uint)255 << 16) + ((uint)99 << 8) + 71); }
         }
 
-        static public Color Turquoise
+        public static Color Turquoise
         {
-            get
-            {
-                return Color.FromArgbNamed(255, 64, 224, 208, "Turquoise", KnownColor.Turquoise);
-            }
+            get { return new Color(((uint)255 << 24) + ((uint)64 << 16) + ((uint)224 << 8) + 208); }
         }
 
-        static public Color Violet
+        public static Color Violet
         {
-            get
-            {
-                return Color.FromArgbNamed(255, 238, 130, 238, "Violet", KnownColor.Violet);
-            }
+            get { return new Color(((uint)255 << 24) + ((uint)238 << 16) + ((uint)130 << 8) + 238); }
         }
 
-        static public Color Wheat
+        public static Color Wheat
         {
-            get
-            {
-                return Color.FromArgbNamed(255, 245, 222, 179, "Wheat", KnownColor.Wheat);
-            }
+            get { return new Color(((uint)255 << 24) + ((uint)245 << 16) + ((uint)222 << 8) + 179); }
         }
 
-        static public Color White
+        public static Color White
         {
-            get
-            {
-                return Color.FromArgbNamed(255, 255, 255, 255, "White", KnownColor.White);
-            }
+            get { return new Color(((uint)255 << 24) + ((uint)255 << 16) + ((uint)255 << 8) + 255); }
         }
 
-        static public Color WhiteSmoke
+        public static Color WhiteSmoke
         {
-            get
-            {
-                return Color.FromArgbNamed(255, 245, 245, 245, "WhiteSmoke", KnownColor.WhiteSmoke);
-            }
+            get { return new Color(((uint)255 << 24) + ((uint)245 << 16) + ((uint)245 << 8) + 245); }
         }
 
-        static public Color Yellow
+        public static Color Yellow
         {
-            get
-            {
-                return Color.FromArgbNamed(255, 255, 255, 0, "Yellow", KnownColor.Yellow);
-            }
+            get { return new Color(((uint)255 << 24) + ((uint)255 << 16) + ((uint)255 << 8) + 0); }
         }
 
-        static public Color YellowGreen
+        public static Color YellowGreen
         {
-            get
-            {
-                return Color.FromArgbNamed(255, 154, 205, 50, "YellowGreen", KnownColor.YellowGreen);
-            }
-        }
+            get { return new Color(((uint)255 << 24) + ((uint)154 << 16) + ((uint)205 << 8) + 50); }
+        } 
+
+        #endregion Static Color Values
+
         #region IPackedVector Members
 
         void IPackedVector.PackFromVector4(Vector4 vector)
         {
-            throw new NotImplementedException();
+            _packedValue = InitializeFromVector4(vector);
         }
 
         public Vector4 ToVector4()
         {
-            throw new NotImplementedException();
+            return new Vector4((float)R / 255, (float)G / 255, (float)B / 255, (float)A / 255);
         }
 
         public Vector3 ToVector3()
         {
-            throw new NotImplementedException();
+            return new Vector3((float)R / 255, (float)G / 255, (float)B / 255);
         }
 
-        #endregion
+        #endregion IPackedVector Members
 
         #region IPackedVector<uint> Members
+
         /// <summary>Gets the current color as a packed value.</summary>
         /// <returns>The current color.</returns>
         [CLSCompliant(false)]
         public uint PackedValue
         {
-            get
-            {
-                return this.value;
-            }
-            set
-            {
-                this.value = value;
-            }
+            get { return _packedValue; }
+            set { _packedValue = value; }
         }
 
-        #endregion
+        #endregion IPackedVector<uint> Members
 
         #region IEquatable<Color> Members
 
         public bool Equals(Color other)
         {
-            throw new NotImplementedException();
+            return this == other;
         }
 
-        #endregion
+        #endregion IEquatable<Color> Members
+
+        #region Private Members
+
+        static uint InitializeFromVector4(Vector4 value)
+        {
+            byte r = (byte)(Math.Round(value.X * 255));
+            byte g = (byte)(Math.Round(value.Y * 255));
+            byte b = (byte)(Math.Round(value.Z * 255));
+            byte a = (byte)(Math.Round(value.W * 255));
+            return ((uint)a << 24) + ((uint)r << 16) + ((uint)g << 8) + b;
+        }
+
+        static uint InitializeFromVector3(Vector3 value)
+        {
+            byte r = (byte)(Math.Round(value.X * 255));
+            byte g = (byte)(Math.Round(value.Y * 255));
+            byte b = (byte)(Math.Round(value.Z * 255));
+            return ((uint)255 << 24) + ((uint)r << 16) + ((uint)g << 8) + b;
+        }
+
+        static uint InitializeFromArgb(byte a, byte r, byte g, byte b)
+        {
+            return (uint)(a << 24) + (uint)(r << 16) + (uint)(g << 8) + b;
+        }
+
+        #endregion Private Members
     }
 }
