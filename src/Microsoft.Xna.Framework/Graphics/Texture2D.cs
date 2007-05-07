@@ -186,12 +186,12 @@ namespace Microsoft.Xna.Framework.Graphics
         {
             EnsureDevice();
             Texture2D texture = new Texture2D(graphicsDevice);
-            using (Surface surface = new Surface(filename))
+            Surface surface = new Surface(filename);
+            if (surface.Size != new Size(width, height))
             {
-                if (surface.Size != new Size(width, height))
-                    surface.Stretch(new Size(width, height));
-                texture.Load(surface);
+                surface = surface.CreateStretchedSurface(new Size(width, height));
             }
+            texture.Load(surface);
             graphicsDevice.Textures.textures.Add(texture);
             return texture;
         }
@@ -313,7 +313,7 @@ namespace Microsoft.Xna.Framework.Graphics
         {
             this.width = surface.Width;
             this.height = surface.Height;
-            surface.FlipVertical();
+            surface = surface.CreateFlippedVerticalSurface();
             //surface.Resize();
             this.textureWidth = surface.Width;
             this.textureHeight = surface.Height;

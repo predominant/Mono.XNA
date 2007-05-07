@@ -256,6 +256,7 @@
       <Reference name="Microsoft.Xna.Framework" localCopy="true"/>
       <Reference name="Microsoft.Xna.Framework.Game" localCopy="true"/>
       <Reference name="nunit.framework" localCopy="true" path="../lib/net-2.0"/>
+      <Reference name="SdlDotNet" localCopy="true" path="../lib/net-2.0"/>
       <Files>
         <File buildAction="Content">XnaTests.nunit</File>
         <Match path="." pattern="*.cs" recurse="true"/>

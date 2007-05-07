@@ -4,7 +4,7 @@ using Microsoft.Xna.Framework.Graphics;
 
 #region Mono.Xna specific
 #if !MSXNAONLY
-using Microsoft.Xna.Framework.Test;
+using Microsoft.Xna.Framework.Tests;
 #endif
 #endregion Mono.Xna specific
 
