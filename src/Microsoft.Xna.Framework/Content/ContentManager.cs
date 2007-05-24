@@ -34,6 +34,7 @@ using System.Collections.Generic;
 using System.Text;
 using System.Net;
 using Microsoft.Xna.Framework.Graphics;
+using System.Reflection;
 
 namespace Microsoft.Xna.Framework.Content
 {
@@ -75,9 +76,9 @@ namespace Microsoft.Xna.Framework.Content
             if (rootDirectory == null)
                 throw new ArgumentNullException("rootDirectory");
 
+            this.assets = new Dictionary<string, object>();
             this.rootDirectory = rootDirectory;
             this.serviceProvider = serviceProvider;
-            this.assets = new Dictionary<string, object>();
         }
 
         #endregion
@@ -165,8 +166,9 @@ namespace Microsoft.Xna.Framework.Content
             // Get the asset's type readers. There can be a few of these like for the model class.
             ContentTypeReader[] assetReaders = GetAssetReaders<T>(assetStream);
 
-            // Use the type reader to read the asset
-            T asset = contentReader.ReadObject<T>(assetReaders[0]);
+            // Get the 1-based index of the typereader we should use to start decoding with
+            int index = assetStream.ReadByte();
+            T asset = contentReader.ReadObject<T>(assetReaders[index-1]);
 
             this.assets.Add(assetName, asset);
             return asset;
@@ -176,22 +178,25 @@ namespace Microsoft.Xna.Framework.Content
         {
             int length;
             int numberOfReaders;
-            byte[] buffer = new byte[4];
             ContentTypeReader[] contentReaders;
-
+            BinaryReader binaryReader = new BinaryReader(assetStream);
             // The first 4 bytes should be the "XNBw" header. i use that to detect an invalid file
-            assetStream.Read(buffer, 0, 4);
-            if (Encoding.UTF8.GetString(buffer) != "XNBw")  // FIXME Just check the individual values of the bytes
+            if (assetStream.ReadByte() != 'X' ||
+                assetStream.ReadByte() != 'N' ||
+                assetStream.ReadByte() != 'B' ||
+                assetStream.ReadByte() != 'w')
                 throw new ContentLoadException("Not an XNB file");
 
-            // We skip past some bytes. I'm not sure what they do. I assume they're some kind of version
-            // identifier.
-            assetStream.Seek(10, SeekOrigin.Begin);
+            // I think these two bytes are some kind of version number. Either for the XNB file or the type readers
+            short version = binaryReader.ReadInt16();
+
+            // The next int32 is the length of the XNB file
+            int xnbLength = binaryReader.ReadInt32();
 
             // The next byte i read tells me the number of content readers in this XNB file
             numberOfReaders = assetStream.ReadByte();
             contentReaders = new ContentTypeReader[numberOfReaders];
-
+            
             // For each reader in the file, we read out the length of the string which contains the type of the reader,
             // then we read out the string. Finally we instantiate an instance of that reader using reflection
             for (int i = 0; i < numberOfReaders; i++)
@@ -199,17 +204,21 @@ namespace Microsoft.Xna.Framework.Content
                 length = assetStream.ReadByte();
 
                 // Create a new buffer which can hold the entire string.
-                buffer = new byte[length];
+                byte[] buffer = new byte[length];
                 assetStream.Read(buffer, 0, length);
 
                 // This string tells us what reader we need to decode the following data
                 string readerTypeString = Encoding.UTF8.GetString(buffer);
 
+                // I think the next 4 bytes refer to the "Version" of the type reader,
+                // although it always seems to be zero
+                int typeReaderVersion = binaryReader.ReadInt32();
+
                 // Get the type of the reader
                 Type readerType = Type.GetType(readerTypeString);
 
                 // Get the default constructor for the reader
-                System.Reflection.ConstructorInfo info = readerType.GetConstructor(Type.EmptyTypes);
+                ConstructorInfo info = readerType.GetConstructor(BindingFlags.NonPublic | BindingFlags.Instance, null, Type.EmptyTypes, null);
 
                 // Instantiate an instance of the reader
                 contentReaders[i] = (ContentTypeReader)info.Invoke(null);

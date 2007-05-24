@@ -92,8 +92,7 @@ namespace Microsoft.Xna.Framework.Content
 
         protected internal override object Read(ContentReader input, object existingInstance)
         {
-            ContentTypeReader<T> reader = input as ContentTypeReader<T>;
-           return reader.Read(input, existingInstance);
+            return Read(input, (T)existingInstance);
         }
 
         protected internal abstract T Read(ContentReader input, T existingInstance);

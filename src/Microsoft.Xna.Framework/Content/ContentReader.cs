@@ -61,7 +61,24 @@ namespace Microsoft.Xna.Framework.Content
 
         public Matrix ReadMatrix()
         {
-            throw new NotImplementedException();
+            Matrix result = new Matrix();
+            result.M11 = ReadSingle();
+            result.M12 = ReadSingle();
+            result.M13 = ReadSingle();
+            result.M14 = ReadSingle(); 
+            result.M21 = ReadSingle();
+            result.M22 = ReadSingle();
+            result.M23 = ReadSingle();
+            result.M24 = ReadSingle();
+            result.M31 = ReadSingle();
+            result.M32 = ReadSingle();
+            result.M33 = ReadSingle();
+            result.M34 = ReadSingle();
+            result.M41 = ReadSingle();
+            result.M42 = ReadSingle();
+            result.M43 = ReadSingle();
+            result.M44 = ReadSingle();
+            return result;
         }
 
         public T ReadObject<T>()
@@ -116,17 +133,30 @@ namespace Microsoft.Xna.Framework.Content
 
         public Vector2 ReadVector2()
         {
-            throw new NotImplementedException();
+            Vector2 result = new Vector2();
+            result.X = ReadSingle();
+            result.Y = ReadSingle();
+            return result;
         }
 
         public Vector3 ReadVector3()
         {
-            throw new NotImplementedException();
+            Vector3 result = new Vector3();
+            result.X = ReadSingle();
+            result.Y = ReadSingle();
+            result.Z = ReadSingle();
+            return result;
         }
 
         public Vector4 ReadVector4()
         {
-            throw new NotImplementedException();
+            //FIXME: Test this. Should 'w' be first or last?
+            Vector4 result = new Vector4();
+            result.X = ReadSingle();
+            result.Y = ReadSingle();
+            result.Z = ReadSingle();
+            result.W = ReadSingle();
+            return result;
         }
     }
 }
