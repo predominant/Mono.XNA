@@ -375,5 +375,42 @@ namespace Microsoft.Xna.Framework.Tests
             Vector2 expected = new Vector2(88.58217f, 85.65621f);
             Assert.IsTrue(TestHelper.ApproximatelyEquals(expected, Vector2.TransformNormal(v1, m)), "#1");
         }
+
+        [Test]
+        public void HermiteTest()
+        {
+            // Both Hermite methods do the same.
+            // Here is using th simple form.
+            Vector2 v0 = new Vector2(0f, 0f);
+            Vector2 v1 = new Vector2(1f, 1f);
+            Vector2 v2 = new Vector2(4.5f, 77.34119f);
+            Vector2 v3 = new Vector2(-55.99021f, -1344.22f);
+            Vector2 v4 = new Vector2(-2007.0619f, 1985.0604f);
+
+            // Test 1
+            // Check values for amount = 0
+            Vector2 test1_1 = Vector2.Hermite(v0, v0, v0, v0, 0f);
+            Assert.IsTrue(test1_1 == v0, "Vector2.Hermite#1.1");
+
+            Vector2 test1_2 = Vector2.Hermite(v2, v3, v1, v4, 0f);
+            Assert.IsTrue(test1_2 == v2, "Vector2.Hermite#1.2");
+
+            // Test 2
+            // Check values for amount = 1
+            Vector2 test2_1 = Vector2.Hermite(v0, v0, v0, v0, 1f);
+            Assert.IsTrue(test2_1 == v0, "Vector2.Hermite#2.1");
+
+            Vector2 test2_2 = Vector2.Hermite(v2, v3, v1, v4, 1f);
+            Assert.IsTrue(test2_2 == v1, "Vector2.Hermite#2.2");
+
+            // Test 3
+            // Tests against the MS implementation the open implementation
+            // Useful to find out whether our implementation does the same than MS's
+            Vector2 test3 = Vector2.Hermite(v1, v2, v3, v4, -3.6f);
+            Vector2 test3_1 = new Vector2();
+            test3_1.X = MathHelper.Hermite(v1.X, v2.X, v3.X, v4.X, -3.6f);
+            test3_1.Y = MathHelper.Hermite(v1.Y, v2.Y, v3.Y, v4.Y, -3.6f);
+            Assert.IsTrue(test3 == test3_1, "Vector2.Hermite#3");
+        }
     }
 }

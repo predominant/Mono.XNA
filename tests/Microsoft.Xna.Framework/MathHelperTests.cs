@@ -33,9 +33,8 @@ using System.Text;
 using NUnit.Framework;
 using Microsoft.Xna.Framework;
 using System.Globalization;
-using Microsoft.Xna.Framework.Tests;
 
-namespace Microsoft.Xna.Framework
+namespace Microsoft.Xna.Framework.Tests
 {
     [TestFixture]
     public class MathHelperTests
@@ -70,6 +69,9 @@ namespace Microsoft.Xna.Framework
 
             float hermiteTest2_3 = MathHelper.Hermite(value3, value0, value3, value0, value1);
             Assert.IsTrue(hermiteTest2_3 == value3, "MathHelper.Hermite#2.3");
+
+            float hermiteTest2_4 = MathHelper.Hermite(1f, 12.59938495E12f, -8998.90034E22f, -6.75f, 1f);
+            Assert.IsTrue(hermiteTest2_4 == -8998.90034E22f, "MathHelper.Hermite#2.4");
 
             // Test 3
             // Check result against function used in the open implementation

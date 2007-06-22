@@ -83,7 +83,19 @@ namespace Microsoft.Xna.Framework
         
         public static float Lerp(float value1, float value2, float amount)
         {
-            throw new NotImplementedException();
+            // All transformed to double not to lose precission
+            // Otherwise, for high numbers of param:amount the result is NaN instead of Infinity
+            double v1 = value1, v2 = value2, t1 = tangent1, t2 = tangent2, s = amount, result;
+            if (amount == 0f)
+                return value1;
+            else if (amount == 1f)
+                return value2;
+            else
+                result = (2 * v1 - 2 * v2 + t2 + t1) * Math.Pow(s, 3) +
+                    (3 * v2 - 3 * v1 - 2 * t1 - t2) * Math.Pow(s, 2) +
+                    t1 * s +
+                    v1;
+            return (float)result;
         }
 
         public static float Max(float value1, float value2)

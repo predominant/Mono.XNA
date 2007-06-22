@@ -329,5 +329,44 @@ namespace Microsoft.Xna.Framework.Tests
             expected = new Vector4(4041.455f, 1987.396f, 34363.13f, -124.9282f);
             Assert.IsTrue(TestHelper.ApproximatelyEquals(expected, Vector4.Transform(new Vector4(15.32f, -124.1241f, 53, 1), m)), "#3");
         }
+
+        [Test]
+        public void HermiteTest()
+        {
+            // Both Hermite methods do the same.
+            // Here is using th simple form.
+            Vector4 v0 = new Vector4(0f, 0f, 0f, 0f);
+            Vector4 v1 = new Vector4(1f, 1f, 1f, 1f);
+            Vector4 v2 = new Vector4(4.5f, 77.34119f, 345.445f, 12.59938495E12f);
+            Vector4 v3 = new Vector4(-55.99021f, -1344.22f, -67798f, -8998.90034E22f);
+            Vector4 v4 = new Vector4(-2007.0619f, 1985.0604f, 0f, -6.75f);
+
+            // Test 1
+            // Check values for amount = 0
+            Vector4 test1_1 = Vector4.Hermite(v0, v0, v0, v0, 0f);
+            Assert.IsTrue(test1_1 == v0, "Vector4.Hermite#1.1");
+
+            Vector4 test1_2 = Vector4.Hermite(v2, v3, v1, v4, 0f);
+            Assert.IsTrue(test1_2 == v2, "Vector4.Hermite#1.2");
+
+            // Test 2
+            // Check values for amount = 1
+            Vector4 test2_1 = Vector4.Hermite(v0, v0, v0, v0, 1f);
+            Assert.IsTrue(test2_1 == v0, "Vector4.Hermite#2.1");
+
+            Vector4 test2_2 = Vector4.Hermite(v2, v3, v1, v4, 1f);
+            Assert.IsTrue(test2_2 == v1, "Vector4.Hermite#2.2");
+
+            // Test 3
+            // Tests against the MS implementation the open implementation
+            // Useful to find out whether our implementation does the same than MS's
+            Vector4 test3 = Vector4.Hermite(v1, v2, v3, v4, -3.6f);
+            Vector4 test3_1 = new Vector4();
+            test3_1.X = MathHelper.Hermite(v1.X, v2.X, v3.X, v4.X, -3.6f);
+            test3_1.Y = MathHelper.Hermite(v1.Y, v2.Y, v3.Y, v4.Y, -3.6f);
+            test3_1.Z = MathHelper.Hermite(v1.Z, v2.Z, v3.Z, v4.Z, -3.6f);
+            test3_1.W = MathHelper.Hermite(v1.W, v2.W, v3.W, v4.W, -3.6f);
+            Assert.IsTrue(test3 == test3_1, "Vector4.Hermite#3");
+        }
     }
 }

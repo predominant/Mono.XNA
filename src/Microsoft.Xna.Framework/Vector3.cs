@@ -328,12 +328,16 @@ namespace Microsoft.Xna.Framework
 
         public static Vector3 Hermite(Vector3 value1, Vector3 tangent1, Vector3 value2, Vector3 tangent2, float amount)
         {
-            throw new NotImplementedException();
+            Vector3 result = new Vector3();
+            Hermite(ref value1, ref tangent1, ref value2, ref tangent2, amount, out result);
+            return result;
         }
 
         public static void Hermite(ref Vector3 value1, ref Vector3 tangent1, ref Vector3 value2, ref Vector3 tangent2, float amount, out Vector3 result)
         {
-            throw new NotImplementedException();
+            result.X = MathHelper.Hermite(value1.X, tangent1.X, value2.X, tangent2.X, amount);
+            result.Y = MathHelper.Hermite(value1.Y, tangent1.Y, value2.Y, tangent2.Y, amount);
+            result.Z = MathHelper.Hermite(value1.Z, tangent1.Z, value2.Z, tangent2.Z, amount);
         }
 
         public float Length()
