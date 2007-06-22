@@ -43,18 +43,20 @@ namespace Microsoft.Xna.Framework.Input
         const int B = 3;
         const int X = 1;
         const int Y = 4;
-        const int BACK = 9;
-        const int START = 10;
-        const int LEFT_SHOULDER = 5;
-        const int RIGHT_SHOULDER = 6;
-        const int LEFT_STICK = 11;
-        const int RIGHT_STICK = 12;
-        const int LEFT_TRIGGER = 7;
-        const int RIGHT_TRIGGER = 8;
+        const int Back = 9;
+        const int Start = 10;
+        const int LeftShoulder = 5;
+        const int RightShoulder = 6;
+        const int LeftStick = 11;
+        const int RightStick = 12;
+        const int LeftTrigger = 7;
+        const int RightTrigger = 8;
 
+        // For the circular axis dead zone, this value is the maximum distance for x² + y², when x = y = 1 | -1
+        const float MaxDistance = 1.4142135623730951f;
+        const int MaxSticks = 4;
         #endregion Button Constants
 
-        const int MAX_STICKS = 4;
 
         #region Constructors
 
@@ -67,9 +69,9 @@ namespace Microsoft.Xna.Framework.Input
             // SDL currently does not detect new devices, so we'll statically initialize the array of available joysticks
             Joysticks.Initialize();
 
-            s_numJoysticks = Joysticks.NumberOfJoysticks > MAX_STICKS ? MAX_STICKS : Joysticks.NumberOfJoysticks;
-            _state = new GamePadState[MAX_STICKS];
-            _sticks = new Joystick[MAX_STICKS];
+            s_numJoysticks = Joysticks.NumberOfJoysticks > MaxSticks ? MaxSticks : Joysticks.NumberOfJoysticks;
+            _state = new GamePadState[MaxSticks];
+            _sticks = new Joystick[MaxSticks];
 
             if (s_numJoysticks > 0)
             {
@@ -88,29 +90,30 @@ namespace Microsoft.Xna.Framework.Input
 
         static void Events_JoystickHatMotion(object sender, JoystickHatEventArgs e)
         {
-            if (e.Device > MAX_STICKS) return;
+            if (e.Device > MaxSticks) return;
             _state[e.Device].PacketNumber++;        // integer wrapping is handled by setter
         }
 
         static void Events_JoystickAxisMotion(object sender, JoystickAxisEventArgs e)
         {
-            if (e.Device > MAX_STICKS) return;
+            if (e.Device > MaxSticks) return;
             _state[e.Device].PacketNumber++;        // integer wrapping is handled by setter
         }
 
         static void Events_JoystickButtonUp(object sender, JoystickButtonEventArgs e)
         {
-            if (e.Device > MAX_STICKS) return;
+            if (e.Device > MaxSticks) return;
             _state[e.Device].PacketNumber++;        // integer wrapping is handled by setter
         }
 
         static void Events_JoystickButtonDown(object sender, JoystickButtonEventArgs e)
         {
-            if (e.Device > MAX_STICKS) return;
+            if (e.Device > MaxSticks) return;
             _state[e.Device].PacketNumber++;        // integer wrapping is handled by setter
         }
 
         #endregion Constructors
+
 
         #region Public Methods
 
@@ -144,9 +147,6 @@ namespace Microsoft.Xna.Framework.Input
 
         public static GamePadState GetState(PlayerIndex playerIndex, GamePadDeadZone deadZoneMode)
         {
-            if (playerIndex < PlayerIndex.One || playerIndex > PlayerIndex.Four)
-                throw new InvalidOperationException();
-
             int number = (int)playerIndex;
             if (number < s_numJoysticks)
             {
@@ -156,12 +156,12 @@ namespace Microsoft.Xna.Framework.Input
                 _state[number].buttons.B = (ButtonState)j.GetButtonState(B);
                 _state[number].buttons.X = (ButtonState)j.GetButtonState(X);
                 _state[number].buttons.Y = (ButtonState)j.GetButtonState(Y);
-                _state[number].buttons.Back = (ButtonState)j.GetButtonState(BACK);
-                _state[number].buttons.Start = (ButtonState)j.GetButtonState(START);
-                _state[number].buttons.LeftShoulder = (ButtonState)j.GetButtonState(LEFT_SHOULDER);
-                _state[number].buttons.LeftStick = (ButtonState)j.GetButtonState(LEFT_STICK);
-                _state[number].buttons.RightShoulder = (ButtonState)j.GetButtonState(RIGHT_SHOULDER);
-                _state[number].buttons.RightStick = (ButtonState)j.GetButtonState(RIGHT_STICK);
+                _state[number].buttons.Back = (ButtonState)j.GetButtonState(Back);
+                _state[number].buttons.Start = (ButtonState)j.GetButtonState(Start);
+                _state[number].buttons.LeftShoulder = (ButtonState)j.GetButtonState(LeftShoulder);
+                _state[number].buttons.LeftStick = (ButtonState)j.GetButtonState(LeftStick);
+                _state[number].buttons.RightShoulder = (ButtonState)j.GetButtonState(RightShoulder);
+                _state[number].buttons.RightStick = (ButtonState)j.GetButtonState(RightStick);
 
                 float x1 = Rescale(j.GetAxisPosition(JoystickAxis.Horizontal));
                 float y1 = Rescale(j.GetAxisPosition(JoystickAxis.Vertical));
@@ -189,8 +189,8 @@ namespace Microsoft.Xna.Framework.Input
 
                 // converts ButtonKeyState.Pressed ( = 1) to float of 1.0f
                 // since SDL doesn't support reading the position of the trigger.  Will review this later
-                _state[number].triggers.left = (int)j.GetButtonState(LEFT_TRIGGER)*1.0f;
-                _state[number].triggers.right = (int)j.GetButtonState(RIGHT_TRIGGER)*1.0f;
+                _state[number].triggers.left = (int)j.GetButtonState(LeftTrigger)*1.0f;
+                _state[number].triggers.right = (int)j.GetButtonState(RightTrigger)*1.0f;
             }
 
             return _state[number];
@@ -210,9 +210,6 @@ namespace Microsoft.Xna.Framework.Input
                 Math.Max(Math.Abs(y) - DEADZONE, 0) * Math.Sign(y) / (1 - DEADZONE));
         }
 
-        // for the circular axis dead zone, this value is the maximum distance for x² + y², when x = y = 1 | -1
-        const float MAX_DIST = 1.4142135623730951f;
-
         /// <summary>
         /// As per http://blogs.msdn.com/shawnhar/archive/2007/03/28/gamepads-suck.aspx
         /// Both <paramref name="x"/> and <paramref name="y"/> parameters assumed to be between -1.0 and 1.0
@@ -220,7 +217,7 @@ namespace Microsoft.Xna.Framework.Input
         static Vector2 CircularAxisDeadZone(float x, float y)
         {
             float dist = (float)Math.Max(Math.Sqrt(x * x + y * y), EPSILON);
-            float deadZone = Math.Max(dist - DEADZONE, 0)/(MAX_DIST - DEADZONE)/dist;
+            float deadZone = Math.Max(dist - DEADZONE, 0)/(MaxDistance - DEADZONE)/dist;
             return new Vector2(x*deadZone, y*deadZone);
         }
 
