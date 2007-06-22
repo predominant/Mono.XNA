@@ -35,10 +35,14 @@ namespace Microsoft.Xna.Framework.Graphics
     public sealed class ModelBoneCollection : ReadOnlyCollection<ModelBone>
     {
         // TODO: Not sure how to stub this constructor
-        ModelBoneCollection()
+        internal ModelBoneCollection()
             : base(null)
         {
-            throw new NotImplementedException();
+        }
+
+        internal ModelBoneCollection(ModelBone[] bones)
+            : base(bones)
+        {
         }
 
         public ModelBone this[string boneName]

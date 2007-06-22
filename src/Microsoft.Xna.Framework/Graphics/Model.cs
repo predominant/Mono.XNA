@@ -33,30 +33,34 @@ namespace Microsoft.Xna.Framework.Graphics
 {
     public sealed class Model
     {
+        internal ModelBoneCollection bones;
+        private ModelMeshCollection meshes;
+        private ModelBone root;
+        private object tag;
+
         public Model()
         {
-            throw new NotImplementedException();
         }
 
         public ModelBoneCollection Bones
         {
-            get { throw new NotImplementedException(); }
+            get { return bones; }
         }
 
         public ModelMeshCollection Meshes
         {
-            get { throw new NotImplementedException(); }
+            get { return meshes; }
         }
 
         public ModelBone Root
         {
-            get { throw new NotImplementedException(); }
+            get { return root; }
         }
 
         public object Tag
         {
-            get { throw new NotImplementedException(); }
-            set { throw new NotImplementedException(); }
+            get { return tag; }
+            set { tag = value; }
         }
 
         public void CopyAbsoluteBoneTransformsTo(Matrix[] destinationBoneTransforms)

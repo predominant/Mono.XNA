@@ -33,34 +33,47 @@ namespace Microsoft.Xna.Framework.Graphics
 {
     public sealed class ModelBone
     {
+        private string name;
+        private int index;
+        internal ModelBone parent;
+        internal ModelBoneCollection children;
+        private Matrix transform;
+
         internal ModelBone()
         {
         }
 
+        internal ModelBone(int i, string name, Matrix transform)
+        {
+            this.index = i;
+            this.name = name;
+            this.transform = transform;
+        }
+
         public ModelBoneCollection Children
         {
-            get { throw new NotImplementedException(); }
+            get { return children; }
         }
 
         public int Index
         {
-            get { throw new NotImplementedException(); }
+            get { return index; }
         }
 
         public string Name
         {
-            get { throw new NotImplementedException(); }
+            get { return name; }
         }
 
         public ModelBone Parent
         {
-            get { throw new NotImplementedException(); }
+            get { return parent; }
         }
 
         public Matrix Transform
         {
-            get { throw new NotImplementedException(); }
-            set { throw new NotImplementedException(); }
+            get { return transform; }
+            set { transform = value; }
         }
     }
 }
