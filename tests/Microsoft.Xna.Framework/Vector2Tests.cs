@@ -85,6 +85,14 @@ namespace Microsoft.Xna.Framework.Tests
 
             expected = new Vector2(-153.0115f, 296.2759f);
             Assert.IsTrue(TestHelper.ApproximatelyEquals(expected, Vector2.Barycentric(this.v1, this.v2, this.v3, 0.15f, 5.73f)), "#3");
+
+            // Check the work of this function according to MathHelper.Barycentric
+            Vector2 mathMade = new Vector2();
+            mathMade.X = MathHelper.Barycentric(this.v1.X, this.v2.X, this.v3.X, -13.59f, 4.6E13f);
+            mathMade.Y = MathHelper.Barycentric(this.v1.Y, this.v2.Y, this.v3.Y, -13.59f, 4.6E13f);
+            expected = Vector2.Barycentric(this.v1, this.v2, this.v3, -13.59f, 4.6E13f);
+            Assert.IsTrue(mathMade == expected, "#4");
+
         }
 
         [Test]
@@ -175,6 +183,13 @@ namespace Microsoft.Xna.Framework.Tests
 
             Vector2.Distance(ref v1, ref v2, out actual);
             Assert.IsTrue(TestHelper.ApproximatelyEquals(37.32372f, actual), "#2");
+
+            // Test 3
+            // Tests the distance between two vectors putting one first, and then the other
+            // Useful to see that absolute, positive distances are always returned
+            float test3_1 = Vector2.Distance(new Vector2(0f, 0f), new Vector2(1f, 1f));
+            float test3_2 = Vector2.Distance(new Vector2(1f, 1f), new Vector2(0f, 0f));
+            Assert.IsTrue(test3_1 == test3_2, "Vector2.Distance#3");
         }
 
         [Test]
@@ -298,33 +313,33 @@ namespace Microsoft.Xna.Framework.Tests
         [Test]
         public void SmoothStep()
         {
-            v1 = new Vector2(12.3254f, 15.2513531f);
-            v2 = new Vector2(4.54f, -21.251353f);
-            v3 = new Vector2(-16.3254f, 65.251353f);
+            Vector2 value0 = new Vector2(0f, 0f);
+            Vector2 value1 = new Vector2(1f, 1f);
+            Vector2 value2 = new Vector2(-3.567f, 45.2347f);
+            Vector2 value3 = new Vector2(1.49987E29f, -4.34889E30f);
 
-            Vector2 expected = new Vector2(4.54f, -21.25135f);
-            Assert.IsTrue(TestHelper.ApproximatelyEquals(expected, Vector2.SmoothStep(v1, v2, 10)), "#1");
+            // Simple tests
+            // Test the implementation and the results via MathHelper
+            // to show that this method uses MatHelper behind
+            Vector2 test1 = Vector2.SmoothStep(value0, value3, 0f);
+            Assert.IsTrue(test1 == value0, "Vector2.SmoothStep#1");
 
-            expected = new Vector2(-16.3254f, 65.25135f);
-            Assert.IsTrue(TestHelper.ApproximatelyEquals(expected, Vector2.SmoothStep(v2, v3, 100)), "#2");
+            Vector2 test2 = Vector2.SmoothStep(value0, value3, 0.5f);
+            Assert.IsTrue(test2.X == (float)((value0.X + value3.X) * 0.5) && test2.Y == (float)((value0.Y + value3.Y) * 0.5), "Vector2.SmoothStep#2");
 
-            expected = new Vector2(-16.3254f, 65.25135f);
-            Assert.IsTrue(TestHelper.ApproximatelyEquals(expected, Vector2.SmoothStep(v2, v3, 10)), "#3");
+            Vector2 test3a = Vector2.SmoothStep(value1, value2, 0.35f);
+            Vector2 test3b = new Vector2(
+                MathHelper.SmoothStep(value1.X, value2.X, 0.35f),
+                MathHelper.SmoothStep(value1.Y, value2.Y, 0.35f));
+            Assert.IsTrue(test3a == test3b, "Vector2.SmoothStep#3");
 
-            expected = new Vector2(4.54f, -21.25135f);
-            Assert.IsTrue(TestHelper.ApproximatelyEquals(expected, Vector2.SmoothStep(v2, v3, 0)), "#4");
-
-            expected = new Vector2(4.54f, -21.25135f);
-            Assert.IsTrue(TestHelper.ApproximatelyEquals(expected, Vector2.SmoothStep(v2, v3, -10)), "#5");
-
-            expected = new Vector2(4.54f, -21.25135f);
-            Assert.IsTrue(TestHelper.ApproximatelyEquals(expected, Vector2.SmoothStep(v2, v3, -100)), "#6");
-
-            expected = new Vector2(4.54f, -21.25135f);
-            Assert.IsTrue(TestHelper.ApproximatelyEquals(expected, Vector2.SmoothStep(v2, v3, -1000)), "#7");
-
-            expected = new Vector2(12.3254f, 15.25135f);
-            Assert.IsTrue(TestHelper.ApproximatelyEquals(expected, Vector2.SmoothStep(v3, v1, 512.13251f)), "#8");
+            float factor = 0.4467E15f;
+            Vector2 test4a = Vector2.SmoothStep(value3, value0, factor);
+            factor = MathHelper.Clamp(factor, 0f, 1f);
+            Vector2 test4b = new Vector2(
+                MathHelper.Hermite(value3.X, 0f, value0.X, 0f, factor),
+                MathHelper.Hermite(value3.Y, 0f, value0.Y, 0f, factor));
+            Assert.IsTrue(test4a == test4b, "Vector2.SmoothStep#4");
         }
 
         [Test]

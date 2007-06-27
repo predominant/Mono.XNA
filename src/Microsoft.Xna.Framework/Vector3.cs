@@ -175,58 +175,50 @@ namespace Microsoft.Xna.Framework
 
         public static Vector3 Barycentric(Vector3 value1, Vector3 value2, Vector3 value3, float amount1, float amount2)
         {
-            Barycentric(ref value1, ref value2, ref value3, amount1, amount2, out value1);
-            return value1;
+            return new Vector3(
+                MathHelper.Barycentric(value1.X, value2.X, value3.X, amount1, amount2),
+                MathHelper.Barycentric(value1.Y, value2.Y, value3.Y, amount1, amount2),
+                MathHelper.Barycentric(value1.Z, value2.Z, value3.Z, amount1, amount2));
         }
 
         public static void Barycentric(ref Vector3 value1, ref Vector3 value2, ref Vector3 value3, float amount1, float amount2, out Vector3 result)
         {
-            result = new Vector3(value1.X + (value2.X - value1.X) * amount1 + (value3.X - value1.X) * amount2,
-                                 value1.Y + (value2.Y - value1.Y) * amount1 + (value3.Y - value1.Y) * amount2,
-                                 value1.Z + (value2.Z - value1.Z) * amount1 + (value3.Z - value1.Z) * amount2);
+            result = new Vector3(
+                MathHelper.Barycentric(value1.X, value2.X, value3.X, amount1, amount2),
+                MathHelper.Barycentric(value1.Y, value2.Y, value3.Y, amount1, amount2),
+                MathHelper.Barycentric(value1.Z, value2.Z, value3.Z, amount1, amount2));
         }
 
         public static Vector3 CatmullRom(Vector3 value1, Vector3 value2, Vector3 value3, Vector3 value4, float amount)
         {
-            CatmullRom(ref value1, ref value2, ref value3, ref value4, amount, out value1);
-            return value1;
+            return new Vector3(
+                MathHelper.CatmullRom(value1.X, value2.X, value3.X, value4.X, amount),
+                MathHelper.CatmullRom(value1.Y, value2.Y, value3.Y, value4.Y, amount),
+                MathHelper.CatmullRom(value1.Z, value2.Z, value3.Z, value4.Z, amount));
         }
 
         public static void CatmullRom(ref Vector3 value1, ref Vector3 value2, ref Vector3 value3, ref Vector3 value4, float amount, out Vector3 result)
         {
-            // Using formula from http://www.mvps.org/directx/articles/catmull/
-            float amountSquared = amount * amount;
-            float amountCubed = amountSquared * amount;
-
-            result.X = 0.5f * ( 2.0f * value2.X +
-                               (value3.X - value1.X) * amount +
-                               (2.0f * value1.X - 5.0f * value2.X + 4.0f * value3.X - value4.X) * amountSquared +
-                               (3.0f * value2.X - value1.X - 3.0f * value3.X + value4.X) * amountCubed);
-
-            result.Y = 0.5f * ( 2.0f * value2.Y +
-                               (value3.Y - value1.Y) * amount +
-                               (2.0f * value1.Y - 5.0f * value2.Y + 4.0f * value3.Y - value4.Y) * amountSquared +
-                               (3.0f * value2.Y - value1.Y - 3.0f * value3.Y + value4.Y) * amountCubed);
-
-            result.Z = 0.5f * ( 2.0f * value2.Z +
-                               (value3.Z - value1.Z) * amount +
-                               (2.0f * value1.Z - 5.0f * value2.Z + 4.0f * value3.Z - value4.Z) * amountSquared +
-                               (3.0f * value2.Z - value1.Z - 3.0f * value3.Z + value4.Z) * amountCubed);
+            result = new Vector3(
+                MathHelper.CatmullRom(value1.X, value2.X, value3.X, value4.X, amount),
+                MathHelper.CatmullRom(value1.Y, value2.Y, value3.Y, value4.Y, amount),
+                MathHelper.CatmullRom(value1.Z, value2.Z, value3.Z, value4.Z, amount));
         }
 
-        public static Vector3 Clamp(Vector3 value, Vector3 min, Vector3 max)
+        public static Vector3 Clamp(Vector3 value1, Vector3 min, Vector3 max)
         {
-            value.X = MathHelper.Clamp(value.X, min.X, max.X);
-            value.Y = MathHelper.Clamp(value.Y, min.Y, max.Y);
-            value.Z = MathHelper.Clamp(value.Z, min.Z, max.Z);
-            return value;
+            return new Vector3(
+                MathHelper.Clamp(value1.X, min.X, max.X),
+                MathHelper.Clamp(value1.Y, min.Y, max.Y),
+                MathHelper.Clamp(value1.Z, min.Z, max.Z));
         }
 
         public static void Clamp(ref Vector3 value1, ref Vector3 min, ref Vector3 max, out Vector3 result)
         {
-            result.X = MathHelper.Clamp(value1.X, min.X, max.X);
-            result.Y = MathHelper.Clamp(value1.Y, min.Y, max.Y);
-            result.Z = MathHelper.Clamp(value1.Z, min.Z, max.Z);
+            result = new Vector3(
+                MathHelper.Clamp(value1.X, min.X, max.X),
+                MathHelper.Clamp(value1.Y, min.Y, max.Y),
+                MathHelper.Clamp(value1.Z, min.Z, max.Z));
         }
 
         public static Vector3 Cross(Vector3 vector1, Vector3 vector2)
@@ -356,45 +348,50 @@ namespace Microsoft.Xna.Framework
 
         public static Vector3 Lerp(Vector3 value1, Vector3 value2, float amount)
         {
-            Lerp(ref value1, ref value2, amount, out value1);
-            return value1;
+            return new Vector3(
+                MathHelper.Lerp(value1.X, value2.X, amount),
+                MathHelper.Lerp(value1.Y, value2.Y, amount),
+                MathHelper.Lerp(value1.Z, value2.Z, amount));
         }
 
         public static void Lerp(ref Vector3 value1, ref Vector3 value2, float amount, out Vector3 result)
         {
-            result = new Vector3(value1.X + (value2.X - value1.X) * amount,
-                                 value1.Y + (value2.Y - value1.Y) * amount,
-                                 value1.Z + (value2.Z - value1.Z) * amount);
+            result = new Vector3(
+                MathHelper.Lerp(value1.X, value2.X, amount),
+                MathHelper.Lerp(value1.Y, value2.Y, amount),
+                MathHelper.Lerp(value1.Z, value2.Z, amount));
         }
                 
         public static Vector3 Max(Vector3 value1, Vector3 value2)
         {
-            value1 = new Vector3(value1.X > value2.X ? value1.X : value2.X,
-                                 value1.Y > value2.Y ? value1.Y : value2.Y,
-                                 value1.Z > value2.Z ? value1.Z : value2.Z);
-            return value1;
+            return new Vector3(
+                MathHelper.Max(value1.X, value2.X),
+                MathHelper.Max(value1.Y, value2.Y),
+                MathHelper.Max(value1.Z, value2.Z));
         }
 
         public static void Max(ref Vector3 value1, ref Vector3 value2, out Vector3 result)
         {
-            result = new Vector3(value1.X > value2.X ? value1.X : value2.X,
-                                 value1.Y > value2.Y ? value1.Y : value2.Y,
-                                 value1.Z > value2.Z ? value1.Z : value2.Z);
+            result = new Vector3(
+                MathHelper.Max(value1.X, value2.X),
+                MathHelper.Max(value1.Y, value2.Y),
+                MathHelper.Max(value1.Z, value2.Z));
         }
 
         public static Vector3 Min(Vector3 value1, Vector3 value2)
         {
-            value1 = new Vector3(value1.X < value2.X ? value1.X : value2.X,
-                                 value1.Y < value2.Y ? value1.Y : value2.Y,
-                                 value1.Z < value2.Z ? value1.Z : value2.Z);
-            return value1;
+            return new Vector3(
+                MathHelper.Min(value1.X, value2.X),
+                MathHelper.Min(value1.Y, value2.Y),
+                MathHelper.Min(value1.Z, value2.Z));
         }
 
         public static void Min(ref Vector3 value1, ref Vector3 value2, out Vector3 result)
         {
-            result = new Vector3(value1.X < value2.X ? value1.X : value2.X,
-                                 value1.Y < value2.Y ? value1.Y : value2.Y,
-                                 value1.Z < value2.Z ? value1.Z : value2.Z);
+            result = new Vector3(
+                MathHelper.Min(value1.X, value2.X),
+                MathHelper.Min(value1.Y, value2.Y),
+                MathHelper.Min(value1.Z, value2.Z));
         }
 
         public static Vector3 Multiply(Vector3 value1, Vector3 value2)
@@ -471,13 +468,18 @@ namespace Microsoft.Xna.Framework
 
         public static Vector3 SmoothStep(Vector3 value1, Vector3 value2, float amount)
         {
-            SmoothStep(ref value1, ref value2, amount, out value1);
-            return value1;
+            return new Vector3(
+                MathHelper.SmoothStep(value1.X, value2.X, amount),
+                MathHelper.SmoothStep(value1.Y, value2.Y, amount),
+                MathHelper.SmoothStep(value1.Z, value2.Z, amount));
         }
 
         public static void SmoothStep(ref Vector3 value1, ref Vector3 value2, float amount, out Vector3 result)
         {
-            throw new NotImplementedException();
+            result = new Vector3(
+                MathHelper.SmoothStep(value1.X, value2.X, amount),
+                MathHelper.SmoothStep(value1.Y, value2.Y, amount),
+                MathHelper.SmoothStep(value1.Z, value2.Z, amount));
         }
 
         public static Vector3 Subtract(Vector3 value1, Vector3 value2)

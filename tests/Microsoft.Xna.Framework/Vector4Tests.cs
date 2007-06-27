@@ -116,6 +116,16 @@ namespace Microsoft.Xna.Framework.Tests
 
             expected = new Vector4(-263.8197f, 746.7805f, 258.9753f, -235.7217f);
             Assert.IsTrue(TestHelper.ApproximatelyEquals(expected, Vector4.Barycentric(b, c, a, 2.124215f, -1.326262f)), "#2");
+
+            // Test 3
+            // Check if its implementation uses MathHelper
+            Vector4 v1 = Vector4.Barycentric(a, b, c, -0.5f, 6.78f);
+            Vector4 v2 = new Vector4(
+                MathHelper.Barycentric(a.X, b.X, c.X, -0.5f, 6.78f),
+                MathHelper.Barycentric(a.Y, b.Y, c.Y, -0.5f, 6.78f),
+                MathHelper.Barycentric(a.Z, b.Z, c.Z, -0.5f, 6.78f),
+                MathHelper.Barycentric(a.W, b.W, c.W, -0.5f, 6.78f));
+            Assert.IsTrue(v1 == v2, "Barycentric#3");
         }
 
         [Test]
@@ -172,6 +182,13 @@ namespace Microsoft.Xna.Framework.Tests
             Assert.IsTrue(TestHelper.ApproximatelyEquals(401.5952f, Vector4.Distance(b, c)), "#6");
             Assert.IsTrue(TestHelper.ApproximatelyEquals(406.6145f, Vector4.Distance(c, a)), "#7");
             Assert.IsTrue(TestHelper.ApproximatelyEquals(406.6145f, Vector4.Distance(a, c)), "#8");
+
+            // Test 9
+            // Tests the distance between two vectors putting one first, and then the other
+            // Useful to see that absolute, positive distances are always returned
+            float test9_1 = Vector4.Distance(new Vector4(0f, 0f, 0f, 0f), new Vector4(1f, 1f, 1f, 1f));
+            float test9_2 = Vector4.Distance(new Vector4(1f, 1f, 1f, 1f), new Vector4(0f, 0f, 0f, 0f));
+            Assert.IsTrue(test9_1 == test9_2, "Vector2.Distance#9");
         }
 
         [Test]
@@ -286,20 +303,39 @@ namespace Microsoft.Xna.Framework.Tests
         }
 
         [Test]
-        [Ignore("Not implemented")]
         public void SmoothStepTest()
         {
-            Vector4 expected = a;
-            Assert.IsTrue(TestHelper.ApproximatelyEquals(expected, Vector4.SmoothStep(a, b, 0.001f)), "#1");
+            Vector4 value0 = new Vector4(0f, 0f, 0f, 0f);
+            Vector4 value1 = new Vector4(1f, 1f, 1f, 1f);
+            Vector4 value2 = new Vector4(-3.567f, 45.2347f, 33.67E4f, 25.66901256723f);
+            Vector4 value3 = new Vector4(1.49987E29f, -4.34889E30f, -12.6E30f, 6.33903762E-30f);
 
-            expected = a;
-            Assert.IsTrue(TestHelper.ApproximatelyEquals(expected, Vector4.SmoothStep(a, b, 0.010f)), "#2");
+            // Simple tests
+            // Test the implementation and the results via MathHelper
+            // to show that this method uses MatHelper behind
+            Vector4 test1 = Vector4.SmoothStep(value0, value3, 0f);
+            Assert.IsTrue(test1 == value0, "Vector4.SmoothStep#1");
 
-            expected = b;
-            Assert.IsTrue(TestHelper.ApproximatelyEquals(expected, Vector4.SmoothStep(a, b, 2.000f)), "#3");
+            Vector4 test2 = Vector4.SmoothStep(value0, value3, 0.5f);
+            Assert.IsTrue(test2.X == (float)((value0.X + value3.X) * 0.5) && test2.Y == (float)((value0.Y + value3.Y) * 0.5), "Vector4.SmoothStep#2");
 
-            expected = a;
-            Assert.IsTrue(TestHelper.ApproximatelyEquals(expected, Vector4.SmoothStep(a, b, -0.001f)), "#4");
+            Vector4 test3a = Vector4.SmoothStep(value1, value2, 0.35f);
+            Vector4 test3b = new Vector4(
+                MathHelper.SmoothStep(value1.X, value2.X, 0.35f),
+                MathHelper.SmoothStep(value1.Y, value2.Y, 0.35f),
+                MathHelper.SmoothStep(value1.Z, value2.Z, 0.35f),
+                MathHelper.SmoothStep(value1.W, value2.W, 0.35f));
+            Assert.IsTrue(test3a == test3b, "Vector4.SmoothStep#3");
+
+            float factor = 0.4467E15f;
+            Vector4 test4a = Vector4.SmoothStep(value3, value0, factor);
+            factor = MathHelper.Clamp(factor, 0f, 1f);
+            Vector4 test4b = new Vector4(
+                MathHelper.Hermite(value3.X, 0f, value0.X, 0f, factor),
+                MathHelper.Hermite(value3.Y, 0f, value0.Y, 0f, factor),
+                MathHelper.Hermite(value3.Z, 0f, value0.Z, 0f, factor),
+                MathHelper.Hermite(value3.W, 0f, value0.W, 0f, factor));
+            Assert.IsTrue(test4a == test4b, "Vector4.SmoothStep#4");
         }
 
         [Test]

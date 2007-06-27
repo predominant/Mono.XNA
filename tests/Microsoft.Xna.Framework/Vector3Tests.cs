@@ -207,17 +207,28 @@ namespace Microsoft.Xna.Framework.Tests
             b = Vector3.UnitY;
             c = Vector3.UnitZ;
 
+            // Test 1
             // Typical barycentric usage
             Vector3 v = Vector3.Barycentric(a, b, c, 1, 0.5f);
             Assert.AreEqual(-0.5f, v.X, "Barycentric#1.X");
             Assert.AreEqual(1, v.Y, "Barycentric#1.Y");
             Assert.AreEqual(0.5f, v.Z, "Barycentric#1.Z");
 
+            // Test 2
             // Overloaded barycentric usage
             Vector3.Barycentric(ref a, ref b, ref c, 1, 0.5f, out v);
             Assert.AreEqual(-0.5f, v.X, "Barycentric#2.X");
             Assert.AreEqual(1, v.Y, "Barycentric#2.Y");
             Assert.AreEqual(0.5f, v.Z, "Barycentric#2.Z");
+
+            // Test 3
+            // Check if its implementation uses MathHelper
+            Vector3 v1 = Vector3.Barycentric(a, b, c, -0.5f, 6.78f);
+            Vector3 v2 = new Vector3(
+                MathHelper.Barycentric(a.X, b.X, c.X, -0.5f, 6.78f),
+                MathHelper.Barycentric(a.Y, b.Y, c.Y, -0.5f, 6.78f),
+                MathHelper.Barycentric(a.Z, b.Z, c.Z, -0.5f, 6.78f));
+            Assert.IsTrue(v1 == v2, "Barycentric#3");
         }
 
         [Test]
@@ -321,6 +332,13 @@ namespace Microsoft.Xna.Framework.Tests
             Assert.AreEqual(1, Vector3.Distance(Vector3.UnitZ, origin), "Distance#3");
 
             Assert.IsTrue(TestHelper.ApproximatelyEquals(6.652067f, Vector3.Distance(a, b)), "#4");
+
+            // Test 5
+            // Tests the distance between two vectors putting one first, and then the other
+            // Useful to see that absolute, positive distances are always returned
+            float test5_1 = Vector3.Distance(new Vector3(0f, 0f, 0f), new Vector3(1f, 1f, 1f));
+            float test5_2 = Vector3.Distance(new Vector3(1f, 1f, 1f), new Vector3(0f, 0f, 0f));
+            Assert.IsTrue(test5_1 == test5_2, "Vector3.Distance#5");
         }
 
         [Test]
@@ -594,24 +612,37 @@ namespace Microsoft.Xna.Framework.Tests
         }
 
         [Test]
-        [Ignore("Not implemented")]
         public void SmoothStepTest()
         {
-            a = new Vector3(1, 2, 3);
-            b = new Vector3(4.5f, 6f, 7f);
-            c = new Vector3(-124, 352.234f, 123.123f);
+            Vector3 value0 = new Vector3(0f, 0f, 0f);
+            Vector3 value1 = new Vector3(1f, 1f, 1f);
+            Vector3 value2 = new Vector3(-3.567f, 45.2347f, 33.67E4f);
+            Vector3 value3 = new Vector3(1.49987E29f, -4.34889E30f, -12.6E30f);
 
-            Vector3 expected = a;
-            Assert.IsTrue(TestHelper.ApproximatelyEquals(expected, Vector3.SmoothStep(a, b, 0.001f)), "#1");
+            // Simple tests
+            // Test the implementation and the results via MathHelper
+            // to show that this method uses MatHelper behind
+            Vector3 test1 = Vector3.SmoothStep(value0, value3, 0f);
+            Assert.IsTrue(test1 == value0, "Vector3.SmoothStep#1");
 
-            expected = a;
-            Assert.IsTrue(TestHelper.ApproximatelyEquals(expected, Vector3.SmoothStep(a, b, 0.010f)), "#2");
+            Vector3 test2 = Vector3.SmoothStep(value0, value3, 0.5f);
+            Assert.IsTrue(test2.X == (float)((value0.X + value3.X) * 0.5) && test2.Y == (float)((value0.Y + value3.Y) * 0.5), "Vector3.SmoothStep#2");
 
-            expected = b;
-            Assert.IsTrue(TestHelper.ApproximatelyEquals(expected, Vector3.SmoothStep(a, b, 2.000f)), "#3");
+            Vector3 test3a = Vector3.SmoothStep(value1, value2, 0.35f);
+            Vector3 test3b = new Vector3(
+                MathHelper.SmoothStep(value1.X, value2.X, 0.35f),
+                MathHelper.SmoothStep(value1.Y, value2.Y, 0.35f),
+                MathHelper.SmoothStep(value1.Z, value2.Z, 0.35f));
+            Assert.IsTrue(test3a == test3b, "Vector3.SmoothStep#3");
 
-            expected = a;
-            Assert.IsTrue(TestHelper.ApproximatelyEquals(expected, Vector3.SmoothStep(a, b, -0.001f)), "#4");
+            float factor = 0.4467E15f;
+            Vector3 test4a = Vector3.SmoothStep(value3, value0, factor);
+            factor = MathHelper.Clamp(factor, 0f, 1f);
+            Vector3 test4b = new Vector3(
+                MathHelper.Hermite(value3.X, 0f, value0.X, 0f, factor),
+                MathHelper.Hermite(value3.Y, 0f, value0.Y, 0f, factor),
+                MathHelper.Hermite(value3.Z, 0f, value0.Z, 0f, factor));
+            Assert.IsTrue(test4a == test4b, "Vector3.SmoothStep#4");
         }
 
         [Test]

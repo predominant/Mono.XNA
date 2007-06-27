@@ -118,49 +118,44 @@ namespace Microsoft.Xna.Framework
 
         public static Vector2 Barycentric(Vector2 value1, Vector2 value2, Vector2 value3, float amount1, float amount2)
         {
-            Barycentric(ref value1, ref value2, ref value3, amount1, amount2, out value1);
-            return value1;
+            return new Vector2(
+                MathHelper.Barycentric(value1.X, value2.X, value3.X, amount1, amount2),
+                MathHelper.Barycentric(value1.Y, value2.Y, value3.Y, amount1, amount2));
         }
 
         public static void Barycentric(ref Vector2 value1, ref Vector2 value2, ref Vector2 value3, float amount1, float amount2, out Vector2 result)
         {
-            result = new Vector2(value1.X + (value2.X - value1.X) * amount1 + (value3.X - value1.X) * amount2,
-                                 value1.Y + (value2.Y - value1.Y) * amount1 + (value3.Y - value1.Y) * amount2);
+            result = new Vector2(
+                MathHelper.Barycentric(value1.X, value2.X, value3.X, amount1, amount2),
+                MathHelper.Barycentric(value1.Y, value2.Y, value3.Y, amount1, amount2));
         }
 
         public static Vector2 CatmullRom(Vector2 value1, Vector2 value2, Vector2 value3, Vector2 value4, float amount)
         {
-            CatmullRom(ref value1, ref value2, ref value3, ref value4, amount, out value1);
-            return value1;
+            return new Vector2(
+                MathHelper.CatmullRom(value1.X, value2.X, value3.X, value4.X, amount),
+                MathHelper.CatmullRom(value1.Y, value2.Y, value3.Y, value4.Y, amount));
         }
 
         public static void CatmullRom(ref Vector2 value1, ref Vector2 value2, ref Vector2 value3, ref Vector2 value4, float amount, out Vector2 result)
         {
-            // Using formula from http://www.mvps.org/directx/articles/catmull/
-            float amountSquared = amount * amount;
-            float amountCubed = amountSquared * amount;
-
-            result.X = 0.5f * (2.0f * value2.X +
-                              (value3.X - value1.X) * amount +
-                              (2.0f * value1.X - 5.0f * value2.X + 4.0f * value3.X - value4.X) * amountSquared +
-                              (3.0f * value2.X - value1.X - 3.0f * value3.X + value4.X) * amountCubed);
-
-            result.Y = 0.5f * (2.0f * value2.Y +
-                              (value3.Y - value1.Y) * amount +
-                              (2.0f * value1.Y - 5.0f * value2.Y + 4.0f * value3.Y - value4.Y) * amountSquared +
-                              (3.0f * value2.Y - value1.Y - 3.0f * value3.Y + value4.Y) * amountCubed);
+            result = new Vector2(
+                MathHelper.CatmullRom(value1.X, value2.X, value3.X, value4.X, amount),
+                MathHelper.CatmullRom(value1.Y, value2.Y, value3.Y, value4.Y, amount));
         }
 
         public static Vector2 Clamp(Vector2 value1, Vector2 min, Vector2 max)
         {
-            Clamp(ref value1, ref min, ref max, out value1);
-            return value1;
+            return new Vector2(
+                MathHelper.Clamp(value1.X, min.X, max.X),
+                MathHelper.Clamp(value1.Y, min.Y, max.Y));
         }
 
         public static void Clamp(ref Vector2 value1, ref Vector2 min, ref Vector2 max, out Vector2 result)
         {
-            result.X = MathHelper.Clamp(value1.X, min.X, max.X);
-            result.Y = MathHelper.Clamp(value1.Y, min.Y, max.Y);
+            result = new Vector2(
+                MathHelper.Clamp(value1.X, min.X, max.X),
+                MathHelper.Clamp(value1.Y, min.Y, max.Y));
         }
 
         public static float Distance(Vector2 value1, Vector2 value2)
@@ -270,38 +265,44 @@ namespace Microsoft.Xna.Framework
 
         public static Vector2 Lerp(Vector2 value1, Vector2 value2, float amount)
         {
-            Lerp(ref value1, ref value2, amount, out value1);
-            return value1;
+            return new Vector2(
+                MathHelper.Lerp(value1.X, value2.X, amount),
+                MathHelper.Lerp(value1.Y, value2.Y, amount));
         }
 
         public static void Lerp(ref Vector2 value1, ref Vector2 value2, float amount, out Vector2 result)
         {
-            result = new Vector2(value1.X + (value2.X - value1.X) * amount,
-                                 value1.Y + (value2.Y - value1.Y) * amount);
+            result = new Vector2(
+                MathHelper.Lerp(value1.X, value2.X, amount),
+                MathHelper.Lerp(value1.Y, value2.Y, amount));
         }
 
         public static Vector2 Max(Vector2 value1, Vector2 value2)
         {
-            Max(ref value1, ref value2, out value1);
-            return value1;
+            return new Vector2(
+                MathHelper.Max(value1.X, value2.X),
+                MathHelper.Max(value1.Y, value2.Y));
         }
 
         public static void Max(ref Vector2 value1, ref Vector2 value2, out Vector2 result)
         {
-            result = new Vector2(value1.X > value2.X ? value1.X : value2.X,
-                                 value1.Y > value2.Y ? value1.Y : value2.Y);
+            result = new Vector2(
+                MathHelper.Max(value1.X, value2.X),
+                MathHelper.Max(value1.Y, value2.Y));
         }
 
         public static Vector2 Min(Vector2 value1, Vector2 value2)
         {
-            Min(ref value1, ref value2, out value1);
-            return value1;
+            return new Vector2(
+                MathHelper.Min(value1.X, value2.X),
+                MathHelper.Min(value1.Y, value2.Y));
         }
 
         public static void Min(ref Vector2 value1, ref Vector2 value2, out Vector2 result)
         {
-            result = new Vector2(value1.X < value2.X ? value1.X : value2.X,
-                                 value1.Y < value2.Y ? value1.Y : value2.Y);
+            result = new Vector2(
+                MathHelper.Min(value1.X, value2.X),
+                MathHelper.Min(value1.Y, value2.Y));
         }
 
         public static Vector2 Multiply(Vector2 value1, Vector2 value2)
@@ -365,15 +366,16 @@ namespace Microsoft.Xna.Framework
 
         public static Vector2 SmoothStep(Vector2 value1, Vector2 value2, float amount)
         {
-            SmoothStep(ref value1, ref value2, amount, out value1);
-            return value1;
+            return new Vector2(
+                MathHelper.SmoothStep(value1.X, value2.X, amount),
+                MathHelper.SmoothStep(value1.Y, value2.Y, amount));
         }
 
         public static void SmoothStep(ref Vector2 value1, ref Vector2 value2, float amount, out Vector2 result)
         {
-            // This is the behaviour my NUnit tests give, but it seems like a useless method.
-            // Did i code it right?
-            result = (amount > 0) ? value2 : value1;
+            result = new Vector2(
+                MathHelper.SmoothStep(value1.X, value2.X, amount),
+                MathHelper.SmoothStep(value1.Y, value2.Y, amount));
         }
 
         public static Vector2 Subtract(Vector2 value1, Vector2 value2)
