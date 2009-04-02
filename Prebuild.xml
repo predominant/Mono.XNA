@@ -148,6 +148,63 @@
         <Match path="." pattern="*.cs" recurse="true"/>
       </Files>
     </Project>
+    <Project name="Microsoft.Xna.Framework.Content.Pipeline" path="src/Microsoft.Xna.Framework.Content.Pipeline" language="C#" type="Library" assemblyName="Microsoft.Xna.Framework.Content.Pipeline" rootNamespace="Microsoft.Xna.Framework.Content.Pipeline">
+      <Configuration name="Debug">
+        <Options>
+          <CompilerDefines>DEBUG;TRACE</CompilerDefines>
+          <OptimizeCode>false</OptimizeCode>
+          <AllowUnsafe>false</AllowUnsafe>
+          <OutputPath>bin/Debug</OutputPath>
+          <DebugInformation>true</DebugInformation>
+          <KeyFile>Microsoft.Xna.Framework.Content.Pipeline.snk</KeyFile>
+          <XmlDocFile></XmlDocFile>
+          <WarningLevel>4</WarningLevel>
+          <SuppressWarnings>3019,0649,1591</SuppressWarnings>
+        </Options>
+      </Configuration>
+      <Configuration name="Release">
+        <Options>
+          <CompilerDefines>TRACE</CompilerDefines>
+          <OptimizeCode>true</OptimizeCode>
+          <AllowUnsafe>false</AllowUnsafe>
+          <OutputPath>bin/Release</OutputPath>
+          <KeyFile>Microsoft.Xna.Frameworkd.Content.Pipeline.snk</KeyFile>
+          <XmlDocFile>Microsoft.Xna.Framework.Content.Pipeline.xml</XmlDocFile>
+          <DebugInformation>false</DebugInformation>
+          <WarningLevel>1</WarningLevel>
+          <SuppressWarnings>3019,0649</SuppressWarnings>
+        </Options>
+      </Configuration>
+      <Configuration name="Unit Tests">
+        <Options>
+          <CompilerDefines>TRACE;NUNITTESTS</CompilerDefines>
+          <OptimizeCode>true</OptimizeCode>
+          <AllowUnsafe>false</AllowUnsafe>
+          <OutputPath>..\unittests</OutputPath>
+          <DebugInformation>true</DebugInformation>
+          <WarningLevel>1</WarningLevel>
+          <SuppressWarnings></SuppressWarnings>
+        </Options>
+      </Configuration>
+      <Reference name="System" />
+      <Reference name="System.Drawing" />
+      <Reference name="System.Xml" />
+      <Reference name="Microsoft.Build.Framework" />
+      <Reference name="Microsoft.Build.Utilities" />
+      <Reference name="Microsoft.Xna.Framework" localCopy="true"/>
+      <?if framework = "NET_2_0" ?>
+      <Reference name="Tao.OpenGl" localCopy="true" path="../../lib/net-2.0" />
+      <Reference name="SdlDotNet" localCopy="true" path="../../lib/net-2.0" />
+      <Reference name="Mono.Posix" localCopy="true" path="../../lib/net-2.0" />
+      <?else ?>
+      <Reference name="Tao.OpenGl" localCopy="true" path="../../lib/mono-2.0" />
+      <Reference name="SdlDotNet" localCopy="true" path="../../lib/mono-2.0" />
+      <Reference name="Mono.Posix" localCopy="true" path="../../lib/mono-2.0" />
+      <?endif ?>
+      <Files>
+        <Match path="." pattern="*.cs" recurse="true"/>
+      </Files>
+    </Project>
     <Project name="XnaTests" path="tests" language="C#" type="Library" assemblyName="XnaTests" rootNamespace="XnaTests" designerFolder="Properties">
       <Configuration name="Debug">
         <Options>
