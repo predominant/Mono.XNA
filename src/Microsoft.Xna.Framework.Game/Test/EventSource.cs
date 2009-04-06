@@ -13,7 +13,7 @@ namespace Microsoft.Xna.Framework.Test
             get { return _game; }
             set { _game = value; }
         }
-    }
+	}
 }
 
 #endif

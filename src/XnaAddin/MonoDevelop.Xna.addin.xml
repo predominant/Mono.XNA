@@ -1,0 +1,39 @@
+<Addin id          = "Xna"
+       namespace   = "MonoDevelop"
+       name        = "XNA Project Support"
+       author      = "Lars Magnusson"
+       copyright   = "MIT"
+       url         = "http://code.google.com/p/monoxna/"
+       description = "Support for Microsoft XNA projects"
+       category    = "Game Development"
+       version     = "0.1">
+	
+	<Dependencies>
+		<Addin id="Core" version="2.0"/>
+		<Addin id="Core.Gui" version="2.0"/>
+		<Addin id="Projects" version="2.0"/>
+		<Addin id="Projects.Gui" version="2.0"/>
+		<Addin id="Ide" version="2.0"/>
+		<Addin id="XmlEditor" version="2.0" />
+	</Dependencies>
+	
+	<Extension path = "/MonoDevelop/ProjectModel/MSBuildItemTypes">
+		<DotNetProjectSubtype
+			guid="{6D335F3A-9D43-41b4-9D22-F6F17C4BE596}"
+			type="MonoDevelop.Xna.XnaAppProject"
+			import ="$(MSBuildExtensionsPath)\Microsoft\XNA Game Studio\Microsoft.Xna.GameStudio.targets" />
+		<DotNetProjectSubtype
+			guid="{96E2B04D-8817-42c6-938A-82C39BA4D311}"
+			type="MonoDevelop.Xna.XnaContentProject"
+			import ="$(MSBuildExtensionsPath)\Microsoft\XNA Game Studio\v3.0\Microsoft.Xna.GameStudio.ContentPipeline.targets" />			
+	</Extension>
+	
+	<Extension path = "/MonoDevelop/Ide/ProjectTemplates">
+		<ProjectTemplate id = "WindowsGame" resource = "WindowsGame.xpt.xml"/>
+	</Extension>
+	
+	<Extension path = "/MonoDevelop/ProjectModel/ProjectBindings">
+		<ProjectBinding id = "XnaApp" class = "MonoDevelop.Xna.XnaAppProjectBinding" />
+	</Extension>
+	
+</Addin>

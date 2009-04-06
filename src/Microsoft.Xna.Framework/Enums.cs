@@ -1,7 +1,7 @@
 #region License
 /*
 MIT License
-Copyright © 2006 - 2007 The Mono.Xna Team
+Copyright Â© 2006 - 2007 The Mono.Xna Team
 
 All rights reserved.
 
