@@ -205,6 +205,268 @@
         <Match path="." pattern="*.cs" recurse="true"/>
       </Files>
     </Project>
+    <Project name="Microsoft.Xna.Framework.Content.Pipeline.EffectImporter" path="src/Microsoft.Xna.Framework.Content.Pipeline.EffectImporter" language="C#" type="Library" assemblyName="Microsoft.Xna.Framework.Content.Pipeline.EffectImporter" rootNamespace="Microsoft.Xna.Framework.Content.Pipeline.EffectImporter">
+      <Configuration name="Debug">
+        <Options>
+          <CompilerDefines>DEBUG;TRACE</CompilerDefines>
+          <OptimizeCode>false</OptimizeCode>
+          <AllowUnsafe>false</AllowUnsafe>
+          <OutputPath>bin/Debug</OutputPath>
+          <DebugInformation>true</DebugInformation>
+          <KeyFile>Microsoft.Xna.Framework.Content.Pipeline.EffectImporter.snk</KeyFile>
+          <XmlDocFile></XmlDocFile>
+          <WarningLevel>4</WarningLevel>
+          <SuppressWarnings>3019,0649,1591</SuppressWarnings>
+        </Options>
+      </Configuration>
+      <Configuration name="Release">
+        <Options>
+          <CompilerDefines>TRACE</CompilerDefines>
+          <OptimizeCode>true</OptimizeCode>
+          <AllowUnsafe>false</AllowUnsafe>
+          <OutputPath>bin/Release</OutputPath>
+          <KeyFile>Microsoft.Xna.Frameworkd.Content.Pipeline.EffectImporter.snk</KeyFile>
+          <XmlDocFile>Microsoft.Xna.Framework.Content.Pipeline.EffectImporter.xml</XmlDocFile>
+          <DebugInformation>false</DebugInformation>
+          <WarningLevel>1</WarningLevel>
+          <SuppressWarnings>3019,0649</SuppressWarnings>
+        </Options>
+      </Configuration>
+      <Configuration name="Unit Tests">
+        <Options>
+          <CompilerDefines>TRACE;NUNITTESTS</CompilerDefines>
+          <OptimizeCode>true</OptimizeCode>
+          <AllowUnsafe>false</AllowUnsafe>
+          <OutputPath>..\unittests</OutputPath>
+          <DebugInformation>true</DebugInformation>
+          <WarningLevel>1</WarningLevel>
+          <SuppressWarnings></SuppressWarnings>
+        </Options>
+      </Configuration>
+      <Reference name="System" />
+      <Files>
+        <Match path="." pattern="*.cs" recurse="true"/>
+      </Files>
+    </Project>
+    <Project name="Microsoft.Xna.Framework.Content.Pipeline.FBXImporter" path="src/Microsoft.Xna.Framework.Content.Pipeline.FBXImporter" language="C#" type="Library" assemblyName="Microsoft.Xna.Framework.Content.Pipeline.FBXImporter" rootNamespace="Microsoft.Xna.Framework.Content.Pipeline.FBXImporter">
+      <Configuration name="Debug">
+        <Options>
+          <CompilerDefines>DEBUG;TRACE</CompilerDefines>
+          <OptimizeCode>false</OptimizeCode>
+          <AllowUnsafe>false</AllowUnsafe>
+          <OutputPath>bin/Debug</OutputPath>
+          <DebugInformation>true</DebugInformation>
+          <KeyFile>Microsoft.Xna.Framework.Content.Pipeline.FBXImporter.snk</KeyFile>
+          <XmlDocFile></XmlDocFile>
+          <WarningLevel>4</WarningLevel>
+          <SuppressWarnings>3019,0649,1591</SuppressWarnings>
+        </Options>
+      </Configuration>
+      <Configuration name="Release">
+        <Options>
+          <CompilerDefines>TRACE</CompilerDefines>
+          <OptimizeCode>true</OptimizeCode>
+          <AllowUnsafe>false</AllowUnsafe>
+          <OutputPath>bin/Release</OutputPath>
+          <KeyFile>Microsoft.Xna.Frameworkd.Content.Pipeline.FBXImporter.snk</KeyFile>
+          <XmlDocFile>Microsoft.Xna.Framework.Content.Pipeline.FBXImporter.xml</XmlDocFile>
+          <DebugInformation>false</DebugInformation>
+          <WarningLevel>1</WarningLevel>
+          <SuppressWarnings>3019,0649</SuppressWarnings>
+        </Options>
+      </Configuration>
+      <Configuration name="Unit Tests">
+        <Options>
+          <CompilerDefines>TRACE;NUNITTESTS</CompilerDefines>
+          <OptimizeCode>true</OptimizeCode>
+          <AllowUnsafe>false</AllowUnsafe>
+          <OutputPath>..\unittests</OutputPath>
+          <DebugInformation>true</DebugInformation>
+          <WarningLevel>1</WarningLevel>
+          <SuppressWarnings></SuppressWarnings>
+        </Options>
+      </Configuration>
+      <Reference name="System" />
+      <Files>
+        <Match path="." pattern="*.cs" recurse="true"/>
+      </Files>
+    </Project>
+    <Project name="Microsoft.Xna.Framework.Content.Pipeline.TextureImporter" path="src/Microsoft.Xna.Framework.Content.Pipeline.TextureImporter" language="C#" type="Library" assemblyName="Microsoft.Xna.Framework.Content.Pipeline.TextureImporter" rootNamespace="Microsoft.Xna.Framework.Content.Pipeline.TextureImporter">
+      <Configuration name="Debug">
+        <Options>
+          <CompilerDefines>DEBUG;TRACE</CompilerDefines>
+          <OptimizeCode>false</OptimizeCode>
+          <AllowUnsafe>false</AllowUnsafe>
+          <OutputPath>bin/Debug</OutputPath>
+          <DebugInformation>true</DebugInformation>
+          <KeyFile>Microsoft.Xna.Framework.Content.Pipeline.TextureImporter.snk</KeyFile>
+          <XmlDocFile></XmlDocFile>
+          <WarningLevel>4</WarningLevel>
+          <SuppressWarnings>3019,0649,1591</SuppressWarnings>
+        </Options>
+      </Configuration>
+      <Configuration name="Release">
+        <Options>
+          <CompilerDefines>TRACE</CompilerDefines>
+          <OptimizeCode>true</OptimizeCode>
+          <AllowUnsafe>false</AllowUnsafe>
+          <OutputPath>bin/Release</OutputPath>
+          <KeyFile>Microsoft.Xna.Frameworkd.Content.Pipeline.TextureImporter.snk</KeyFile>
+          <XmlDocFile>Microsoft.Xna.Framework.Content.Pipeline.TextureImporter.xml</XmlDocFile>
+          <DebugInformation>false</DebugInformation>
+          <WarningLevel>1</WarningLevel>
+          <SuppressWarnings>3019,0649</SuppressWarnings>
+        </Options>
+      </Configuration>
+      <Configuration name="Unit Tests">
+        <Options>
+          <CompilerDefines>TRACE;NUNITTESTS</CompilerDefines>
+          <OptimizeCode>true</OptimizeCode>
+          <AllowUnsafe>false</AllowUnsafe>
+          <OutputPath>..\unittests</OutputPath>
+          <DebugInformation>true</DebugInformation>
+          <WarningLevel>1</WarningLevel>
+          <SuppressWarnings></SuppressWarnings>
+        </Options>
+      </Configuration>
+      <Reference name="System" />
+      <Files>
+        <Match path="." pattern="*.cs" recurse="true"/>
+      </Files>
+    </Project>
+    <Project name="Microsoft.Xna.Framework.Content.Pipeline.XImporter" path="src/Microsoft.Xna.Framework.Content.Pipeline.XImporter" language="C#" type="Library" assemblyName="Microsoft.Xna.Framework.Content.Pipeline.XImporter" rootNamespace="Microsoft.Xna.Framework.Content.Pipeline.XImporter">
+      <Configuration name="Debug">
+        <Options>
+          <CompilerDefines>DEBUG;TRACE</CompilerDefines>
+          <OptimizeCode>false</OptimizeCode>
+          <AllowUnsafe>false</AllowUnsafe>
+          <OutputPath>bin/Debug</OutputPath>
+          <DebugInformation>true</DebugInformation>
+          <KeyFile>Microsoft.Xna.Framework.Content.Pipeline.XImporter.snk</KeyFile>
+          <XmlDocFile></XmlDocFile>
+          <WarningLevel>4</WarningLevel>
+          <SuppressWarnings>3019,0649,1591</SuppressWarnings>
+        </Options>
+      </Configuration>
+      <Configuration name="Release">
+        <Options>
+          <CompilerDefines>TRACE</CompilerDefines>
+          <OptimizeCode>true</OptimizeCode>
+          <AllowUnsafe>false</AllowUnsafe>
+          <OutputPath>bin/Release</OutputPath>
+          <KeyFile>Microsoft.Xna.Frameworkd.Content.Pipeline.XImporter.snk</KeyFile>
+          <XmlDocFile>Microsoft.Xna.Framework.Content.Pipeline.XImporter.xml</XmlDocFile>
+          <DebugInformation>false</DebugInformation>
+          <WarningLevel>1</WarningLevel>
+          <SuppressWarnings>3019,0649</SuppressWarnings>
+        </Options>
+      </Configuration>
+      <Configuration name="Unit Tests">
+        <Options>
+          <CompilerDefines>TRACE;NUNITTESTS</CompilerDefines>
+          <OptimizeCode>true</OptimizeCode>
+          <AllowUnsafe>false</AllowUnsafe>
+          <OutputPath>..\unittests</OutputPath>
+          <DebugInformation>true</DebugInformation>
+          <WarningLevel>1</WarningLevel>
+          <SuppressWarnings></SuppressWarnings>
+        </Options>
+      </Configuration>
+      <Reference name="System" />
+      <Files>
+        <Match path="." pattern="*.cs" recurse="true"/>
+      </Files>
+    </Project>
+    <Project name="Microsoft.Xna.Framework.Content.Pipeline.AudioImporters" path="src/Microsoft.Xna.Framework.Content.Pipeline.AudioImporters" language="C#" type="Library" assemblyName="Microsoft.Xna.Framework.Content.Pipeline.AudioImporters" rootNamespace="Microsoft.Xna.Framework.Content.Pipeline.AudioImporters">
+      <Configuration name="Debug">
+        <Options>
+          <CompilerDefines>DEBUG;TRACE</CompilerDefines>
+          <OptimizeCode>false</OptimizeCode>
+          <AllowUnsafe>false</AllowUnsafe>
+          <OutputPath>bin/Debug</OutputPath>
+          <DebugInformation>true</DebugInformation>
+          <KeyFile>Microsoft.Xna.Framework.Content.Pipeline.AudioImporters.snk</KeyFile>
+          <XmlDocFile></XmlDocFile>
+          <WarningLevel>4</WarningLevel>
+          <SuppressWarnings>3019,0649,1591</SuppressWarnings>
+        </Options>
+      </Configuration>
+      <Configuration name="Release">
+        <Options>
+          <CompilerDefines>TRACE</CompilerDefines>
+          <OptimizeCode>true</OptimizeCode>
+          <AllowUnsafe>false</AllowUnsafe>
+          <OutputPath>bin/Release</OutputPath>
+          <KeyFile>Microsoft.Xna.Frameworkd.Content.Pipeline.AudioImporters.snk</KeyFile>
+          <XmlDocFile>Microsoft.Xna.Framework.Content.Pipeline.AudioImporters.xml</XmlDocFile>
+          <DebugInformation>false</DebugInformation>
+          <WarningLevel>1</WarningLevel>
+          <SuppressWarnings>3019,0649</SuppressWarnings>
+        </Options>
+      </Configuration>
+      <Configuration name="Unit Tests">
+        <Options>
+          <CompilerDefines>TRACE;NUNITTESTS</CompilerDefines>
+          <OptimizeCode>true</OptimizeCode>
+          <AllowUnsafe>false</AllowUnsafe>
+          <OutputPath>..\unittests</OutputPath>
+          <DebugInformation>true</DebugInformation>
+          <WarningLevel>1</WarningLevel>
+          <SuppressWarnings></SuppressWarnings>
+        </Options>
+      </Configuration>
+      <Reference name="System" />
+      <Files>
+        <Match path="." pattern="*.cs" recurse="true"/>
+      </Files>
+    </Project>
+    <Project name="MonoDevelop.Xna" path="src/MonoDevelop.Xna" language="C#" type="Library" assemblyName="MonoDevelop.Xna" rootNamespace="MonoDevelop.Xna">
+      <Configuration name="Debug">
+        <Options>
+          <CompilerDefines>DEBUG;TRACE</CompilerDefines>
+          <OptimizeCode>false</OptimizeCode>
+          <AllowUnsafe>false</AllowUnsafe>
+          <OutputPath>bin/Debug</OutputPath>
+          <DebugInformation>true</DebugInformation>
+          <KeyFile>MonoDevelop.Xna.snk</KeyFile>
+          <XmlDocFile></XmlDocFile>
+          <WarningLevel>4</WarningLevel>
+          <SuppressWarnings>3019,0649,1591</SuppressWarnings>
+        </Options>
+      </Configuration>
+      <Configuration name="Release">
+        <Options>
+          <CompilerDefines>TRACE</CompilerDefines>
+          <OptimizeCode>true</OptimizeCode>
+          <AllowUnsafe>false</AllowUnsafe>
+          <OutputPath>bin/Release</OutputPath>
+          <KeyFile>MonoDevelop.Xna.snk</KeyFile>
+          <XmlDocFile>MonoDevelop.Xna.xml</XmlDocFile>
+          <DebugInformation>false</DebugInformation>
+          <WarningLevel>1</WarningLevel>
+          <SuppressWarnings>3019,0649</SuppressWarnings>
+        </Options>
+      </Configuration>
+      <Configuration name="Unit Tests">
+        <Options>
+          <CompilerDefines>TRACE;NUNITTESTS</CompilerDefines>
+          <OptimizeCode>true</OptimizeCode>
+          <AllowUnsafe>false</AllowUnsafe>
+          <OutputPath>..\unittests</OutputPath>
+          <DebugInformation>true</DebugInformation>
+          <WarningLevel>1</WarningLevel>
+          <SuppressWarnings></SuppressWarnings>
+        </Options>
+      </Configuration>
+      <Reference name="System" />
+      <Reference name="System.Xml" />
+      <Reference name="MonoDevelop.Core" />
+      <Reference name="MonoDevelop.Projects" />
+      <Reference name="MonoDevelop.Projects.Gui" />
+      <Files>
+        <Match path="." pattern="*.cs" recurse="true"/>
+      </Files>
+    </Project>
     <Project name="XnaTests" path="tests" language="C#" type="Library" assemblyName="XnaTests" rootNamespace="XnaTests" designerFolder="Properties">
       <Configuration name="Debug">
         <Options>
