@@ -208,29 +208,70 @@ namespace Microsoft.Xna.Framework
 
         public static Matrix Add(Matrix matrix1, Matrix matrix2)
         {
-            throw new NotImplementedException();
+            matrix1.M11 += matrix2.M11;
+			matrix1.M12 += matrix2.M12;
+			matrix1.M13 += matrix2.M13;
+			matrix1.M14 += matrix2.M14;
+			matrix1.M21 += matrix2.M21;
+			matrix1.M22 += matrix2.M22;
+			matrix1.M23 += matrix2.M23;
+			matrix1.M24 += matrix2.M24;
+			matrix1.M31 += matrix2.M31;
+			matrix1.M32 += matrix2.M32;
+			matrix1.M33 += matrix2.M33;
+			matrix1.M34 += matrix2.M34;
+			matrix1.M41 += matrix2.M41;
+			matrix1.M42 += matrix2.M42;
+			matrix1.M43 += matrix2.M43;
+			matrix1.M44 += matrix2.M44;
+			return matrix1;
         }
 
 
         public static void Add(ref Matrix matrix1, ref Matrix matrix2, out Matrix result)
         {
-            throw new NotImplementedException();
+            result.M11 = matrix1.M11 + matrix2.M11;
+			result.M12 = matrix1.M12 + matrix2.M12;
+			result.M13 = matrix1.M13 + matrix2.M13;
+			result.M14 = matrix1.M14 + matrix2.M14;
+			result.M21 = matrix1.M21 + matrix2.M21;
+			result.M22 = matrix1.M22 + matrix2.M22;
+			result.M23 = matrix1.M23 + matrix2.M23;
+			result.M24 = matrix1.M24 + matrix2.M24;
+			result.M31 = matrix1.M31 + matrix2.M31;
+			result.M32 = matrix1.M32 + matrix2.M32;
+			result.M33 = matrix1.M33 + matrix2.M33;
+			result.M34 = matrix1.M34 + matrix2.M34;
+			result.M41 = matrix1.M41 + matrix2.M41;
+			result.M42 = matrix1.M42 + matrix2.M42;
+			result.M43 = matrix1.M43 + matrix2.M43;
+			result.M44 = matrix1.M44 + matrix2.M44;
         }
 
         
         public static Matrix CreateBillboard(Vector3 objectPosition, Vector3 cameraPosition,
             Vector3 cameraUpVector, Nullable<Vector3> cameraForwardVector)
         {
-            throw new NotImplementedException();
+            Matrix ret;
+			CreateBillboard(ref objectPosition, ref cameraPosition, ref cameraUpVector, cameraForwardVector, out ret);
+			return ret;
         }
 
-        
         public static void CreateBillboard(ref Vector3 objectPosition, ref Vector3 cameraPosition,
             ref Vector3 cameraUpVector, Vector3? cameraForwardVector, out Matrix result)
         {
-            throw new NotImplementedException();
+			Vector3 translation = objectPosition - cameraPosition;
+			Vector3 backwards, right, up;
+			Vector3.Normalize(ref translation, out backwards);
+			Vector3.Normalize(ref cameraUpVector, out up);
+			Vector3.Cross(ref backwards, ref up, out right);
+			Vector3.Cross(ref backwards, ref right, out up);
+			result = Matrix.Identity;
+			result.Backward = backwards;
+			result.Right = right;
+			result.Up = up;
+			result.Translation = translation;
         }
-
         
         public static Matrix CreateConstrainedBillboard(Vector3 objectPosition, Vector3 cameraPosition,
             Vector3 rotateAxis, Nullable<Vector3> cameraForwardVector, Nullable<Vector3> objectForwardVector)

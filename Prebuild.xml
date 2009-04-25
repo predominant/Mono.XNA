@@ -28,7 +28,7 @@
         <CompilerDefines>TRACE;NUNITTESTS</CompilerDefines>
         <OptimizeCode>true</OptimizeCode>
         <AllowUnsafe>false</AllowUnsafe>
-        <OutputPath>..\unittests</OutputPath>
+        <OutputPath>unittests</OutputPath>
         <DebugInformation>true</DebugInformation>
         <WarningLevel>1</WarningLevel>
         <SuppressWarnings></SuppressWarnings>
@@ -48,7 +48,7 @@
           <CompilerDefines>DEBUG;TRACE</CompilerDefines>
           <OptimizeCode>false</OptimizeCode>
           <AllowUnsafe>false</AllowUnsafe>
-          <OutputPath>bin/Debug</OutputPath>
+          <OutputPath>../../bin/Debug</OutputPath>
           <DebugInformation>true</DebugInformation>
           <KeyFile>Microsoft.Xna.snk</KeyFile>
           <XmlDocFile></XmlDocFile>
@@ -61,7 +61,7 @@
           <CompilerDefines>TRACE</CompilerDefines>
           <OptimizeCode>true</OptimizeCode>
           <AllowUnsafe>false</AllowUnsafe>
-          <OutputPath>bin/Release</OutputPath>
+          <OutputPath>../../bin/Release</OutputPath>
           <KeyFile>Microsoft.Xna.snk</KeyFile>
           <XmlDocFile>Microsoft.Xna.Framework.xml</XmlDocFile>
           <DebugInformation>false</DebugInformation>
@@ -74,7 +74,7 @@
           <CompilerDefines>TRACE;NUNITTESTS</CompilerDefines>
           <OptimizeCode>true</OptimizeCode>
           <AllowUnsafe>false</AllowUnsafe>
-          <OutputPath>..\unittests</OutputPath>
+          <OutputPath>../../unittests</OutputPath>
           <DebugInformation>true</DebugInformation>
           <WarningLevel>1</WarningLevel>
           <SuppressWarnings></SuppressWarnings>
@@ -101,7 +101,7 @@
           <CompilerDefines>DEBUG;TRACE</CompilerDefines>
           <OptimizeCode>false</OptimizeCode>
           <AllowUnsafe>false</AllowUnsafe>
-          <OutputPath>bin/Debug</OutputPath>
+          <OutputPath>../../bin/Debug</OutputPath>
           <DebugInformation>true</DebugInformation>
           <XmlDocFile></XmlDocFile>
           <KeyFile>Microsoft.Xna.Game.snk</KeyFile>
@@ -114,7 +114,7 @@
           <CompilerDefines>TRACE</CompilerDefines>
           <OptimizeCode>true</OptimizeCode>
           <AllowUnsafe>false</AllowUnsafe>
-          <OutputPath>bin/Release</OutputPath>
+          <OutputPath>../../bin/Release</OutputPath>
           <XmlDocFile>Microsoft.Xna.Framework.Game.xml</XmlDocFile>
           <KeyFile>Microsoft.Xna.Game.snk</KeyFile>
           <DebugInformation>false</DebugInformation>
@@ -127,7 +127,7 @@
           <CompilerDefines>TRACE;NUNITTESTS</CompilerDefines>
           <OptimizeCode>true</OptimizeCode>
           <AllowUnsafe>false</AllowUnsafe>
-          <OutputPath>..\unittests</OutputPath>
+          <OutputPath>../../unittests</OutputPath>
           <DebugInformation>true</DebugInformation>
           <WarningLevel>1</WarningLevel>
           <SuppressWarnings></SuppressWarnings>
@@ -154,7 +154,7 @@
           <CompilerDefines>DEBUG;TRACE</CompilerDefines>
           <OptimizeCode>false</OptimizeCode>
           <AllowUnsafe>false</AllowUnsafe>
-          <OutputPath>bin/Debug</OutputPath>
+          <OutputPath>../../bin/Debug</OutputPath>
           <DebugInformation>true</DebugInformation>
           <KeyFile>Microsoft.Xna.Framework.Content.Pipeline.snk</KeyFile>
           <XmlDocFile></XmlDocFile>
@@ -167,7 +167,7 @@
           <CompilerDefines>TRACE</CompilerDefines>
           <OptimizeCode>true</OptimizeCode>
           <AllowUnsafe>false</AllowUnsafe>
-          <OutputPath>bin/Release</OutputPath>
+          <OutputPath>../../bin/Release</OutputPath>
           <KeyFile>Microsoft.Xna.Frameworkd.Content.Pipeline.snk</KeyFile>
           <XmlDocFile>Microsoft.Xna.Framework.Content.Pipeline.xml</XmlDocFile>
           <DebugInformation>false</DebugInformation>
@@ -180,7 +180,7 @@
           <CompilerDefines>TRACE;NUNITTESTS</CompilerDefines>
           <OptimizeCode>true</OptimizeCode>
           <AllowUnsafe>false</AllowUnsafe>
-          <OutputPath>..\unittests</OutputPath>
+          <OutputPath>../../unittests</OutputPath>
           <DebugInformation>true</DebugInformation>
           <WarningLevel>1</WarningLevel>
           <SuppressWarnings></SuppressWarnings>
@@ -211,7 +211,7 @@
           <CompilerDefines>DEBUG;TRACE</CompilerDefines>
           <OptimizeCode>false</OptimizeCode>
           <AllowUnsafe>false</AllowUnsafe>
-          <OutputPath>bin/Debug</OutputPath>
+          <OutputPath>../../bin/Debug</OutputPath>
           <DebugInformation>true</DebugInformation>
           <KeyFile>Microsoft.Xna.Framework.Content.Pipeline.EffectImporter.snk</KeyFile>
           <XmlDocFile></XmlDocFile>
@@ -224,7 +224,7 @@
           <CompilerDefines>TRACE</CompilerDefines>
           <OptimizeCode>true</OptimizeCode>
           <AllowUnsafe>false</AllowUnsafe>
-          <OutputPath>bin/Release</OutputPath>
+          <OutputPath>../../bin/Release</OutputPath>
           <KeyFile>Microsoft.Xna.Frameworkd.Content.Pipeline.EffectImporter.snk</KeyFile>
           <XmlDocFile>Microsoft.Xna.Framework.Content.Pipeline.EffectImporter.xml</XmlDocFile>
           <DebugInformation>false</DebugInformation>
@@ -237,7 +237,7 @@
           <CompilerDefines>TRACE;NUNITTESTS</CompilerDefines>
           <OptimizeCode>true</OptimizeCode>
           <AllowUnsafe>false</AllowUnsafe>
-          <OutputPath>..\unittests</OutputPath>
+          <OutputPath>../../unittests</OutputPath>
           <DebugInformation>true</DebugInformation>
           <WarningLevel>1</WarningLevel>
           <SuppressWarnings></SuppressWarnings>
@@ -254,7 +254,7 @@
           <CompilerDefines>DEBUG;TRACE</CompilerDefines>
           <OptimizeCode>false</OptimizeCode>
           <AllowUnsafe>false</AllowUnsafe>
-          <OutputPath>bin/Debug</OutputPath>
+          <OutputPath>../../bin/Debug</OutputPath>
           <DebugInformation>true</DebugInformation>
           <KeyFile>Microsoft.Xna.Framework.Content.Pipeline.FBXImporter.snk</KeyFile>
           <XmlDocFile></XmlDocFile>
@@ -267,7 +267,7 @@
           <CompilerDefines>TRACE</CompilerDefines>
           <OptimizeCode>true</OptimizeCode>
           <AllowUnsafe>false</AllowUnsafe>
-          <OutputPath>bin/Release</OutputPath>
+          <OutputPath>../../bin/Release</OutputPath>
           <KeyFile>Microsoft.Xna.Frameworkd.Content.Pipeline.FBXImporter.snk</KeyFile>
           <XmlDocFile>Microsoft.Xna.Framework.Content.Pipeline.FBXImporter.xml</XmlDocFile>
           <DebugInformation>false</DebugInformation>
@@ -280,13 +280,14 @@
           <CompilerDefines>TRACE;NUNITTESTS</CompilerDefines>
           <OptimizeCode>true</OptimizeCode>
           <AllowUnsafe>false</AllowUnsafe>
-          <OutputPath>..\unittests</OutputPath>
+          <OutputPath>../../unittests</OutputPath>
           <DebugInformation>true</DebugInformation>
           <WarningLevel>1</WarningLevel>
           <SuppressWarnings></SuppressWarnings>
         </Options>
       </Configuration>
       <Reference name="System" />
+      <Reference name="Microsoft.Xna.Framework.Content.Pipeline" localCopy="true"/>
       <Files>
         <Match path="." pattern="*.cs" recurse="true"/>
       </Files>
@@ -297,7 +298,7 @@
           <CompilerDefines>DEBUG;TRACE</CompilerDefines>
           <OptimizeCode>false</OptimizeCode>
           <AllowUnsafe>false</AllowUnsafe>
-          <OutputPath>bin/Debug</OutputPath>
+          <OutputPath>../../bin/Debug</OutputPath>
           <DebugInformation>true</DebugInformation>
           <KeyFile>Microsoft.Xna.Framework.Content.Pipeline.TextureImporter.snk</KeyFile>
           <XmlDocFile></XmlDocFile>
@@ -310,7 +311,7 @@
           <CompilerDefines>TRACE</CompilerDefines>
           <OptimizeCode>true</OptimizeCode>
           <AllowUnsafe>false</AllowUnsafe>
-          <OutputPath>bin/Release</OutputPath>
+          <OutputPath>../../bin/Release</OutputPath>
           <KeyFile>Microsoft.Xna.Frameworkd.Content.Pipeline.TextureImporter.snk</KeyFile>
           <XmlDocFile>Microsoft.Xna.Framework.Content.Pipeline.TextureImporter.xml</XmlDocFile>
           <DebugInformation>false</DebugInformation>
@@ -323,7 +324,7 @@
           <CompilerDefines>TRACE;NUNITTESTS</CompilerDefines>
           <OptimizeCode>true</OptimizeCode>
           <AllowUnsafe>false</AllowUnsafe>
-          <OutputPath>..\unittests</OutputPath>
+          <OutputPath>../../unittests</OutputPath>
           <DebugInformation>true</DebugInformation>
           <WarningLevel>1</WarningLevel>
           <SuppressWarnings></SuppressWarnings>
@@ -340,7 +341,7 @@
           <CompilerDefines>DEBUG;TRACE</CompilerDefines>
           <OptimizeCode>false</OptimizeCode>
           <AllowUnsafe>false</AllowUnsafe>
-          <OutputPath>bin/Debug</OutputPath>
+          <OutputPath>../../bin/Debug</OutputPath>
           <DebugInformation>true</DebugInformation>
           <KeyFile>Microsoft.Xna.Framework.Content.Pipeline.XImporter.snk</KeyFile>
           <XmlDocFile></XmlDocFile>
@@ -353,7 +354,7 @@
           <CompilerDefines>TRACE</CompilerDefines>
           <OptimizeCode>true</OptimizeCode>
           <AllowUnsafe>false</AllowUnsafe>
-          <OutputPath>bin/Release</OutputPath>
+          <OutputPath>../../bin/Release</OutputPath>
           <KeyFile>Microsoft.Xna.Frameworkd.Content.Pipeline.XImporter.snk</KeyFile>
           <XmlDocFile>Microsoft.Xna.Framework.Content.Pipeline.XImporter.xml</XmlDocFile>
           <DebugInformation>false</DebugInformation>
@@ -366,7 +367,7 @@
           <CompilerDefines>TRACE;NUNITTESTS</CompilerDefines>
           <OptimizeCode>true</OptimizeCode>
           <AllowUnsafe>false</AllowUnsafe>
-          <OutputPath>..\unittests</OutputPath>
+          <OutputPath>../../unittests</OutputPath>
           <DebugInformation>true</DebugInformation>
           <WarningLevel>1</WarningLevel>
           <SuppressWarnings></SuppressWarnings>
@@ -383,7 +384,7 @@
           <CompilerDefines>DEBUG;TRACE</CompilerDefines>
           <OptimizeCode>false</OptimizeCode>
           <AllowUnsafe>false</AllowUnsafe>
-          <OutputPath>bin/Debug</OutputPath>
+          <OutputPath>../../bin/Debug</OutputPath>
           <DebugInformation>true</DebugInformation>
           <KeyFile>Microsoft.Xna.Framework.Content.Pipeline.AudioImporters.snk</KeyFile>
           <XmlDocFile></XmlDocFile>
@@ -396,7 +397,7 @@
           <CompilerDefines>TRACE</CompilerDefines>
           <OptimizeCode>true</OptimizeCode>
           <AllowUnsafe>false</AllowUnsafe>
-          <OutputPath>bin/Release</OutputPath>
+          <OutputPath>../../bin/Release</OutputPath>
           <KeyFile>Microsoft.Xna.Frameworkd.Content.Pipeline.AudioImporters.snk</KeyFile>
           <XmlDocFile>Microsoft.Xna.Framework.Content.Pipeline.AudioImporters.xml</XmlDocFile>
           <DebugInformation>false</DebugInformation>
@@ -409,7 +410,7 @@
           <CompilerDefines>TRACE;NUNITTESTS</CompilerDefines>
           <OptimizeCode>true</OptimizeCode>
           <AllowUnsafe>false</AllowUnsafe>
-          <OutputPath>..\unittests</OutputPath>
+          <OutputPath>../../unittests</OutputPath>
           <DebugInformation>true</DebugInformation>
           <WarningLevel>1</WarningLevel>
           <SuppressWarnings></SuppressWarnings>
@@ -426,7 +427,7 @@
           <CompilerDefines>DEBUG;TRACE</CompilerDefines>
           <OptimizeCode>false</OptimizeCode>
           <AllowUnsafe>false</AllowUnsafe>
-          <OutputPath>bin/Debug</OutputPath>
+          <OutputPath>../../bin/Debug</OutputPath>
           <DebugInformation>true</DebugInformation>
           <KeyFile>MonoDevelop.Xna.snk</KeyFile>
           <XmlDocFile></XmlDocFile>
@@ -439,7 +440,7 @@
           <CompilerDefines>TRACE</CompilerDefines>
           <OptimizeCode>true</OptimizeCode>
           <AllowUnsafe>false</AllowUnsafe>
-          <OutputPath>bin/Release</OutputPath>
+          <OutputPath>../../bin/Release</OutputPath>
           <KeyFile>MonoDevelop.Xna.snk</KeyFile>
           <XmlDocFile>MonoDevelop.Xna.xml</XmlDocFile>
           <DebugInformation>false</DebugInformation>
@@ -452,7 +453,7 @@
           <CompilerDefines>TRACE;NUNITTESTS</CompilerDefines>
           <OptimizeCode>true</OptimizeCode>
           <AllowUnsafe>false</AllowUnsafe>
-          <OutputPath>..\unittests</OutputPath>
+          <OutputPath>../../unittests</OutputPath>
           <DebugInformation>true</DebugInformation>
           <WarningLevel>1</WarningLevel>
           <SuppressWarnings></SuppressWarnings>
@@ -465,6 +466,7 @@
       <Reference name="MonoDevelop.Projects.Gui" />
       <Files>
         <Match path="." pattern="*.cs" recurse="true"/>
+        <Match path="." pattern="*.xml" buildAction="EmbeddedResource" recurse="true"/>
       </Files>
     </Project>
     <Project name="XnaTests" path="tests" language="C#" type="Library" assemblyName="XnaTests" rootNamespace="XnaTests" designerFolder="Properties">
