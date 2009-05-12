@@ -1,7 +1,7 @@
 #region License
 /*
 MIT License
-Copyright © 2006 The Mono.Xna Team
+Copyright Â© 2006 The Mono.Xna Team
 
 All rights reserved.
 
@@ -30,7 +30,7 @@ SOFTWARE.
 
 using System;
 using System.Globalization;
-using SdlDotNet.Graphics;
+//using SdlDotNet.Graphics;
 
 namespace Microsoft.Xna.Framework.Graphics
 {

@@ -5,25 +5,24 @@ using MonoDevelop.Core;
 using MonoDevelop.Projects;
 using MonoDevelop.Projects.Dom;
 
-namespace XnaAddin
-{
+namespace MonoDevelop.Xna
+{	
 	
-	
-	public class XnaContentProject : DotNetProject
+	public class ContentProject : DotNetProject
     {
 
         #region Constructors
 
-		public XnaContentProject ()
+		public ContentProject ()
 		{
 		}
 		
-		public XnaContentProject (string languageName)
+		public ContentProject (string languageName)
 			: base (languageName)
 		{
 		}
 		
-		public XnaContentProject (string languageName, ProjectCreateInformation info, XmlElement projectOptions)
+		public ContentProject (string languageName, ProjectCreateInformation info, XmlElement projectOptions)
 			: base (languageName, info, projectOptions)
 		{
 			
