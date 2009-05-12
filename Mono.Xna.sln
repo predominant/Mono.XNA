@@ -1,6 +1,6 @@
 ﻿
-Microsoft Visual Studio Solution File, Format Version 9.00
-# Visual Studio 2005
+Microsoft Visual Studio Solution File, Format Version 10.00
+# Visual Studio 2008
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Microsoft.Xna.Framework", "src\Microsoft.Xna.Framework\Microsoft.Xna.Framework.csproj", "{46FFE266-DAC6-4CBC-9DDF-1A4CC094F701}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Microsoft.Xna.Framework.Game", "src\Microsoft.Xna.Framework.Game\Microsoft.Xna.Framework.Game.csproj", "{3683434E-94E4-4225-A3CA-E7390CF51B48}"
