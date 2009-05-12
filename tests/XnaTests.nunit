@@ -1,9 +1,0 @@
-﻿<NUnitProject>
-  <Settings activeconfig="Release" />
-  <!--<Config name="Debug" binpathtype="Auto">
-    <assembly path="bin\Debug\XnaTests.dll" />
-  </Config>-->
-  <Config name="Release" binpathtype="Auto">
-    <assembly path="XnaTests.dll" />
-  </Config>
-</NUnitProject>
