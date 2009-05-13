@@ -1,0 +1,6 @@
+libdir=/usr/lib/mono/sdldotnet-6.1.0/
+
+Name: SdlDotNet
+Description: SDL.NET
+Version: 6.1.0
+Libs: -r:${libdir}/SdlDotNet.dll -r:${libdir}/Tao.Sdl.dll
