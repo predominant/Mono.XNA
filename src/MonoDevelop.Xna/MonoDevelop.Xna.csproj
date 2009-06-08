@@ -39,6 +39,8 @@
     <Compile Include="Enums.cs" />
     <Compile Include="XnaAppProject.cs" />
     <Compile Include="XnaAppProjectBinding.cs" />
+    <Compile Include="NestedContentProject.cs" />
+    <Compile Include="NestedContentProjectCollection.cs" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="MonoDevelop.Xna.addin.xml" />

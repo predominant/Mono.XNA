@@ -35,6 +35,7 @@ namespace MonoDevelop.Xna
 
         protected override BuildResult DoBuild (IProgressMonitor monitor, string itemConfiguration)
         {
+		
             return base.DoBuild(monitor, itemConfiguration); 
         }
 

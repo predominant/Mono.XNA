@@ -27,23 +27,38 @@ namespace MonoDevelop.Xna
 			set { xnaPlatform = value; }
 		}
 		
+		protected NestedContentProjectCollection nestedContentProjects;
+		public NestedContentProjectCollection NestedContentProjects
+		{
+			get { return nestedContentProjects; }	
+		}
+		
 		#endregion
 
         #region Constructors
+		
+		private void construct()
+		{
+			nestedContentProjects = new NestedContentProjectCollection();			
+			Items.Bind(nestedContentProjects);
+			nestedContentProjects.Add(new NestedContentProject());
+		}
 
 		public XnaAppProject ()
 		{
+			construct();
 		}
 		
 		public XnaAppProject (string languageName)
 			: base (languageName)
 		{
+			construct();
 		}
 		
 		public XnaAppProject (string languageName, ProjectCreateInformation info, XmlElement projectOptions)
 			: base (languageName, info, projectOptions)
 		{
-			
+			construct();
 		}
 
         #endregion
@@ -53,9 +68,14 @@ namespace MonoDevelop.Xna
 
         protected override BuildResult DoBuild (IProgressMonitor monitor, string itemConfiguration)
         {
-			
             return base.DoBuild(monitor, itemConfiguration); 
         }
+		
+		public override void Save (MonoDevelop.Core.IProgressMonitor monitor)
+		{
+			
+			base.Save (monitor);
+		}
 
         #endregion
 		

@@ -18,14 +18,12 @@
 	<Combine name = "${ProjectName}" directory = ".">
 		<Options>
 			<StartupProject>${ProjectName}</StartupProject>
-			<NestedContentProject />
 		</Options>
 		
 		<Project name = "${ProjectName}" directory = "." type = "WindowsGame">
 			<Options />
 			<References>
 				<Reference type="Gac" refto="System, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
-				
 			</References>
 			<Files>
 			</Files>
