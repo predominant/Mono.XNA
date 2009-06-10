@@ -23,7 +23,7 @@ namespace MonoDevelop.Xna
 		#region IProjectBinding Implementation
 		
 		public string Name {
-			get { return "WindowsGame"; }
+			get { return "XnaApp"; }
 		}
 		
 		public Project CreateProject (ProjectCreateInformation info, XmlElement projectOptions)
