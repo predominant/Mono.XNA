@@ -78,6 +78,11 @@ namespace Microsoft.Xna.Framework.Input
             return this.left.GetHashCode() ^ this.right.GetHashCode();
         }
 
+        public GamePadThumbSticks(Microsoft.Xna.Framework.Vector2 leftThumbstick, Microsoft.Xna.Framework.Vector2 rightThumbstick)
+        {
+            throw new NotImplementedException();
+        }
+
         public override string ToString()
         {
             return string.Format("{{Left:{0} Right:{1}}}", left, right);

@@ -52,6 +52,13 @@ namespace Microsoft.Xna.Framework
         Step
     }
 
+    public enum CurveTangent
+    {
+        Flat,
+        Linear,
+        Smooth
+    }
+
     public enum TargetPlatform
     {
         Unknown,

@@ -127,6 +127,11 @@ namespace Microsoft.Xna.Framework.Input
             return (obj is MouseState) ? (MouseState)obj == this : false;
         }
 
+        public MouseState(int x, int y, int scrollWheel, Microsoft.Xna.Framework.Input.ButtonState leftButton, Microsoft.Xna.Framework.Input.ButtonState middleButton, Microsoft.Xna.Framework.Input.ButtonState rightButton, Microsoft.Xna.Framework.Input.ButtonState xButton1, Microsoft.Xna.Framework.Input.ButtonState xButton2)
+        {
+            throw new NotImplementedException();
+        }
+
         public override int GetHashCode()
         {
             return wheel + x ^ y + (int)left + (int)right + (int)middle + (int)xb1 + (int)xb2;

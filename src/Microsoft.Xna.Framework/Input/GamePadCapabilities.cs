@@ -61,6 +61,46 @@ namespace Microsoft.Xna.Framework.Input
             get { return this.gamePadType; }
         }
 
+        public bool HasLeftStickButton
+        {
+            get
+            {
+                throw new NotImplementedException();
+            }
+        }
+
+        public bool HasLeftTrigger
+        {
+            get
+            {
+                throw new NotImplementedException();
+            }
+        }
+
+        public bool HasLeftVibrationMotor
+        {
+            get
+            {
+                throw new NotImplementedException();
+            }
+        }
+
+        public bool HasLeftXThumbStick
+        {
+            get
+            {
+                throw new NotImplementedException();
+            }
+        }
+
+        public bool HasLeftYThumbStick
+        {
+            get
+            {
+                throw new NotImplementedException();
+            }
+        }
+
         public bool HasAButton
         {
             get { return this.hasAButton; }
@@ -104,6 +144,46 @@ namespace Microsoft.Xna.Framework.Input
         public bool HasRightShoulderButton
         {
             get { return this.hasRightShoulderButton; }
+        }
+
+        public bool HasRightStickButton
+        {
+            get
+            {
+                throw new NotImplementedException();
+            }
+        }
+
+        public bool HasRightTrigger
+        {
+            get
+            {
+                throw new NotImplementedException();
+            }
+        }
+
+        public bool HasRightVibrationMotor
+        {
+            get
+            {
+                throw new NotImplementedException();
+            }
+        }
+
+        public bool HasRightXThumbStick
+        {
+            get
+            {
+                throw new NotImplementedException();
+            }
+        }
+
+        public bool HasRightYThumbStick
+        {
+            get
+            {
+                throw new NotImplementedException();
+            }
         }
 
         public bool HasStartButton

@@ -114,6 +114,11 @@ namespace Microsoft.Xna.Framework.Input
 
         #region Public Methods
 
+        public GamePadButtons(Buttons buttons)
+        {
+            throw new System.NotImplementedException();
+        }
+
         public static bool operator !=(GamePadButtons left, GamePadButtons right)
         {
             return !(left == right);

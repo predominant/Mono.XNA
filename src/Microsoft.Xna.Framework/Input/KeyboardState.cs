@@ -58,6 +58,11 @@ namespace Microsoft.Xna.Framework.Input
             keyStates = new bool[numKeys];
         }
 
+        public KeyboardState(params Microsoft.Xna.Framework.Input.Keys[] keys)
+        {
+            throw new System.NotImplementedException();
+        }
+
         #endregion
 
 

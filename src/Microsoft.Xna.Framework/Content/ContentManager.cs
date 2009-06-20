@@ -35,6 +35,7 @@ using System.Text;
 using System.Net;
 using Microsoft.Xna.Framework.Graphics;
 using System.Reflection;
+using Microsoft.Xna.Framework.Storage;
 
 namespace Microsoft.Xna.Framework.Content
 {
@@ -57,6 +58,28 @@ namespace Microsoft.Xna.Framework.Content
         {
             get { return this.serviceProvider; }
         }
+
+        public string RootDirectory
+        {
+            get
+            {
+                return this.rootDirectory;
+            }
+            set
+            {
+                if (value == null)
+                {
+                    throw new ArgumentNullException("value");
+                }
+                if (this.assets.Count > 0)
+                {
+                    throw new InvalidOperationException("Cannot Change RootDirectory");
+                }
+                value = Path.GetFullPath(Path.Combine(StorageContainer.TitleLocation, value));
+                this.rootDirectory = value;
+            }
+        }
+
 
         #endregion
 
@@ -168,7 +191,7 @@ namespace Microsoft.Xna.Framework.Content
 
             // Get the 1-based index of the typereader we should use to start decoding with
             int index = assetStream.ReadByte();
-            T asset = contentReader.ReadObject<T>(assetReaders[index-1]);
+            T asset = contentReader.ReadObject<T>(assetReaders[index - 1]);
 
             this.assets.Add(assetName, asset);
             return asset;

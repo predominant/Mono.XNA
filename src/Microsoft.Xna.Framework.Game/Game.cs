@@ -36,6 +36,7 @@ using System.Threading;
 using Microsoft.Xna.Framework.Graphics;
 using SdlDotNet.Core;
 using SdlDotNet.Graphics;
+using Microsoft.Xna.Framework.Content;
 
 #if NUNITTESTS
 using Microsoft.Xna.Framework.Test;
@@ -69,6 +70,8 @@ namespace Microsoft.Xna.Framework
 
         #endregion Timing
 
+        IGraphicsDeviceService _graphicsDeviceService;
+        Content.ContentManager _content;
         TickDelegate _tickDelegate;
         ExtendedGameWindow _window;
         IGraphicsDeviceManager _graphicsManager;
@@ -124,6 +127,8 @@ namespace Microsoft.Xna.Framework
             _components.ComponentRemoved += new EventHandler<GameComponentCollectionEventArgs>(GameComponentRemoved);
 
             _services = new GameServiceContainer();
+
+            _content = new ContentManager(_services);
 
             _gameClock = gameClock;
             _gameTime = new GameTime(TimeSpan.Zero, TimeSpan.Zero, TimeSpan.Zero, TimeSpan.Zero);
@@ -203,6 +208,32 @@ namespace Microsoft.Xna.Framework
             get { return _targetElapsedTime; }
             set { _targetElapsedTime = value; }
         }
+
+        public ContentManager Content
+        {
+            get
+            {
+                return this._content;
+            }
+        }
+
+        public GraphicsDevice GraphicsDevice
+        {
+            get
+            {
+                IGraphicsDeviceService graphicsDeviceService = this._graphicsDeviceService;
+                if (graphicsDeviceService == null)
+                {
+                    graphicsDeviceService = this.Services.GetService(typeof(IGraphicsDeviceService)) as IGraphicsDeviceService;
+                    if (graphicsDeviceService == null)
+                    {
+                        throw new InvalidOperationException();
+                    }
+                }
+                return graphicsDeviceService.GraphicsDevice;
+            }
+        }
+
 
         public GameWindow Window
         {
@@ -329,6 +360,8 @@ namespace Microsoft.Xna.Framework
 
         protected virtual void Initialize()
         {
+            this._graphicsDeviceService = this.Services.GetService(typeof(IGraphicsDeviceService)) as IGraphicsDeviceService;
+
             foreach (IGameComponent component in _components)
             {
                 component.Initialize();
@@ -336,10 +369,14 @@ namespace Microsoft.Xna.Framework
 
             // Default behaviour in MS implementation on windows passes true, suspect false for platforms with lesser available memory
             LoadGraphicsContent(true);
+            LoadContent();
+
         }
 
         void DeviceCreated(object sender, EventArgs e)
         {
+            LoadGraphicsContent(true);
+            LoadContent();
         }
 
         void DeviceDisposing(object sender, EventArgs e)
@@ -357,9 +394,15 @@ namespace Microsoft.Xna.Framework
             UnloadGraphicsContent(false);
         }
 
+        protected virtual void LoadContent()
+        {
+        }
+
+        [System.Obsolete("The LoadGraphicsContent method is obsolete and will be removed in the future.  Use the LoadContent method instead.")]
         protected virtual void LoadGraphicsContent(bool loadAllContent)
         {
-            throw new NotImplementedException();
+            //throw new NotImplementedException();
+            // We don't have anything to be done here FIXME
         }
 
         protected virtual void OnActivated(object sender, EventArgs args)
@@ -380,6 +423,11 @@ namespace Microsoft.Xna.Framework
                 Exiting(sender, args);
         }
 
+        protected virtual void UnloadContent()
+        {
+        }
+
+        [Obsolete("The UnloadGraphicsContent method is obsolete and will be removed in the future.  Use the UnloadContent method instead.")]
         protected virtual void UnloadGraphicsContent(bool unloadAllContent)
         {
         }

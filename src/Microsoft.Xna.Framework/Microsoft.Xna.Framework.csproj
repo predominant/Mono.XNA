@@ -1,9 +1,9 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="3.5">
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProductVersion>8.0.50727</ProductVersion>
+    <ProductVersion>9.0.30729</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectGuid>{46FFE266-DAC6-4CBC-9DDF-1A4CC094F701}</ProjectGuid>
     <OutputType>Library</OutputType>
@@ -40,15 +40,20 @@
   </PropertyGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>
+    <Compile Include="Audio\AudioEmitter.cs" />
+    <Compile Include="Audio\AudioListener.cs" />
     <Compile Include="BoundingBox.cs" />
     <Compile Include="BoundingFrustum.cs" />
     <Compile Include="BoundingSphere.cs" />
     <Compile Include="Curve.cs" />
     <Compile Include="CurveKey.cs" />
     <Compile Include="CurveKeyCollection.cs" />
+    <Compile Include="Design\ColorConverter.cs" />
     <Compile Include="Enums.cs" />
+    <Compile Include="GamerServices\Enums.cs" />
     <Compile Include="MathHelper.cs" />
     <Compile Include="Matrix.cs" />
+    <Compile Include="Net\NetworkException.cs" />
     <Compile Include="Plane.cs" />
     <Compile Include="Point.cs" />
     <Compile Include="Quaternion.cs" />
@@ -241,7 +246,9 @@
   <ItemGroup>
     <Reference Include="System" />
     <Reference Include="SdlDotNet, Version=6.1.0.0, Culture=neutral, PublicKeyToken=26ad4f7e10c61408" />
+    <Reference Include="System.Data" />
     <Reference Include="System.Drawing" />
+    <Reference Include="System.Xml" />
     <Reference Include="Tao.OpenGl, Version=2.1.0.12, Culture=neutral, PublicKeyToken=1ca010269a4501ef" />
   </ItemGroup>
 </Project>

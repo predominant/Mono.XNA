@@ -104,10 +104,30 @@ namespace Microsoft.Xna.Framework.Input
             return this == obj;
         }
 
+        public bool IsButtonDown(Microsoft.Xna.Framework.Input.Buttons button)
+        {
+            throw new System.NotImplementedException();
+        }
+
+        public bool IsButtonUp(Microsoft.Xna.Framework.Input.Buttons button)
+        {
+            throw new System.NotImplementedException();
+        }
+
         public override int GetHashCode()
         {
             // Packetnumber should be unique
             return packetNumber;
+        }
+
+        public GamePadState(Microsoft.Xna.Framework.Input.GamePadThumbSticks thumbSticks, Microsoft.Xna.Framework.Input.GamePadTriggers triggers, Microsoft.Xna.Framework.Input.GamePadButtons buttons, Microsoft.Xna.Framework.Input.GamePadDPad dPad)
+        {
+            throw new System.NotImplementedException();
+        }
+
+        public GamePadState(Microsoft.Xna.Framework.Vector2 leftThumbStick, Microsoft.Xna.Framework.Vector2 rightThumbStick, float leftTrigger, float rightTrigger,params Microsoft.Xna.Framework.Input.Buttons[] buttons)
+        {
+            throw new System.NotImplementedException();
         }
 
         public override string ToString()

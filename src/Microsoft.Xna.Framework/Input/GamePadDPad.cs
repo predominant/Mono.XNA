@@ -46,14 +46,6 @@ namespace Microsoft.Xna.Framework.Input
 
         #endregion Private Fields
 
-        internal GamePadDPad(ButtonState up, ButtonState right, ButtonState down, ButtonState left)
-        {
-            _down = down;
-            _left = left;
-            _right = right;
-            _up = up;
-        }
-
 #if NUNITTESTS
         public
 #else
@@ -92,6 +84,14 @@ namespace Microsoft.Xna.Framework.Input
         #endregion Public Fields
 
         #region Public Methods
+
+        public GamePadDPad(Microsoft.Xna.Framework.Input.ButtonState upValue, Microsoft.Xna.Framework.Input.ButtonState downValue, Microsoft.Xna.Framework.Input.ButtonState leftValue, Microsoft.Xna.Framework.Input.ButtonState rightValue)
+        {
+            _down = downValue;
+            _left = leftValue;
+            _right = rightValue;
+            _up = upValue;
+        }
 
         public static bool operator !=(GamePadDPad left, GamePadDPad right)
         {
