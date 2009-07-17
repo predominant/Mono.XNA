@@ -19,12 +19,13 @@
 	<Extension path = "/MonoDevelop/ProjectModel/MSBuildItemTypes">
 		<DotNetProjectSubtype
 			guid="{6D335F3A-9D43-41b4-9D22-F6F17C4BE596}"
-			type="MonoDevelop.Xna.XnaAppProject"
+			type="MonoDevelop.Xna.XnaProject"
 			import ="$(MSBuildExtensionsPath)\Microsoft\XNA Game Studio\Microsoft.Xna.GameStudio.targets" />
-		<DotNetProjectSubtype
+		<SolutionItem
 			guid="{96E2B04D-8817-42c6-938A-82C39BA4D311}"
 			type="MonoDevelop.Xna.ContentProject"
-			import ="$(MSBuildExtensionsPath)\Microsoft\XNA Game Studio\v3.0\Microsoft.Xna.GameStudio.ContentPipeline.targets" />			
+			extension="contentproj"
+			import ="$(MSBuildExtensionsPath)\Microsoft\XNA Game Studio\v3.0\Microsoft.Xna.GameStudio.ContentPipeline.targets" />
 	</Extension>
 	
 	<Extension path = "/MonoDevelop/Ide/ProjectTemplates">
@@ -32,12 +33,30 @@
 	</Extension>
 	
 	<Extension path = "/MonoDevelop/ProjectModel/ProjectBindings">
-		<ProjectBinding id = "XnaApp" class = "MonoDevelop.Xna.XnaAppProjectBinding" />
+		<ProjectBinding id = "XnaProject" class = "MonoDevelop.Xna.XnaProjectBinding" />
+		<ProjectBinding id = "ContentProject" class = "MonoDevelop.Xna.ContentProjectBinding" />
 	</Extension>
 	
 	<Extension path = "/MonoDevelop/ProjectModel/SerializableClasses">
-		<DataType class = "MonoDevelop.Xna.XnaAppProject" />
+		<DataType class = "MonoDevelop.Xna.XnaProject" />
+		<DataType class = "MonoDevelop.Xna.ContentProject" />
 	</Extension>
 
+	<Extension path = "/MonoDevelop/Ide/FileFilters">
+		<FileFilter id="Content" insertbefore="AllFiles" _label = "Content Files" extensions = "*.fbx" />
+	</Extension>
 	
+	<Extension path = "/MonoDevelop/Ide/Pads/ProjectPad">
+		<NodeBuilder id="XnaProject" class = "MonoDevelop.Xna.XnaProjectNodeBuilder" />
+		<NodeBuilder id="ContentProject" class = "MonoDevelop.Xna.ContentProjectNodeBuilder" />
+	</Extension>
+	
+	<Extension path = "/MonoDevelop/Ide/ContextMenu/ProjectPad">
+		<Condition id="ItemType" value="NestedContentProject">
+			<CommandItem id = "MonoDevelop.Ide.Commands.ProjectCommands.AddNewFiles" />
+			<CommandItem id = "MonoDevelop.Ide.Commands.ProjectCommands.AddFiles" />
+			<SeparatorItem id = "Separator1" />
+			<CommandItem id = "MonoDevelop.Ide.Commands.ProjectCommands.NewFolder" />
+		</Condition>
+	</Extension>
 </Addin>

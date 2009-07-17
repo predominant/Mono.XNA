@@ -11,5 +11,6 @@ namespace MonoDevelop.Xna
 		public NestedContentProjectCollection()
 		{
 		}
+		
 	}
 }

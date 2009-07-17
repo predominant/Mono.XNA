@@ -1,20 +1,18 @@
 
 using System;
 using System.Xml;
-using MonoDevelop.Core;
 using MonoDevelop.Projects;
-using MonoDevelop.Projects.Dom;
 
 namespace MonoDevelop.Xna
 {
 	
 	
-	public class XnaAppProjectBinding : IProjectBinding
+	public class ContentProjectBinding : IProjectBinding
 	{
 		
 		#region Constructor
 		
-		public XnaAppProjectBinding()
+		public ContentProjectBinding()
 		{
 		}
 	
@@ -23,7 +21,7 @@ namespace MonoDevelop.Xna
 		#region IProjectBinding Implementation
 		
 		public string Name {
-			get { return "XnaApp"; }
+			get { return "ContentProject"; }
 		}
 		
 		public Project CreateProject (ProjectCreateInformation info, XmlElement projectOptions)
@@ -34,7 +32,8 @@ namespace MonoDevelop.Xna
 		
 		public Project CreateProject (string language, ProjectCreateInformation info, XmlElement projectOptions)
 		{
-			return new XnaAppProject (language, info, projectOptions);
+			ContentProject project = new ContentProject(language, info, projectOptions);
+			return project;
 		}
 		
 		public Project CreateSingleFileProject (string file)

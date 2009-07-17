@@ -9,7 +9,7 @@ using MonoDevelop.Projects.Dom;
 namespace MonoDevelop.Xna
 {
 
-	public class XnaAppProject : DotNetProject
+	public class XnaProject : DotNetProject
     {
 		#region Fields
 		
@@ -41,41 +41,49 @@ namespace MonoDevelop.Xna
 		{
 			nestedContentProjects = new NestedContentProjectCollection();			
 			Items.Bind(nestedContentProjects);
-			nestedContentProjects.Add(new NestedContentProject());
 		}
 
-		public XnaAppProject ()
+		public XnaProject ()
 		{
 			construct();
 		}
 		
-		public XnaAppProject (string languageName)
+		public XnaProject (string languageName)
 			: base (languageName)
 		{
 			construct();
 		}
 		
-		public XnaAppProject (string languageName, ProjectCreateInformation info, XmlElement projectOptions)
+		public XnaProject (string languageName, ProjectCreateInformation info, XmlElement projectOptions)
 			: base (languageName, info, projectOptions)
 		{
-			construct();
+			construct();			
 		}
 
         #endregion
 
 
         #region DotNetProject Overrides
-
-        protected override BuildResult DoBuild (IProgressMonitor monitor, string itemConfiguration)
+		
+		public override string ProjectType {
+			get  { return "Xna"; }
+		}
+				
+		protected override BuildResult DoBuild (IProgressMonitor monitor, string itemConfiguration)
         {
             return base.DoBuild(monitor, itemConfiguration); 
         }
 		
-		public override void Save (MonoDevelop.Core.IProgressMonitor monitor)
+		
+		public override void Save (IProgressMonitor monitor)
 		{
+			Console.WriteLine("Save");
+			foreach(NestedContentProject nestedProj in nestedContentProjects)
+				nestedProj.Project.Save(monitor);
 			
 			base.Save (monitor);
 		}
+
 
         #endregion
 		

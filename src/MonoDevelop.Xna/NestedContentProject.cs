@@ -9,27 +9,22 @@ namespace MonoDevelop.Xna
 	[DataItem]
 	public class NestedContentProject : ProjectItem
 	{
-		#region Constants
-		
-		public const string DefaultContentProject = "Content/Content.contentproj";
-		
-		#endregion
-		
 		#region Properties
 		
 		[ItemProperty("Include")]
 		private string include;
 		public string Include
 		{
-			get { return include; }	
+			get { return include; }
+			set { include = value; }
 		}
 		
 		[ItemProperty("Project")]
-		private string project;
-		public string Project
+		private string projectId;
+		public string ProjectId
 		{
-			get { return project; }
-			set { project = value; }
+			get { return projectId; }
+			set { projectId = value; }
 		}
 		
 		[ItemProperty("Visible")]
@@ -40,14 +35,32 @@ namespace MonoDevelop.Xna
 			set { visible = value; }
 		}
 		
+		private ContentProject project;
+		public ContentProject Project
+		{
+		 	get { return project; }
+			set { 
+				project = value; 
+				projectId = project.ItemId;
+			}
+		}
+		
 		#endregion
 		
-		#region Constructor
+		#region Constructors
 		
 		public NestedContentProject()
 		{
-			include = DefaultContentProject;
 			visible = false;
+			include = "";
+			project = null;
+		}
+		
+		public NestedContentProject(ContentProject project, string include)
+		{
+			this.visible = false;
+			this.include = include;
+			this.Project = project;			
 		}
 		
 		#endregion

@@ -37,16 +37,19 @@
   <ItemGroup>
     <Compile Include="ContentProject.cs" />
     <Compile Include="Enums.cs" />
-    <Compile Include="XnaAppProject.cs" />
+    <Compile Include="XnaProject.cs" />
     <Compile Include="NestedContentProject.cs" />
     <Compile Include="NestedContentProjectCollection.cs" />
-    <Compile Include="XnaAppProjectBinding.cs" />
+    <Compile Include="XnaProjectBinding.cs" />
+    <Compile Include="ContentProjectBinding.cs" />
+    <Compile Include="Compile.cs" />
+    <Compile Include="CompileCollection.cs" />
+    <Compile Include="ContentProjectNodeCommandHandler.cs" />
+    <Compile Include="ContentProjectNodeBuilder.cs" />
+    <Compile Include="XnaProjectNodeBuilder.cs" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="MonoDevelop.Xna.addin.xml" />
-    <EmbeddedResource Include="Templates\Content.xpt.xml">
-      <LogicalName>Content.xpt.xml</LogicalName>
-    </EmbeddedResource>
     <EmbeddedResource Include="Templates\WindowsGame.xpt.xml">
       <LogicalName>WindowsGame.xpt.xml</LogicalName>
     </EmbeddedResource>
@@ -60,5 +63,9 @@
       <Package>monodevelop</Package>
     </Reference>
     <Reference Include="System.Xml" />
+    <Reference Include="MonoDevelop.Ide, Version=2.0.0.0, Culture=neutral">
+      <Package>monodevelop</Package>
+    </Reference>
+    <Reference Include="gdk-sharp, Version=2.12.0.0, Culture=neutral, PublicKeyToken=35e10195dab3c99f" />
   </ItemGroup>
 </Project>
