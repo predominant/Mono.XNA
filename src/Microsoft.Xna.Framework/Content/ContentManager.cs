@@ -189,9 +189,20 @@ namespace Microsoft.Xna.Framework.Content
             // Get the asset's type readers. There can be a few of these like for the model class.
             ContentTypeReader[] assetReaders = GetAssetReaders<T>(assetStream);
 
+            assetStream.ReadByte(); //Not sure what this byte is for
+
             // Get the 1-based index of the typereader we should use to start decoding with
             int index = assetStream.ReadByte();
-            T asset = contentReader.ReadObject<T>(assetReaders[index - 1]);
+
+            T asset;
+            if (index == 0)
+            {
+                asset = default(T);
+            }
+            else
+            {
+                asset = contentReader.ReadObject<T>(assetReaders[index - 1]);
+            }
 
             this.assets.Add(assetName, asset);
             return asset;

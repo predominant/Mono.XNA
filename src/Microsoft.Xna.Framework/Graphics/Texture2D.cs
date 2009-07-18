@@ -172,9 +172,7 @@ namespace Microsoft.Xna.Framework.Graphics
             // FIXME: Save the stuff from the constructor to the texture
             Texture2D texture = new Texture2D(graphicsDevice);
 
-            byte[] data = new byte[numberBytes];
-            textureStream.Read(data, 0, data.Length);
-            texture.Load(data);
+            texture.Load(textureStream,creationParameters.Width,creationParameters.Height);
 
             texture.height = creationParameters.Height;
             graphicsDevice.Textures.textures.Add(texture);
@@ -303,6 +301,28 @@ namespace Microsoft.Xna.Framework.Graphics
             EnsureDevice();
             using (Surface surface = new Surface(buffer))
                 Load(surface);
+        }
+
+        /// <summary>
+        /// Loads the texture data from a Stream.
+        /// </summary>
+        /// <param name="buffer">The Stream to load the texture data from.</param>
+        private void Load(Stream buffer, int width, int height)
+        {
+            EnsureDevice();
+            BinaryReader BR = new BinaryReader(buffer);
+
+            Bitmap pic = new Bitmap(width, height);
+            for(int i = 0;i < width ;i++)
+            {
+                for (int j = 0; j < height ; j++)
+                {
+                    System.Drawing.Color color = System.Drawing.Color.FromArgb(BR.ReadInt32());
+                    pic.SetPixel(j, i, color);
+                }
+            }
+           using (Surface surface = new Surface(pic))
+               Load(surface);
         }
 
         /// <summary>

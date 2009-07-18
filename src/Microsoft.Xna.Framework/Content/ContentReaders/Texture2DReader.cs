@@ -52,16 +52,14 @@ namespace Microsoft.Xna.Framework.Content
              int height = (input.ReadInt32());
  
           // Byte 13 - 16 is the "depth" of the texture
-             int levelCount = (input.ReadInt32());
- 
+             int levelCount = (input.ReadInt32());        
+
            // Byte 17 - 20 is the data type. I'm assuming this because the only enum with value 4096
             // is the SetDataOptions.NoOverwrite enum. I'm unsure about this.
-             SetDataOptions compressionType = (SetDataOptions)input.ReadInt32();
-
+             //SetDataOptions compressionType = (SetDataOptions)input.ReadInt32();
             // There is 1 byte (8 bits) for each colour channel, R, G, B and A
             // The total length of the texture in bytes is then width * height * (1 + 1 + 1 + 1) = width * height * 4
-             int imageLength = width * height * 4;
- 
+            int imageLength = input.ReadInt32();
             //Duff: my issue is that here do not know what put on miplevel but the first bytes are in fact from other part of reader
              // I'm not sure what the default colour is, i just choose transparent white. I don't know how to check
             TextureCreationParameters param = new TextureCreationParameters(width, height, levelCount, 0, surfaceFormat,

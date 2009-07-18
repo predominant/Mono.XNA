@@ -109,11 +109,16 @@ namespace Microsoft.Xna.Framework
             _graphicsService.DeviceReset += DeviceReset;
             
             LoadGraphicsContent(true);
+            LoadContent();
         }
 
         #endregion Public Methods
 
         #region Protected Methods
+
+        protected virtual void LoadContent()
+        {
+        }
 
         protected virtual void LoadGraphicsContent(bool loadAllContent)
         {

@@ -51,6 +51,7 @@
     <Compile Include="Design\ColorConverter.cs" />
     <Compile Include="Enums.cs" />
     <Compile Include="GamerServices\Enums.cs" />
+    <Compile Include="Graphics\TextureUsage.cs" />
     <Compile Include="MathHelper.cs" />
     <Compile Include="Matrix.cs" />
     <Compile Include="Net\NetworkException.cs" />
