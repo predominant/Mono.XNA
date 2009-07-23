@@ -170,7 +170,7 @@ namespace Microsoft.Xna.Framework
             throw new NotImplementedException();
         }
 
-        public void Dispose()
+        void IDisposable.Dispose()
         {
             Dispose(true);
             GC.SuppressFinalize(this);
@@ -220,6 +220,7 @@ namespace Microsoft.Xna.Framework
         {
             throw new NotImplementedException();
         }
+
 
         protected virtual void Dispose(bool disposing)
         {

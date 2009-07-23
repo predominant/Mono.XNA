@@ -55,7 +55,12 @@ namespace Microsoft.Xna.Framework
             }
         }
 
-        protected Game Game
+#if XNA_1_1
+        protected
+#else
+        public
+#endif
+        Game Game
         {
             get { return _game; }
         }

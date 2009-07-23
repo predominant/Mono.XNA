@@ -2,7 +2,7 @@ using System;
 
 namespace Microsoft.Xna.Framework
 {
-    public abstract class ExtendedGameWindow : GameWindow
+    internal abstract class ExtendedGameWindow : GameWindow
     {
         protected ExtendedGameWindow(Game game) : base(game)
         {

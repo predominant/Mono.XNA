@@ -42,7 +42,7 @@ namespace Microsoft.Xna.Framework
 
         #region Constructors
 
-        protected GameWindow(Game game)
+        internal GameWindow(Game game)
         {
             _game = game;
         }
@@ -112,7 +112,7 @@ namespace Microsoft.Xna.Framework
 
         #region Protected Members
 
-        protected Game Game
+        internal Game Game
         {
             get { return _game; }
         }

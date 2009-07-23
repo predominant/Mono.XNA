@@ -36,6 +36,10 @@ namespace Microsoft.Xna.Framework
         private TimeSpan totalGameTime;
         private TimeSpan totalRealTime;
 
+        public GameTime()
+        {
+        }
+        
         public GameTime(TimeSpan totalRealTime, TimeSpan elapsedRealTime, TimeSpan totalGameTime, TimeSpan elapsedGameTime)
             : this(totalRealTime, elapsedRealTime, totalGameTime, elapsedGameTime, false)
         {

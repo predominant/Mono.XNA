@@ -83,7 +83,12 @@ namespace Microsoft.Xna.Framework
 
         #region Protected Properties
 
-        protected GraphicsDevice GraphicsDevice
+#if XNA_1_1
+        protected
+#else
+        public
+#endif
+            GraphicsDevice GraphicsDevice
         {
             get { return _graphicsService.GraphicsDevice; }
         }
@@ -116,11 +121,40 @@ namespace Microsoft.Xna.Framework
 
         #region Protected Methods
 
-        protected virtual void LoadContent()
+#if XNA_1_1
+        internal
+#else
+        protected
+#endif
+            virtual void LoadContent()
         {
         }
 
+        protected override void Dispose(bool disposing)
+        {
+            if (disposing)
+            {
+                this.UnloadGraphicsContent(true);
+                this.UnloadContent();
+            }
+            base.Dispose(disposing);
+        }
+
+#if XNA_1_1
+#else
+        [System.ObsoleteAttribute("Use LoadContent() instead")]
+#endif
+
         protected virtual void LoadGraphicsContent(bool loadAllContent)
+        {
+        }
+
+#if XNA_1_1
+        internal
+#else
+        protected
+#endif
+            virtual void UnloadContent()
         {
         }
 
@@ -136,6 +170,10 @@ namespace Microsoft.Xna.Framework
                 VisibleChanged(sender, args);
         }
 
+#if XNA_1_1
+#else
+        [System.ObsoleteAttribute("Use UnloadContent() instead")]
+#endif
         protected virtual void UnloadGraphicsContent(bool unloadAllContent)
         {
         }

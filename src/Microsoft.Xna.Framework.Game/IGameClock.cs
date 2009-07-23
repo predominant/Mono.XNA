@@ -1,6 +1,6 @@
 namespace Microsoft.Xna.Framework
 {
-    public interface IGameClock
+    internal interface IGameClock
     {
         void Start();
         void Tick();

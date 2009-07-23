@@ -46,8 +46,8 @@ namespace Microsoft.Xna.Framework
 {
     public class Game : IDisposable
     {
-        public const double DEFAULT_TARGET_ELAPSED_TIME = 1000/60;  // 60 fps
-        public const double DEFAULT_INACTIVE_SLEEP_TIME = 20;       // 20 milliseconds
+        internal const double DEFAULT_TARGET_ELAPSED_TIME = 1000/60;  // 60 fps
+        internal const double DEFAULT_INACTIVE_SLEEP_TIME = 20;       // 20 milliseconds
 
         #region Private Fields
 
@@ -209,15 +209,32 @@ namespace Microsoft.Xna.Framework
             set { _targetElapsedTime = value; }
         }
 
-        public ContentManager Content
+#if XNA_1_1
+        internal
+#else
+        public
+#endif
+         ContentManager Content
         {
             get
             {
                 return this._content;
             }
+
+#if XNA_3_0
+            set
+        {
+            this._content = value;
+        }
+#endif
         }
 
-        public GraphicsDevice GraphicsDevice
+#if XNA_1_1
+        internal
+#else
+        public
+#endif
+         GraphicsDevice GraphicsDevice
         {
             get
             {
@@ -246,6 +263,18 @@ namespace Microsoft.Xna.Framework
         #endregion Public Properties
 
         #region Public Methods
+
+#if XNA_3_0
+        public void SuppressDraw()
+        {
+            throw new NotImplementedException();
+        }
+#endif
+
+        public void ResetElapsedTime()
+        {
+            throw new NotImplementedException();
+        }
 
         public void Dispose()
         {
@@ -314,6 +343,13 @@ namespace Microsoft.Xna.Framework
         #endregion Public methods
 
         #region Protected Methods
+
+#if XNA_3_0
+        protected virtual bool ShowMissingRequirementMessage(Exception exception)
+        {
+            throw new NotImplementedException();
+        }
+#endif
 
         protected virtual void Dispose(bool disposing)
         {
@@ -394,11 +430,20 @@ namespace Microsoft.Xna.Framework
             UnloadGraphicsContent(false);
         }
 
-        protected virtual void LoadContent()
+#if XNA_1_1
+        internal
+#else
+            protected
+#endif
+
+         virtual void LoadContent()
         {
         }
 
-        [System.Obsolete("The LoadGraphicsContent method is obsolete and will be removed in the future.  Use the LoadContent method instead.")]
+#if XNA_1_1
+#else
+            [System.Obsolete("The LoadGraphicsContent method is obsolete and will be removed in the future. Use the LoadContent method instead.")]
+#endif
         protected virtual void LoadGraphicsContent(bool loadAllContent)
         {
             //throw new NotImplementedException();
@@ -423,11 +468,19 @@ namespace Microsoft.Xna.Framework
                 Exiting(sender, args);
         }
 
-        protected virtual void UnloadContent()
+#if XNA_1_1
+        internal
+#else
+            protected
+#endif
+         virtual void UnloadContent()
         {
         }
 
+#if XNA_1_1
+#else
         [Obsolete("The UnloadGraphicsContent method is obsolete and will be removed in the future.  Use the UnloadContent method instead.")]
+#endif
         protected virtual void UnloadGraphicsContent(bool unloadAllContent)
         {
         }

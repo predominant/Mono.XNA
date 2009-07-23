@@ -68,8 +68,12 @@ namespace Microsoft.Xna.Framework
             get { return _adapter; }
             set { _adapter = value; }
         }
-
-        public CreateOptions CreationOptions
+#if XNA_1_1
+        public
+#else
+        internal
+#endif
+                    CreateOptions CreationOptions
         {
             get { return _createOptions; }
             set { _createOptions = value; }

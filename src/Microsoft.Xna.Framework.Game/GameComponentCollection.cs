@@ -40,7 +40,12 @@ namespace Microsoft.Xna.Framework
         public event EventHandler<GameComponentCollectionEventArgs> ComponentAdded;
         public event EventHandler<GameComponentCollectionEventArgs> ComponentRemoved;
 
-        internal GameComponentCollection()
+#if XNA_1_1
+        internal
+#else
+        public
+#endif
+         GameComponentCollection()
         {
         }
 
