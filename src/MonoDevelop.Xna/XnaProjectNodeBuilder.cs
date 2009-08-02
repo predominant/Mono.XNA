@@ -9,7 +9,7 @@ using MonoDevelop.Ide.Gui.Pads.ProjectPad;
 namespace MonoDevelop.Xna
 {	
 	
-	public class XnaProjectNodeBuilder : ProjectNodeBuilder
+	public class XnaProjectNodeBuilder : NodeBuilderExtension
 	{
 
 		#region Constructor
@@ -22,18 +22,18 @@ namespace MonoDevelop.Xna
 		
 		#region ProjectNodeBuilder Overrides
 		
-		public override Type NodeDataType {
-			get { return typeof(XnaProject); }
+		public override bool CanBuildNode (Type dataType)
+		{
+			return typeof(XnaProject).IsAssignableFrom (dataType);
 		}
 		
-		public override void BuildChildNodes (MonoDevelop.Ide.Gui.Components.ITreeBuilder builder, object dataObject)
+		public override void BuildChildNodes (ITreeBuilder builder, object dataObject)
 		{
 			foreach(NestedContentProject contentProject in ((XnaProject)dataObject).NestedContentProjects)
 				builder.AddChild(contentProject.Project);
 			
 			base.BuildChildNodes (builder, dataObject);
 		}
-
 		
 		#endregion
 	}

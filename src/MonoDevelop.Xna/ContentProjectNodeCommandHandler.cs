@@ -1,30 +1,14 @@
 
 using System;
 using MonoDevelop.Projects;
-using MonoDevelop.Ide.Gui.Pads.ProjectPad;
+using MonoDevelop.Ide.Gui.Components;
 
 namespace MonoDevelop.Xna
 {
 	
-	
-	public class ContentProjectNodeCommandHandler : FolderCommandHandler
+	public class ContentProjectCommandHandler : NodeCommandHandler
 	{		
 		
-		#region Constructor
 		
-		public ContentProjectNodeCommandHandler()
-		{
-		}
-		
-		#endregion
-		
-		#region FolderCommandHandler Overrides
-		
-		public override string GetFolderPath (object dataObject)
-		{
-			return ((Project)dataObject).BaseDirectory;
-	 	}	
-		
-		#endregion
 	}
 }

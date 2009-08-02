@@ -49,7 +49,7 @@ namespace MonoDevelop.Xna
 			if(!Directory.Exists(contentProject.BaseDirectory))
 				Directory.CreateDirectory(contentProject.BaseDirectory);
 			
-			project.NestedContentProjects.Add(new NestedContentProject(contentProject, contentProject.FileName.Replace(info.ProjectBasePath, ".")));
+			project.NestedContentProjects.Add(new NestedContentProject(project, contentProject, contentProject.FileName.Replace(info.ProjectBasePath, ".")));
 			
 			return project;
 		}

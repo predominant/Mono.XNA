@@ -32,8 +32,7 @@ using Microsoft.Build.Framework;
 using Microsoft.Build.Utilities;
 
 namespace Microsoft.Xna.Framework.Content.Pipeline.Tasks
-{
-    
+{    
     
     public class BuildContent : Task
     {

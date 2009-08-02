@@ -9,7 +9,7 @@ using MonoDevelop.Projects.Dom;
 namespace MonoDevelop.Xna
 {	
 	
-	public class ContentProject : Project
+	public class ContentProject : DotNetProject
     {
 		#region Fields
 		
@@ -29,8 +29,14 @@ namespace MonoDevelop.Xna
 		#endregion
 		
         #region Constructors
+		
+		public ContentProject (string languageName)
+			: base (languageName)
+		{
+		}
 
 		public ContentProject (string language, ProjectCreateInformation info, XmlElement projectOptions)
+			: base (language, info, projectOptions)
 		{
 			compileCollection = new CompileCollection();
 			Items.Bind(compileCollection);

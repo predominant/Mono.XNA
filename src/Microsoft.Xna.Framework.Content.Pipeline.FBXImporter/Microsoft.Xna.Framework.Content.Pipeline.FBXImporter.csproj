@@ -36,6 +36,7 @@
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>
     <Compile Include="FBXImporter.cs" />
+    <Compile Include="MarshaledNode.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Microsoft.Xna.Framework.Content.Pipeline\Microsoft.Xna.Framework.Content.Pipeline.csproj">

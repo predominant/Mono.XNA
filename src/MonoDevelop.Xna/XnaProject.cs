@@ -1,10 +1,13 @@
 
 using System;
 using System.Xml;
+using System.IO;
 using MonoDevelop.Core;
 using MonoDevelop.Core.Serialization;
 using MonoDevelop.Projects;
 using MonoDevelop.Projects.Dom;
+using MonoDevelop.Core.ProgressMonitoring;
+
 
 namespace MonoDevelop.Xna
 {
@@ -83,7 +86,13 @@ namespace MonoDevelop.Xna
 			
 			base.Save (monitor);
 		}
-
+		
+		protected override void OnEndLoad ()
+		{
+			Console.WriteLine("EndLoad");
+			foreach(NestedContentProject project in nestedContentProjects)
+				project.Parent = this;
+		}
 
         #endregion
 		
