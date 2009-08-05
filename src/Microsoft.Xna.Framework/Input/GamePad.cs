@@ -2,7 +2,7 @@
 
 /*
 MIT License
-Copyright © 2006 The Mono.Xna Team
+Copyright Â© 2006 The Mono.Xna Team
 
 All rights reserved.
 
@@ -52,7 +52,7 @@ namespace Microsoft.Xna.Framework.Input
         const int LeftTrigger = 7;
         const int RightTrigger = 8;
 
-        // For the circular axis dead zone, this value is the maximum distance for x² + y², when x = y = 1 | -1
+        // For the circular axis dead zone, this value is the maximum distance for xÂ² + yÂ², when x = y = 1 | -1
         const float MaxDistance = 1.4142135623730951f;
         const int MaxSticks = 4;
         #endregion Button Constants
@@ -233,4 +233,4 @@ namespace Microsoft.Xna.Framework.Input
 
         #endregion Public Methods
     }
-}
+}ï»¿
