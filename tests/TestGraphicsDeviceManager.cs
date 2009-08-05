@@ -10,7 +10,6 @@ namespace Microsoft.Xna.Framework.Tests
         {
         }
 
-
         public TestGraphicsDeviceManager(Game game, bool clearDevices) : base(game)
         {
             _clearDevices = clearDevices;
