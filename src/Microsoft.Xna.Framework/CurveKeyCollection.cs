@@ -97,7 +97,7 @@ namespace Microsoft.Xna.Framework
         public void Add(CurveKey item)
         {
             if (item == null)
-                throw new ArgumentNullException();
+                throw new ArgumentNullException("Value cannot be null.",(Exception)null);
 
             if (innerlist.Count == 0)
             {
@@ -157,8 +157,11 @@ namespace Microsoft.Xna.Framework
         
         public void RemoveAt(int index)
         {
-            innerlist.RemoveAt(index);
-        }
+		if (index != this.Count && index > -1)
+			innerlist.RemoveAt(index);
+		else throw new ArgumentOutOfRangeException("Index was out of range. Must be non-negative and less than the size of the collection.\r\nParameter name: index",(Exception)null);
+				
+		}
 
         IEnumerator IEnumerable.GetEnumerator()
         {
@@ -168,3 +171,4 @@ namespace Microsoft.Xna.Framework
         #endregion Public Methods
     }
 }
+

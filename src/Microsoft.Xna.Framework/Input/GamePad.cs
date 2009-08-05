@@ -192,7 +192,11 @@ namespace Microsoft.Xna.Framework.Input
                 _state[number].triggers.left = (int)j.GetButtonState(LeftTrigger)*1.0f;
                 _state[number].triggers.right = (int)j.GetButtonState(RightTrigger)*1.0f;
             }
-
+			else
+			{
+				throw new InvalidOperationException(); 
+			}
+			
             return _state[number];
         }
 
@@ -234,3 +238,4 @@ namespace Microsoft.Xna.Framework.Input
         #endregion Public Methods
     }
 }﻿
+
