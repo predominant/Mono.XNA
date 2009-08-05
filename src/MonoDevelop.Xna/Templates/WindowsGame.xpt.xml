@@ -5,7 +5,7 @@
 	<TemplateConfiguration>
 		<_Name>Windows Game</_Name>
 		<_Category>XNA</_Category>
-		<Icon>md-project-game</Icon>
+		<Icon>res:XnaGame_48x48.png</Icon>
 		<LanguageName>*</LanguageName>
 		<_Description>Creates an empty XNA Game project.</_Description>
 	</TemplateConfiguration>

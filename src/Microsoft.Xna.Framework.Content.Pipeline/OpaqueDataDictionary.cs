@@ -35,16 +35,15 @@ namespace Microsoft.Xna.Framework.Content.Pipeline
 	
 	public sealed class OpaqueDataDictionary : NamedValueDictionary<Object>
 	{
-
-#region Constructor
+		#region Constructor
 		
 		public OpaqueDataDictionary()
 		{
 		}
 		
-#endregion
-		
-#region Public Methods
+		#endregion
+
+		#region Public Methods
 		
 		public string GetContentAsXml()
 		{
@@ -56,9 +55,9 @@ namespace Microsoft.Xna.Framework.Content.Pipeline
 			throw new NotImplementedException();
 		}
 		
-#endregion
+		#endregion
 		
-#region Protected Methods
+		#region Protected Methods
 		
 		protected override void SetItem(string key, Object value)
 		{
@@ -85,7 +84,7 @@ namespace Microsoft.Xna.Framework.Content.Pipeline
 			throw new NotImplementedException();
 		}
 
-#endregion
+		#endregion
 		
 	}
 }

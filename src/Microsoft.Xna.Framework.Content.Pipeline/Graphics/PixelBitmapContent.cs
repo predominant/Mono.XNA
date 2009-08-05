@@ -36,8 +36,14 @@ namespace Microsoft.Xna.Framework.Content.Pipeline.Graphics
 	
 	public class PixelBitmapContent<T> : BitmapContent where T : struct, IEquatable<T>
 	{
-
-#region Constructor
+		
+		#region Fields
+		
+		protected T[][] pixelData;
+		
+		#endregion
+		
+		#region Constructor
 		
 		public PixelBitmapContent()
 		{
@@ -48,31 +54,11 @@ namespace Microsoft.Xna.Framework.Content.Pipeline.Graphics
 			
 		}
 
-#endregion
+		#endregion
 		
-#region Public Methods
-	
-		public T GetPixel(int x, int y)
-		{
-			throw new NotImplementedException();
-		}
+		#region BitmapContent Overrides
 		
 		public override byte[] GetPixelData()
-		{
-			throw new NotImplementedException();
-		}
-		
-		public T[] GetRow(int y)
-		{
-			throw new NotImplementedException();
-		}
-		
-		public void ReplaceColor(T originalColor, T newColor)
-		{
-			throw new NotImplementedException();
-		}
-		
-		public void SetPixel(int x, int y, T value)
 		{
 			throw new NotImplementedException();
 		}
@@ -92,10 +78,6 @@ namespace Microsoft.Xna.Framework.Content.Pipeline.Graphics
 			throw new NotImplementedException();
 		}
 		
-#endregion
-		
-#region Protected Methods
-
 		protected override bool TryCopyFrom(BitmapContent sourceBitmap, Rectangle sourceRegion, Rectangle destinationRegion)
 		{
 			throw new NotImplementedException();
@@ -106,7 +88,34 @@ namespace Microsoft.Xna.Framework.Content.Pipeline.Graphics
 			throw new NotImplementedException();
 		}
 		
-#endregion
+		#endregion
+		
+		#region Public Methods
+	
+		public T GetPixel(int x, int y)
+		{
+			throw new NotImplementedException();
+		}
+		
+		public T[] GetRow(int y)
+		{
+			throw new NotImplementedException();
+		}
+		
+		public void ReplaceColor(T originalColor, T newColor)
+		{
+			throw new NotImplementedException();
+		}
+		
+		public void SetPixel(int x, int y, T value)
+		{
+			throw new NotImplementedException();
+		}
+		
+		#endregion
+		
+		
+		
 		
 	}
 }

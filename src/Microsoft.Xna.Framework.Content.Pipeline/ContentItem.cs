@@ -35,17 +35,8 @@ namespace Microsoft.Xna.Framework.Content.Pipeline
 	
 	public class ContentItem
 	{
-
-#region Constructor
 		
-		public ContentItem()
-		{
-			opaqueData = new OpaqueDataDictionary();
-		}
-		
-#endregion
-		
-#region Properties
+		#region Properties
 		
 		private ContentIdentity identity;
 		public ContentIdentity Identity 
@@ -60,7 +51,16 @@ namespace Microsoft.Xna.Framework.Content.Pipeline
 			get { return opaqueData; }
 		}
 		
-#endregion
+		#endregion
+		
+		#region Constructor
+		
+		public ContentItem()
+		{
+			opaqueData = new OpaqueDataDictionary();
+		}
+		
+		#endregion
 
 	}
 }

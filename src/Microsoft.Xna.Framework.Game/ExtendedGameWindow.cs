@@ -2,7 +2,12 @@ using System;
 
 namespace Microsoft.Xna.Framework
 {
-    internal abstract class ExtendedGameWindow : GameWindow
+#if NUNITTESTS
+	public
+#else
+    internal
+#endif 
+			abstract class ExtendedGameWindow : GameWindow
     {
         protected ExtendedGameWindow(Game game) : base(game)
         {

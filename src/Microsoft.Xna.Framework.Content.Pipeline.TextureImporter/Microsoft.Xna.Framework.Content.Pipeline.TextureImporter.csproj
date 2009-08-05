@@ -34,4 +34,16 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
+  <ItemGroup>
+    <Compile Include="TextureImporter.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Microsoft.Xna.Framework.Content.Pipeline\Microsoft.Xna.Framework.Content.Pipeline.csproj">
+      <Project>{2B43FFD0-D80F-4D49-9CF7-2B2A2E674C49}</Project>
+      <Name>Microsoft.Xna.Framework.Content.Pipeline</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Reference Include="Tao.DevIl, Version=1.6.8.3, Culture=neutral, PublicKeyToken=7ec4053013524957" />
+  </ItemGroup>
 </Project>

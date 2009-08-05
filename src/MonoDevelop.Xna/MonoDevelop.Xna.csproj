@@ -53,6 +53,7 @@
     <EmbeddedResource Include="Templates\WindowsGame.xpt.xml">
       <LogicalName>WindowsGame.xpt.xml</LogicalName>
     </EmbeddedResource>
+    <EmbeddedResource Include="Icons\XnaGame_48x48.png" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="System" />

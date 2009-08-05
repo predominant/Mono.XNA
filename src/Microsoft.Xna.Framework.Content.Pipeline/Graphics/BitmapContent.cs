@@ -35,8 +35,11 @@ namespace Microsoft.Xna.Framework.Content.Pipeline.Graphics
 	
 	public abstract class BitmapContent : ContentItem
 	{
+		#region Fields
+		
+		#endregion
 
-#region Constructors
+		#region Constructors
 		
 		protected BitmapContent()
 		{
@@ -44,11 +47,12 @@ namespace Microsoft.Xna.Framework.Content.Pipeline.Graphics
 		
 		protected BitmapContent(int width, int height)
 		{
+			
 		}
 
-#endregion
+		#endregion
 		
-#region Properties
+		#region Properties
 
 		public int Height 
 		{ 
@@ -62,9 +66,9 @@ namespace Microsoft.Xna.Framework.Content.Pipeline.Graphics
 			set; 
 		}
 		
-#endregion
+		#endregion
 		
-#region Public Methods
+		#region Public Methods
 
 		public static void Copy(BitmapContent sourceBitmap, BitmapContent destinationBitmap)
 		{
@@ -87,9 +91,9 @@ namespace Microsoft.Xna.Framework.Content.Pipeline.Graphics
 			throw new NotImplementedException();
 		}
 		
-#endregion
+		#endregion
 		
-#region Protected Methods
+		#region Protected Methods
 		
 		protected static void ValidateCopyArguments(BitmapContent sourceBitmap, Rectangle sourceRegion, BitmapContent destinationBitmap, Rectangle destinationRegion)
 		{
@@ -100,7 +104,7 @@ namespace Microsoft.Xna.Framework.Content.Pipeline.Graphics
 		
 		protected abstract bool TryCopyTo(BitmapContent destinationBitmap, Rectangle sourceRegion, Rectangle destinationRegion);
 		
-#endregion				
+		#endregion				
 		
 	}
 }

@@ -1,7 +1,7 @@
 #region License
 /*
 MIT License
-Copyright © 2006 The Mono.Xna Team
+Copyright Â© 2006 The Mono.Xna Team
 
 All rights reserved.
 
@@ -68,7 +68,7 @@ namespace Microsoft.Xna.Framework
             get { return _adapter; }
             set { _adapter = value; }
         }
-#if XNA_1_1
+#if NUNITTESTS
         public
 #else
         internal

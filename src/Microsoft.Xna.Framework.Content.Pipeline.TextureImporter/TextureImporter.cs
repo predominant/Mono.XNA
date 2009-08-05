@@ -1,9 +1,12 @@
 #region License
 /*
 MIT License
-Copyright © 2006 The Mono.Xna Team
+Copyright © 2009 The Mono.Xna Team
 
 All rights reserved.
+
+Authors:
+Lars Magnusson (lavima)
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
@@ -26,15 +29,31 @@ SOFTWARE.
 #endregion License
 
 using System;
+using Microsoft.Xna.Framework.Content.Pipeline;
+using Microsoft.Xna.Framework.Content.Pipeline.Graphics;
+using Tao.DevIl;
+using System.Runtime.InteropServices;
 
-namespace Microsoft.Xna.Framework
+namespace Microsoft.Xna.Framework.Content.Pipeline.TextureImporter
 {
-	public interface IGameComponent
+	
+	
+	[ContentImporter(".png")]
+	public class TextureImporter : ContentImporter<TextureContent>
 	{
-		#region Public Methods
 		
-		void Initialize();
-
-		#endregion Public Methods
+		public TextureImporter()
+		{
+		}
+		
+		public override TextureContent Import (string filename, ContentImporterContext context)
+		{
+			Il.ilInit();
+			Il.ilBindImage (0);
+			Il.ilLoadImage (filename);
+			IntPtr data = Il.ilGetData ();
+			
+			return null;
+		}
 	}
 }

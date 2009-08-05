@@ -241,10 +241,6 @@
     <Compile Include="Storage\StorageDeviceNotConnectedException.cs" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Graphics\DisplayMode.cs.orig" />
-    <None Include="Graphics\DisplayMode.cs.rej" />
-  </ItemGroup>
-  <ItemGroup>
     <Reference Include="System" />
     <Reference Include="SdlDotNet, Version=6.1.0.0, Culture=neutral, PublicKeyToken=26ad4f7e10c61408" />
     <Reference Include="System.Data" />
