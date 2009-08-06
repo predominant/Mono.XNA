@@ -94,6 +94,7 @@ namespace Microsoft.Xna.Framework
         public Game()
         {
             InitializeState(new GameClock(), new SdlGameWindow(this));
+			_isActive = true;
         }
 
 #if NUNITTESTS

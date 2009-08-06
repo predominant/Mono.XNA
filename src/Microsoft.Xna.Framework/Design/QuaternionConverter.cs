@@ -37,13 +37,18 @@ namespace Microsoft.Xna.Framework.Design
 
         public QuaternionConverter()
         {
-            throw new NotImplementedException();
+            Type type = typeof(Quaternion);
+			base.propertyDescriptions = new PropertyDescriptorCollection(new PropertyDescriptor[] { new FieldDescriptor(type.GetField("X")), new FieldDescriptor(type.GetField("Y")), new FieldDescriptor(type.GetField("Z")), new FieldDescriptor(type.GetField("W")) } ).Sort(new string[] { "X", "Y", "Z", "W" });
         }
 
         public override object ConvertFrom(ITypeDescriptorContext context, CultureInfo culture, object value)
         {
-            throw new NotImplementedException();
-        }
+            float[] values = MathTypeConverter.ConvertToT<float>(context,culture,value,4, "X, Y, Z, W");
+        if (values != null){
+				return new Quaternion(values[0],values[1],values[2],values[3]);
+			}
+			return base.ConvertFrom(context,culture,value);
+		}
 
         public override object ConvertTo(ITypeDescriptorContext context, CultureInfo culture, object value, Type destinationType)
         {

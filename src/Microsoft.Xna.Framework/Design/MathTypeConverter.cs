@@ -27,6 +27,8 @@ SOFTWARE.
 
 using System;
 using System.ComponentModel;
+using System.ComponentModel.Design.Serialization;
+using System.Globalization;
 
 namespace Microsoft.Xna.Framework.Design
 {
@@ -38,32 +40,61 @@ namespace Microsoft.Xna.Framework.Design
 
         public MathTypeConverter()
         {
-            throw new NotImplementedException();
+           this.supportStringConvert = true;
         }
 
         public override bool CanConvertFrom(ITypeDescriptorContext context, Type sourceType)
         {
-            throw new NotImplementedException();
+           return this.supportStringConvert && (sourceType == typeof(String)) || base.CanConvertFrom(context,sourceType);
         }
 
         public override bool CanConvertTo(ITypeDescriptorContext context, Type destinationType)
         {
-            throw new NotImplementedException();
+            return (destinationType == typeof(InstanceDescriptor) || base.CanConvertTo(context,destinationType));
         }
 
         public override bool GetCreateInstanceSupported(ITypeDescriptorContext context)
         {
-            throw new NotImplementedException();
+            return true;
         }
 
         public override PropertyDescriptorCollection GetProperties(ITypeDescriptorContext context, object value, Attribute[] attributes)
         {
-            throw new NotImplementedException();
+           return this.propertyDescriptions;
         }
 
         public override bool GetPropertiesSupported(ITypeDescriptorContext context)
         {
-            throw new NotImplementedException();
+           return true;
         }
+		
+		internal static T[] ConvertToT<T>(ITypeDescriptorContext context, CultureInfo culture, object value, int Count, string messageParam)
+		{
+			if (!(value is String))return null;
+			
+			string val = ((string)value).Trim();
+			
+			if (val.Length == 0) return null;
+			if (culture == null) culture = CultureInfo.CurrentCulture;
+	
+			char sep = culture.TextInfo.ListSeparator[0];
+			string[] valArray = val.Split(new char[] { sep });
+			TypeConverter converter = TypeDescriptor.GetConverter(typeof (T));
+			T[] TArray = new T[valArray.Length];
+			
+			for (int i = 0; i < TArray.Length; i++)
+			{
+				try{
+					TArray[i] = (T) converter.ConvertFromString(context,culture,valArray[i]);
+				}
+				catch(Exception ex) {
+					throw new ArgumentException("Invalid string format",ex);
+				}
+			}
+			
+			if (TArray.Length != Count) throw new ArgumentException("Invalid string format");
+
+			return TArray;
+		}
     }
 }

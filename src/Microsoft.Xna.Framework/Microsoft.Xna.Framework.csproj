@@ -239,6 +239,7 @@
     <Compile Include="Storage\StorageContainer.cs" />
     <Compile Include="Storage\StorageDevice.cs" />
     <Compile Include="Storage\StorageDeviceNotConnectedException.cs" />
+    <Compile Include="Design\FieldDescriptor.cs" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="System" />
