@@ -73,27 +73,25 @@ namespace Microsoft.Xna.Framework.Graphics
 
 
         #region Properties
-        public GraphicsDevice GraphicsDevice
-        {
+		
+        public GraphicsDevice GraphicsDevice {
             get { return device; }
         }
 
-        public bool IsDisposed
-        {
+        public bool IsDisposed {
             get { return disposed; }
         }
 
-        public string Name
-        {
+        public string Name {
             get { return name; }
             set { name = value; }
         }
 
-        public object Tag
-        {
+        public object Tag {
             get { return tag; }
             set { tag = value; }
         }
+		
         #endregion Properties
 
 
@@ -113,15 +111,14 @@ namespace Microsoft.Xna.Framework.Graphics
         {
             //to respect order Begin/Draw/end
             if (isRunning)
-            {
-                throw new InvalidOperationException("Begin cannot be called again until End has been successfully called.");
-            }
+            	throw new InvalidOperationException("Begin cannot be called again until End has been successfully called.");
 
             if (stateMode == SaveStateMode.SaveState)
                 saveState = new StateBlock(this.GraphicsDevice);
 
-            spriteBlendMode = blendMode;
-            this.sortMode = sortMode;
+			
+			spriteBlendMode = blendMode;
+			this.sortMode = sortMode;
             if (sortMode == SpriteSortMode.Immediate)
                 ApplyGraphicsDeviceSettings();
             isRunning = true;
@@ -131,11 +128,13 @@ namespace Microsoft.Xna.Framework.Graphics
         {
             if (!isRunning)
                 throw new InvalidOperationException("Begin must be called successfully before End can be called.");
-            if (sortMode == SpriteSortMode.Deferred)
+            
+			if (sortMode == SpriteSortMode.Deferred)
             {
                 ApplyGraphicsDeviceSettings();
                 Flush();
             }
+			
             Gl.glDisable(Gl.GL_TEXTURE_2D);
 
             Gl.glMatrixMode(Gl.GL_PROJECTION);
@@ -240,7 +239,7 @@ namespace Microsoft.Xna.Framework.Graphics
         private void ApplyGraphicsDeviceSettings()
         {
             // Set the blend mode
-
+							
             switch (spriteBlendMode)
             {
                 case SpriteBlendMode.AlphaBlend:
@@ -257,7 +256,7 @@ namespace Microsoft.Xna.Framework.Graphics
                 default:
                     throw new NotSupportedException("The given blend mode isn't yet supported.");
             }
-
+			
             Gl.glEnable(Gl.GL_TEXTURE_2D);
 
             // Reset the projection matrix and use the orthographic matrix

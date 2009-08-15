@@ -54,19 +54,13 @@ namespace Microsoft.Xna.Framework.Content
 
         #region Public Properties
 
-        public IServiceProvider ServiceProvider
-        {
+        public IServiceProvider ServiceProvider {
             get { return this.serviceProvider; }
         }
 
-        public string RootDirectory
-        {
-            get
-            {
-                return this.rootDirectory;
-            }
-            set
-            {
+        public string RootDirectory {
+            get { return this.rootDirectory; }
+            set {
                 if (value == null)
                 {
                     throw new ArgumentNullException("value");
@@ -80,9 +74,7 @@ namespace Microsoft.Xna.Framework.Content
             }
         }
 
-
         #endregion
-
 
         #region Public Constructors
 
@@ -105,9 +97,8 @@ namespace Microsoft.Xna.Framework.Content
         }
 
         #endregion
-        
 
-        #region Destructor
+		#region Destructor
 
         ~ContentManager()
         {

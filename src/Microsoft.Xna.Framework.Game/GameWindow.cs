@@ -1,7 +1,7 @@
 #region License
 /*
 MIT License
-Copyright © 2006 The Mono.Xna Team
+Copyright Â© 2006 The Mono.Xna Team
 
 All rights reserved.
 
@@ -93,11 +93,9 @@ namespace Microsoft.Xna.Framework
 
         public abstract string ScreenDeviceName { get; }
 
-        public string Title
-        {
+        public string Title {
             get { return _title; }
-            set
-            {
+            set {
                 if (_title != value)
                 {
                     _title = value;

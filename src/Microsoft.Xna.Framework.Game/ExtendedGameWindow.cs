@@ -7,7 +7,7 @@ namespace Microsoft.Xna.Framework
 #else
     internal
 #endif 
-			abstract class ExtendedGameWindow : GameWindow
+	abstract class ExtendedGameWindow : GameWindow
     {
         protected ExtendedGameWindow(Game game) : base(game)
         {

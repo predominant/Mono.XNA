@@ -64,28 +64,23 @@ namespace Microsoft.Xna.Framework.Graphics
 
         #region Public Properties
 
-        public int Width
-        {
+        public int Width {
             get { return this.width; }
         }
 
-        public int Height
-        {
+        public int Height {
             get { return this.height; }
         }
 
-        public SurfaceFormat Format
-        {
+        public SurfaceFormat Format {
             get { return this.surfaceFormat; }
         }
 
-        public ResourceManagementMode ResourceManagementMode
-        {
+        public ResourceManagementMode ResourceManagementMode {
             get { return this.resourceManagementMode; }
         }
 
-        public ResourceUsage ResourceUsage
-        {
+        public ResourceUsage ResourceUsage {
             get { return this.resourceUsage; }
         }
 
@@ -122,12 +117,12 @@ namespace Microsoft.Xna.Framework.Graphics
 
         public new static Texture2D FromFile(GraphicsDevice graphicsDevice, Stream textureStream)
         {
-            Texture2D texture = new Texture2D(graphicsDevice);
-
+			Texture2D texture = new Texture2D(graphicsDevice);
+			
             byte[] data = new byte[textureStream.Length];
-            textureStream.Read(data, 0, (int)textureStream.Length);
+			textureStream.Read(data, 0, (int)textureStream.Length);
             texture.Load(data);
-
+		
             graphicsDevice.Textures.textures.Add(texture);
             return texture;
         }
@@ -297,10 +292,14 @@ namespace Microsoft.Xna.Framework.Graphics
         /// </summary>
         /// <param name="buffer">The byte array to load the texture data from.</param>
         private void Load(byte[] buffer)
-        {
-            EnsureDevice();
+        {			
+            EnsureDevice();			
             using (Surface surface = new Surface(buffer))
-                Load(surface);
+			{
+				Load(surface);
+				Console.WriteLine ("Test");
+			}
+			
         }
 
         /// <summary>
@@ -330,13 +329,16 @@ namespace Microsoft.Xna.Framework.Graphics
         /// </summary>
         /// <param name="surface">The surface to load data from.</param>
         private void Load(Surface surface)
-        {
+        {			
             this.width = surface.Width;
-            this.height = surface.Height;
-            surface = surface.CreateFlippedVerticalSurface();
+			this.height = surface.Height;
+            
+			surface = surface.CreateFlippedVerticalSurface();
+			
             //surface.Resize();
             this.textureWidth = surface.Width;
             this.textureHeight = surface.Height;
+			Console.WriteLine ("Test");
 
             int[] texture = new int[1];
             Gl.glGenTextures(1, texture);

@@ -1,7 +1,7 @@
 #region License
 /*
 MIT License
-Copyright © 2006 The Mono.Xna Team
+Copyright Â© 2006 The Mono.Xna Team
 http://www.taoframework.com
 All rights reserved.
 
@@ -82,6 +82,7 @@ namespace Microsoft.Xna.Framework.Graphics.Tests
         [ExpectedException(typeof(InvalidOperationException), "Begin must be called successfully before a Draw can be called.")]
         public void DrawTest()
         {
+            /*
             byte[] data;
             try
             {
@@ -101,10 +102,10 @@ namespace Microsoft.Xna.Framework.Graphics.Tests
             s.Write(data, 0, data.Length);
             s.Write(data, 0, data.Length);
             s.Write(data, 0, data.Length);
-            s.Seek(0, SeekOrigin.Begin);
+            s.Seek(0, SeekOrigin.Begin);*/
 
-            Texture2D texture = Texture2D.FromFile(game.GraphicsDeviceManager.GraphicsDevice, s);
-
+			Stream str = ResourceReader.GetResourceStream("texture2d.jpg");
+            Texture2D texture = Texture2D.FromFile(game.GraphicsDeviceManager.GraphicsDevice, str);
             sprite.Draw(texture, new Rectangle(), Color.White);
         }
 

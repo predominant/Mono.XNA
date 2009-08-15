@@ -176,8 +176,7 @@ namespace Microsoft.Xna.Framework
             info.PresentationParameters.BackBufferFormat = PreferredBackBufferFormat;
 
 			_graphicsDevice = new GraphicsDevice(info.Adapter, info.DeviceType, Video.WindowHandle, info.CreationOptions, info.PresentationParameters);
-			Console.WriteLine ("Test");
-            _graphicsDevice.Disposing += new EventHandler(_graphicsDevice_Disposing);
+			_graphicsDevice.Disposing += new EventHandler(_graphicsDevice_Disposing);
             _graphicsDevice.DeviceResetting += new EventHandler(_graphicsDevice_DeviceResetting);
             _graphicsDevice.DeviceReset += new EventHandler(_graphicsDevice_DeviceReset);
             
