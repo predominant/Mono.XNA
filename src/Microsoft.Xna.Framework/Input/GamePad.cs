@@ -227,7 +227,7 @@ namespace Microsoft.Xna.Framework.Input
 
         static float Rescale(float p)
         {
-            return (0.5f - p)*2f;
+            return (0.5f - p)*2.0f;
         }
 
         public static bool SetVibration(PlayerIndex playerIndex, float leftMotor, float rightMotor)
@@ -237,5 +237,4 @@ namespace Microsoft.Xna.Framework.Input
 
         #endregion Public Methods
     }
-}﻿
-
+}

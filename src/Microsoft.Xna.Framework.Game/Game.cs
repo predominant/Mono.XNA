@@ -215,10 +215,8 @@ namespace Microsoft.Xna.Framework
 #else
         public
 #endif
-         ContentManager Content
-        {
-            get
-            {
+        ContentManager Content {
+            get {
                 return this._content;
             }
 
@@ -235,10 +233,8 @@ namespace Microsoft.Xna.Framework
 #else
         public
 #endif
-         GraphicsDevice GraphicsDevice
-        {
-            get
-            {
+        GraphicsDevice GraphicsDevice {
+            get {
                 IGraphicsDeviceService graphicsDeviceService = this._graphicsDeviceService;
                 if (graphicsDeviceService == null)
                 {

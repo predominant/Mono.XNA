@@ -80,71 +80,54 @@ namespace Microsoft.Xna.Framework
 
         #region Public Properties
 
-        public GraphicsDevice GraphicsDevice
-        {
+        public GraphicsDevice GraphicsDevice {
             get { return _graphicsDevice; }
         }
 
-        public bool IsFullScreen
-        {
-            get
-            {
-                return Video.Screen.FullScreen;
-            }
-
-            set
-            {
+        public bool IsFullScreen {
+            get { return Video.Screen.FullScreen; }
+            set {
                 if (Video.Screen.FullScreen != value)
-                {
                     throw new NotImplementedException("IsFullScreen");
-                }
             }
         }
 
-        public ShaderProfile MinimumPixelShaderProfile
-        {
+        public ShaderProfile MinimumPixelShaderProfile {
             get { return _minimumShaderProfile; }
             set { _minimumShaderProfile = value; }
         }
 
-        public ShaderProfile MinimumVertexShaderProfile
-        {
+        public ShaderProfile MinimumVertexShaderProfile {
             get { return _minimumVertexShaderProfile; }
             set { _minimumVertexShaderProfile = value; }
         }
 
-        public bool PreferMultiSampling
-        {
+        public bool PreferMultiSampling {
             get { return _preferMultiSampling; }
             set { _preferMultiSampling = value; }
         }
 
-        public SurfaceFormat PreferredBackBufferFormat
-        {
+        public SurfaceFormat PreferredBackBufferFormat {
             get { return _preferredBackBufferFormat; }
             set { _preferredBackBufferFormat = value; }
         }
 
-        public int PreferredBackBufferHeight
-        {
+        public int PreferredBackBufferHeight {
             get { return _preferredBackBufferHeight; }
             set { _preferredBackBufferHeight = value; }
         }
 
-        public int PreferredBackBufferWidth
-        {
+        public int PreferredBackBufferWidth {
             get { return _preferredBackBufferWidth; }
             set { _preferredBackBufferWidth = value; }
         }
 
-        public DepthFormat PreferredDepthStencilFormat
-        {
+        public DepthFormat PreferredDepthStencilFormat {
             get { return _preferredDepthStencilFormat; }
             set { _preferredDepthStencilFormat = value; }
         }
 
-        public bool SynchronizeWithVerticalRetrace
-        {
+        public bool SynchronizeWithVerticalRetrace {
             get { return _synchronizeWithVerticalRetrace; }
             set { _synchronizeWithVerticalRetrace = value; }
         }
@@ -192,7 +175,8 @@ namespace Microsoft.Xna.Framework
             info.PresentationParameters.AutoDepthStencilFormat = PreferredDepthStencilFormat;
             info.PresentationParameters.BackBufferFormat = PreferredBackBufferFormat;
 
-            _graphicsDevice = new GraphicsDevice(info.Adapter, info.DeviceType, Video.WindowHandle, info.CreationOptions, info.PresentationParameters);
+			_graphicsDevice = new GraphicsDevice(info.Adapter, info.DeviceType, Video.WindowHandle, info.CreationOptions, info.PresentationParameters);
+			Console.WriteLine ("Test");
             _graphicsDevice.Disposing += new EventHandler(_graphicsDevice_Disposing);
             _graphicsDevice.DeviceResetting += new EventHandler(_graphicsDevice_DeviceResetting);
             _graphicsDevice.DeviceReset += new EventHandler(_graphicsDevice_DeviceReset);
