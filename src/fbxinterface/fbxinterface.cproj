@@ -29,6 +29,11 @@
         <LibPath>${CombineDir}/lib/fbxsdk/lib</LibPath>
       </LibPaths>
     </LibPaths>
+    <Libs>
+      <Libs>
+        <Lib>/home/lars/Documents/Code/monoxna/lib/fbxsdk/lib/libfbxsdk_gcc4d.a</Lib>
+      </Libs>
+    </Libs>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <OutputPath>..\..\lib\fbxinterface</OutputPath>
@@ -47,6 +52,11 @@
         <LibPath>${CombineDir}/lib/fbxsdk/lib</LibPath>
       </LibPaths>
     </LibPaths>
+    <Libs>
+      <Libs>
+        <Lib>/home/lars/Documents/Code/monoxna/lib/fbxsdk/lib/libfbxsdk_gcc4.a</Lib>
+      </Libs>
+    </Libs>
   </PropertyGroup>
   <ItemGroup>
     <None Include="FbxInterface.h" />
