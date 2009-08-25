@@ -35,13 +35,13 @@ using System;
 using System.IO;
 using System.Drawing;
 using Tao.OpenGl;
-using SdlDotNet.Graphics;
+using Tao.DevIl;
 
 namespace Microsoft.Xna.Framework.Graphics
 {
     public class Texture2D : Texture
     {
-        #region Private Fields
+        #region Fields
 
         private GraphicsDevice device;
         private int height;                                         // The height of the texture before resizing it
@@ -52,17 +52,12 @@ namespace Microsoft.Xna.Framework.Graphics
         private SurfaceFormat surfaceFormat;                        // The colour format of the texture
         private int width;                                          // the width of the texture before resizing it
 
-        #endregion Private Fields
+        internal int textureId;                                     // The reference ID of the texture in OpenGL memory
+		internal int imageId;
 
-        #region Internal Fields
+        #endregion Fields
 
-        internal int textureWidth;                                  // The width of the texture in OpenGL memory
-        internal int textureHeight;                                 // The height of the texture in OpenGL memory
-        internal int textureID;                                     // The reference ID of the texture in OpenGL memory
-
-        #endregion Internal Fields
-
-        #region Public Properties
+        #region Properties
 
         public int Width {
             get { return this.width; }
@@ -117,111 +112,67 @@ namespace Microsoft.Xna.Framework.Graphics
 
         public new static Texture2D FromFile(GraphicsDevice graphicsDevice, Stream textureStream)
         {
-			Texture2D texture = new Texture2D(graphicsDevice);
-			
-            byte[] data = new byte[textureStream.Length];
-			textureStream.Read(data, 0, (int)textureStream.Length);
-            texture.Load(data);
-		
-            graphicsDevice.Textures.textures.Add(texture);
-            return texture;
+			throw new NotImplementedException("The method or operation is not implemented.");
         }
-
+		
+		public new static Texture2D FromFile(GraphicsDevice graphicsDevice, Stream textureStream, TextureCreationParameters creationParameters)
+        {
+            throw new NotImplementedException("The method or operation is not implemented.");
+        }
+		
+		public new static Texture2D FromFile(GraphicsDevice graphicsDevice, Stream textureStream, int numberBytes)
+        {
+            throw new NotImplementedException("The method or operation is not implemented.");
+        }
+		
+		public new static Texture2D FromFile(GraphicsDevice graphicsDevice, Stream textureStream, int numberBytes, TextureCreationParameters creationParameters)
+        {
+            throw new NotImplementedException("The method or operation is not implemented.");
+        }
 
         public new static Texture2D FromFile(GraphicsDevice graphicsDevice, string filename)
         {
-            EnsureDevice();
-            Texture2D texture = new Texture2D(graphicsDevice);
-            using (Surface surface = new Surface(filename))
-            {
-                texture.Load(surface);
-            }
-            graphicsDevice.Textures.textures.Add(texture);
-            return texture;
-        }
-
-
-        public new static Texture2D FromFile(GraphicsDevice graphicsDevice, Stream textureStream, TextureCreationParameters creationParameters)
-        {
             throw new NotImplementedException("The method or operation is not implemented.");
         }
-
-
-        public new static Texture2D FromFile(GraphicsDevice graphicsDevice, Stream textureStream, int numberBytes)
-        {
-            throw new NotImplementedException("The method or operation is not implemented.");
-        }
-
-
+		
         public new static Texture2D FromFile(GraphicsDevice graphicsDevice, string filename, TextureCreationParameters creationParameters)
         {
-            Texture2D output;
-            using (FileStream stream = new FileStream(filename, FileMode.Open, FileAccess.Read))
-                output = FromFile(graphicsDevice, stream, creationParameters);
-            return output;
+            throw new NotImplementedException("The method or operation is not implemented.");
         }
-
-
-        public new static Texture2D FromFile(GraphicsDevice graphicsDevice, Stream textureStream, int numberBytes, TextureCreationParameters creationParameters)
-        {
-            // FIXME: Save the stuff from the constructor to the texture
-            Texture2D texture = new Texture2D(graphicsDevice);
-
-            texture.Load(textureStream,creationParameters.Width,creationParameters.Height);
-
-            texture.height = creationParameters.Height;
-            graphicsDevice.Textures.textures.Add(texture);
-            return texture;
-        }
-
 
         public new static Texture2D FromFile(GraphicsDevice graphicsDevice, string filename, int width, int height)
         {
-            EnsureDevice();
-            Texture2D texture = new Texture2D(graphicsDevice);
-            Surface surface = new Surface(filename);
-            if (surface.Size != new Size(width, height))
-            {
-                surface = surface.CreateStretchedSurface(new Size(width, height));
-            }
-            texture.Load(surface);
-            graphicsDevice.Textures.textures.Add(texture);
-            return texture;
+            throw new NotImplementedException("The method or operation is not implemented.");
         }
+		
         #endregion Static Methods
 
         #region Public Methods
-
 
         public void GetData<T>(T[] data)
         {
             throw new NotImplementedException("The method or operation is not implemented.");
         }
 
-
         public void GetData<T>(T[] data, int startIndex, int elementCount)
         {
             throw new NotImplementedException("The method or operation is not implemented.");
         }
-
 
         public void GetData<T>(int level, Nullable<Rectangle> rect, T[] data, int startIndex, int elementCount)
         {
             throw new NotImplementedException("The method or operation is not implemented.");
         }
 
-
         public void SetData<T>(T[] data)
         {
             throw new NotImplementedException("The method or operation is not implemented.");
         }
 
-
         public void SetData<T>(T[] data, int startIndex, int elementCount, SetDataOptions options)
         {
             throw new NotImplementedException("The method or operation is not implemented.");
         }
-
 
         public void SetData<T>(int level, Nullable<Rectangle> rect, T[] data, int startIndex, int elementCount, SetDataOptions options)
         {
@@ -249,14 +200,14 @@ namespace Microsoft.Xna.Framework.Graphics
                 // dispose unmanged objects
                 try
                 {
-                    Gl.glDeleteTextures(1, new int[] { textureID });
-                    System.Diagnostics.Debug.WriteLine("Destroyed texture " + this.ToString() + " #" + textureID);
+                    Gl.glDeleteTextures(1, new int[] { textureId });
+                    System.Diagnostics.Debug.WriteLine("Destroyed texture " + this.ToString() + " #" + textureId);
                 }
                 catch
                 {
                     // If an exception is thrown, it's because either the texture failed to
                     // load, or because the OpenGL context already erased it from memory.
-                    System.Diagnostics.Debug.WriteLine("Failed to destroy texture " + this.ToString() + " #" + textureID);
+                    System.Diagnostics.Debug.WriteLine("Failed to destroy texture " + this.ToString() + " #" + textureId);
                 }
                 finally
                 {
@@ -292,71 +243,18 @@ namespace Microsoft.Xna.Framework.Graphics
         /// </summary>
         /// <param name="buffer">The byte array to load the texture data from.</param>
         private void Load(byte[] buffer)
-        {			
-            EnsureDevice();			
-            using (Surface surface = new Surface(buffer))
-			{
-				Load(surface);
-				Console.WriteLine ("Test");
-			}
+        {	
+        	imageId = Il.ilGenImage ();
+			Il.ilBindImage (imageId);
+			Il.ilLoadL (Il.IL_JPG, buffer, buffer.Length);
 			
-        }
-
-        /// <summary>
-        /// Loads the texture data from a Stream.
-        /// </summary>
-        /// <param name="buffer">The Stream to load the texture data from.</param>
-        private void Load(Stream buffer, int width, int height)
-        {
-            EnsureDevice();
-            BinaryReader BR = new BinaryReader(buffer);
-
-            Bitmap pic = new Bitmap(width, height);
-            for(int i = 0;i < width ;i++)
-            {
-                for (int j = 0; j < height ; j++)
-                {
-                    System.Drawing.Color color = System.Drawing.Color.FromArgb(BR.ReadInt32());
-                    pic.SetPixel(j, i, color);
-                }
-            }
-           using (Surface surface = new Surface(pic))
-               Load(surface);
-        }
-
-        /// <summary>
-        /// Loads the texture data from an SDL Surface.
-        /// </summary>
-        /// <param name="surface">The surface to load data from.</param>
-        private void Load(Surface surface)
-        {			
-            this.width = surface.Width;
-			this.height = surface.Height;
-            
-			surface = surface.CreateFlippedVerticalSurface();
-			
-            //surface.Resize();
-            this.textureWidth = surface.Width;
-            this.textureHeight = surface.Height;
-			Console.WriteLine ("Test");
-
-            int[] texture = new int[1];
-            Gl.glGenTextures(1, texture);
-            textureID = texture[0];
-            Gl.glBindTexture(Gl.GL_TEXTURE_2D, textureID);
-            Gl.glTexImage2D(Gl.GL_TEXTURE_2D, 0, surface.BytesPerPixel, this.textureWidth, this.textureHeight, 0, Gl.GL_RGBA, Gl.GL_UNSIGNED_BYTE, surface.Pixels);
-
+			int[] texture = new int[1];
+			Gl.glGenTextures(1, texture);
+			textureId = texture[0];
+            Gl.glBindTexture(Gl.GL_TEXTURE_2D, textureId);			
+            Gl.glTexImage2D(Gl.GL_TEXTURE_2D, 0, Il.ilGetInteger (Il.IL_IMAGE_BYTES_PER_PIXEL), this.width, this.height, 0, Gl.GL_RGBA, Gl.GL_UNSIGNED_BYTE, Il.ilGetData ());			
             Gl.glTexParameteri(Gl.GL_TEXTURE_2D, Gl.GL_TEXTURE_MIN_FILTER, Gl.GL_LINEAR);
             Gl.glTexParameteri(Gl.GL_TEXTURE_2D, Gl.GL_TEXTURE_MAG_FILTER, Gl.GL_LINEAR);
-        }
-
-        /// <summary>
-        /// Ensures that the device is initialized and ready to be used.
-        /// </summary>
-        private static void EnsureDevice()
-        {
-            if (!Video.IsInitialized)
-                Video.Initialize();
         }
 
         #endregion Private Methods

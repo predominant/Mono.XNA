@@ -30,45 +30,40 @@ SOFTWARE.
 
 using System;
 using System.Globalization;
-//using SdlDotNet.Graphics;
 
 namespace Microsoft.Xna.Framework.Graphics
 {
     [Serializable]
     public struct DisplayMode
     {
-        #region Private Fields
+        #region Fields
 
         private SurfaceFormat format;
         private int height;
         private int refreshRate;
         private int width;
 
-        #endregion Private Fields
+        #endregion Fields
 
-        #region Public Properties
+        #region Properties
 
-        public SurfaceFormat Format
-        {
-            get { return (format = (this.format == 0) ? SurfaceFormat.Unknown : format); }
+        public SurfaceFormat Format {
+            get { return format; }
         }
 
-        public int Height
-        {
+        public int Height {
             get { return this.height; }
         }
 
-        public int RefreshRate
-        {
+        public int RefreshRate {
             get { return this.refreshRate; }
         }
 
-        public int Width
-        {
+        public int Width {
             get { return this.width; }
         }
 
-        #endregion Public Properties
+        #endregion Properties
 
         #region Constructors
 

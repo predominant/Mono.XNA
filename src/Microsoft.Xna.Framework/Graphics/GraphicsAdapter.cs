@@ -27,153 +27,111 @@ SOFTWARE.
 
 using System;
 using System.Collections.ObjectModel;
-using SdlDotNet.Graphics;
+using System.Runtime.InteropServices;
+using Tao.Sdl;
 
 namespace Microsoft.Xna.Framework.Graphics
 {
     public sealed class GraphicsAdapter : IDisposable
     {
-        #region Constants
+		#region Fields
 
-        #endregion Constants
-        
-        #region Static Members
+		private static ReadOnlyCollection<GraphicsAdapter> adapters;        
+		private bool disposed;
+        private DisplayMode currentDisplayMode;
 
-        static ReadOnlyCollection<GraphicsAdapter> s_adapters;
-        static GraphicsAdapter s_defaultAdapter = new GraphicsAdapter();
-        
-        public static GraphicsAdapter DefaultAdapter
-        {
-            get
-            {
-                return s_defaultAdapter;
-            }
-        }
-
-        public static bool operator !=(GraphicsAdapter l, GraphicsAdapter r)
-        {
-            throw new NotImplementedException();
-        }
-
-        public static bool operator ==(GraphicsAdapter l, GraphicsAdapter r)
-        {
-            if (ReferenceEquals(l, null) != ReferenceEquals(r, null))
-            {
-                return false;
-            }
-
-            if (!ReferenceEquals(l, null))
-            {
-                return l.GetHashCode() == r.GetHashCode();
-            }
-
-            return true;
-        }
-
-        public static ReadOnlyCollection<GraphicsAdapter> Adapters
-        {
-            get
-            {
-                if (s_adapters == null)
-                {
-                    // We only add a default, primary adapter for now
-                    s_adapters = new ReadOnlyCollection<GraphicsAdapter>(new GraphicsAdapter[] { DefaultAdapter });
-                }
-
-                return s_adapters;
+        #endregion
+		
+		#region Properties        
+		
+        public static GraphicsAdapter DefaultAdapter {
+            get { return Adapters[0]; }
+        }		
+		
+		public static ReadOnlyCollection<GraphicsAdapter> Adapters {
+            get {
+                if (adapters == null)
+                	adapters = new ReadOnlyCollection<GraphicsAdapter>(new GraphicsAdapter[] { new GraphicsAdapter () });
+				
+                return adapters;
             }
         } 
-
-        #endregion Static Members
-
-        #region Private Fields
-
-        private bool disposed;
-        DisplayMode _displayMode;
-
-        #endregion Private Fields
-
-        ~GraphicsAdapter()
-        {
-            Dispose(false);
-        }
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="GraphicsAdapter"/> class for the primary graphics adapter.
-        /// </summary>
-        GraphicsAdapter()
-        {
-            Internal.GraphicsSubSystem.EnsureSubSystem();
-            _displayMode = new DisplayMode(Video.Screen.Width, Video.Screen.Height, -1, SurfaceFormat.Bgr32);
-        }
-
-        public DisplayMode CurrentDisplayMode
-        {
-            get { return _displayMode; }
+		
+		public DisplayMode CurrentDisplayMode {
+            get { return currentDisplayMode; }
         }        
 
-        public string Description
-        {
+        public string Description {
             get { throw new NotImplementedException(); }
         }
 
-        public int DeviceId
-        {
+        public int DeviceId {
             get { throw new NotImplementedException(); }
         }
 
-        public Guid DeviceIdentifier
-        {
+        public Guid DeviceIdentifier {
             get { throw new NotImplementedException(); }
         }
 
-        public string DeviceName
-        {
+        public string DeviceName {
             get { throw new NotImplementedException(); }
         }
 
-        public string DriverDll
-        {
+        public string DriverDll {
             get { throw new NotImplementedException(); }
         }
 
-        public Version DriverVersion
-        {
+        public Version DriverVersion {
             get { throw new NotImplementedException(); }
         }
 
-        public bool IsDefaultAdapter
-        {
+        public bool IsDefaultAdapter {
             get { throw new NotImplementedException(); }
         }
 
-        public IntPtr MonitorHandle
-        {
+        public IntPtr MonitorHandle {
             get { throw new NotImplementedException(); }
         }
 
-        public int Revision
-        {
+        public int Revision {
             get { throw new NotImplementedException(); }
         }
 
-        public int SubSystemId
-        {
+        public int SubSystemId {
             get { throw new NotImplementedException(); }
         }
 
-        public DisplayModeCollection SupportedDisplayModes
-        {
+        public DisplayModeCollection SupportedDisplayModes {
             get { throw new NotImplementedException(); }
         }
 
-        public int VendorId
-        {
+        public int VendorId {
             get { throw new NotImplementedException(); }
         }
-
-
-        public bool CheckDepthStencilMatch(DeviceType deviceType, SurfaceFormat adapterFormat, SurfaceFormat renderTargetFormat,
+		
+		#endregion
+		
+		#region Constructor / Destructor
+		
+		private GraphicsAdapter()
+        {
+			Sdl.SDL_Init (Sdl.SDL_INIT_VIDEO);
+			
+			IntPtr infoPtr = Sdl.SDL_GetVideoInfo ();
+			Sdl.SDL_VideoInfo info = (Sdl.SDL_VideoInfo) Marshal.PtrToStructure (infoPtr, typeof (Sdl.SDL_VideoInfo));
+            currentDisplayMode = new DisplayMode(info.current_w, info.current_h, -1, SurfaceFormat.Bgr32);
+        }
+		
+        ~GraphicsAdapter ()
+        {
+            Dispose();
+        }
+		
+		#endregion 
+		
+		#region Public Methods
+		
+		public bool CheckDepthStencilMatch(DeviceType deviceType, SurfaceFormat adapterFormat, SurfaceFormat renderTargetFormat,
             DepthFormat depthStencilFormat)
         {
             throw new NotImplementedException();
@@ -213,27 +171,44 @@ namespace Microsoft.Xna.Framework.Graphics
             throw new NotImplementedException();
         }
 
-        public void Dispose()
+        public GraphicsDeviceCapabilities GetCapabilities(DeviceType deviceType)
         {
-            this.Dispose(true);
+            throw new NotImplementedException();
+        }
+
+        public bool IsDeviceTypeAvailable(DeviceType deviceType)
+        {
+            throw new NotImplementedException();
+        }		
+		
+		#endregion
+		
+		#region Operators
+		
+		public static bool operator == (GraphicsAdapter left, GraphicsAdapter right)
+		{
+			return left.Equals (right);
+		}
+		
+		public static bool operator != (GraphicsAdapter left, GraphicsAdapter right)
+		{
+			return !left.Equals (right);
+		}
+		
+		#endregion
+        
+		#region IDisposable Implementation
+		
+		public void Dispose()
+        {
             GC.SuppressFinalize(this);
-        }
-
-        void Dispose(bool disposing)
-        {
-            if (!disposed)
-            {
-                if (disposing)
-                {
-                    // Release any managed components
-                }
-                disposed = true;
-
-                // Release any unmanaged components
-            }
-        }
-
-        public override bool Equals(object obj)
+        }	
+		
+		#endregion
+		
+		#region Object Overrides
+		
+		public override bool Equals(object obj)
         {
             if (obj == null)
                 return false;
@@ -245,21 +220,13 @@ namespace Microsoft.Xna.Framework.Graphics
 
             return false;
         }
-
-        public GraphicsDeviceCapabilities GetCapabilities(DeviceType deviceType)
+		
+		public override int GetHashCode()
         {
             throw new NotImplementedException();
         }
-
-        public override int GetHashCode()
-        {
-            throw new NotImplementedException();
-        }
-
-        public bool IsDeviceTypeAvailable(DeviceType deviceType)
-        {
-            throw new NotImplementedException();
-        }
-
+		
+		#endregion
+		
     }
 }

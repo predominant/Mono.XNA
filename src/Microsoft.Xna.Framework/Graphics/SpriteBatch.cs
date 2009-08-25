@@ -195,7 +195,7 @@ namespace Microsoft.Xna.Framework.Graphics
                 // Set the color, bind the texture for drawing and prepare the texture source
                 if (sp.color.A <= 0) return;
                 Gl.glColor4f((float)sp.color.R / 255f, (float)sp.color.G / 255f, (float)sp.color.B / 255f, (float)sp.color.A / 255f);
-                Gl.glBindTexture(Gl.GL_TEXTURE_2D, sp.texture.textureID);
+                Gl.glBindTexture(Gl.GL_TEXTURE_2D, sp.texture.textureId);
 
                 // Setup the matrix
                 Gl.glPushMatrix();
@@ -209,9 +209,9 @@ namespace Microsoft.Xna.Framework.Graphics
                         -sp.origin.Y * (float)sp.destinationRectangle.Height / (float)sp.sourceRectangle.Height, 0f);
 
                 // Calculate the points on the texture
-                float x = (float)sp.sourceRectangle.X / (float)sp.texture.textureWidth;
-                float y = (float)sp.sourceRectangle.Y / (float)sp.texture.textureHeight;
-                float twidth = (float)sp.sourceRectangle.Width / (float)sp.texture.textureWidth;
+                float x = (float)sp.sourceRectangle.X / (float)sp.texture.Width;
+                float y = (float)sp.sourceRectangle.Y / (float)sp.texture.Height;
+                float twidth = (float)sp.sourceRectangle.Width / (float)sp.texture.Width;
                 //float theight = (float)sp.sourceRectangle.Height / (float)sp.texture.textureHeight;
                 float theight = 1.0f;
 

@@ -26,6 +26,8 @@
 			</Options>
 			<References>
 				<Reference type="Gac" refto="System, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
+				<Reference type="Gac" refto="Microsoft.Xna.Framework, Version=0.1.0.33773, Culture=neutral, PublicKeyToken=1c633ed318da3899" />
+				<Reference type="Gac" refto="Microsoft.Xna.Framework.Game, Version=0.1.0.17618, Culture=neutral, PublicKeyToken=dc5864553cefd93f" />
 			</References>
 			<Files>
 			</Files>

@@ -33,10 +33,17 @@ namespace Microsoft.Xna.Framework
 {
     public class GraphicsDeviceInformation
     {
+		
+		#region Private Fields
+		
         DeviceType _deviceType;
         CreateOptions _createOptions;
         PresentationParameters _presentationParameters;
         GraphicsAdapter _adapter;
+		
+		#endregion Private Fields
+		
+		#region Constructors
 
         public GraphicsDeviceInformation()
         {
@@ -62,34 +69,39 @@ namespace Microsoft.Xna.Framework
         {
             
         }
+		
+		#endregion Constructors
+		
+		#region Properties
 
-        public GraphicsAdapter Adapter
-        {
+        public GraphicsAdapter Adapter {
             get { return _adapter; }
             set { _adapter = value; }
         }
+		
 #if NUNITTESTS
         public
 #else
         internal
 #endif
-                    CreateOptions CreationOptions
-        {
+        CreateOptions CreationOptions {
             get { return _createOptions; }
             set { _createOptions = value; }
         }
 
-        public DeviceType DeviceType
-        {
+        public DeviceType DeviceType {
             get { return _deviceType; }
             set { _deviceType = value; }
         }
 
-        public PresentationParameters PresentationParameters
-        {
+        public PresentationParameters PresentationParameters {
             get { return _presentationParameters; }
             set { _presentationParameters = value; }
         }
+		
+		#endregion Properties
+		
+		#region Public Methods
 
         public GraphicsDeviceInformation Clone()
         {
@@ -100,6 +112,10 @@ namespace Microsoft.Xna.Framework
             gdi._presentationParameters = PresentationParameters;
             return gdi;
         }
+		
+		#endregion
+		
+		#region Object Overrides
 
         public override bool Equals(object obj)
         {
@@ -121,5 +137,7 @@ namespace Microsoft.Xna.Framework
                    _createOptions.GetHashCode() ^
                    PresentationParameters.GetHashCode();
         }
+		
+		#endregion
     }
 }

@@ -6,7 +6,9 @@ Copyright © 2006 The Mono.Xna Team
 
 All rights reserved.
 
-Authors: Rob Loach (http://www.robloach.net)
+Authors: 
+-Rob Loach (http://www.robloach.net)
+-Lars Magnusson (lavima)
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
@@ -30,9 +32,9 @@ SOFTWARE.
 #endregion License
 
 using System;
-using Microsoft.Xna.Framework.Graphics.Internal;
-using SdlDotNet.Graphics;
 using Tao.OpenGl;
+using Tao.DevIl;
+using Tao.Sdl;
 
 namespace Microsoft.Xna.Framework.Graphics
 {
@@ -40,16 +42,120 @@ namespace Microsoft.Xna.Framework.Graphics
     {
         #region Private Fields
 
-        GraphicsAdapter adapter;
-        DeviceType deviceType;
-        IntPtr renderWindowHandle;
-        CreateOptions creationOptions;
-        PresentationParameters _presentationParameters;
-        bool isDisposed;
-        TextureCollection textures = new TextureCollection();
-        Color clearColor = Color.Black;
+        private GraphicsAdapter adapter;
+        private DeviceType deviceType;
+        private IntPtr renderWindowHandle;
+        private CreateOptions creationOptions;
+        private PresentationParameters presentationParameters;
+        private bool isDisposed;
+        private TextureCollection textures;
+        private Color clearColor = Color.Black;
 
         #endregion Private Fields
+		
+		#region Public Properties
+		
+		public ClipPlaneCollection ClipPlanes {
+            get { throw new NotImplementedException(); }
+        }
+
+        public GraphicsDeviceCreationParameters CreationParameters {
+            get { throw new NotImplementedException(); }
+        }
+
+        public DepthStencilBuffer DepthStencilBuffer {
+            get { throw new NotImplementedException(); }
+            set { throw new NotImplementedException(); }
+        }
+
+        public DisplayMode DisplayMode {
+            get { throw new NotImplementedException(); }
+        }
+
+        public int DriverLevel {
+            get { throw new NotImplementedException(); }
+        }
+
+        public GraphicsDeviceCapabilities GraphicsDeviceCapabilities {
+            get { throw new NotImplementedException(); }
+        }
+
+        public GraphicsDeviceStatus GraphicsDeviceStatus {
+            get { return GraphicsDeviceStatus.Normal; }
+        }
+
+        public IndexBuffer Indices {
+            get { throw new NotImplementedException(); }
+            set { throw new NotImplementedException(); }
+        }
+
+        public bool IsDisposed {
+            get { return isDisposed; }
+        }
+
+        public PixelShader PixelShader {
+            get { throw new NotImplementedException(); }
+            set { throw new NotImplementedException(); }
+        }
+
+        public PresentationParameters PresentationParameters {
+            get { return presentationParameters; }
+        }
+
+        public RasterStatus RasterStatus {
+            get { throw new NotImplementedException(); }
+        }
+
+        public RenderState RenderState {
+            get { throw new NotImplementedException(); }
+        }
+
+        public SamplerStateCollection SamplerStates {
+            get { throw new NotImplementedException(); }
+        }
+
+        public Rectangle ScissorRectangle {
+            get { throw new NotImplementedException(); }
+            set { throw new NotImplementedException(); }
+        }
+
+        public bool SoftwareVertexProcessing {
+            get { throw new NotImplementedException(); }
+            set { throw new NotImplementedException(); }
+        }
+
+        public TextureCollection Textures {
+            get { return textures; }
+        }
+
+        public VertexDeclaration VertexDeclaration {
+            get { throw new NotImplementedException(); }
+            set { throw new NotImplementedException(); }
+        }
+
+        public SamplerStateCollection VertexSamplerStates {
+            get { throw new NotImplementedException(); }
+        }
+
+        public VertexShader VertexShader {
+            get { throw new NotImplementedException(); }
+            set { throw new NotImplementedException(); }
+        }
+
+        public TextureCollection VertexTextures {
+            get { throw new NotImplementedException(); }
+        }
+
+        public VertexStreamCollection Vertices {
+            get { throw new NotImplementedException(); }
+        }
+
+        public Viewport Viewport {
+            get { throw new NotImplementedException(); }
+            set { throw new NotImplementedException(); }
+        }
+		
+		#endregion
 
         #region Constructors
 
@@ -59,50 +165,11 @@ namespace Microsoft.Xna.Framework.Graphics
             this.deviceType = deviceType;
             this.renderWindowHandle = renderWindowHandle;
             this.creationOptions = creationOptions;
-            _presentationParameters = presentationParameters;
-            GraphicsSubSystem.SetVideoMode(presentationParameters.BackBufferWidth, presentationParameters.BackBufferHeight, presentationParameters.IsFullScreen);
-            InitGl();
-        }
-
-        void InitGl()
-        {
-            // Enable Smooth Shading
-            Gl.glShadeModel(Gl.GL_SMOOTH);
-            // Black Background
-            Gl.glClearColor(0.0F, 0.0F, 0.0F, 0.5F);
-            // Depth Buffer Setup
-            Gl.glClearDepth(1.0F);
-            // Enables Depth Testing
-            Gl.glEnable(Gl.GL_DEPTH_TEST);
-            // The Type Of Depth Testing To Do
-            Gl.glDepthFunc(Gl.GL_LEQUAL);
-            // Really Nice Perspective Calculations
-            Gl.glHint(Gl.GL_PERSPECTIVE_CORRECTION_HINT, Gl.GL_NICEST);
-        }
-
-        #endregion Constructors
-
-        public void Dispose()
-        {
-            Dispose(true);
-            GC.SuppressFinalize(this);
-        }
-
-        protected virtual void Dispose(bool disposing)
-        {
-            if (!isDisposed)
-            {
-                if (disposing)
-                {
-                    
-                    // Dispose managed resources
-                    textures.Dispose();
-                }
-
-                // Dispose Unmanaged resources
-
-                isDisposed = true;
-            }
+            this.presentationParameters = presentationParameters;
+			this.textures = new TextureCollection();
+            
+			initOpenGl ();
+			initDevIl ();
         }
 
         ~GraphicsDevice()
@@ -110,158 +177,17 @@ namespace Microsoft.Xna.Framework.Graphics
             Dispose(false);
         }
 
-        public static bool operator !=(GraphicsDevice left, GraphicsDevice right)
+        #endregion Constructors
+		
+		#region Public Methods
+
+        public void Dispose()
         {
-            return !Equals(left, right);
+            Dispose(true);
+            GC.SuppressFinalize(this);
         }
-
-        public static bool operator ==(GraphicsDevice left, GraphicsDevice right)
-        {
-            return Equals(left, right);
-        }
-
-        public ClipPlaneCollection ClipPlanes
-        {
-            get { throw new NotImplementedException(); }
-        }
-
-        public GraphicsDeviceCreationParameters CreationParameters
-        {
-            get { throw new NotImplementedException(); }
-        }
-
-        public DepthStencilBuffer DepthStencilBuffer
-        {
-            get { throw new NotImplementedException(); }
-            set { throw new NotImplementedException(); }
-        }
-
-        public DisplayMode DisplayMode
-        {
-            get { throw new NotImplementedException(); }
-        }
-
-        public int DriverLevel
-        {
-            get { throw new NotImplementedException(); }
-        }
-
-        public GraphicsDeviceCapabilities GraphicsDeviceCapabilities
-        {
-            get { throw new NotImplementedException(); }
-        }
-
-        public GraphicsDeviceStatus GraphicsDeviceStatus
-        {
-            get
-            {
-                // TODO: See if the device actually needs restarting.
-                return GraphicsDeviceStatus.Normal;
-            }
-        }
-
-        public IndexBuffer Indices
-        {
-            get { throw new NotImplementedException(); }
-            set { throw new NotImplementedException(); }
-        }
-
-        public bool IsDisposed
-        {
-            get { return isDisposed; }
-        }
-
-        public PixelShader PixelShader
-        {
-            get { throw new NotImplementedException(); }
-            set { throw new NotImplementedException(); }
-        }
-
-        public PresentationParameters PresentationParameters
-        {
-            get { return _presentationParameters; }
-        }
-
-        public RasterStatus RasterStatus
-        {
-            get { throw new NotImplementedException(); }
-        }
-
-        public RenderState RenderState
-        {
-            get { throw new NotImplementedException(); }
-        }
-
-        public SamplerStateCollection SamplerStates
-        {
-            get { throw new NotImplementedException(); }
-        }
-
-        public Rectangle ScissorRectangle
-        {
-            get { throw new NotImplementedException(); }
-            set { throw new NotImplementedException(); }
-        }
-
-        public bool SoftwareVertexProcessing
-        {
-            get { throw new NotImplementedException(); }
-            set { throw new NotImplementedException(); }
-        }
-
-        public TextureCollection Textures
-        {
-            get { return textures; }
-        }
-
-        public VertexDeclaration VertexDeclaration
-        {
-            get { throw new NotImplementedException(); }
-            set { throw new NotImplementedException(); }
-        }
-
-        public SamplerStateCollection VertexSamplerStates
-        {
-            get { throw new NotImplementedException(); }
-        }
-
-        public VertexShader VertexShader
-        {
-            get { throw new NotImplementedException(); }
-            set { throw new NotImplementedException(); }
-        }
-
-        public TextureCollection VertexTextures
-        {
-            get { throw new NotImplementedException(); }
-        }
-
-        public VertexStreamCollection Vertices
-        {
-            get { throw new NotImplementedException(); }
-        }
-
-        public Viewport Viewport
-        {
-            get { throw new NotImplementedException(); }
-            set { throw new NotImplementedException(); }
-        }
-
-
-        public event EventHandler DeviceLost;
-
-        public event EventHandler DeviceReset;
-
-        public event EventHandler DeviceResetting;
-
-        public event EventHandler Disposing;
-
-        public event EventHandler<ResourceCreatedEventArgs> ResourceCreated;
-
-        public event EventHandler<ResourceDestroyedEventArgs> ResourceDestroyed;
-
-
-        public void Clear(Color color)
+		
+		public void Clear(Color color)
         {
             if (color != clearColor)
             {
@@ -377,7 +303,7 @@ namespace Microsoft.Xna.Framework.Graphics
 
         public void Present()
         {
-            Video.GLSwapBuffers();
+            Sdl.SDL_GL_SwapBuffers ();
         }
 
         public void Present(IntPtr overrideWindowHandle)
@@ -389,44 +315,8 @@ namespace Microsoft.Xna.Framework.Graphics
         {
             throw new NotImplementedException();
         }
-
-        protected void raise_DeviceLost(object sender, EventArgs e)
-        {
-            if (DeviceLost != null)
-                DeviceLost(sender, e);
-        }
-
-        protected void raise_DeviceReset(object sender, EventArgs e)
-        {
-            if (DeviceReset != null)
-                DeviceReset(sender, e);
-        }
-
-        protected void raise_DeviceResetting(object sender, EventArgs e)
-        {
-            if (DeviceResetting != null)
-                DeviceResetting(sender, e);
-        }
-
-        protected void raise_Disposing(object sender, EventArgs e)
-        {
-            if (Disposing != null)
-                Disposing(sender, e);
-        }
-
-        protected void raise_ResourceCreated(object sender, ResourceCreatedEventArgs e)
-        {
-            if (ResourceCreated != null)
-                ResourceCreated(sender, e);
-        }
-
-        protected void raise_ResourceDestroyed(object sender, ResourceDestroyedEventArgs e)
-        {
-            if (ResourceDestroyed != null)
-                ResourceDestroyed(sender, e);
-        }
-
-        public void Reset()
+		
+		public void Reset()
         {
             throw new NotImplementedException();
         }
@@ -540,5 +430,116 @@ namespace Microsoft.Xna.Framework.Graphics
         {
             throw new NotImplementedException();
         }
+		
+		#endregion
+		
+		#region Protected Methods
+
+        protected virtual void Dispose(bool disposeManaged)
+        {
+            if (!isDisposed)
+            {
+                if (disposeManaged)                   
+                    textures.Dispose();
+                
+				// Dispose Unmanaged resources
+
+                isDisposed = true;
+            }
+        }
+		
+		#endregion Protected Methods
+
+		#region Operators
+
+        public static bool operator !=(GraphicsDevice left, GraphicsDevice right)
+        {
+            return !Equals(left, right);
+        }
+
+        public static bool operator ==(GraphicsDevice left, GraphicsDevice right)
+        {
+            return Equals(left, right);
+        }
+		
+		#endregion Operators       
+
+		#region Events
+
+        public event EventHandler DeviceLost;
+
+        public event EventHandler DeviceReset;
+
+        public event EventHandler DeviceResetting;
+
+        public event EventHandler Disposing;
+
+        public event EventHandler<ResourceCreatedEventArgs> ResourceCreated;
+
+        public event EventHandler<ResourceDestroyedEventArgs> ResourceDestroyed;
+		
+		protected void raise_DeviceLost(object sender, EventArgs e)
+        {
+            if (DeviceLost != null)
+                DeviceLost(sender, e);
+        }
+
+        protected void raise_DeviceReset(object sender, EventArgs e)
+        {
+            if (DeviceReset != null)
+                DeviceReset(sender, e);
+        }
+
+        protected void raise_DeviceResetting(object sender, EventArgs e)
+        {
+            if (DeviceResetting != null)
+                DeviceResetting(sender, e);
+        }
+
+        protected void raise_Disposing(object sender, EventArgs e)
+        {
+            if (Disposing != null)
+                Disposing(sender, e);
+        }
+
+        protected void raise_ResourceCreated(object sender, ResourceCreatedEventArgs e)
+        {
+            if (ResourceCreated != null)
+                ResourceCreated(sender, e);
+        }
+
+        protected void raise_ResourceDestroyed(object sender, ResourceDestroyedEventArgs e)
+        {
+            if (ResourceDestroyed != null)
+                ResourceDestroyed(sender, e);
+        }
+		
+		#endregion Events         
+		
+		#region Private Methods
+	
+		private void initOpenGl ()
+        {
+            // Enable Smooth Shading
+            Gl.glShadeModel(Gl.GL_SMOOTH);
+            // Black Background
+            Gl.glClearColor(0.0F, 0.0F, 0.0F, 0.5F);
+            // Depth Buffer Setup
+            Gl.glClearDepth(1.0F);
+            // Enables Depth Testing
+            Gl.glEnable(Gl.GL_DEPTH_TEST);
+            // The Type Of Depth Testing To Do
+            Gl.glDepthFunc(Gl.GL_LEQUAL);
+            // Really Nice Perspective Calculations
+            Gl.glHint(Gl.GL_PERSPECTIVE_CORRECTION_HINT, Gl.GL_NICEST);
+        }
+		
+		private void initDevIl ()
+		{
+			Il.ilInit();
+		}
+		
+		#endregion
+		
     }
 }

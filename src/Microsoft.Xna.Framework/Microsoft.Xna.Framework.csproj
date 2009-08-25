@@ -201,7 +201,6 @@
     <Compile Include="Graphics\VertexStream.cs" />
     <Compile Include="Graphics\VertexStreamCollection.cs" />
     <Compile Include="Graphics\Viewport.cs" />
-    <Compile Include="Graphics\Internal\GraphicsSubSystem.cs" />
     <Compile Include="Graphics\PackedVector\Alpha8.cs" />
     <Compile Include="Graphics\PackedVector\Bgr565.cs" />
     <Compile Include="Graphics\PackedVector\Bgra5551.cs" />
@@ -248,5 +247,6 @@
     <Reference Include="System.Drawing" />
     <Reference Include="System.Xml" />
     <Reference Include="Tao.OpenGl, Version=2.1.0.12, Culture=neutral, PublicKeyToken=1ca010269a4501ef" />
+    <Reference Include="Tao.DevIl, Version=1.6.8.3, Culture=neutral, PublicKeyToken=7ec4053013524957" />
   </ItemGroup>
 </Project>

@@ -28,12 +28,12 @@ SOFTWARE.
 */
 #endregion License
 
-using System.Drawing;
-using Microsoft.Xna.Framework.Graphics;
 using System;
 using System.Collections.Generic;
 using System.Threading;
-using SdlDotNet.Graphics;
+using System.Drawing;
+using Tao.Sdl;
+using Microsoft.Xna.Framework.Graphics;
 
 namespace Microsoft.Xna.Framework
 {
@@ -51,20 +51,19 @@ namespace Microsoft.Xna.Framework
 
         #region Private Fields
 
-        List<GraphicsDeviceInformation> _graphicDeviceInfoList;
-        GraphicsDeviceInformation _defaultDeviceInformation;
-        GraphicsDevice _graphicsDevice;
-        bool _disposed;
-        ShaderProfile _minimumShaderProfile;
-        ShaderProfile _minimumVertexShaderProfile;
-        bool _preferMultiSampling;
-        SurfaceFormat _preferredBackBufferFormat;
-        int _preferredBackBufferHeight;
-        int _preferredBackBufferWidth;
-        DepthFormat _preferredDepthStencilFormat;
-        bool _synchronizeWithVerticalRetrace;
-        Game _game;
-
+        private GraphicsDevice graphicsDevice;
+        private bool _disposed;
+        private ShaderProfile minimumShaderProfile;
+        private ShaderProfile minimumVertexShaderProfile;
+        private bool preferMultiSampling;
+        private SurfaceFormat preferredBackBufferFormat;
+        private int preferredBackBufferHeight;
+        private int preferredBackBufferWidth;
+        private DepthFormat preferredDepthStencilFormat;
+        private bool synchronizeWithVerticalRetrace;
+        private Game game;
+		private bool isFullscreen;
+		
         #endregion Private Fields
 
         #region Events
@@ -81,55 +80,52 @@ namespace Microsoft.Xna.Framework
         #region Public Properties
 
         public GraphicsDevice GraphicsDevice {
-            get { return _graphicsDevice; }
+            get { return graphicsDevice; }
         }
 
         public bool IsFullScreen {
-            get { return Video.Screen.FullScreen; }
-            set {
-                if (Video.Screen.FullScreen != value)
-                    throw new NotImplementedException("IsFullScreen");
-            }
+            get { return isFullscreen; }
+            set { isFullscreen = value; }
         }
 
         public ShaderProfile MinimumPixelShaderProfile {
-            get { return _minimumShaderProfile; }
-            set { _minimumShaderProfile = value; }
+            get { return minimumShaderProfile; }
+            set { minimumShaderProfile = value; }
         }
 
         public ShaderProfile MinimumVertexShaderProfile {
-            get { return _minimumVertexShaderProfile; }
-            set { _minimumVertexShaderProfile = value; }
+            get { return minimumVertexShaderProfile; }
+            set { minimumVertexShaderProfile = value; }
         }
 
         public bool PreferMultiSampling {
-            get { return _preferMultiSampling; }
-            set { _preferMultiSampling = value; }
+            get { return preferMultiSampling; }
+            set { preferMultiSampling = value; }
         }
 
         public SurfaceFormat PreferredBackBufferFormat {
-            get { return _preferredBackBufferFormat; }
-            set { _preferredBackBufferFormat = value; }
+            get { return preferredBackBufferFormat; }
+            set { preferredBackBufferFormat = value; }
         }
 
         public int PreferredBackBufferHeight {
-            get { return _preferredBackBufferHeight; }
-            set { _preferredBackBufferHeight = value; }
+            get { return preferredBackBufferHeight; }
+            set { preferredBackBufferHeight = value; }
         }
 
         public int PreferredBackBufferWidth {
-            get { return _preferredBackBufferWidth; }
-            set { _preferredBackBufferWidth = value; }
+            get { return preferredBackBufferWidth; }
+            set { preferredBackBufferWidth = value; }
         }
 
         public DepthFormat PreferredDepthStencilFormat {
-            get { return _preferredDepthStencilFormat; }
-            set { _preferredDepthStencilFormat = value; }
+            get { return preferredDepthStencilFormat; }
+            set { preferredDepthStencilFormat = value; }
         }
 
         public bool SynchronizeWithVerticalRetrace {
-            get { return _synchronizeWithVerticalRetrace; }
-            set { _synchronizeWithVerticalRetrace = value; }
+            get { return synchronizeWithVerticalRetrace; }
+            set { synchronizeWithVerticalRetrace = value; }
         }
 
         #endregion
@@ -138,10 +134,10 @@ namespace Microsoft.Xna.Framework
 
         public GraphicsDeviceManager(Game game)
         {
-            _game = game;
+            game = game;
             // as per test application on reference framework
-            _game.Services.AddService(typeof(IGraphicsDeviceManager), this);
-            _game.Services.AddService(typeof(IGraphicsDeviceService), this);
+            game.Services.AddService(typeof(IGraphicsDeviceManager), this);
+            game.Services.AddService(typeof(IGraphicsDeviceService), this);
         }
 
         #endregion
@@ -158,44 +154,42 @@ namespace Microsoft.Xna.Framework
             Dispose(true);
             GC.SuppressFinalize(this);
         }
+		
+		public void ToggleFullScreen()
+        {
+            throw new NotImplementedException();
+        }
+		
+		#endregion Public Methods
 
-        #region IGraphicsDeviceManager Methods
+        #region IGraphicsDeviceManager Implementation
 
         bool IGraphicsDeviceManager.BeginDraw()
         {
-            return _game.IsActive;
+            return game.IsActive;
         }
 
         void IGraphicsDeviceManager.CreateDevice()
         {
             GraphicsDeviceInformation info = FindBestDevice(true);
             OnPreparingDeviceSettings(this, new PreparingDeviceSettingsEventArgs(info));
-            info.PresentationParameters.BackBufferWidth = PreferredBackBufferWidth;
-            info.PresentationParameters.BackBufferHeight = PreferredBackBufferHeight;
-            info.PresentationParameters.AutoDepthStencilFormat = PreferredDepthStencilFormat;
-            info.PresentationParameters.BackBufferFormat = PreferredBackBufferFormat;
-
-			_graphicsDevice = new GraphicsDevice(info.Adapter, info.DeviceType, Video.WindowHandle, info.CreationOptions, info.PresentationParameters);
-			_graphicsDevice.Disposing += new EventHandler(_graphicsDevice_Disposing);
-            _graphicsDevice.DeviceResetting += new EventHandler(_graphicsDevice_DeviceResetting);
-            _graphicsDevice.DeviceReset += new EventHandler(_graphicsDevice_DeviceReset);
+            
+			graphicsDevice = new GraphicsDevice(info.Adapter, info.DeviceType, game.Window.Handle, info.CreationOptions, info.PresentationParameters);
+			graphicsDevice.Disposing += new EventHandler(_graphicsDevice_Disposing);
+            graphicsDevice.DeviceResetting += new EventHandler(_graphicsDevice_DeviceResetting);
+            graphicsDevice.DeviceReset += new EventHandler(_graphicsDevice_DeviceReset);
             
             OnDeviceCreated(this, EventArgs.Empty);
         }
 
         void IGraphicsDeviceManager.EndDraw()
         {
-            _graphicsDevice.Present();
+            graphicsDevice.Present();
         }
 
         #endregion IGraphicsDeviceManager Methods
 
-        public void ToggleFullScreen()
-        {
-            throw new NotImplementedException();
-        }
-
-        #endregion
+        
 
         #region Protected Methods
 
@@ -220,30 +214,23 @@ namespace Microsoft.Xna.Framework
 
         protected virtual GraphicsDeviceInformation FindBestDevice(bool anySuitableDevice)
         {
-            if (_defaultDeviceInformation == null)
+			Sdl.SDL_Rect[] modes = Sdl.SDL_ListModes(IntPtr.Zero, Sdl.SDL_OPENGL);
+            
+            List<GraphicsDeviceInformation> graphicDeviceInfoList = new List<GraphicsDeviceInformation>();
+            foreach (Sdl.SDL_Rect mode in modes)
             {
-                _defaultDeviceInformation = new GraphicsDeviceInformation();
-                Size[] modes = Video.ListModes();
+                if (mode.w == PreferredBackBufferWidth &&
+                    mode.h == PreferredBackBufferHeight)
+                    continue;
 
-                _graphicDeviceInfoList = new List<GraphicsDeviceInformation>();
-                _graphicDeviceInfoList.Add(_defaultDeviceInformation);
-                foreach (Size mode in modes)
-                {
-                    if (mode.Width == _defaultDeviceInformation.PresentationParameters.BackBufferWidth &&
-                        mode.Height == _defaultDeviceInformation.PresentationParameters.BackBufferHeight)
-                        continue;
-
-                    _graphicDeviceInfoList.Add(new GraphicsDeviceInformation(mode.Width, mode.Height));
-                }
+                graphicDeviceInfoList.Add(new GraphicsDeviceInformation(mode.w, mode.h));
             }
+            RankDevices(graphicDeviceInfoList);
 
-            List<GraphicsDeviceInformation> di = new List<GraphicsDeviceInformation>(_graphicDeviceInfoList);
-            RankDevices(di);
-
-            if (di.Count == 0)
+            if (graphicDeviceInfoList.Count == 0)
                 throw new NoSuitableGraphicsDeviceException("The process of ranking devices removed all compatible devices.");  // LOCALIZE
 
-            return di[0];
+            return graphicDeviceInfoList[0];
         }
 
         protected virtual void OnDeviceCreated(object sender, EventArgs args)
