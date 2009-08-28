@@ -43,7 +43,6 @@
     <Compile Include="DrawableGameComponent.cs" />
     <Compile Include="ExtendedGameWindow.cs" />
     <Compile Include="Game.cs" />
-    <Compile Include="GameClock.cs" />
     <Compile Include="GameComponent.cs" />
     <Compile Include="GameComponentCollection.cs" />
     <Compile Include="GameComponentCollectionEventArgs.cs" />
@@ -54,7 +53,6 @@
     <Compile Include="GraphicsDeviceInformation.cs" />
     <Compile Include="GraphicsDeviceManager.cs" />
     <Compile Include="IDrawable.cs" />
-    <Compile Include="IGameClock.cs" />
     <Compile Include="IGameComponent.cs" />
     <Compile Include="IGraphicsDeviceManager.cs" />
     <Compile Include="IUpdateable.cs" />
