@@ -27,7 +27,7 @@ SOFTWARE.
 #endregion License
 
 using System;
-using SdlDotNet.Input;
+using Tao.Sdl;
 
 namespace Microsoft.Xna.Framework.Input
 {

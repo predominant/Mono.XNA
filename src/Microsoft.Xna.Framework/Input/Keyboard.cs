@@ -211,11 +211,11 @@ namespace Microsoft.Xna.Framework.Input
 
         #region Public Methods
 
-        private static void Events_KeyboardAction(object sender, SdlDotNet.Input.KeyboardEventArgs e)
+        /*private static void Events_KeyboardAction(object sender, SdlDotNet.Input.KeyboardEventArgs e)
         {
             // Get the corresponding XNA key from the SDL key and set it's state
             state[keyDictionary[(int)e.Key]] = e.Down ? KeyState.Down : KeyState.Up;
-        }
+        }*/
 
         public static KeyboardState GetState()
         {

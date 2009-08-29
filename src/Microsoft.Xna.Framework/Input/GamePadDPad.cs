@@ -31,7 +31,7 @@ SOFTWARE.
 
 using System;
 using System.Text;
-using SdlDotNet.Input;
+using Tao.Sdl;
 
 namespace Microsoft.Xna.Framework.Input
 {
@@ -45,7 +45,7 @@ namespace Microsoft.Xna.Framework.Input
         ButtonState _up;
 
         #endregion Private Fields
-
+/*
 #if NUNITTESTS
         public
 #else
@@ -57,7 +57,7 @@ namespace Microsoft.Xna.Framework.Input
             pad._right = (ButtonState)Math.Sign((int)(state & JoystickHatStates.Right));
             pad._down = (ButtonState)Math.Sign((int)(state & JoystickHatStates.Down));
             pad._left = (ButtonState)Math.Sign((int)(state & JoystickHatStates.Left));
-        }
+        }*/
 
         #region Public Fields
 

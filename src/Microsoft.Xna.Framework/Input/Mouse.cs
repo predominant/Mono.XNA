@@ -30,8 +30,7 @@ SOFTWARE.
 
 using System;
 using System.Drawing;
-using SdlDotNet.Input;
-using SdlDotNet.Core;
+using Tao.Sdl;
 
 namespace Microsoft.Xna.Framework.Input
 {

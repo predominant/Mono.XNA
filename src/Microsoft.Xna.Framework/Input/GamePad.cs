@@ -30,8 +30,7 @@ SOFTWARE.
 #endregion License
 
 using System;
-using SdlDotNet.Core;
-using SdlDotNet.Input;
+using Tao.Sdl;
 
 namespace Microsoft.Xna.Framework.Input
 {
@@ -60,34 +59,36 @@ namespace Microsoft.Xna.Framework.Input
 
         #region Constructors
 
-        static Joystick[] _sticks;
+        static IntPtr[] _sticks;
         static GamePadState[] _state;
         static int s_numJoysticks;
 
         static GamePad()
         {
             // SDL currently does not detect new devices, so we'll statically initialize the array of available joysticks
-            Joysticks.Initialize();
+           if (Sdl.SDL_Init(Sdl.SDL_INIT_JOYSTICK) != 0); //What kind of exception we have to throw ?
+			//Joysticks.Initialize();
 
-            s_numJoysticks = Joysticks.NumberOfJoysticks > MaxSticks ? MaxSticks : Joysticks.NumberOfJoysticks;
+            s_numJoysticks = Sdl.SDL_NumJoysticks() > MaxSticks ? MaxSticks : Sdl.SDL_NumJoysticks();
             _state = new GamePadState[MaxSticks];
-            _sticks = new Joystick[MaxSticks];
+            _sticks = new IntPtr[MaxSticks];
 
             if (s_numJoysticks > 0)
             {
                 for (int i = 0; i < s_numJoysticks; i++)
                 {
-                    _sticks[i] = Joysticks.OpenJoystick(i);
+                    _sticks[i] = Sdl.SDL_JoystickOpen(i);//Joysticks.OpenJoystick(i);
                     _state[i].isConnected = true;
                 }
-
-                Events.JoystickButtonDown += new EventHandler<JoystickButtonEventArgs>(Events_JoystickButtonDown);
+				/*
+ 				Events.JoystickButtonDown += new EventHandler<JoystickButtonEventArgs>(Events_JoystickButtonDown);
                 Events.JoystickButtonUp += new EventHandler<JoystickButtonEventArgs>(Events_JoystickButtonUp);
                 Events.JoystickAxisMotion += new EventHandler<JoystickAxisEventArgs>(Events_JoystickAxisMotion);
                 Events.JoystickHatMotion += new EventHandler<JoystickHatEventArgs>(Events_JoystickHatMotion);
+            	*/
             }
         }
-
+/*
         static void Events_JoystickHatMotion(object sender, JoystickHatEventArgs e)
         {
             if (e.Device > MaxSticks) return;
@@ -111,7 +112,7 @@ namespace Microsoft.Xna.Framework.Input
             if (e.Device > MaxSticks) return;
             _state[e.Device].PacketNumber++;        // integer wrapping is handled by setter
         }
-
+*/
         #endregion Constructors
 
 
