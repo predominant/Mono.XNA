@@ -115,7 +115,7 @@ namespace Microsoft.Xna.Framework.Input
 */
         #endregion Constructors
 
-
+        /*
         #region Public Methods
 
         public static GamePadCapabilities GetCapabilities(PlayerIndex playerIndex)
@@ -237,5 +237,6 @@ namespace Microsoft.Xna.Framework.Input
         }
 
         #endregion Public Methods
+        */
     }
 }
