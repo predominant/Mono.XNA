@@ -33,7 +33,7 @@ using System.ComponentModel;
 
 namespace Microsoft.Xna.Framework
 {
-    [Serializable]
+    [Serializable, TypeConverter(typeof(ExpandableObjectConverter))]
     public class Curve
     {
         #region Private Fields
@@ -83,6 +83,26 @@ namespace Microsoft.Xna.Framework
 
 
         #region Public Methods
+
+        public void ComputeTangent(int keyIndex, CurveTangent tangentInType, CurveTangent tangentOutType)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void ComputeTangent(int keyIndex, CurveTangent tangentType)
+        {
+            this.ComputeTangent(keyIndex, tangentType, tangentType);
+        }
+
+        public void ComputeTangents(CurveTangent tangentInType, CurveTangent tangentOutType)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void ComputeTangents(CurveTangent tangentType)
+        {
+            this.ComputeTangents(tangentType, tangentType);
+        }
 
         public Curve Clone()
         {

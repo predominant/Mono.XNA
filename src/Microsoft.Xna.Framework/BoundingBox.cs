@@ -30,10 +30,12 @@ SOFTWARE.
 
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
+using Microsoft.Xna.Framework.Design;
 
 namespace Microsoft.Xna.Framework
 {
-    [Serializable]
+    [Serializable, TypeConverter(typeof(BoundingBoxConverter))]
     public struct BoundingBox : IEquatable<BoundingBox>
     {
 
@@ -41,6 +43,7 @@ namespace Microsoft.Xna.Framework
 
         public Vector3 Min;
         public Vector3 Max;
+        public const int CornerCount = 8;
 
         #endregion Public Fields
 

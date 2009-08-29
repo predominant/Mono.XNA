@@ -152,7 +152,9 @@ namespace Microsoft.Xna.Framework.Graphics
 
         public Viewport Viewport {
             get { throw new NotImplementedException(); }
-            set { throw new NotImplementedException(); }
+            set {
+                Gl.glViewport(value.X, value.Y, value.Width, value.Height);
+            }
         }
 		
 		#endregion

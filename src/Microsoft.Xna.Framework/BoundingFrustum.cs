@@ -36,7 +36,7 @@ using System.Text;
 
 namespace Microsoft.Xna.Framework
 {
-    [Serializable]
+    [Serializable, TypeConverter(typeof(ExpandableObjectConverter))]
     public class BoundingFrustum : IEquatable<BoundingFrustum>
     {
         #region Private Fields
@@ -52,6 +52,9 @@ namespace Microsoft.Xna.Framework
 
         #endregion Private Fields
 
+        #region Public Fields
+        public const int CornerCount = 8;
+        #endregion
 
         #region Public Constructors
 
@@ -134,6 +137,11 @@ namespace Microsoft.Xna.Framework
             ContainmentType result;
             this.Contains(ref box, out result);
             return result;
+        }
+
+        public void GetCorners(Vector3[] corners)
+        {
+            throw new NotImplementedException();
         }
 
         public void Contains(ref BoundingBox box, out ContainmentType result)

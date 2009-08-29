@@ -33,7 +33,8 @@ using System.ComponentModel;
 
 namespace Microsoft.Xna.Framework
 {
-    [Serializable]
+    [Serializable, TypeConverter(typeof(ExpandableObjectConverter))]
+
     public class CurveKey : IEquatable<CurveKey>, IComparable<CurveKey>
     {
         #region Private Fields

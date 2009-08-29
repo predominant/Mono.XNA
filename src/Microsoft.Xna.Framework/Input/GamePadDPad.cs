@@ -45,19 +45,19 @@ namespace Microsoft.Xna.Framework.Input
         ButtonState _up;
 
         #endregion Private Fields
-/*
+
 #if NUNITTESTS
         public
 #else
         internal 
 #endif
-        static void ToGamePadDPad(ref GamePadDPad pad, JoystickHatStates state)
+        static void ToGamePadDPad(ref GamePadDPad pad, int state)
         {
-            pad._up = (ButtonState)Math.Sign((int)(state & JoystickHatStates.Up));
-            pad._right = (ButtonState)Math.Sign((int)(state & JoystickHatStates.Right));
-            pad._down = (ButtonState)Math.Sign((int)(state & JoystickHatStates.Down));
-            pad._left = (ButtonState)Math.Sign((int)(state & JoystickHatStates.Left));
-        }*/
+            pad._up = (ButtonState)Math.Sign((int)(state & Sdl.SDL_HAT_UP));
+            pad._right = (ButtonState)Math.Sign((int)(state & Sdl.SDL_HAT_RIGHT));
+            pad._down = (ButtonState)Math.Sign((int)(state & Sdl.SDL_HAT_DOWN));
+            pad._left = (ButtonState)Math.Sign((int)(state & Sdl.SDL_HAT_LEFT));
+        }
 
         #region Public Fields
 

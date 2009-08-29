@@ -35,7 +35,7 @@ using System.ComponentModel;
 
 namespace Microsoft.Xna.Framework
 {
-    [Serializable]
+    [Serializable, TypeConverter(typeof(ExpandableObjectConverter))]
     public class CurveKeyCollection : ICollection<CurveKey>, IEnumerable<CurveKey>, IEnumerable
     {
         #region Private Fields

@@ -34,6 +34,42 @@ using Tao.Sdl;
 
 namespace Microsoft.Xna.Framework.Input
 {
+    #region JoystickAxis
+
+    /// <summary>
+    /// JoystickAxes
+    /// </summary>
+    /// <remarks></remarks>
+    internal enum JoystickAxis
+    {
+        /// <summary>
+        /// Horizontal Axis
+        /// </summary>
+        Horizontal = 0,
+        /// <summary>
+        /// Vertical Axis
+        /// </summary>
+        Vertical = 1,
+        /// <summary>
+        /// For some controllers
+        /// </summary>
+        Axis3 = 2,
+        /// <summary>
+        /// For some controllers
+        /// </summary>
+        Axis4 = 3,
+        /// <summary>
+        /// For some controllers
+        /// </summary>
+        Axis5 = 4,
+        /// <summary>
+        /// For some controllers
+        /// </summary>
+        Axis6 = 5
+    }
+
+    #endregion
+
     public static class GamePad
     {
         #region Button Constants
@@ -59,6 +95,8 @@ namespace Microsoft.Xna.Framework.Input
 
         #region Constructors
 
+        private const float JOYSTICK_ADJUSTMENT = 32768;
+        private const float JOYSTICK_SCALE = 65535;
         static IntPtr[] _sticks;
         static GamePadState[] _state;
         static int s_numJoysticks;
@@ -115,7 +153,6 @@ namespace Microsoft.Xna.Framework.Input
 */
         #endregion Constructors
 
-        /*
         #region Public Methods
 
         public static GamePadCapabilities GetCapabilities(PlayerIndex playerIndex)
@@ -124,17 +161,17 @@ namespace Microsoft.Xna.Framework.Input
                 throw new InvalidOperationException();
 
             GamePadCapabilities caps = new GamePadCapabilities();
-            Joystick stick = _sticks[(int)playerIndex];
+            IntPtr stick = _sticks[(int)playerIndex];
             if (stick != null)
             {
-                caps.hasAButton = stick.NumberOfButtons > 1;
-                caps.hasBButton = stick.NumberOfButtons > 0;
-                caps.hasDPadDownButton = caps.hasDPadLeftButton = caps.hasDPadRightButton = caps.hasDPadUpButton = stick.NumberOfHats > 0;
-                caps.hasLeftShoulderButton = stick.NumberOfButtons > 4;
-                caps.hasRightShoulderButton = stick.NumberOfButtons > 5;
-                caps.hasStartButton = stick.NumberOfButtons > 7;
-                caps.hasXButton = stick.NumberOfButtons > 2;
-                caps.hasYButton = stick.NumberOfButtons > 3;
+                caps.hasAButton = Sdl.SDL_JoystickNumButtons(stick) > 1;
+                caps.hasBButton = Sdl.SDL_JoystickNumButtons(stick) > 0;
+                caps.hasDPadDownButton = caps.hasDPadLeftButton = caps.hasDPadRightButton = caps.hasDPadUpButton = Sdl.SDL_JoystickNumHats(stick) > 0;
+                caps.hasLeftShoulderButton = Sdl.SDL_JoystickNumButtons(stick) > 4;
+                caps.hasRightShoulderButton = Sdl.SDL_JoystickNumButtons(stick) > 5;
+                caps.hasStartButton = Sdl.SDL_JoystickNumButtons(stick) > 7;
+                caps.hasXButton = Sdl.SDL_JoystickNumButtons(stick) > 2;
+                caps.hasYButton = Sdl.SDL_JoystickNumButtons(stick) > 3;
                 caps.isConnected = true;
                 caps.gamePadType = GamePadType.GamePad;
             }
@@ -151,23 +188,23 @@ namespace Microsoft.Xna.Framework.Input
             int number = (int)playerIndex;
             if (number < s_numJoysticks)
             {
-                Joystick j = _sticks[number];
+                IntPtr j = _sticks[number];
 
-                _state[number].buttons.A = (ButtonState)j.GetButtonState(A);
-                _state[number].buttons.B = (ButtonState)j.GetButtonState(B);
-                _state[number].buttons.X = (ButtonState)j.GetButtonState(X);
-                _state[number].buttons.Y = (ButtonState)j.GetButtonState(Y);
-                _state[number].buttons.Back = (ButtonState)j.GetButtonState(Back);
-                _state[number].buttons.Start = (ButtonState)j.GetButtonState(Start);
-                _state[number].buttons.LeftShoulder = (ButtonState)j.GetButtonState(LeftShoulder);
-                _state[number].buttons.LeftStick = (ButtonState)j.GetButtonState(LeftStick);
-                _state[number].buttons.RightShoulder = (ButtonState)j.GetButtonState(RightShoulder);
-                _state[number].buttons.RightStick = (ButtonState)j.GetButtonState(RightStick);
+                _state[number].buttons.A = (ButtonState)Sdl.SDL_JoystickGetButton(j,A);
+                _state[number].buttons.B = (ButtonState)Sdl.SDL_JoystickGetButton(j, B);
+                _state[number].buttons.X = (ButtonState)Sdl.SDL_JoystickGetButton(j, X);
+                _state[number].buttons.Y = (ButtonState)Sdl.SDL_JoystickGetButton(j, Y);
+                _state[number].buttons.Back = (ButtonState)Sdl.SDL_JoystickGetButton(j, Back);
+                _state[number].buttons.Start = (ButtonState)Sdl.SDL_JoystickGetButton(j, Start);
+                _state[number].buttons.LeftShoulder = (ButtonState)Sdl.SDL_JoystickGetButton(j, LeftShoulder);
+                _state[number].buttons.LeftStick = (ButtonState)Sdl.SDL_JoystickGetButton(j, LeftStick);
+                _state[number].buttons.RightShoulder = (ButtonState)Sdl.SDL_JoystickGetButton(j, RightShoulder);
+                _state[number].buttons.RightStick = (ButtonState)Sdl.SDL_JoystickGetButton(j, RightStick);
 
-                float x1 = Rescale(j.GetAxisPosition(JoystickAxis.Horizontal));
-                float y1 = Rescale(j.GetAxisPosition(JoystickAxis.Vertical));
-                float x2 = Rescale(j.GetAxisPosition(JoystickAxis.Axis3));
-                float y2 = Rescale(j.GetAxisPosition(JoystickAxis.Axis4));
+                float x1 = Rescale((float)(Sdl.SDL_JoystickGetAxis(j, (int)JoystickAxis.Horizontal) + JOYSTICK_ADJUSTMENT) / JOYSTICK_SCALE);
+                float y1 = Rescale(Sdl.SDL_JoystickGetAxis(j, (int)JoystickAxis.Vertical));
+                float x2 = Rescale(Sdl.SDL_JoystickGetAxis(j, (int)JoystickAxis.Axis3));
+                float y2 = Rescale(Sdl.SDL_JoystickGetAxis(j, (int)JoystickAxis.Axis4));
 
                 switch (deadZoneMode)
                 {
@@ -186,12 +223,12 @@ namespace Microsoft.Xna.Framework.Input
                         _state[number].thumbSticks.right = new Vector2(x2, y2);
                         break;
                 }
-                GamePadDPad.ToGamePadDPad(ref _state[number].dPad, j.GetHatState(0));
+                GamePadDPad.ToGamePadDPad(ref _state[number].dPad, Sdl.SDL_JoystickGetHat(j, 0));
 
                 // converts ButtonKeyState.Pressed ( = 1) to float of 1.0f
                 // since SDL doesn't support reading the position of the trigger.  Will review this later
-                _state[number].triggers.left = (int)j.GetButtonState(LeftTrigger)*1.0f;
-                _state[number].triggers.right = (int)j.GetButtonState(RightTrigger)*1.0f;
+                _state[number].triggers.left = (int)Sdl.SDL_JoystickGetButton(j, LeftTrigger) * 1.0f;
+                _state[number].triggers.right = (int)Sdl.SDL_JoystickGetButton(j, RightTrigger) * 1.0f;
             }
 			else
 			{
@@ -237,6 +274,6 @@ namespace Microsoft.Xna.Framework.Input
         }
 
         #endregion Public Methods
-        */
+        
     }
 }
