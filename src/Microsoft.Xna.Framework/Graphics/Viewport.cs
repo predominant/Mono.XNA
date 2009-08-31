@@ -38,51 +38,62 @@ namespace Microsoft.Xna.Framework.Graphics
     [Serializable]
     public struct Viewport
     {
-        #region Properties
+		#region Fields
 
-        public int Height
-        {
+        private int x; 
+		private int y; 
+		private int width;
+		private int height;
+        private float minDepth;
+		private float maxDepth;
+		private float aspectRatio;
+		private Rectangle titleSafeArea;
+
+        #endregion Fields
+		
+        #region Properties
+		
+		public float AspectRatio {
+			get { return aspectRatio; }
+		}
+		
+        public int Height {
             get { return height; }
             set { height = value; }
         }
-
-
-        public float MaxDepth
-        {
-            get { return maxDepth; }
-            set { maxDepth = value; }
-        }
-
-
-        public float MinDepth
-        {
-            get { return minDepth; }
-            set { minDepth = value; }
-        }
-
-
-        public int Width
-        {
+		
+		public int Width {
             get { return width; }
             set { width = value; }
         }
 
+        public float MaxDepth {
+            get { return maxDepth; }
+            set { maxDepth = value; }
+        }
 
-        public int X
-        {
+        public float MinDepth {
+            get { return minDepth; }
+            set { minDepth = value; }
+        }
+
+        public Rectangle TitleSafeArea {
+			get { return titleSafeArea; }	
+		}
+
+        public int X {
             get { return x; }
             set { x = value; }
         }
 
-
-        public int Y
-        {
+        public int Y {
             get { return y; }
             set { y = value; }
         }
+		
         #endregion Properties
 
-        #region Methods
+        #region Public Methods
 
         public Vector3 Project(Vector3 source, Matrix projection, Matrix view, Matrix world)
         {
@@ -143,11 +154,6 @@ namespace Microsoft.Xna.Framework.Graphics
 
         #endregion Methods
 
-        #region Fields
-
-        private int x, y, width, height;
-        private float minDepth, maxDepth;
-
-        #endregion Fields
+        
     }
 }

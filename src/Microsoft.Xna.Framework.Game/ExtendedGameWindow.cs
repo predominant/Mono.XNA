@@ -9,7 +9,7 @@ namespace Microsoft.Xna.Framework
 #endif 
 	abstract class ExtendedGameWindow : GameWindow
     {
-        protected ExtendedGameWindow(Game game) : base(game)
+        protected ExtendedGameWindow(Game game) : base()
         {
         }
 

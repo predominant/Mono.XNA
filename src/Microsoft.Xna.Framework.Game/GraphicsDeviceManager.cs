@@ -162,7 +162,7 @@ namespace Microsoft.Xna.Framework
 		
 		#endregion Public Methods
 
-        #region IGraphicsDeviceManager Implementation
+        #region IGraphicsDeviceManager Explicit Implementation
 
         bool IGraphicsDeviceManager.BeginDraw()
         {

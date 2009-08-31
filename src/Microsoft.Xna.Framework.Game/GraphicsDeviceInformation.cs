@@ -27,7 +27,7 @@ SOFTWARE.
 
 using Microsoft.Xna.Framework.Graphics;
 using System;
-using SdlDotNet.Graphics;
+using Tao.Sdl;
 
 namespace Microsoft.Xna.Framework
 {
@@ -42,35 +42,6 @@ namespace Microsoft.Xna.Framework
         GraphicsAdapter _adapter;
 		
 		#endregion Private Fields
-		
-		#region Constructors
-
-        public GraphicsDeviceInformation()
-        {
-            _deviceType = DeviceType.Hardware;
-            _createOptions = CreateOptions.HardwareVertexProcessing;
-            _adapter = GraphicsAdapter.DefaultAdapter;
-            _presentationParameters = new PresentationParameters();
-            _presentationParameters.BackBufferWidth = Video.Screen.Width;
-            _presentationParameters.BackBufferHeight = Video.Screen.Height;
-        }
-
-        internal GraphicsDeviceInformation(int width, int height)
-        {
-            _deviceType = DeviceType.Hardware;
-            _createOptions = CreateOptions.HardwareVertexProcessing;
-            _presentationParameters = new PresentationParameters();
-            _presentationParameters.BackBufferWidth = width;
-            _presentationParameters.BackBufferHeight = height;
-            _adapter = GraphicsAdapter.DefaultAdapter;
-        }
-
-        private GraphicsDeviceInformation(bool cloning)
-        {
-            
-        }
-		
-		#endregion Constructors
 		
 		#region Properties
 
@@ -100,6 +71,30 @@ namespace Microsoft.Xna.Framework
         }
 		
 		#endregion Properties
+		
+		#region Constructors
+
+        public GraphicsDeviceInformation()
+        {
+            _deviceType = DeviceType.Hardware;
+            _createOptions = CreateOptions.HardwareVertexProcessing;
+            _adapter = GraphicsAdapter.DefaultAdapter;
+            _presentationParameters = new PresentationParameters();
+            _presentationParameters.BackBufferWidth = GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Width;
+            _presentationParameters.BackBufferHeight = GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Height;
+        }
+
+        internal GraphicsDeviceInformation(int width, int height)
+        {
+            _deviceType = DeviceType.Hardware;
+            _createOptions = CreateOptions.HardwareVertexProcessing;
+            _presentationParameters = new PresentationParameters();
+            _presentationParameters.BackBufferWidth = width;
+            _presentationParameters.BackBufferHeight = height;
+            _adapter = GraphicsAdapter.DefaultAdapter;
+        }
+
+        #endregion Constructors		
 		
 		#region Public Methods
 

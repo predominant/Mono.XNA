@@ -35,19 +35,43 @@ namespace Microsoft.Xna.Framework
     {
         #region Private Fields
 
-        string _title;
-        Game _game;
+        private string title;
+        private Game game;
 
         #endregion Private Fields
-
-        #region Constructors
-
-        internal GameWindow(Game game)
-        {
-            _game = game;
+		
+		#region Properties
+		
+		public string Title {
+            get { return title; }
+            set {
+                if (title != value)
+                {
+                    title = value;
+                    SetTitle(title);
+                }
+            }
         }
+		
+		public abstract bool AllowUserResizing { get; set; }
 
-        #endregion Constructors
+        public abstract Rectangle ClientBounds { get; }
+
+        public abstract IntPtr Handle { get; }
+
+        public abstract string ScreenDeviceName { get; }
+		
+		#endregion Properties
+		
+		#region Events
+
+        public event EventHandler ClientSizeChanged;
+
+        public event EventHandler ScreenDeviceNameChanged;
+		
+		#endregion Events
+
+       	#region Public Methods
 
         public abstract void BeginScreenDeviceChange(bool willBeFullScreen);
 
@@ -57,6 +81,10 @@ namespace Microsoft.Xna.Framework
         }
 
         public abstract void EndScreenDeviceChange(string screenDeviceName, int clientWidth, int clientHeight);
+		
+		#endregion Public Methods
+		
+		#region Protected Methods
 
         protected void OnActivated()
         {
@@ -85,36 +113,7 @@ namespace Microsoft.Xna.Framework
 
         protected abstract void SetTitle(string title);
 
-        public abstract bool AllowUserResizing { get; set; }
+		#endregion Protected Methods		
 
-        public abstract Rectangle ClientBounds { get; }
-
-        public abstract IntPtr Handle { get; }
-
-        public abstract string ScreenDeviceName { get; }
-
-        public string Title {
-            get { return _title; }
-            set {
-                if (_title != value)
-                {
-                    _title = value;
-                    SetTitle(_title);
-                }
-            }
-        }
-
-        public event EventHandler ClientSizeChanged;
-
-        public event EventHandler ScreenDeviceNameChanged;
-
-        #region Protected Members
-
-        internal Game Game
-        {
-            get { return _game; }
-        }
-
-        #endregion Protected Members
     }
 }

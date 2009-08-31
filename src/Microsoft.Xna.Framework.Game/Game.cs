@@ -50,6 +50,9 @@ namespace Microsoft.Xna.Framework
         internal const double DEFAULT_INACTIVE_SLEEP_TIME = 20;       // 20 milliseconds
 
         #region Private Fields
+		
+		private bool exit;
+		private bool runMethodCalled;
 
         bool _isFixedTimeStep;
 
@@ -65,13 +68,12 @@ namespace Microsoft.Xna.Framework
         GameTime _gameTime;
         TimeSpan _inactiveSleepTime;
         TimeSpan _targetElapsedTime;
-        long _currentUpdate;
-
+        
         #endregion Timing
 
         IGraphicsDeviceService _graphicsDeviceService;
         Content.ContentManager _content;
-        ExtendedGameWindow _window;
+        GameWindow _window;
         IGraphicsDeviceManager _graphicsManager;
         IGraphicsDeviceService _graphicsService;
         bool _isActive;
@@ -86,64 +88,8 @@ namespace Microsoft.Xna.Framework
 
         #endregion Unit Test Support
 #endif
-
-        #region Constructors
-
-        public Game()
-        {
-            _isFixedTimeStep = true;
-            _isActive = false;
-            
-			_visibleDrawable = new List<IDrawable>();
-            _enabledUpdateable = new List<IUpdateable>();
-
-            _components = new GameComponentCollection();
-            _components.ComponentAdded += new EventHandler<GameComponentCollectionEventArgs>(GameComponentAdded);
-            _components.ComponentRemoved += new EventHandler<GameComponentCollectionEventArgs>(GameComponentRemoved);
-
-            _services = new GameServiceContainer();
-
-            _content = new ContentManager(_services);
-
-             _gameTime = new GameTime(TimeSpan.Zero, TimeSpan.Zero, TimeSpan.Zero, TimeSpan.Zero);
-
-            _inactiveSleepTime = TimeSpan.FromMilliseconds(DEFAULT_INACTIVE_SLEEP_TIME);
-            _targetElapsedTime = TimeSpan.FromMilliseconds(DEFAULT_TARGET_ELAPSED_TIME);
-
-            SetWindow(new SdlGameWindow(this));
-			_isActive = true;
-        }
 		
-		
-
-#if NUNITTESTS
-        /// <summary>
-        /// This protected constructor is reserved for unit-testing, by allowing an alternative game clock to be provided.
-        /// It should not be used
-        /// </summary>
-        protected Game(IGameClock gameClock, EventSource eventSource)
-			: this ()
-        {
-            if (eventSource != null)
-            {
-                _eventSource = eventSource;
-                _eventSource.Game = this;
-            }
-        }
-#endif
-		
-		#endregion Constructors
-		
-        #region Destructor
-
-        ~Game()
-        {
-            Dispose(false);
-        }
-
-        #endregion Destructor
-
-        #region Public Properties
+		#region Public Properties
 
         public GameComponentCollection Components {
             get { return _components; }
@@ -221,6 +167,67 @@ namespace Microsoft.Xna.Framework
 
         #endregion Public Properties
 
+        #region Constructors
+
+        public Game()
+        {
+			exit = false;
+			runMethodCalled = false;
+			
+            _isFixedTimeStep = true;
+            _isActive = false;
+            
+			_visibleDrawable = new List<IDrawable>();
+            _enabledUpdateable = new List<IUpdateable>();
+
+            _components = new GameComponentCollection();
+            _components.ComponentAdded += new EventHandler<GameComponentCollectionEventArgs>(GameComponentAdded);
+            _components.ComponentRemoved += new EventHandler<GameComponentCollectionEventArgs>(GameComponentRemoved);
+
+            _services = new GameServiceContainer();
+
+            _content = new ContentManager(_services);
+
+             _gameTime = new GameTime(TimeSpan.Zero, TimeSpan.Zero, TimeSpan.Zero, TimeSpan.Zero);
+
+            _inactiveSleepTime = TimeSpan.FromMilliseconds(DEFAULT_INACTIVE_SLEEP_TIME);
+            _targetElapsedTime = TimeSpan.FromMilliseconds(DEFAULT_TARGET_ELAPSED_TIME);
+
+            SetWindow(new SdlGameWindow());
+			_isActive = true;
+        }
+		
+		
+
+#if NUNITTESTS
+        /// <summary>
+        /// This protected constructor is reserved for unit-testing, by allowing an alternative game clock to be provided.
+        /// It should not be used
+        /// </summary>
+        protected Game(IGameClock gameClock, EventSource eventSource)
+			: this ()
+        {
+            if (eventSource != null)
+            {
+                _eventSource = eventSource;
+                _eventSource.Game = this;
+            }
+        }
+#endif
+		
+		#endregion Constructors
+		
+        #region Destructor
+
+        ~Game()
+        {
+            Dispose(false);
+        }
+
+        #endregion Destructor
+
+        
+
         #region Public Methods
 
 #if XNA_3_0
@@ -243,13 +250,17 @@ namespace Microsoft.Xna.Framework
 
         public void Exit()
         {
-            
+            exit = true;
         }
 
         public void Run()
         {
+			if(runMethodCalled)
+				throw new InvalidOperationException("Run Method called more than once");
+			runMethodCalled = true;
+			
             _graphicsManager = (IGraphicsDeviceManager)Services.GetService(typeof (IGraphicsDeviceManager));
-            if (_graphicsManager != null)
+            if (_graphicsManager == null)
                 _graphicsManager.CreateDevice();
 
             _graphicsService = (IGraphicsDeviceService)Services.GetService(typeof (IGraphicsDeviceService));
@@ -262,25 +273,38 @@ namespace Microsoft.Xna.Framework
             }
 
             Initialize();
-
-            _window.Initialize();
-
+            
             _isActive = true;
-
-            BeginRun();
-
-            Update(_gameTime);
-
+			Sdl.SDL_Init (Sdl.SDL_INIT_TIMER);
+            
+			BeginRun();
+			while (!exit)
+				Tick ();
             EndRun();
         }
 
         public void Tick()
         {
+			TimeSpan updateTime = TimeSpan.FromTicks( Sdl.SDL_GetTicks() - _gameTime.TotalRealTime.Milliseconds);
             if (_isFixedTimeStep)
 			{
-					
+				while (updateTime < TargetElapsedTime)
+					updateTime = TimeSpan.FromTicks( Sdl.SDL_GetTicks() - _gameTime.TotalRealTime.Milliseconds);				
+				
+				_gameTime.ElapsedGameTime = TargetElapsedTime;
+				_gameTime.TotalGameTime += TargetElapsedTime;
+			}
+			else
+			{
+				_gameTime.ElapsedGameTime = updateTime;
+				_gameTime.TotalGameTime += updateTime;
 			}
 			
+			_gameTime.ElapsedRealTime += updateTime;
+			_gameTime.TotalRealTime += updateTime;
+			
+			Update(_gameTime);
+			Draw(_gameTime);
         }
 
         #endregion Public methods
@@ -346,14 +370,11 @@ namespace Microsoft.Xna.Framework
                 component.Initialize();
             }
 
-            // Default behaviour in MS implementation on windows passes true, suspect false for platforms with lesser available memory
-            LoadGraphicsContent(true);
-            LoadContent();
+           	LoadContent();
         }
 
         void DeviceCreated(object sender, EventArgs e)
         {
-            LoadGraphicsContent(true);
             LoadContent();
         }
 
@@ -438,20 +459,20 @@ namespace Microsoft.Xna.Framework
 
         #region Private Methods
 		
-		private void SetWindow(ExtendedGameWindow window)
+		private void SetWindow(GameWindow window)
         {
             _window = window;
             if (_window != null)
             {
-                _window.Exiting += new EventHandler(WindowExiting);
-                _window.Activated += new EventHandler(WindowActivated);
-                _window.Deactivated += new EventHandler(WindowDeactivated);
+                //_window.Exiting += new EventHandler(WindowExiting);
+                //_window.Activated += new EventHandler(WindowActivated);
+                //_window.Deactivated += new EventHandler(WindowDeactivated);
             }
         }        
 
         void DrawFrame()
         {
-            if (_window.Visible && BeginDraw())
+            if (BeginDraw())
             {
                 Draw(_gameTime);
                 EndDraw();
