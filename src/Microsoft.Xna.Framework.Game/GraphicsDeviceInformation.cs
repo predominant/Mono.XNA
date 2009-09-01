@@ -36,18 +36,18 @@ namespace Microsoft.Xna.Framework
 		
 		#region Private Fields
 		
-        DeviceType _deviceType;
-        CreateOptions _createOptions;
-        PresentationParameters _presentationParameters;
-        GraphicsAdapter _adapter;
+        DeviceType deviceType;
+        CreateOptions createOptions;
+        PresentationParameters presentationParameters;
+        GraphicsAdapter adapter;
 		
 		#endregion Private Fields
 		
 		#region Properties
 
         public GraphicsAdapter Adapter {
-            get { return _adapter; }
-            set { _adapter = value; }
+            get { return adapter; }
+            set { adapter = value; }
         }
 		
 #if NUNITTESTS
@@ -56,18 +56,18 @@ namespace Microsoft.Xna.Framework
         internal
 #endif
         CreateOptions CreationOptions {
-            get { return _createOptions; }
-            set { _createOptions = value; }
+            get { return createOptions; }
+            set { createOptions = value; }
         }
 
         public DeviceType DeviceType {
-            get { return _deviceType; }
-            set { _deviceType = value; }
+            get { return deviceType; }
+            set { deviceType = value; }
         }
 
         public PresentationParameters PresentationParameters {
-            get { return _presentationParameters; }
-            set { _presentationParameters = value; }
+            get { return presentationParameters; }
+            set { presentationParameters = value; }
         }
 		
 		#endregion Properties
@@ -76,22 +76,22 @@ namespace Microsoft.Xna.Framework
 
         public GraphicsDeviceInformation()
         {
-            _deviceType = DeviceType.Hardware;
-            _createOptions = CreateOptions.HardwareVertexProcessing;
-            _adapter = GraphicsAdapter.DefaultAdapter;
-            _presentationParameters = new PresentationParameters();
-            _presentationParameters.BackBufferWidth = GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Width;
-            _presentationParameters.BackBufferHeight = GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Height;
+            deviceType = DeviceType.Hardware;
+            createOptions = CreateOptions.HardwareVertexProcessing;
+            adapter = GraphicsAdapter.DefaultAdapter;
+            presentationParameters = new PresentationParameters();
+            presentationParameters.BackBufferWidth = GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Width;
+            presentationParameters.BackBufferHeight = GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Height;
         }
 
         internal GraphicsDeviceInformation(int width, int height)
         {
-            _deviceType = DeviceType.Hardware;
-            _createOptions = CreateOptions.HardwareVertexProcessing;
-            _presentationParameters = new PresentationParameters();
-            _presentationParameters.BackBufferWidth = width;
-            _presentationParameters.BackBufferHeight = height;
-            _adapter = GraphicsAdapter.DefaultAdapter;
+            deviceType = DeviceType.Hardware;
+            createOptions = CreateOptions.HardwareVertexProcessing;
+            presentationParameters = new PresentationParameters();
+            presentationParameters.BackBufferWidth = width;
+            presentationParameters.BackBufferHeight = height;
+            adapter = GraphicsAdapter.DefaultAdapter;
         }
 
         #endregion Constructors		
@@ -100,11 +100,11 @@ namespace Microsoft.Xna.Framework
 
         public GraphicsDeviceInformation Clone()
         {
-            GraphicsDeviceInformation gdi = new GraphicsDeviceInformation(true);
-            gdi._adapter = Adapter;
-            gdi._createOptions = CreationOptions;
-            gdi._deviceType = DeviceType;
-            gdi._presentationParameters = PresentationParameters;
+            GraphicsDeviceInformation gdi = new GraphicsDeviceInformation();
+            gdi.adapter = Adapter;
+            gdi.createOptions = CreationOptions;
+            gdi.deviceType = DeviceType;
+            gdi.presentationParameters = PresentationParameters;
             return gdi;
         }
 		
@@ -121,15 +121,15 @@ namespace Microsoft.Xna.Framework
             if (gdi == null)
                 return false;
 
-            return _deviceType == gdi._deviceType &&
-                _createOptions == gdi._createOptions &&
-                _presentationParameters == gdi._presentationParameters;
+            return deviceType == gdi.deviceType &&
+                createOptions == gdi.createOptions &&
+                presentationParameters == gdi.presentationParameters;
         }
 
         public override int GetHashCode()
         {
-            return _deviceType.GetHashCode() ^
-                   _createOptions.GetHashCode() ^
+            return deviceType.GetHashCode() ^
+                   createOptions.GetHashCode() ^
                    PresentationParameters.GetHashCode();
         }
 		

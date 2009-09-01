@@ -60,6 +60,80 @@ namespace Microsoft.Xna.Framework.Graphics
         private bool disposed;
 
         #endregion Private Fields
+		
+		#region Properties
+
+        public DepthFormat AutoDepthStencilFormat {
+            get { return autoDepthStencilFormat; }
+            set { autoDepthStencilFormat = value; }
+        }
+
+        public int BackBufferCount {
+            get { return backBufferCount; }
+            set { backBufferCount = value; }
+        }
+
+        public SurfaceFormat BackBufferFormat {
+            get { return backBufferFormat; }
+            set { backBufferFormat = value; }
+        }
+
+        public int BackBufferHeight {
+            get { return backBufferHeight; }
+            set { backBufferHeight = value; }
+        }
+
+        public int BackBufferWidth {
+            get { return backBufferWidth; }
+            set { backBufferWidth = value; }
+        }
+
+        public IntPtr DeviceWindowHandle {
+            get { return deviceWindowHandle; }
+            set { deviceWindowHandle = value; }
+        }
+
+        public bool EnableAutoDepthStencil {
+            get { return enableAutoDepthStencil; }
+            set { enableAutoDepthStencil = value; }
+        }
+
+        public int FullScreenRefreshRateInHz {
+            get { return fullScreenRefreshRateInHz; }
+            set { fullScreenRefreshRateInHz = value; }
+        }
+
+        public bool IsFullScreen {
+            get { return isFullScreen; }
+            set { isFullScreen = value; }
+        }
+
+        public int MultiSampleQuality {
+            get { return multiSampleQuality; }
+            set { multiSampleQuality = value; }
+        }
+
+        public MultiSampleType MultiSampleType {
+            get { return multiSampleType; }
+            set { multiSampleType = value; }
+        }
+
+        public PresentInterval PresentationInterval {
+            get { return presentationInterval; }
+            set { presentationInterval = value; }
+        }
+
+        public PresentOptions PresentOptions {
+            get { return presentOptions; }
+            set { presentOptions = value; }
+        }
+
+        public SwapEffect SwapEffect {
+            get { return swapEffect; }
+            set { swapEffect = value; }
+        }
+
+        #endregion Properties
 
         #region Constructors
 
@@ -74,7 +148,6 @@ namespace Microsoft.Xna.Framework.Graphics
         }
 
         #endregion Constructors
-
 
         #region Operators
 
@@ -95,96 +168,6 @@ namespace Microsoft.Xna.Framework.Graphics
         }
 
         #endregion Operators
-
-
-        #region Properties
-
-        public DepthFormat AutoDepthStencilFormat
-        {
-            get { return autoDepthStencilFormat; }
-            set { autoDepthStencilFormat = value; }
-        }
-
-        public int BackBufferCount
-        {
-            get { return backBufferCount; }
-            set { backBufferCount = value; }
-        }
-
-        public SurfaceFormat BackBufferFormat
-        {
-            get { return backBufferFormat; }
-            set { backBufferFormat = value; }
-        }
-
-        public int BackBufferHeight
-        {
-            get { return backBufferHeight; }
-            set { backBufferHeight = value; }
-        }
-
-        public int BackBufferWidth
-        {
-            get { return backBufferWidth; }
-            set { backBufferWidth = value; }
-        }
-
-        public IntPtr DeviceWindowHandle
-        {
-            get { return deviceWindowHandle; }
-            set { deviceWindowHandle = value; }
-        }
-
-        public bool EnableAutoDepthStencil
-        {
-            get { return enableAutoDepthStencil; }
-            set { enableAutoDepthStencil = value; }
-        }
-
-        public int FullScreenRefreshRateInHz
-        {
-            get { return fullScreenRefreshRateInHz; }
-            set { fullScreenRefreshRateInHz = value; }
-        }
-
-        public bool IsFullScreen
-        {
-            get { return isFullScreen; }
-            set { isFullScreen = value; }
-        }
-
-        public int MultiSampleQuality
-        {
-            get { return multiSampleQuality; }
-            set { multiSampleQuality = value; }
-        }
-
-        public MultiSampleType MultiSampleType
-        {
-            get { return multiSampleType; }
-            set { multiSampleType = value; }
-        }
-
-        public PresentInterval PresentationInterval
-        {
-            get { return presentationInterval; }
-            set { presentationInterval = value; }
-        }
-
-        public PresentOptions PresentOptions
-        {
-            get { return presentOptions; }
-            set { presentOptions = value; }
-        }
-
-        public SwapEffect SwapEffect
-        {
-            get { return swapEffect; }
-            set { swapEffect = value; }
-        }
-
-        #endregion Properties
-
 
         #region Methods
 
