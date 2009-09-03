@@ -148,9 +148,7 @@ namespace Microsoft.Xna.Framework
                 {
                     graphicsDeviceService = this.Services.GetService(typeof(IGraphicsDeviceService)) as IGraphicsDeviceService;
                     if (graphicsDeviceService == null)
-                    {
-                        throw new InvalidOperationException();
-                    }
+                    	throw new InvalidOperationException();
                 }
                 return graphicsDeviceService.GraphicsDevice;
             }
@@ -193,7 +191,7 @@ namespace Microsoft.Xna.Framework
             _inactiveSleepTime = TimeSpan.FromMilliseconds(DEFAULT_INACTIVE_SLEEP_TIME);
             _targetElapsedTime = TimeSpan.FromMilliseconds(DEFAULT_TARGET_ELAPSED_TIME);
 
-            SetWindow(new SdlGameWindow());
+            SetWindow(new SdlGameWindow(this));
 			_isActive = true;
         }
 		
@@ -259,20 +257,26 @@ namespace Microsoft.Xna.Framework
 				throw new InvalidOperationException("Run Method called more than once");
 			runMethodCalled = true;
 			
-            _graphicsManager = (IGraphicsDeviceManager)Services.GetService(typeof (IGraphicsDeviceManager));
-            if (_graphicsManager == null)
+			_graphicsManager = (IGraphicsDeviceManager)Services.GetService(typeof (IGraphicsDeviceManager));
+            if (_graphicsManager != null)
                 _graphicsManager.CreateDevice();
+			
 
-            _graphicsService = (IGraphicsDeviceService)Services.GetService(typeof (IGraphicsDeviceService));
+			 _graphicsService = (IGraphicsDeviceService)Services.GetService(typeof (IGraphicsDeviceService));
             if (_graphicsService != null)
             {
                 _graphicsService.DeviceCreated += DeviceCreated;
                 _graphicsService.DeviceResetting += DeviceResetting;
                 _graphicsService.DeviceReset += DeviceReset;
                 _graphicsService.DeviceDisposing += DeviceDisposing;
-            }
-
-            Initialize();
+            }     
+			
+			((SdlGameWindow)_window).Create("", GraphicsDevice.PresentationParameters.BackBufferWidth, 
+			                                GraphicsDevice.PresentationParameters.BackBufferHeight,
+			                                GraphicsDevice.PresentationParameters.IsFullScreen);
+			
+			Initialize();
+			LoadContent();
             
             _isActive = true;
 			Sdl.SDL_Init (Sdl.SDL_INIT_TIMER);

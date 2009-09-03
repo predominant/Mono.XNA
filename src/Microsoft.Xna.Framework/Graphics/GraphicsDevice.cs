@@ -45,7 +45,6 @@ namespace Microsoft.Xna.Framework.Graphics
         private GraphicsAdapter adapter;
         private DeviceType deviceType;
         private IntPtr renderWindowHandle;
-        private CreateOptions creationOptions;
         private PresentationParameters presentationParameters;
         private bool isDisposed;
         private TextureCollection textures;
@@ -161,17 +160,20 @@ namespace Microsoft.Xna.Framework.Graphics
 
         #region Constructors
 
-        public GraphicsDevice(GraphicsAdapter adapter, DeviceType deviceType, IntPtr renderWindowHandle, CreateOptions creationOptions, PresentationParameters presentationParameters)
+        public GraphicsDevice(GraphicsAdapter adapter, DeviceType deviceType, IntPtr renderWindowHandle, PresentationParameters presentationParameters)
         {
-            this.adapter = adapter;
+			Console.WriteLine("Test");
+			//if (adapter == null || presentationParameters != null) 
+			//	throw new ArgumentNullException("adapter or presentationParameters is null.");
+			
+			this.adapter = adapter;
+			this.presentationParameters = presentationParameters;				
             this.deviceType = deviceType;
             this.renderWindowHandle = renderWindowHandle;
-            this.creationOptions = creationOptions;
-            this.presentationParameters = presentationParameters;
+            
 			this.textures = new TextureCollection();
             
-			initOpenGl ();
-			initDevIl ();
+			initDependencies();
         }
 
         ~GraphicsDevice()
@@ -520,26 +522,34 @@ namespace Microsoft.Xna.Framework.Graphics
 		
 		#region Private Methods
 	
-		private void initOpenGl ()
+		private void initDependencies()
         {
-            // Enable Smooth Shading
+			// Setup the SDL's OpenGL interface based on the attributes specified
+			
+			if (presentationParameters.BackBufferFormat == SurfaceFormat.Color || 
+			    presentationParameters.BackBufferFormat == SurfaceFormat.Bgr32 ||
+			    presentationParameters.BackBufferFormat == SurfaceFormat.Rgba32)
+			{
+				Sdl.SDL_GL_SetAttribute(Sdl.SDL_GL_RED_SIZE, 8);
+				Sdl.SDL_GL_SetAttribute(Sdl.SDL_GL_GREEN_SIZE, 8);
+				Sdl.SDL_GL_SetAttribute(Sdl.SDL_GL_BLUE_SIZE, 8);
+				Sdl.SDL_GL_SetAttribute(Sdl.SDL_GL_ALPHA_SIZE, 8);
+			}
+			
+			if (presentationParameters.BackBufferCount > 0)
+				Sdl.SDL_GL_SetAttribute(Sdl.SDL_GL_DOUBLEBUFFER, 1); // multiple back buffers not supported in SDL 1.2
+			
+			// Setup OpenGL TODO
+			
             Gl.glShadeModel(Gl.GL_SMOOTH);
-            // Black Background
-            Gl.glClearColor(0.0F, 0.0F, 0.0F, 0.5F);
-            // Depth Buffer Setup
-            Gl.glClearDepth(1.0F);
-            // Enables Depth Testing
             Gl.glEnable(Gl.GL_DEPTH_TEST);
-            // The Type Of Depth Testing To Do
             Gl.glDepthFunc(Gl.GL_LEQUAL);
-            // Really Nice Perspective Calculations
             Gl.glHint(Gl.GL_PERSPECTIVE_CORRECTION_HINT, Gl.GL_NICEST);
-        }
-		
-		private void initDevIl ()
-		{
+			
+			// Setup DevIL
+			
 			Il.ilInit();
-		}
+        }
 		
 		#endregion
 		

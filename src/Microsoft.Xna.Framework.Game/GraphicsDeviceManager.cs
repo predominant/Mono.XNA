@@ -30,7 +30,7 @@ SOFTWARE.
 
 using System;
 using System.Collections.Generic;
-using System.Threading;
+using System.Runtime.InteropServices;
 using System.Drawing;
 using Tao.Sdl;
 using Microsoft.Xna.Framework.Graphics;
@@ -41,8 +41,9 @@ namespace Microsoft.Xna.Framework
     {
         #region Public Static Fields
 
-        public static readonly int DefaultBackBufferHeight = 600;
-        public static readonly int DefaultBackBufferWidth = 800;
+		public static readonly int DefaultBackBufferWidth = 800;
+		public static readonly int DefaultBackBufferHeight = 600;
+        
         public static readonly SurfaceFormat[] ValidAdapterFormats = new SurfaceFormat[] { SurfaceFormat.Bgr32, SurfaceFormat.Bgr555, SurfaceFormat.Bgr565, SurfaceFormat.Bgra1010102 };
         public static readonly SurfaceFormat[] ValidBackBufferFormats = new SurfaceFormat[] { SurfaceFormat.Bgr565, SurfaceFormat.Bgr555, SurfaceFormat.Bgra5551, SurfaceFormat.Bgr32, SurfaceFormat.Color, SurfaceFormat.Bgra1010102 };
         public static readonly DeviceType[] ValidDeviceTypes = new DeviceType[] { DeviceType.Hardware };
@@ -53,7 +54,7 @@ namespace Microsoft.Xna.Framework
 
         private GraphicsDevice graphicsDevice;
         private bool _disposed;
-        private ShaderProfile minimumShaderProfile;
+        private ShaderProfile minimumPixelShaderProfile;
         private ShaderProfile minimumVertexShaderProfile;
         private bool preferMultiSampling;
         private SurfaceFormat preferredBackBufferFormat;
@@ -62,7 +63,7 @@ namespace Microsoft.Xna.Framework
         private DepthFormat preferredDepthStencilFormat;
         private bool synchronizeWithVerticalRetrace;
         private Game game;
-		private bool isFullscreen;
+		private bool isFullScreen;
 		
         #endregion Private Fields
 
@@ -84,13 +85,13 @@ namespace Microsoft.Xna.Framework
         }
 
         public bool IsFullScreen {
-            get { return isFullscreen; }
-            set { isFullscreen = value; }
+            get { return isFullScreen; }
+            set { isFullScreen = value; }
         }
 
         public ShaderProfile MinimumPixelShaderProfile {
-            get { return minimumShaderProfile; }
-            set { minimumShaderProfile = value; }
+            get { return minimumPixelShaderProfile; }
+            set { minimumPixelShaderProfile = value; }
         }
 
         public ShaderProfile MinimumVertexShaderProfile {
@@ -134,10 +135,32 @@ namespace Microsoft.Xna.Framework
 
         public GraphicsDeviceManager(Game game)
         {
-            game = game;
-            // as per test application on reference framework
+			int result = Sdl.SDL_Init (Sdl.SDL_INIT_VIDEO);
+			if (result == 0)
+				Console.WriteLine("SDL video initialized");
+			else
+				Console.WriteLine("Couldn't initialize SDL video");
+			
+			this.game = game;
             game.Services.AddService(typeof(IGraphicsDeviceManager), this);
             game.Services.AddService(typeof(IGraphicsDeviceService), this);
+			
+			graphicsDevice = null;
+			
+			preferredBackBufferWidth = DefaultBackBufferWidth;
+			preferredBackBufferHeight = DefaultBackBufferHeight;
+			
+			preferredBackBufferFormat = SurfaceFormat.Color;
+			preferredDepthStencilFormat = DepthFormat.Depth24;
+			
+			isFullScreen = false;
+			
+			minimumPixelShaderProfile = ShaderProfile.PS_1_1;
+			minimumVertexShaderProfile = ShaderProfile.VS_1_1;
+			
+			preferMultiSampling = false;			
+			
+			synchronizeWithVerticalRetrace = true;
         }
 
         #endregion
@@ -174,7 +197,7 @@ namespace Microsoft.Xna.Framework
             GraphicsDeviceInformation info = FindBestDevice(true);
             OnPreparingDeviceSettings(this, new PreparingDeviceSettingsEventArgs(info));
             
-			graphicsDevice = new GraphicsDevice(info.Adapter, info.DeviceType, game.Window.Handle, info.CreationOptions, info.PresentationParameters);
+			graphicsDevice = new GraphicsDevice(info.Adapter, info.DeviceType, game.Window.Handle, info.PresentationParameters);
 			graphicsDevice.Disposing += new EventHandler(_graphicsDevice_Disposing);
             graphicsDevice.DeviceResetting += new EventHandler(_graphicsDevice_DeviceResetting);
             graphicsDevice.DeviceReset += new EventHandler(_graphicsDevice_DeviceReset);
@@ -214,17 +237,43 @@ namespace Microsoft.Xna.Framework
 
         protected virtual GraphicsDeviceInformation FindBestDevice(bool anySuitableDevice)
         {
-			Sdl.SDL_Rect[] modes = Sdl.SDL_ListModes(IntPtr.Zero, Sdl.SDL_OPENGL);
-            
-            List<GraphicsDeviceInformation> graphicDeviceInfoList = new List<GraphicsDeviceInformation>();
-            foreach (Sdl.SDL_Rect mode in modes)
-            {
-                if (mode.w == PreferredBackBufferWidth &&
-                    mode.h == PreferredBackBufferHeight)
-                    continue;
+			List<GraphicsDeviceInformation> graphicDeviceInfoList = new List<GraphicsDeviceInformation>();
+			
+			int flags = Sdl.SDL_OPENGL;
+			if (IsFullScreen)
+				flags |= Sdl.SDL_FULLSCREEN;
 
-                graphicDeviceInfoList.Add(new GraphicsDeviceInformation(mode.w, mode.h));
-            }
+#warning Finding available display modes along with their formats isn't supported by the current release of Tao.Sdl.
+#warning The current pixel format is used for querying available modes
+			Sdl.SDL_Rect[] modes = Sdl.SDL_ListModes(IntPtr.Zero, flags);
+			if (modes.Length > 0)
+			{	            
+	            foreach (Sdl.SDL_Rect mode in modes)
+	            {
+	                if (mode.w == PreferredBackBufferWidth &&
+	                    mode.h == PreferredBackBufferHeight)
+	                    continue;
+	
+					GraphicsDeviceInformation info = new GraphicsDeviceInformation();
+					info.Adapter = GraphicsAdapter.DefaultAdapter;
+					info.DeviceType = DeviceType.Hardware;
+					info.PresentationParameters.BackBufferWidth = mode.w;
+					info.PresentationParameters.BackBufferHeight = mode.h;
+					info.PresentationParameters.BackBufferFormat = PreferredBackBufferFormat;
+	                graphicDeviceInfoList.Add(info);
+				}
+			}
+			else 
+			{
+				GraphicsDeviceInformation info = new GraphicsDeviceInformation();
+				info.Adapter = GraphicsAdapter.DefaultAdapter;
+				info.DeviceType = DeviceType.Hardware;
+				info.PresentationParameters.BackBufferWidth = PreferredBackBufferWidth;
+				info.PresentationParameters.BackBufferHeight = PreferredBackBufferHeight;
+				info.PresentationParameters.BackBufferFormat = PreferredBackBufferFormat;
+	            graphicDeviceInfoList.Add(info);
+			}
+			
             RankDevices(graphicDeviceInfoList);
 
             if (graphicDeviceInfoList.Count == 0)

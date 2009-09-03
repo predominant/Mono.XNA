@@ -115,8 +115,6 @@ namespace Microsoft.Xna.Framework.Graphics
 		
 		private GraphicsAdapter()
         {
-			Sdl.SDL_Init (Sdl.SDL_INIT_VIDEO);
-			
 			IntPtr infoPtr = Sdl.SDL_GetVideoInfo ();
 			Sdl.SDL_VideoInfo info = (Sdl.SDL_VideoInfo) Marshal.PtrToStructure (infoPtr, typeof (Sdl.SDL_VideoInfo));
             currentDisplayMode = new DisplayMode(info.current_w, info.current_h, -1, SurfaceFormat.Bgr32);
