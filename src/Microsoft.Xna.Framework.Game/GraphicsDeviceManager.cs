@@ -135,12 +135,6 @@ namespace Microsoft.Xna.Framework
 
         public GraphicsDeviceManager(Game game)
         {
-			int result = Sdl.SDL_Init (Sdl.SDL_INIT_VIDEO);
-			if (result == 0)
-				Console.WriteLine("SDL video initialized");
-			else
-				Console.WriteLine("Couldn't initialize SDL video");
-			
 			this.game = game;
             game.Services.AddService(typeof(IGraphicsDeviceManager), this);
             game.Services.AddService(typeof(IGraphicsDeviceService), this);
