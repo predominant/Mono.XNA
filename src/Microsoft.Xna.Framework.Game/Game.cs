@@ -50,10 +50,11 @@ namespace Microsoft.Xna.Framework
 		
 		private const long DefaultTargetElapsedTicks = 10000000L / 60L;
 		
-		private bool exit;
 		private bool inRun;
-
-        bool isFixedTimeStep;
+        private bool isFixedTimeStep;
+		private bool isMouseVisible;
+		private bool isActive;
+        private bool isExiting;
 
         GameComponentCollection components;
         List<IDrawable> visibleDrawable;
@@ -70,8 +71,7 @@ namespace Microsoft.Xna.Framework
         GameWindow window;
         IGraphicsDeviceManager graphicsManager;
         IGraphicsDeviceService graphicsService;
-        bool isActive;
-        bool isExiting;
+        
 
         #endregion Private Fields
 
@@ -96,8 +96,8 @@ namespace Microsoft.Xna.Framework
         }
 
         public bool IsMouseVisible {
-            get { return SdlDotNet.Input.Mouse.ShowCursor; }
-            set { SdlDotNet.Input.Mouse.ShowCursor = value; }
+            get { return isMouseVisible; }
+            set { isMouseVisible = value; }
         }
 
         public GameServiceContainer Services {
@@ -151,7 +151,7 @@ namespace Microsoft.Xna.Framework
 
         public Game()
         {
-			exit = false;
+			isExiting = false;
 			inRun = false;
 			
             isFixedTimeStep = true;
@@ -210,8 +210,7 @@ namespace Microsoft.Xna.Framework
 
         public void Exit()
         {
-			Sdl.SDL_Quit();
-            exit = true;
+			isExiting = true;
         }
 
         public void Run()
@@ -249,9 +248,11 @@ namespace Microsoft.Xna.Framework
 			            
             isActive = true;			            
 			
-			while (!exit)
+			while (!isExiting)
 				Tick ();
             EndRun();
+			
+			inRun = false;
         }
 
         public void Tick()
@@ -305,19 +306,26 @@ namespace Microsoft.Xna.Framework
 
         protected virtual void Dispose(bool disposing)
         {
-            if (!disposed)
-            {
+            if (disposed)
+				return;
+            
+			// Dispose managed
+			if (disposing)
+			{
                 foreach (IGameComponent component in components)
                 {
                     IDisposable disposable = component as IDisposable;
                     if (disposable != null)
                         disposable.Dispose();
                 }
+			}
+				
+			// Dispose unmanaged
+			Sdl.SDL_Quit();				
 
-                disposed = true;
-                if (Disposed != null)
-                    Disposed(this, EventArgs.Empty);
-            }
+            disposed = true;
+            if (Disposed != null)
+                Disposed(this, EventArgs.Empty);        
         }
 
         protected virtual bool BeginDraw()
