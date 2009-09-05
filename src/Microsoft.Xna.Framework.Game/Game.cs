@@ -97,7 +97,12 @@ namespace Microsoft.Xna.Framework
 
         public bool IsMouseVisible {
             get { return isMouseVisible; }
-            set { isMouseVisible = value; }
+            set {
+				if (isMouseVisible == value)
+					return;
+				isMouseVisible = value;
+				Sdl.SDL_ShowCursor(isMouseVisible ? Sdl.SDL_ENABLE : Sdl.SDL_DISABLE); 
+			}
         }
 
         public GameServiceContainer Services {
@@ -231,7 +236,7 @@ namespace Microsoft.Xna.Framework
                 graphicsManager.CreateDevice();
 			
 
-			 graphicsService = (IGraphicsDeviceService)Services.GetService(typeof (IGraphicsDeviceService));
+			graphicsService = (IGraphicsDeviceService)Services.GetService(typeof (IGraphicsDeviceService));
             if (graphicsService != null)
             {
                 graphicsService.DeviceCreated += DeviceCreated;
@@ -243,6 +248,8 @@ namespace Microsoft.Xna.Framework
 			((SdlGameWindow)window).Create("", GraphicsDevice.PresentationParameters.BackBufferWidth, 
 			                                GraphicsDevice.PresentationParameters.BackBufferHeight,
 			                                GraphicsDevice.PresentationParameters.IsFullScreen);
+			
+			IsMouseVisible = IsMouseVisible;	// Set mouse visible now that SDL is initialized
 			
 			Initialize();
 			            
@@ -269,8 +276,7 @@ namespace Microsoft.Xna.Framework
 			}			
 			
 			TimeSpan updateTime = TimeSpan.FromMilliseconds(Sdl.SDL_GetTicks() - gameTime.TotalRealTime.TotalMilliseconds);
-			//Console.WriteLine("Timing Start: " + updateTime.ToString() + " - " + gameTime.TotalGameTime.ToString() + " - " + gameTime.TotalRealTime.ToString());
-            if (isFixedTimeStep)
+			if (isFixedTimeStep)
 			{
 				while (updateTime < TargetElapsedTime)
 				{
@@ -287,7 +293,6 @@ namespace Microsoft.Xna.Framework
 			
 			gameTime.ElapsedRealTime = updateTime;
 			gameTime.TotalRealTime = gameTime.TotalRealTime.Add(updateTime);
-			//Console.WriteLine("Timing End " + updateTime.ToString() + " - " + gameTime.TotalGameTime.ToString() + " - " + gameTime.TotalRealTime.ToString());
 			
 			Update(gameTime);
 			Draw(gameTime);

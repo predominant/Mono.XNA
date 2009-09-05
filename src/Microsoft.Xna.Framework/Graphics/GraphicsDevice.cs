@@ -162,9 +162,8 @@ namespace Microsoft.Xna.Framework.Graphics
 
         public GraphicsDevice(GraphicsAdapter adapter, DeviceType deviceType, IntPtr renderWindowHandle, PresentationParameters presentationParameters)
         {
-			Console.WriteLine("Test");
-			//if (adapter == null || presentationParameters != null) 
-			//	throw new ArgumentNullException("adapter or presentationParameters is null.");
+			if (adapter == null || presentationParameters == null) 
+				throw new ArgumentNullException("adapter or presentationParameters is null.");
 			
 			this.adapter = adapter;
 			this.presentationParameters = presentationParameters;				
