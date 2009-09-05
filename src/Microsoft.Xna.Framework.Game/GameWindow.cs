@@ -36,8 +36,7 @@ namespace Microsoft.Xna.Framework
         #region Private Fields
 
         private string title;
-        private Game game;
-
+        
         #endregion Private Fields
 		
 		#region Properties
@@ -66,7 +65,6 @@ namespace Microsoft.Xna.Framework
 		#region Events
 
         public event EventHandler ClientSizeChanged;
-
         public event EventHandler ScreenDeviceNameChanged;
 		
 		#endregion Events

@@ -29,9 +29,9 @@ namespace Microsoft.Xna.Framework
 
         #endregion Constructors
 		
-		#region Public Methods
+		#region Internal Methods
 		
-		public void Create(string screenDeviceName, int clientWidth, int clientHeight, bool fullscreen)
+		internal void Create(string screenDeviceName, int clientWidth, int clientHeight, bool fullscreen)
 		{
 			BeginScreenDeviceChange(fullscreen);
 			EndScreenDeviceChange(screenDeviceName, clientWidth, clientHeight);
@@ -52,6 +52,7 @@ namespace Microsoft.Xna.Framework
 
         public override IntPtr Handle {
             get {
+				// It seems like Tao.Sdl only supports for windows. TODO
 				Sdl.SDL_SysWMinfo_Windows info;
 				if (Sdl.SDL_GetWMInfo(out info) != 0)
 					return new IntPtr(info.window);
@@ -73,6 +74,7 @@ namespace Microsoft.Xna.Framework
         public override void EndScreenDeviceChange(string screenDeviceName, int clientWidth, int clientHeight)
         {
             this.screenDeviceName = screenDeviceName;
+			OnScreenDeviceNameChanged();
 			
 			// Ideally this could be removed, but the SDL_SetVideoMode require the bits per pixel
 			int bpp = 32;
@@ -88,6 +90,8 @@ namespace Microsoft.Xna.Framework
 			IntPtr sdlSurfacePtr = Sdl.SDL_SetVideoMode(clientWidth, clientHeight, bpp, flags);
 			if (sdlSurfacePtr != IntPtr.Zero)
 				sdlSurface = (Sdl.SDL_Surface)Marshal.PtrToStructure(sdlSurfacePtr, typeof(Sdl.SDL_Surface));
+			
+			inTransition = false;
         }
 
         protected override void SetTitle(string title)

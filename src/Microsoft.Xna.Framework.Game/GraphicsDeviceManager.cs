@@ -183,7 +183,7 @@ namespace Microsoft.Xna.Framework
 
         bool IGraphicsDeviceManager.BeginDraw()
         {
-            return game.IsActive;
+            return true;
         }
 
         void IGraphicsDeviceManager.CreateDevice()

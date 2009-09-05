@@ -172,7 +172,31 @@ namespace Microsoft.Xna.Framework.Graphics
             
 			this.textures = new TextureCollection();
             
-			initDependencies();
+			// Setup the SDL's OpenGL interface based on the attributes specified
+			
+			if (presentationParameters.BackBufferFormat == SurfaceFormat.Color || 
+			    presentationParameters.BackBufferFormat == SurfaceFormat.Bgr32 ||
+			    presentationParameters.BackBufferFormat == SurfaceFormat.Rgba32)
+			{
+				Sdl.SDL_GL_SetAttribute(Sdl.SDL_GL_RED_SIZE, 8);
+				Sdl.SDL_GL_SetAttribute(Sdl.SDL_GL_GREEN_SIZE, 8);
+				Sdl.SDL_GL_SetAttribute(Sdl.SDL_GL_BLUE_SIZE, 8);
+				Sdl.SDL_GL_SetAttribute(Sdl.SDL_GL_ALPHA_SIZE, 8);
+			}
+			
+			if (presentationParameters.BackBufferCount > 0)
+				Sdl.SDL_GL_SetAttribute(Sdl.SDL_GL_DOUBLEBUFFER, 1); // multiple back buffers not supported in SDL 1.2
+			
+			// Setup OpenGL TODO
+			
+            Gl.glShadeModel(Gl.GL_SMOOTH);
+            Gl.glEnable(Gl.GL_DEPTH_TEST);
+            Gl.glDepthFunc(Gl.GL_LEQUAL);
+            Gl.glHint(Gl.GL_PERSPECTIVE_CORRECTION_HINT, Gl.GL_NICEST);
+			
+			// Setup DevIL
+			
+			Il.ilInit();
         }
 
         ~GraphicsDevice()
@@ -517,40 +541,7 @@ namespace Microsoft.Xna.Framework.Graphics
                 ResourceDestroyed(sender, e);
         }
 		
-		#endregion Events         
-		
-		#region Private Methods
-	
-		private void initDependencies()
-        {
-			// Setup the SDL's OpenGL interface based on the attributes specified
-			
-			if (presentationParameters.BackBufferFormat == SurfaceFormat.Color || 
-			    presentationParameters.BackBufferFormat == SurfaceFormat.Bgr32 ||
-			    presentationParameters.BackBufferFormat == SurfaceFormat.Rgba32)
-			{
-				Sdl.SDL_GL_SetAttribute(Sdl.SDL_GL_RED_SIZE, 8);
-				Sdl.SDL_GL_SetAttribute(Sdl.SDL_GL_GREEN_SIZE, 8);
-				Sdl.SDL_GL_SetAttribute(Sdl.SDL_GL_BLUE_SIZE, 8);
-				Sdl.SDL_GL_SetAttribute(Sdl.SDL_GL_ALPHA_SIZE, 8);
-			}
-			
-			if (presentationParameters.BackBufferCount > 0)
-				Sdl.SDL_GL_SetAttribute(Sdl.SDL_GL_DOUBLEBUFFER, 1); // multiple back buffers not supported in SDL 1.2
-			
-			// Setup OpenGL TODO
-			
-            Gl.glShadeModel(Gl.GL_SMOOTH);
-            Gl.glEnable(Gl.GL_DEPTH_TEST);
-            Gl.glDepthFunc(Gl.GL_LEQUAL);
-            Gl.glHint(Gl.GL_PERSPECTIVE_CORRECTION_HINT, Gl.GL_NICEST);
-			
-			// Setup DevIL
-			
-			Il.ilInit();
-        }
-		
-		#endregion
+		#endregion Events
 		
     }
 }

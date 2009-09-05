@@ -1,7 +1,7 @@
 #region License
 /*
 MIT License
-Copyright © 2006 The Mono.Xna Team
+Copyright Â© 2006 The Mono.Xna Team
 
 All rights reserved.
 
@@ -121,7 +121,7 @@ namespace Microsoft.Xna.Framework.Input
 
         public static void SetPosition(int x, int y)
         {
-            SdlDotNet.Input.Mouse.MousePosition = new System.Drawing.Point(x, y);
+            throw new NotImplementedException();
         }
 
         #endregion Public Methods

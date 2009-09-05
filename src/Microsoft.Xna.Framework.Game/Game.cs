@@ -171,7 +171,6 @@ namespace Microsoft.Xna.Framework
             services = new GameServiceContainer();
 
             content = new ContentManager(services);
-
 			
             gameTime = new GameTime(TimeSpan.Zero, TimeSpan.Zero, TimeSpan.Zero, TimeSpan.Zero);
 
@@ -227,9 +226,9 @@ namespace Microsoft.Xna.Framework
 			
 			int result = Sdl.SDL_Init (Sdl.SDL_INIT_TIMER | Sdl.SDL_INIT_VIDEO);
 			if (result == 0)
-				Console.WriteLine("SDL initialized");
+				System.Diagnostics.Debug.WriteLine("SDL initialized");
 			else
-				Console.WriteLine("Couldn't initialize SDL");
+				System.Diagnostics.Debug.WriteLine("Couldn't initialize SDL");
 			
 			graphicsManager = (IGraphicsDeviceManager)Services.GetService(typeof (IGraphicsDeviceManager));
             if (graphicsManager != null)
@@ -257,8 +256,8 @@ namespace Microsoft.Xna.Framework
 			
 			while (!isExiting)
 				Tick ();
-            EndRun();
-			
+            
+			EndRun();			
 			inRun = false;
         }
 
@@ -280,6 +279,7 @@ namespace Microsoft.Xna.Framework
 			{
 				while (updateTime < TargetElapsedTime)
 				{
+					// Needs to check SDL events while waiting. TODO
 					updateTime = TimeSpan.FromMilliseconds(Sdl.SDL_GetTicks() - gameTime.TotalRealTime.TotalMilliseconds);
 				}				
 				gameTime.ElapsedGameTime = TargetElapsedTime;
@@ -295,7 +295,12 @@ namespace Microsoft.Xna.Framework
 			gameTime.TotalRealTime = gameTime.TotalRealTime.Add(updateTime);
 			
 			Update(gameTime);
-			Draw(gameTime);
+			
+			if (BeginDraw())
+            {
+                Draw(gameTime);
+                EndDraw();
+            }
         }
 
         #endregion Public methods
@@ -333,13 +338,18 @@ namespace Microsoft.Xna.Framework
                 Disposed(this, EventArgs.Empty);        
         }
 
+		protected virtual void BeginRun()
+        {
+        }
+
         protected virtual bool BeginDraw()
         {
             return graphicsManager.BeginDraw();
         }
 
-        protected virtual void BeginRun()
+        protected virtual void EndDraw()
         {
+            graphicsManager.EndDraw();
         }
 
         protected virtual void Draw(GameTime gameTime)
@@ -349,13 +359,8 @@ namespace Microsoft.Xna.Framework
                 drawable.Draw(gameTime);
             }
         }
-
-        protected virtual void EndDraw()
-        {
-            graphicsManager.EndDraw();
-        }
-
-        protected virtual void EndRun()
+		
+		protected virtual void EndRun()
         {
         }
 
@@ -457,16 +462,7 @@ namespace Microsoft.Xna.Framework
 
         #region Private Methods
 		
-		void DrawFrame()
-        {
-            if (BeginDraw())
-            {
-                Draw(gameTime);
-                EndDraw();
-            }
-        }
-
-        void WindowExiting(object sender, EventArgs e)
+		void WindowExiting(object sender, EventArgs e)
         {
             OnExiting(sender, e);
         }
