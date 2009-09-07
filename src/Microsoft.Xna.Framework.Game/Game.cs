@@ -54,8 +54,7 @@ namespace Microsoft.Xna.Framework
         private bool isFixedTimeStep;
 		private bool isMouseVisible;
 		private bool isActive;
-        private bool isExiting;
-
+        
         GameComponentCollection components;
         List<IDrawable> visibleDrawable;
         List<IUpdateable> enabledUpdateable;
@@ -68,10 +67,11 @@ namespace Microsoft.Xna.Framework
         TimeSpan targetElapsedTime;
         
         Content.ContentManager content;
-        GameWindow window;
-        IGraphicsDeviceManager graphicsManager;
-        IGraphicsDeviceService graphicsService;
         
+		IGraphicsDeviceManager graphicsManager;
+        IGraphicsDeviceService graphicsService;
+		
+		GameHost gameHost;        
 
         #endregion Private Fields
 
@@ -144,10 +144,8 @@ namespace Microsoft.Xna.Framework
             }
         }
 
-
-        public GameWindow Window
-        {
-            get { return window; }
+        public GameWindow Window {
+            get { return (gameHost != null) ? gameHost.Window : null; }
         }
 
         #endregion Public Properties
@@ -156,7 +154,6 @@ namespace Microsoft.Xna.Framework
 
         public Game()
         {
-			isExiting = false;
 			inRun = false;
 			
             isFixedTimeStep = true;
@@ -177,8 +174,8 @@ namespace Microsoft.Xna.Framework
             inactiveSleepTime = TimeSpan.FromTicks(0);
 			targetElapsedTime = TimeSpan.FromTicks(DefaultTargetElapsedTicks);
 
-            window =  new SdlGameWindow(this);
-			isActive = true;
+			gameHost = new SdlGameHost(this);
+            isActive = true;
         }
 		
 		#endregion Constructors
@@ -214,7 +211,7 @@ namespace Microsoft.Xna.Framework
 
         public void Exit()
         {
-			isExiting = true;
+			gameHost.Exit();
         }
 
         public void Run()
@@ -224,11 +221,7 @@ namespace Microsoft.Xna.Framework
 			inRun = true;
 			BeginRun();
 			
-			int result = Sdl.SDL_Init (Sdl.SDL_INIT_TIMER | Sdl.SDL_INIT_VIDEO);
-			if (result == 0)
-				System.Diagnostics.Debug.WriteLine("SDL initialized");
-			else
-				System.Diagnostics.Debug.WriteLine("Couldn't initialize SDL");
+			gameHost.EnsureHost();
 			
 			graphicsManager = (IGraphicsDeviceManager)Services.GetService(typeof (IGraphicsDeviceManager));
             if (graphicsManager != null)
@@ -242,20 +235,15 @@ namespace Microsoft.Xna.Framework
                 graphicsService.DeviceResetting += DeviceResetting;
                 graphicsService.DeviceReset += DeviceReset;
                 graphicsService.DeviceDisposing += DeviceDisposing;
-            }     
+            }   
 			
-			((SdlGameWindow)window).Create("", GraphicsDevice.PresentationParameters.BackBufferWidth, 
-			                                GraphicsDevice.PresentationParameters.BackBufferHeight,
-			                                GraphicsDevice.PresentationParameters.IsFullScreen);
-			
-			IsMouseVisible = IsMouseVisible;	// Set mouse visible now that SDL is initialized
+			gameHost.Initialize();
 			
 			Initialize();
 			            
-            isActive = true;			            
+			isActive = true;           
 			
-			while (!isExiting)
-				Tick ();
+			gameHost.Run();
             
 			EndRun();			
 			inRun = false;
@@ -263,25 +251,18 @@ namespace Microsoft.Xna.Framework
 
         public void Tick()
         {
-			Sdl.SDL_Event sdlEvent;
-			if (Sdl.SDL_PollEvent(out sdlEvent) != 0)
-			{
-				switch (sdlEvent.type)
-				{
-				case Sdl.SDL_QUIT:
-					Exit();
-					break;
-				}
-			}			
-			
 			TimeSpan updateTime = TimeSpan.FromMilliseconds(Sdl.SDL_GetTicks() - gameTime.TotalRealTime.TotalMilliseconds);
 			if (isFixedTimeStep)
 			{
+				if (updateTime > TargetElapsedTime)
+					gameTime.IsRunningSlowly = true;
+				
 				while (updateTime < TargetElapsedTime)
 				{
-					// Needs to check SDL events while waiting. TODO
+					// Needs to check SDL events while waiting? TODO
 					updateTime = TimeSpan.FromMilliseconds(Sdl.SDL_GetTicks() - gameTime.TotalRealTime.TotalMilliseconds);
-				}				
+				}
+				
 				gameTime.ElapsedGameTime = TargetElapsedTime;
 				gameTime.TotalGameTime = gameTime.TotalGameTime.Add(TargetElapsedTime);
 			}

@@ -218,7 +218,7 @@ namespace Microsoft.Xna.Framework.Input
             return state;
         }
 
-        public static Microsoft.Xna.Framework.Input.KeyboardState GetState(Microsoft.Xna.Framework.PlayerIndex playerIndex)
+        public static KeyboardState GetState(Microsoft.Xna.Framework.PlayerIndex playerIndex)
         {
             throw new NotImplementedException();
         }
