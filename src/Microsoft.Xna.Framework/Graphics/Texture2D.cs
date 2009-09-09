@@ -52,7 +52,7 @@ namespace Microsoft.Xna.Framework.Graphics
         private SurfaceFormat surfaceFormat;                        // The colour format of the texture
         private int width;                                          // the width of the texture before resizing it
 
-        internal int textureId;                                     // The reference ID of the texture in OpenGL memory
+        internal int textureId = -1;                                     // The reference ID of the texture in OpenGL memory
 		internal int imageId;
 
         #endregion Fields
@@ -94,7 +94,6 @@ namespace Microsoft.Xna.Framework.Graphics
         {
         }
 
-
         public Texture2D(GraphicsDevice graphicsDevice, int width, int height, int numberLevels, ResourceUsage usage, SurfaceFormat format, ResourceManagementMode resourceManagementMode)
         {
             this.device = graphicsDevice;
@@ -104,6 +103,10 @@ namespace Microsoft.Xna.Framework.Graphics
             this.resourceUsage = usage;
             this.surfaceFormat = format;
             this.resourceManagementMode = resourceManagementMode;
+        }
+
+        public Texture2D(GraphicsDevice graphicsDevice, int width, int height, int numberLevels, TextureUsage usage, SurfaceFormat format)
+        {
         }
 
         #endregion Constructors
@@ -137,7 +140,23 @@ namespace Microsoft.Xna.Framework.Graphics
 		
         public new static Texture2D FromFile(GraphicsDevice graphicsDevice, string filename, TextureCreationParameters creationParameters)
         {
-            throw new NotImplementedException("The method or operation is not implemented.");
+            int ImgID;
+            Il.ilGenImages(1, out ImgID);
+            Il.ilBindImage(ImgID);
+            Il.ilLoadImage(filename);
+            int width = Il.ilGetInteger(Il.IL_IMAGE_WIDTH);
+            int height = Il.ilGetInteger(Il.IL_IMAGE_HEIGHT);
+            int depth = Il.ilGetInteger(Il.IL_IMAGE_DEPTH);
+            int size = Il.ilGetInteger(Il.IL_IMAGE_SIZE_OF_DATA);
+            IntPtr pixmap = new IntPtr() ;
+            pixmap = Il.ilGetData();
+            byte[] pixdata = new byte[size];
+            System.Runtime.InteropServices.Marshal.Copy(pixmap, pixdata, 0, size);
+            Il.ilBindImage(0);
+            //Il.ilDeleteImage(0);
+            Texture2D tex = new Texture2D(graphicsDevice, width, height, depth, creationParameters.ResourceUsage, SurfaceFormat.Rgb32, creationParameters.ResourceManagementMode);
+            tex.Load(pixdata);
+            return tex;
         }
 
         public new static Texture2D FromFile(GraphicsDevice graphicsDevice, string filename, int width, int height)
@@ -166,17 +185,28 @@ namespace Microsoft.Xna.Framework.Graphics
 
         public void SetData<T>(T[] data)
         {
-            throw new NotImplementedException("The method or operation is not implemented.");
+            Rectangle? rect = null;
+            this.SetData<T>(0, rect, data, 0, data.Length, SetDataOptions.None);
         }
 
         public void SetData<T>(T[] data, int startIndex, int elementCount, SetDataOptions options)
         {
-            throw new NotImplementedException("The method or operation is not implemented.");
+            Rectangle? rect = null;
+            this.SetData<T>(0, rect, data, startIndex, elementCount, options);
         }
 
         public void SetData<T>(int level, Nullable<Rectangle> rect, T[] data, int startIndex, int elementCount, SetDataOptions options)
         {
-            throw new NotImplementedException("The method or operation is not implemented.");
+            if (textureId == -1)
+            {
+                int[] texture = new int[1];
+                Gl.glGenTextures(1, texture);
+                textureId = texture[0];
+            }
+            Gl.glBindTexture(Gl.GL_TEXTURE_2D, textureId);	
+            Gl.glTexImage2D(Gl.GL_TEXTURE_2D, 0, 4, this.Width, this.Height, 0, Gl.GL_BGRA, Gl.GL_UNSIGNED_BYTE, data);
+            Gl.glTexParameteri(Gl.GL_TEXTURE_2D, Gl.GL_TEXTURE_MIN_FILTER, Gl.GL_LINEAR); //FIXME: Have we to set these parameters ?
+            Gl.glTexParameteri(Gl.GL_TEXTURE_2D, Gl.GL_TEXTURE_MAG_FILTER, Gl.GL_LINEAR);
         }
 
         public static bool operator !=(Texture2D left, Texture2D right)

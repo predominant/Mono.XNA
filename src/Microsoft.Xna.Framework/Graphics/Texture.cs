@@ -27,6 +27,8 @@ SOFTWARE.
 
 using System;
 using System.IO;
+using Tao.DevIl;
+using Tao.OpenGl;
 
 namespace Microsoft.Xna.Framework.Graphics
 {
@@ -55,7 +57,38 @@ namespace Microsoft.Xna.Framework.Graphics
 
         public static Texture FromFile(GraphicsDevice graphicsDevice, Stream textureStream, TextureCreationParameters creationParameters) { throw new NotImplementedException(); }
 
-        public static Texture FromFile(GraphicsDevice graphicsDevice, string filename, TextureCreationParameters creationParameters) { throw new NotImplementedException(); }
+        public static Texture FromFile(GraphicsDevice graphicsDevice, string filename, TextureCreationParameters creationParameters) {
+            TextureInformation texinfo = GetTextureInformation(filename);
+            if (creationParameters.Width == 0) creationParameters.Width = texinfo.Width;
+            if (creationParameters.Height == 0) creationParameters.Height = texinfo.Height;
+            if (creationParameters.Depth == 0) creationParameters.Depth = texinfo.Depth;
+            if (texinfo.ResourceType == ResourceType.Texture2D)
+            {
+                int ImgID;
+                Il.ilGenImages(1, out ImgID);
+                Il.ilBindImage(ImgID);
+                Il.ilLoadImage(filename);
+                int width = Il.ilGetInteger(Il.IL_IMAGE_WIDTH);
+                int height = Il.ilGetInteger(Il.IL_IMAGE_HEIGHT);
+                int depth = Il.ilGetInteger(Il.IL_IMAGE_DEPTH);
+                int size = Il.ilGetInteger(Il.IL_IMAGE_SIZE_OF_DATA);
+                Texture2D tex = new Texture2D(graphicsDevice, creationParameters.Width, creationParameters.Height, creationParameters.Depth, creationParameters.ResourceUsage, SurfaceFormat.Rgb32, creationParameters.ResourceManagementMode);
+                int[] texture = new int[1];
+                Gl.glGenTextures(1,texture);
+                tex.textureId = texture[0];
+                Gl.glBindTexture(Gl.GL_TEXTURE_2D, tex.textureId);
+                Gl.glTexImage2D(Gl.GL_TEXTURE_2D, 0, Il.ilGetInteger(Il.IL_IMAGE_BYTES_PER_PIXEL), creationParameters.Width, creationParameters.Height, 0, Gl.GL_RGBA, Gl.GL_UNSIGNED_BYTE, Il.ilGetData());
+                Gl.glTexParameteri(Gl.GL_TEXTURE_2D, Gl.GL_TEXTURE_MIN_FILTER, Gl.GL_LINEAR);
+                Gl.glTexParameteri(Gl.GL_TEXTURE_2D, Gl.GL_TEXTURE_MAG_FILTER, Gl.GL_LINEAR);
+                Il.ilBindImage(0);
+                //Il.ilDeleteImage(0);
+                return tex;
+            }
+            else if (texinfo.ResourceType == ResourceType.Texture3D) { throw new NotImplementedException(); }
+            else if (texinfo.ResourceType == ResourceType.Texture3DVolume) { throw new NotImplementedException(); } //FIXME: Should we handle this here too?
+            else if (texinfo.ResourceType == ResourceType.TextureCube) { throw new NotImplementedException(); }
+            else return null;
+        }
 
         public static Texture FromFile(GraphicsDevice graphicsDevice, Stream textureStream, int numberBytes, TextureCreationParameters creationParameters) { throw new NotImplementedException(); }
 
@@ -73,7 +106,30 @@ namespace Microsoft.Xna.Framework.Graphics
 
         public static TextureInformation GetTextureInformation(Stream textureStream) { throw new NotImplementedException(); }
 
-        public static TextureInformation GetTextureInformation(string filename) { throw new NotImplementedException(); }
+        public static TextureInformation GetTextureInformation(string filename) {
+            FileStream FS = null;
+            try
+            {
+                FS = File.OpenRead(filename);
+            }
+            finally
+            {
+                if (FS != null) FS.Close();
+            }
+            TextureInformation TexInfo = new TextureInformation();
+            TexInfo.Depth = Il.ilGetInteger(Il.IL_IMAGE_DEPTH);
+            TexInfo.Format = SurfaceFormat.Color; //TODO: Find out how to detect and set properly.
+            TexInfo.Height = Il.ilGetInteger(Il.IL_IMAGE_HEIGHT);
+            TexInfo.imageFormat = ILimageformat2XNAimageformat(Il.ilGetInteger(Il.IL_IMAGE_FORMAT));
+            TexInfo.resourcetype = ResourceType.Texture2D; //TODO: Find out how to detect and set properly.
+            TexInfo.Width = Il.ilGetInteger(Il.IL_IMAGE_WIDTH);
+            return TexInfo;
+        }
+
+        private static ImageFileFormat ILimageformat2XNAimageformat(int ILFormat)
+        {
+            throw new NotImplementedException();
+        }
 
         public static TextureInformation GetTextureInformation(Stream textureStream, int numberBytes) { throw new NotImplementedException(); }
 

@@ -99,26 +99,31 @@ namespace Microsoft.Xna.Framework.Graphics
 
         public void Begin()
         {
-            Begin(SpriteBlendMode.AlphaBlend, SpriteSortMode.Deferred, SaveStateMode.None);
+            Begin(SpriteBlendMode.AlphaBlend, SpriteSortMode.Deferred, SaveStateMode.None, Matrix.Identity);
         }
 
         public void Begin(SpriteBlendMode blendMode)
         {
-            Begin(blendMode, SpriteSortMode.Deferred, SaveStateMode.None);
+            Begin(blendMode, SpriteSortMode.Deferred, SaveStateMode.None, Matrix.Identity);
         }
 
         public void Begin(SpriteBlendMode blendMode, SpriteSortMode sortMode, SaveStateMode stateMode)
         {
+            this.Begin(blendMode, sortMode, stateMode, Matrix.Identity);
+        }
+
+        public void Begin(SpriteBlendMode blendMode, SpriteSortMode sortMode, SaveStateMode stateMode, Matrix transformMatrix)
+        {
             //to respect order Begin/Draw/end
             if (isRunning)
-            	throw new InvalidOperationException("Begin cannot be called again until End has been successfully called.");
+                throw new InvalidOperationException("Begin cannot be called again until End has been successfully called.");
 
             if (stateMode == SaveStateMode.SaveState)
                 saveState = new StateBlock(this.GraphicsDevice);
 
-			
-			spriteBlendMode = blendMode;
-			this.sortMode = sortMode;
+
+            spriteBlendMode = blendMode;
+            this.sortMode = sortMode;
             if (sortMode == SpriteSortMode.Immediate)
                 ApplyGraphicsDeviceSettings();
             isRunning = true;
@@ -193,7 +198,7 @@ namespace Microsoft.Xna.Framework.Graphics
             foreach (Sprite sp in spriteList)
             {
                 // Set the color, bind the texture for drawing and prepare the texture source
-                if (sp.color.A <= 0) return;
+                if (sp.color.A <= 0) continue;
                 Gl.glColor4f((float)sp.color.R / 255f, (float)sp.color.G / 255f, (float)sp.color.B / 255f, (float)sp.color.A / 255f);
                 Gl.glBindTexture(Gl.GL_TEXTURE_2D, sp.texture.textureId);
 
@@ -219,16 +224,16 @@ namespace Microsoft.Xna.Framework.Graphics
                 Gl.glBegin(Gl.GL_QUADS);
                 {
                     Gl.glTexCoord2f(x, 1f - y);
-                    Gl.glVertex2f(0f, 0f);
+                    Gl.glVertex2f(0f, sp.destinationRectangle.Height);
 
                     Gl.glTexCoord2f(x + twidth, 1f - y);
-                    Gl.glVertex2f(sp.destinationRectangle.Width, 0f);
-
-                    Gl.glTexCoord2f(x + twidth, 1f - y - theight);
                     Gl.glVertex2f(sp.destinationRectangle.Width, sp.destinationRectangle.Height);
 
+                    Gl.glTexCoord2f(x + twidth, 1f - y - theight);
+                    Gl.glVertex2f(sp.destinationRectangle.Width, 0f);
+
                     Gl.glTexCoord2f(x, 1f - y - theight);
-                    Gl.glVertex2f(0f, sp.destinationRectangle.Height);
+                    Gl.glVertex2f(0f, 0f);
                 }
                 Gl.glEnd();
                 Gl.glPopMatrix(); // Finish with the matrix

@@ -4,12 +4,15 @@ MIT License
 Copyright © 2006 The Mono.Xna Team
 
 All rights reserved.
+ 
+Authors:
+ * Tim Pambor
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
 in the Software without restriction, including without limitation the rights
 to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-copies of the Software, and to permit persons to whom the Software is
+//copies of the Software, and to permit persons to whom the Software is
 furnished to do so, subject to the following conditions:
 
 The above copyright notice and this permission notice shall be included in all
@@ -51,22 +54,20 @@ namespace Microsoft.Xna.Framework.Content
             // Byte 9 - 12 is the height of the texture
              int height = (input.ReadInt32());
  
-          // Byte 13 - 16 is the "depth" of the texture
+            // Byte 13 - 16 is the "depth" of the texture
              int levelCount = (input.ReadInt32());        
+            
+            Texture2D texture = new Texture2D(input.GraphicsDevice, width, height, levelCount, ResourceUsage.None, surfaceFormat, ResourceManagementMode.Automatic);
 
-           // Byte 17 - 20 is the data type. I'm assuming this because the only enum with value 4096
-            // is the SetDataOptions.NoOverwrite enum. I'm unsure about this.
-             //SetDataOptions compressionType = (SetDataOptions)input.ReadInt32();
-            // There is 1 byte (8 bits) for each colour channel, R, G, B and A
-            // The total length of the texture in bytes is then width * height * (1 + 1 + 1 + 1) = width * height * 4
-            int imageLength = input.ReadInt32();
-            //Duff: my issue is that here do not know what put on miplevel but the first bytes are in fact from other part of reader
-             // I'm not sure what the default colour is, i just choose transparent white. I don't know how to check
-            TextureCreationParameters param = new TextureCreationParameters(width, height, levelCount, 0, surfaceFormat,
-                                                                            ResourceUsage.None, ResourceManagementMode.Automatic, Color.TransparentWhite,
-                                                                             FilterOptions.None, FilterOptions.None);
-
-            return Texture2D.FromFile(input.GraphicsDevice, input.BaseStream, imageLength, param);
+            for (int i = 0; i < levelCount; i++)
+            {
+                // Byte 17 -  20 is the Length of the texture
+                int imageLength = input.ReadInt32();
+                byte[] data = input.ReadBytes(imageLength);
+                Rectangle? rect = null;
+                texture.SetData<byte>(i, rect, data, 0, data.Length, SetDataOptions.None);
+            }
+            return texture;
         }
     }
 }

@@ -59,57 +59,9 @@ namespace Microsoft.Xna.Framework.Input
 
         static Mouse()
         {
-            Events.MouseButtonDown += new EventHandler<MouseButtonEventArgs>(Events_MouseButtonDown);
-            Events.MouseButtonUp += new EventHandler<MouseButtonEventArgs>(Events_MouseButtonUp);
-            Events.MouseMotion += new EventHandler<MouseMotionEventArgs>(Events_MouseMotion);
         }
 
         #endregion Constructors
-
-
-        #region Private Methods
-
-        private static void Events_MouseMotion(object sender, MouseMotionEventArgs e)
-        {
-            mouseState.X = e.X;
-            mouseState.Y = e.Y;
-        }
-
-        private static void Events_MouseButtonUp(object sender, MouseButtonEventArgs e)
-        {
-            MouseButtonEvent(e.Button, ButtonState.Released);
-        }
-
-        private static void Events_MouseButtonDown(object sender, MouseButtonEventArgs e)
-        {
-            MouseButtonEvent(e.Button, ButtonState.Pressed);
-        }
-
-        private static void MouseButtonEvent(MouseButton button, ButtonState state)
-        {
-            switch (button)
-            {
-                case MouseButton.PrimaryButton:
-                    mouseState.LeftButton = state;
-                    break;
-                case MouseButton.SecondaryButton:
-                    mouseState.RightButton = state;
-                    break;
-                case MouseButton.MiddleButton:
-                    mouseState.MiddleButton = state;
-                    break;
-                case MouseButton.WheelUp:
-                    if (state == ButtonState.Released)
-                        mouseState.ScrollWheelValue += 120;
-                    break;
-                case MouseButton.WheelDown:
-                    if (state == ButtonState.Released)
-                        mouseState.ScrollWheelValue -= 120;
-                    break;
-            }
-        }
-
-        #endregion Private Methods
 
 
         #region Public Methods
