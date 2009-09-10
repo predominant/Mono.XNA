@@ -16,26 +16,25 @@ namespace Microsoft.Xna.Framework
 		private bool willBeFullScreen;		
 		private bool inTransition;
 		private Sdl.SDL_Surface sdlSurface;
-		private int bpp;	// Temporary TODO
-        
+		private int bitsPerPixel;
+		        
         #endregion Private Fields
 		
 		#region Constructors
 		
 		public SdlGameWindow()
 		{
-			bpp = 32;
+		
 		}
 
         #endregion Constructors
 		
 		#region Internal Methods
 		
-		internal void Create(string screenDeviceName, int clientWidth, int clientHeight, int bpp, bool fullscreen)
+		internal void Create(string screenDeviceName, int clientWidth, int clientHeight, int bitsPerPixel, bool fullscreen)
 		{
-			this.bpp = bpp;
 			BeginScreenDeviceChange(fullscreen);
-			EndScreenDeviceChange(screenDeviceName, clientWidth, clientHeight);
+			EndScreenDeviceChange("", clientWidth, clientHeight);			
 		}
 		
 		#endregion
@@ -51,9 +50,9 @@ namespace Microsoft.Xna.Framework
             get { return clientBounds; }
         }
 
-        public override IntPtr Handle {
+		public override IntPtr Handle {
             get {
-				// It seems like Tao.Sdl only supports for windows. TODO
+				// It seems like Tao.Sdl only supports this operation for windows. TODO
 				Sdl.SDL_SysWMinfo_Windows info;
 				if (Sdl.SDL_GetWMInfo(out info) != 0)
 					return new IntPtr(info.window);
@@ -62,11 +61,11 @@ namespace Microsoft.Xna.Framework
 			}
         }
 
-        public override string ScreenDeviceName {
+		public override string ScreenDeviceName {
             get { return screenDeviceName; }
         }
 
-        public override void BeginScreenDeviceChange(bool willBeFullScreen)
+		public override void BeginScreenDeviceChange(bool willBeFullScreen)
         {
             inTransition = true;
 			this.willBeFullScreen = willBeFullScreen;
@@ -75,15 +74,19 @@ namespace Microsoft.Xna.Framework
         public override void EndScreenDeviceChange(string screenDeviceName, int clientWidth, int clientHeight)
         {
             this.screenDeviceName = screenDeviceName;
-			OnScreenDeviceNameChanged();			
+			OnScreenDeviceNameChanged();
 			
 			int flags = Sdl.SDL_OPENGL;
 			if (willBeFullScreen)
 				flags |= Sdl.SDL_FULLSCREEN;
 			
-			IntPtr sdlSurfacePtr = Sdl.SDL_SetVideoMode(clientWidth, clientHeight, bpp, flags);
+			IntPtr sdlSurfacePtr = Sdl.SDL_SetVideoMode(clientWidth, clientHeight, bitsPerPixel, flags);
 			if (sdlSurfacePtr != IntPtr.Zero)
 				sdlSurface = (Sdl.SDL_Surface)Marshal.PtrToStructure(sdlSurfacePtr, typeof(Sdl.SDL_Surface));
+			
+			clientBounds.Width = clientWidth;
+			clientBounds.Height = clientHeight;
+			OnClientSizeChanged();
 			
 			inTransition = false;
         }

@@ -52,7 +52,7 @@ namespace Microsoft.Xna.Framework.Graphics
         private SurfaceFormat surfaceFormat;                        // The colour format of the texture
         private int width;                                          // the width of the texture before resizing it
 
-        internal int textureId = -1;                                     // The reference ID of the texture in OpenGL memory
+        internal int textureId = -1;                                // The reference ID of the texture in OpenGL memory
 		internal int imageId;
 
         #endregion Fields
@@ -274,7 +274,7 @@ namespace Microsoft.Xna.Framework.Graphics
         /// <param name="buffer">The byte array to load the texture data from.</param>
         private void Load(byte[] buffer)
         {	
-        	imageId = Il.ilGenImage ();
+			imageId = Il.ilGenImage ();
 			Il.ilBindImage (imageId);
 			Il.ilLoadL (Il.IL_JPG, buffer, buffer.Length);
 			

@@ -256,10 +256,13 @@ namespace Microsoft.Xna.Framework
 			{
 				if (updateTime > TargetElapsedTime)
 					gameTime.IsRunningSlowly = true;
+				else 
+					gameTime.IsRunningSlowly = false;
 				
 				while (updateTime < TargetElapsedTime)
 				{
 					// Needs to check SDL events while waiting? TODO
+					Thread.Sleep(1);
 					updateTime = TimeSpan.FromMilliseconds(Sdl.SDL_GetTicks() - gameTime.TotalRealTime.TotalMilliseconds);
 				}
 				

@@ -166,15 +166,9 @@ namespace Microsoft.Xna.Framework
             throw new NotImplementedException();
         }
 
-        void IDisposable.Dispose()
+        public void ToggleFullScreen()
         {
-            Dispose(true);
-            GC.SuppressFinalize(this);
-        }
-		
-		public void ToggleFullScreen()
-        {
-            throw new NotImplementedException();
+            
         }
 		
 		#endregion Public Methods
@@ -204,9 +198,17 @@ namespace Microsoft.Xna.Framework
             graphicsDevice.Present();
         }
 
-        #endregion IGraphicsDeviceManager Methods
+        #endregion IGraphicsDeviceManager Explicit Implementation
 
-        
+		#region IDisposable Explicit Implementation
+		
+		void IDisposable.Dispose()
+        {
+            Dispose(true);
+            GC.SuppressFinalize(this);
+        }
+		
+		#endregion
 
         #region Protected Methods
 
