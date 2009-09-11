@@ -77,6 +77,14 @@ namespace Microsoft.Xna.Framework.Input
             }
         }
 
+        public bool HasBigButton
+        {
+            get
+            {
+                throw new NotImplementedException();
+            }
+        }
+
         public bool HasLeftVibrationMotor
         {
             get

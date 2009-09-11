@@ -37,7 +37,9 @@ namespace Microsoft.Xna.Framework.Input
 
     public enum GamePadType
     {
+        AlternateGuitar = 7,
         ArcadeStick = 3,
+        BigButtonPad = 0x300,
         DancePad = 5,
         FlightStick = 4,
         GamePad = 1,
@@ -68,6 +70,7 @@ namespace Microsoft.Xna.Framework.Input
         X = 0x4000,
         Y = 0x8000,
         Back = 0x20,
+        BigButton = 0x800,
         Start = 0x10,
         DPadUp = 1,
         DPadDown = 2,

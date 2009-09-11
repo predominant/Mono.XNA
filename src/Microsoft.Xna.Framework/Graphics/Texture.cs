@@ -72,7 +72,7 @@ namespace Microsoft.Xna.Framework.Graphics
                 int height = Il.ilGetInteger(Il.IL_IMAGE_HEIGHT);
                 int depth = Il.ilGetInteger(Il.IL_IMAGE_DEPTH);
                 int size = Il.ilGetInteger(Il.IL_IMAGE_SIZE_OF_DATA);
-                Texture2D tex = new Texture2D(graphicsDevice, creationParameters.Width, creationParameters.Height, creationParameters.Depth, creationParameters.ResourceUsage, SurfaceFormat.Rgb32, creationParameters.ResourceManagementMode);
+                Texture2D tex = new Texture2D(graphicsDevice, creationParameters.Width, creationParameters.Height, creationParameters.Depth, TextureUsage.None, SurfaceFormat.Rgb32);
                 int[] texture = new int[1];
                 Gl.glGenTextures(1,texture);
                 tex.textureId = texture[0];

@@ -199,6 +199,47 @@ namespace Microsoft.Xna.Framework.Content
             return asset;
         }
 
+        protected T ReadAsset<T>(string assetName, Action<IDisposable> recordDisposableObject)
+        {
+            if (this.disposed)
+            {
+                throw new ObjectDisposedException(base.ToString());
+            }
+            if (string.IsNullOrEmpty(assetName))
+            {
+                throw new ArgumentNullException("assetName");
+            }
+            using (Stream assetStream = this.OpenStream(assetName))
+            {
+                // Get the graphics device from the service provider to pass to the contentreader
+                GraphicsDevice graphicsDevice = ((IGraphicsDeviceService)this.serviceProvider.GetService(typeof(IGraphicsDeviceService))).GraphicsDevice;
+
+                // Create a contentreader for the stream to read out the asset (whatever it is)
+                ContentReader contentReader = new ContentReader(this, assetStream, graphicsDevice);
+
+                // Get the asset's type readers. There can be a few of these like for the model class.
+                ContentTypeReader[] assetReaders = GetAssetReaders<T>(assetStream);
+
+                assetStream.ReadByte(); //Not sure what this byte is for
+
+                // Get the 1-based index of the typereader we should use to start decoding with
+                int index = assetStream.ReadByte();
+
+                T asset;
+                if (index == 0)
+                {
+                    asset = default(T);
+                }
+                else
+                {
+                    asset = contentReader.ReadObject<T>(assetReaders[index - 1]);
+                }
+
+                this.assets.Add(assetName, asset);
+                return asset;
+            }
+        }
+
         private ContentTypeReader[] GetAssetReaders<T>(Stream assetStream)
         {
             int length;

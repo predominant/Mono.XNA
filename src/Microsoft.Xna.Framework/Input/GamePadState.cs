@@ -99,10 +99,10 @@ namespace Microsoft.Xna.Framework.Input
             return (obj is GamePadState) ? ((GamePadState)obj) == this : false;
         }
 
-        public bool Equals(GamePadState obj)
-        {
-            return this == obj;
-        }
+        //public bool Equals(GamePadState obj)
+        //{
+        //    return this == obj;
+        //}
 
         public bool IsButtonDown(Microsoft.Xna.Framework.Input.Buttons button)
         {

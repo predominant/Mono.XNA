@@ -47,8 +47,7 @@ namespace Microsoft.Xna.Framework.Graphics
         private int height;                                         // The height of the texture before resizing it
         private bool isDisposed;                                    // True when the texture has been disposed
         private int numberOfLevels;                                 // The number of mip levels for the texture
-        private ResourceManagementMode resourceManagementMode;      // The currently active management mode 
-        private ResourceUsage resourceUsage;                        // The currently active usage mode
+        private TextureUsage textureUsage;
         private SurfaceFormat surfaceFormat;                        // The colour format of the texture
         private int width;                                          // the width of the texture before resizing it
 
@@ -71,24 +70,34 @@ namespace Microsoft.Xna.Framework.Graphics
             get { return this.surfaceFormat; }
         }
 
-        public ResourceManagementMode ResourceManagementMode {
-            get { return this.resourceManagementMode; }
-        }
-
-        public ResourceUsage ResourceUsage {
-            get { return this.resourceUsage; }
+        public TextureUsage TextureUsage
+        {
+            get { return this.textureUsage; }
         }
 
         #endregion Properties
 
         #region Constructors
 
+        /*FamANDAssem*/
+        protected internal Texture2D()
+        {
+        }
+
+        public Texture2D(GraphicsDevice graphicsDevice, int width, int height)
+        {
+            this.device = graphicsDevice;
+            this.width = width;
+            this.height = height;
+        }
+
         private Texture2D(GraphicsDevice graphicsDevice)
         {
             this.device = graphicsDevice;
         }
 
-
+        #region OLDCODE
+        /*
         public Texture2D(GraphicsDevice graphicsDevice, int width, int height, int numberLevels, ResourceUsage usage, SurfaceFormat format)
             : this(graphicsDevice, width, height, numberLevels, usage, format, ResourceManagementMode.Automatic)
         {
@@ -103,10 +112,17 @@ namespace Microsoft.Xna.Framework.Graphics
             this.resourceUsage = usage;
             this.surfaceFormat = format;
             this.resourceManagementMode = resourceManagementMode;
-        }
+        }*/
+        #endregion
 
         public Texture2D(GraphicsDevice graphicsDevice, int width, int height, int numberLevels, TextureUsage usage, SurfaceFormat format)
         {
+            this.device = graphicsDevice;
+            this.width = width;
+            this.height = height;
+            this.numberOfLevels = numberLevels;
+            this.textureUsage = usage;
+            this.surfaceFormat = format;
         }
 
         #endregion Constructors
@@ -115,53 +131,37 @@ namespace Microsoft.Xna.Framework.Graphics
 
         public new static Texture2D FromFile(GraphicsDevice graphicsDevice, Stream textureStream)
         {
-			throw new NotImplementedException("The method or operation is not implemented.");
+            return (Texture2D)Texture.FromFile(graphicsDevice, textureStream, -1);
         }
 		
 		public new static Texture2D FromFile(GraphicsDevice graphicsDevice, Stream textureStream, TextureCreationParameters creationParameters)
         {
-            throw new NotImplementedException("The method or operation is not implemented.");
+            return (Texture2D)Texture.FromFile(graphicsDevice, textureStream, -1, creationParameters);
         }
 		
 		public new static Texture2D FromFile(GraphicsDevice graphicsDevice, Stream textureStream, int numberBytes)
         {
-            throw new NotImplementedException("The method or operation is not implemented.");
+            return (Texture2D)Texture.FromFile(graphicsDevice, textureStream, numberBytes);
         }
 		
 		public new static Texture2D FromFile(GraphicsDevice graphicsDevice, Stream textureStream, int numberBytes, TextureCreationParameters creationParameters)
         {
-            throw new NotImplementedException("The method or operation is not implemented.");
+            return (Texture2D)Texture.FromFile(graphicsDevice, textureStream, numberBytes, creationParameters);
         }
 
         public new static Texture2D FromFile(GraphicsDevice graphicsDevice, string filename)
         {
-            throw new NotImplementedException("The method or operation is not implemented.");
+            return (Texture2D)Texture.FromFile(graphicsDevice, filename);
         }
 		
         public new static Texture2D FromFile(GraphicsDevice graphicsDevice, string filename, TextureCreationParameters creationParameters)
         {
-            int ImgID;
-            Il.ilGenImages(1, out ImgID);
-            Il.ilBindImage(ImgID);
-            Il.ilLoadImage(filename);
-            int width = Il.ilGetInteger(Il.IL_IMAGE_WIDTH);
-            int height = Il.ilGetInteger(Il.IL_IMAGE_HEIGHT);
-            int depth = Il.ilGetInteger(Il.IL_IMAGE_DEPTH);
-            int size = Il.ilGetInteger(Il.IL_IMAGE_SIZE_OF_DATA);
-            IntPtr pixmap = new IntPtr() ;
-            pixmap = Il.ilGetData();
-            byte[] pixdata = new byte[size];
-            System.Runtime.InteropServices.Marshal.Copy(pixmap, pixdata, 0, size);
-            Il.ilBindImage(0);
-            //Il.ilDeleteImage(0);
-            Texture2D tex = new Texture2D(graphicsDevice, width, height, depth, creationParameters.ResourceUsage, SurfaceFormat.Rgb32, creationParameters.ResourceManagementMode);
-            tex.Load(pixdata);
-            return tex;
+            return (Texture2D)Texture.FromFile(graphicsDevice, filename, creationParameters);
         }
 
         public new static Texture2D FromFile(GraphicsDevice graphicsDevice, string filename, int width, int height)
         {
-            throw new NotImplementedException("The method or operation is not implemented.");
+            return (Texture2D)Texture.FromFile(graphicsDevice, filename, width, height, 0);
         }
 		
         #endregion Static Methods
@@ -209,16 +209,6 @@ namespace Microsoft.Xna.Framework.Graphics
             Gl.glTexParameteri(Gl.GL_TEXTURE_2D, Gl.GL_TEXTURE_MAG_FILTER, Gl.GL_LINEAR);
         }
 
-        public static bool operator !=(Texture2D left, Texture2D right)
-        {
-            return !(left == right);
-        }
-
-        public static bool operator ==(Texture2D left, Texture2D right)
-        {
-            return object.Equals(left, right);
-        }
-
         protected override void Dispose(bool disposing)
         {
             if (!this.isDisposed)
@@ -247,16 +237,6 @@ namespace Microsoft.Xna.Framework.Graphics
                 }
             }
             this.isDisposed = true;
-        }
-
-        public override bool Equals(object obj)
-        {
-            return base.Equals(obj);
-        }
-
-        public override int GetHashCode()
-        {
-            return base.GetHashCode();
         }
 
         public override string ToString()

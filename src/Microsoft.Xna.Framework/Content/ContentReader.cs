@@ -36,6 +36,7 @@ namespace Microsoft.Xna.Framework.Content
     {
         private ContentManager contentManager;
         private GraphicsDevice graphicsDevice;
+        private string assetName;
 
         internal GraphicsDevice GraphicsDevice
         {
@@ -53,6 +54,13 @@ namespace Microsoft.Xna.Framework.Content
             get { return this.contentManager; }
         }
 
+        public string AssetName
+        {
+            get
+            {
+                return this.assetName;
+            }
+        }
 
         public T ReadExternalReference<T>()
         {
@@ -79,6 +87,23 @@ namespace Microsoft.Xna.Framework.Content
             result.M43 = ReadSingle();
             result.M44 = ReadSingle();
             return result;
+        }
+
+        public Color ReadColor()
+        {
+            Color color = new Color();
+            color.PackedValue = this.ReadUInt32();
+            return color;
+        }
+
+        public override double ReadDouble()
+        {
+            return base.ReadDouble(); //TODO: Maybe Doubles are stored in another way
+        }
+
+        public override float ReadSingle()
+        {
+            return base.ReadSingle(); //TODO: Maybe Singles are stored in another way
         }
 
         public T ReadObject<T>()

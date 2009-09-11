@@ -38,6 +38,7 @@ namespace Microsoft.Xna.Framework.Input
         ButtonState a;
         ButtonState b;
         ButtonState back;
+        ButtonState bigbutton;
         ButtonState leftShoulder;
         ButtonState rightShoulder;
         ButtonState leftStick;
@@ -66,6 +67,12 @@ namespace Microsoft.Xna.Framework.Input
         {
             get { return back; }
             internal set { back = value; }
+        }
+
+        public ButtonState BigButton
+        {
+            get { return bigbutton; }
+            internal set { bigbutton = value; }
         }
 
         public ButtonState LeftShoulder

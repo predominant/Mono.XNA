@@ -55,9 +55,9 @@ namespace Microsoft.Xna.Framework.Content
              int height = (input.ReadInt32());
  
             // Byte 13 - 16 is the "depth" of the texture
-             int levelCount = (input.ReadInt32());        
-            
-            Texture2D texture = new Texture2D(input.GraphicsDevice, width, height, levelCount, ResourceUsage.None, surfaceFormat, ResourceManagementMode.Automatic);
+             int levelCount = (input.ReadInt32());
+
+             Texture2D texture = new Texture2D(input.GraphicsDevice, width, height, levelCount, TextureUsage.None, surfaceFormat);
 
             for (int i = 0; i < levelCount; i++)
             {
