@@ -34,8 +34,8 @@ namespace Microsoft.Xna.Framework.Input
     {
         #region Private Member Variables
 
-        private static KeyboardState state = new KeyboardState((int)Sdl.SDLK_LAST);
-        private static Keys[] keyDictionary = new Keys[(int)Sdl.SDLK_LAST];
+        private static KeyboardState state;
+        private static Keys[] keyDictionary;
 
         #endregion
 
@@ -44,12 +44,9 @@ namespace Microsoft.Xna.Framework.Input
 
         static Keyboard()
         {
-            // Register the KeyboardUp and KeyboardDown events
-            //Events.KeyboardDown += new EventHandler<KeyboardEventArgs>(Events_KeyboardAction);
-            //Events.KeyboardUp += new EventHandler<KeyboardEventArgs>(Events_KeyboardAction);
-
-            // Map all of the SDL.NET keys to the XNA keys
-
+            state = new KeyboardState((int)Sdl.SDLK_LAST);
+			keyDictionary = new Keys[(int)Sdl.SDLK_LAST];
+			
             // TODO: Fix any keys that report incorrect values
             // Any key that has a World value must be changed
             keyDictionary[(int)Sdl.SDLK_UNKNOWN] = Keys.Oem8;
@@ -213,8 +210,10 @@ namespace Microsoft.Xna.Framework.Input
 
         public static KeyboardState GetState()
         {
-            //TODO: Will this work? The state contains an object on the heap. Will the reference be the same
-            // when you return the "state" from this class?
+			int numKeys = 0;
+            byte[] keys = Sdl.SDL_GetKeyState(out numKeys);
+			for (int key = Sdl.SDLK_UNKNOWN; key < Sdl.SDLK_LAST; key++)
+				state[keyDictionary[key]] = (keys[key] > 0) ? KeyState.Down : KeyState.Up;
             return state;
         }
 

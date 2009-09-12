@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="3.5">
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
@@ -238,6 +238,8 @@
     <Compile Include="Storage\StorageDeviceNotConnectedException.cs" />
     <Compile Include="Design\FieldDescriptor.cs" />
     <Compile Include="Input\GamePad.cs" />
+    <Compile Include="Content\ContentReaders\EffectReader.cs" />
+    <Compile Include="Input\Mouse.cs" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="System" />
@@ -248,9 +250,5 @@
     <Reference Include="Tao.OpenGl, Version=2.1.0.12, Culture=neutral, PublicKeyToken=1ca010269a4501ef" />
     <Reference Include="Tao.DevIl, Version=1.6.8.3, Culture=neutral, PublicKeyToken=7ec4053013524957" />
     <Reference Include="Tao.Sdl, Version=1.2.13.0, Culture=neutral, PublicKeyToken=9c7a200e36c0094e" />
-  </ItemGroup>
-  <ItemGroup>
-    <Compile Include="Content\ContentReaders\EffectReader.cs" />
-    <Compile Include="Input\Mouse.cs" />
   </ItemGroup>
 </Project>

@@ -60,7 +60,7 @@
     <Compile Include="PreparingDeviceSettingsEventArgs.cs" />
     <Compile Include="SdlGameWindow.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="GameHost.cs" />
+    <Compile Include="IGameHost.cs" />
     <Compile Include="SdlGameHost.cs" />
   </ItemGroup>
   <ItemGroup>

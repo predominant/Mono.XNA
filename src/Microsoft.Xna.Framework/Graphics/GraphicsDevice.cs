@@ -195,9 +195,8 @@ namespace Microsoft.Xna.Framework.Graphics
 			if (presentationParameters.BackBufferCount > 0)
 				Sdl.SDL_GL_SetAttribute(Sdl.SDL_GL_DOUBLEBUFFER, 1); // multiple back buffers not supported in SDL 1.2
 			
-			// Setup OpenGL TODO
-			
-			//Code above make some systems crash. Need to be fixed
+			// Setup OpenGL TODO			
+			// Code below make some systems crash. Need to be fixed
             //Gl.glShadeModel(Gl.GL_SMOOTH);
             //Gl.glEnable(Gl.GL_DEPTH_TEST);
             //Gl.glDepthFunc(Gl.GL_LEQUAL);
@@ -354,7 +353,7 @@ namespace Microsoft.Xna.Framework.Graphics
 		
 		public void Reset()
         {
-            throw new NotImplementedException();
+            raise_DeviceResetting(this, EventArgs.Empty);
         }
 
         public void Reset(PresentationParameters presentationParameters)
@@ -484,36 +483,6 @@ namespace Microsoft.Xna.Framework.Graphics
             }
         }
 		
-		#endregion Protected Methods
-
-		#region Operators
-
-        public static bool operator !=(GraphicsDevice left, GraphicsDevice right)
-        {
-            return !Equals(left, right);
-        }
-
-        public static bool operator ==(GraphicsDevice left, GraphicsDevice right)
-        {
-            return Equals(left, right);
-        }
-		
-		#endregion Operators       
-
-		#region Events
-
-        public event EventHandler DeviceLost;
-
-        public event EventHandler DeviceReset;
-
-        public event EventHandler DeviceResetting;
-
-        public event EventHandler Disposing;
-
-        public event EventHandler<ResourceCreatedEventArgs> ResourceCreated;
-
-        public event EventHandler<ResourceDestroyedEventArgs> ResourceDestroyed;
-		
 		protected void raise_DeviceLost(object sender, EventArgs e)
         {
             if (DeviceLost != null)
@@ -549,6 +518,36 @@ namespace Microsoft.Xna.Framework.Graphics
             if (ResourceDestroyed != null)
                 ResourceDestroyed(sender, e);
         }
+		
+		#endregion Protected Methods
+
+		#region Operators
+
+        public static bool operator !=(GraphicsDevice left, GraphicsDevice right)
+        {
+            return !Equals(left, right);
+        }
+
+        public static bool operator ==(GraphicsDevice left, GraphicsDevice right)
+        {
+            return Equals(left, right);
+        }
+		
+		#endregion Operators       
+
+		#region Events
+
+        public event EventHandler DeviceLost;
+
+        public event EventHandler DeviceReset;
+
+        public event EventHandler DeviceResetting;
+
+        public event EventHandler Disposing;
+
+        public event EventHandler<ResourceCreatedEventArgs> ResourceCreated;
+
+        public event EventHandler<ResourceDestroyedEventArgs> ResourceDestroyed;		
 		
 		#endregion Events
 		

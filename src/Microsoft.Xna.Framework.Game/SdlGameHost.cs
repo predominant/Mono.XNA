@@ -7,27 +7,33 @@ namespace Microsoft.Xna.Framework
 {
 	
 	
-	internal class SdlGameHost : GameHost
+	internal class SdlGameHost : IGameHost
 	{
 		#region Fields
 		
 		private bool isExiting;
+		private Game game;
+		private SdlGameWindow window;
 		
 		#endregion Fields
 		
 		#region Constructor
 		
 		public SdlGameHost(Game game)
-			: base(game)
 		{
+			this.game = game;
 			isExiting = false;
 		}
 		
 		#endregion Constructor
 		
-		#region GameHost Overrides
+		#region IGameHost Implementations
 		
-		public override void EnsureHost()
+		public GameWindow Window {
+			get { return window; }	
+		}
+		
+		public void EnsureHost()
 		{
 			int result = Sdl.SDL_Init (Sdl.SDL_INIT_TIMER | Sdl.SDL_INIT_VIDEO);
 			if (result == 0)
@@ -35,21 +41,20 @@ namespace Microsoft.Xna.Framework
 			else
 				System.Diagnostics.Debug.WriteLine("Couldn't initialize SDL");
 			
-			window = new SdlGameWindow();
+			window = new SdlGameWindow(game);
 		}
 
 		
-		public override void Initialize()
+		public void Initialize()
 		{		
-			((SdlGameWindow)window).Create("", game.GraphicsDevice.PresentationParameters.BackBufferWidth, 
+			window.Create("", game.GraphicsDevice.PresentationParameters.BackBufferWidth, 
 				game.GraphicsDevice.PresentationParameters.BackBufferHeight,
-			    32,	// Temporary fix. TODO
-				game.GraphicsDevice.PresentationParameters.IsFullScreen);
+			    game.GraphicsDevice.PresentationParameters.IsFullScreen);
 			
 			Sdl.SDL_ShowCursor(game.IsMouseVisible ? Sdl.SDL_ENABLE : Sdl.SDL_DISABLE);
 		}
 		
-		public override void Run()
+		public void Run()
 		{			
 			while (!isExiting)
 			{
@@ -65,9 +70,10 @@ namespace Microsoft.Xna.Framework
 				}				
 				game.Tick();
 			}
+			Sdl.SDL_Quit();
 		}
 		
-		public override void Exit()
+		public void Exit()
 		{
 			isExiting = true;
 		}

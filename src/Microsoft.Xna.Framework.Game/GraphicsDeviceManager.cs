@@ -67,17 +67,6 @@ namespace Microsoft.Xna.Framework
 		
         #endregion Private Fields
 
-        #region Events
-
-        public event EventHandler DeviceCreated;
-        public event EventHandler DeviceDisposing;
-        public event EventHandler DeviceReset;
-        public event EventHandler DeviceResetting;
-        public event EventHandler Disposed;
-        public event EventHandler<PreparingDeviceSettingsEventArgs> PreparingDeviceSettings;
-
-        #endregion Events
-
         #region Public Properties
 
         public GraphicsDevice GraphicsDevice {
@@ -131,6 +120,17 @@ namespace Microsoft.Xna.Framework
 
         #endregion
 
+        #region Events
+
+        public event EventHandler DeviceCreated;
+        public event EventHandler DeviceDisposing;
+        public event EventHandler DeviceReset;
+        public event EventHandler DeviceResetting;
+        public event EventHandler Disposed;
+        public event EventHandler<PreparingDeviceSettingsEventArgs> PreparingDeviceSettings;
+
+        #endregion Events
+
         #region Constructors
 
         public GraphicsDeviceManager(Game game)
@@ -168,47 +168,11 @@ namespace Microsoft.Xna.Framework
 
         public void ToggleFullScreen()
         {
-            
+            isFullScreen = !isFullScreen;
+			ChangeDevice();
         }
 		
-		#endregion Public Methods
-
-        #region IGraphicsDeviceManager Explicit Implementation
-
-        bool IGraphicsDeviceManager.BeginDraw()
-        {
-            return true;
-        }
-
-        void IGraphicsDeviceManager.CreateDevice()
-        {
-            GraphicsDeviceInformation info = FindBestDevice(true);
-            OnPreparingDeviceSettings(this, new PreparingDeviceSettingsEventArgs(info));
-            
-			graphicsDevice = new GraphicsDevice(info.Adapter, info.DeviceType, game.Window.Handle, info.PresentationParameters);
-			graphicsDevice.Disposing += new EventHandler(_graphicsDevice_Disposing);
-            graphicsDevice.DeviceResetting += new EventHandler(_graphicsDevice_DeviceResetting);
-            graphicsDevice.DeviceReset += new EventHandler(_graphicsDevice_DeviceReset);
-            
-            OnDeviceCreated(this, EventArgs.Empty);
-        }
-
-        void IGraphicsDeviceManager.EndDraw()
-        {
-            graphicsDevice.Present();
-        }
-
-        #endregion IGraphicsDeviceManager Explicit Implementation
-
-		#region IDisposable Explicit Implementation
-		
-		void IDisposable.Dispose()
-        {
-            Dispose(true);
-            GC.SuppressFinalize(this);
-        }
-		
-		#endregion
+		#endregion Public Methods        
 
         #region Protected Methods
 
@@ -277,6 +241,10 @@ namespace Microsoft.Xna.Framework
 
             return graphicDeviceInfoList[0];
         }
+		
+		protected virtual void RankDevices(List<GraphicsDeviceInformation> foundDevices)
+        {
+        }
 
         protected virtual void OnDeviceCreated(object sender, EventArgs args)
         {
@@ -308,29 +276,52 @@ namespace Microsoft.Xna.Framework
                 PreparingDeviceSettings(this, args);
         }
 
-        protected virtual void RankDevices(List<GraphicsDeviceInformation> foundDevices)
-        {
-        }
-
         #endregion
+		
+		#region Private Methods
+		
+		private void ChangeDevice()
+		{
+			
+		}
+		
+		#endregion
 
-        #region Private Members
+		#region IGraphicsDeviceManager Explicit Implementation
 
-        void _graphicsDevice_Disposing(object sender, EventArgs e)
+        bool IGraphicsDeviceManager.BeginDraw()
         {
-            OnDeviceDisposing(sender, e);
+            return true;
         }
 
-        void _graphicsDevice_DeviceReset(object sender, EventArgs e)
+        void IGraphicsDeviceManager.CreateDevice()
         {
-            OnDeviceReset(sender, e);
+            GraphicsDeviceInformation info = FindBestDevice(true);
+            OnPreparingDeviceSettings(this, new PreparingDeviceSettingsEventArgs(info));
+            
+			graphicsDevice = new GraphicsDevice(info.Adapter, info.DeviceType, game.Window.Handle, info.PresentationParameters);
+			graphicsDevice.Disposing += new EventHandler(OnDeviceDisposing);
+            graphicsDevice.DeviceResetting += new EventHandler(OnDeviceResetting);
+            graphicsDevice.DeviceReset += new EventHandler(OnDeviceReset);
+            
+            OnDeviceCreated(this, EventArgs.Empty);
         }
 
-        void _graphicsDevice_DeviceResetting(object sender, EventArgs e)
+        void IGraphicsDeviceManager.EndDraw()
         {
-            OnDeviceResetting(sender, e);
+            graphicsDevice.Present();
         }
 
-        #endregion Private Members
+        #endregion IGraphicsDeviceManager Explicit Implementation
+
+		#region IDisposable Explicit Implementation
+		
+		void IDisposable.Dispose()
+        {
+            Dispose(true);
+            GC.SuppressFinalize(this);
+        }
+		
+		#endregion
     }
 }

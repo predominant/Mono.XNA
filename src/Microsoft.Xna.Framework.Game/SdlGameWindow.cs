@@ -1,6 +1,7 @@
 using System;
 using System.Runtime.InteropServices;
 using Tao.Sdl;
+using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 
 namespace Microsoft.Xna.Framework
@@ -16,22 +17,26 @@ namespace Microsoft.Xna.Framework
 		private bool willBeFullScreen;		
 		private bool inTransition;
 		private Sdl.SDL_Surface sdlSurface;
-		private int bitsPerPixel;
+		private Game game;
 		        
         #endregion Private Fields
 		
 		#region Constructors
 		
-		public SdlGameWindow()
+		public SdlGameWindow(Game game)
+			: base()
 		{
-		
+			this.game = game;
 		}
 
         #endregion Constructors
 		
 		#region Internal Methods
 		
-		internal void Create(string screenDeviceName, int clientWidth, int clientHeight, int bitsPerPixel, bool fullscreen)
+		/// <summary>
+		/// Create the window
+		/// </summary>
+		internal void Create(string screenDeviceName, int clientWidth, int clientHeight, bool fullscreen)
 		{
 			BeginScreenDeviceChange(fullscreen);
 			EndScreenDeviceChange("", clientWidth, clientHeight);			
@@ -52,7 +57,7 @@ namespace Microsoft.Xna.Framework
 
 		public override IntPtr Handle {
             get {
-				// It seems like Tao.Sdl only supports this operation for windows. TODO
+#warning Only windows support in Tao.Sdl?
 				Sdl.SDL_SysWMinfo_Windows info;
 				if (Sdl.SDL_GetWMInfo(out info) != 0)
 					return new IntPtr(info.window);
@@ -67,7 +72,7 @@ namespace Microsoft.Xna.Framework
 
 		public override void BeginScreenDeviceChange(bool willBeFullScreen)
         {
-            inTransition = true;
+			inTransition = true;
 			this.willBeFullScreen = willBeFullScreen;
         }
 
@@ -80,10 +85,11 @@ namespace Microsoft.Xna.Framework
 			if (willBeFullScreen)
 				flags |= Sdl.SDL_FULLSCREEN;
 			
-			IntPtr sdlSurfacePtr = Sdl.SDL_SetVideoMode(clientWidth, clientHeight, bitsPerPixel, flags);
+			IntPtr sdlSurfacePtr = Sdl.SDL_SetVideoMode(clientWidth, clientHeight, 32, flags);
 			if (sdlSurfacePtr != IntPtr.Zero)
 				sdlSurface = (Sdl.SDL_Surface)Marshal.PtrToStructure(sdlSurfacePtr, typeof(Sdl.SDL_Surface));
 			
+#warning SDL 1.2 doesn't support getting the window position, only the dimensions
 			clientBounds.Width = clientWidth;
 			clientBounds.Height = clientHeight;
 			OnClientSizeChanged();

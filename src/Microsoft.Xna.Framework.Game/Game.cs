@@ -38,6 +38,10 @@ using Tao.Sdl;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Content;
 
+#if NUNITTESTS
+using Microsoft.Xna.Framework.Test;
+#endif
+
 namespace Microsoft.Xna.Framework
 {
     public class Game : IDisposable
@@ -67,7 +71,7 @@ namespace Microsoft.Xna.Framework
 		IGraphicsDeviceManager graphicsManager;
         IGraphicsDeviceService graphicsService;
 		
-		GameHost gameHost;        
+		IGameHost gameHost;        
 
         #endregion Private Fields
 
@@ -110,25 +114,12 @@ namespace Microsoft.Xna.Framework
             set { targetElapsedTime = value; }
         }
 
-#if XNA_1_1
-        internal
-#else
-        public
-#endif
-        ContentManager Content {
+		public ContentManager Content {
             get { return this.content; }
-
-#if XNA_3_0
             set { this.content = value; }
-#endif
         }
 
-#if XNA_1_1
-        internal
-#else
-        public
-#endif
-        GraphicsDevice GraphicsDevice {
+		public GraphicsDevice GraphicsDevice {
             get {
                 if (graphicsService == null)
                 {
@@ -187,12 +178,10 @@ namespace Microsoft.Xna.Framework
 
         #region Public Methods
 
-#if XNA_3_0
         public void SuppressDraw()
         {
             throw new NotImplementedException();
         }
-#endif
 
         public void ResetElapsedTime()
         {
@@ -221,8 +210,7 @@ namespace Microsoft.Xna.Framework
 			
 			graphicsManager = (IGraphicsDeviceManager)Services.GetService(typeof (IGraphicsDeviceManager));
             if (graphicsManager != null)
-                graphicsManager.CreateDevice();
-			
+                graphicsManager.CreateDevice();			
 
 			graphicsService = (IGraphicsDeviceService)Services.GetService(typeof (IGraphicsDeviceService));
             if (graphicsService != null)
@@ -287,12 +275,10 @@ namespace Microsoft.Xna.Framework
 
         #region Protected Methods
 
-#if XNA_3_0
         protected virtual bool ShowMissingRequirementMessage(Exception exception)
         {
             throw new NotImplementedException();
         }
-#endif
 
         protected virtual void Dispose(bool disposing)
         {
@@ -356,32 +342,7 @@ namespace Microsoft.Xna.Framework
            	LoadContent();
         }
 
-        void DeviceCreated(object sender, EventArgs e)
-        {
-            LoadContent();
-        }
-
-        void DeviceDisposing(object sender, EventArgs e)
-        {
-            UnloadGraphicsContent(true);
-        }
-
-        void DeviceReset(object sender, EventArgs e)
-        {
-            LoadGraphicsContent(false);
-        }
-
-        void DeviceResetting(object sender, EventArgs e)
-        {
-            UnloadGraphicsContent(false);
-        }
-
-#if XNA_1_1
-        internal
-#else
-        protected
-#endif
-        virtual void LoadContent()
+        protected virtual void LoadContent()
         {
         }
 
@@ -457,6 +418,26 @@ namespace Microsoft.Xna.Framework
         {
             isActive = true;
             OnActivated(sender, e);
+        }
+		
+		void DeviceCreated(object sender, EventArgs e)
+        {
+            LoadContent();
+        }
+
+        void DeviceDisposing(object sender, EventArgs e)
+        {
+            UnloadGraphicsContent(true);
+        }
+
+        void DeviceReset(object sender, EventArgs e)
+        {
+            LoadGraphicsContent(false);
+        }
+
+        void DeviceResetting(object sender, EventArgs e)
+        {
+            UnloadGraphicsContent(false);
         }
 
         #region Game Component Collection Methods
@@ -577,9 +558,6 @@ namespace Microsoft.Xna.Framework
         public event EventHandler Exiting;
 
         #endregion Public Events
-
-        #region Internal Members
-
-        #endregion Internal Members
+		
     }
 }
