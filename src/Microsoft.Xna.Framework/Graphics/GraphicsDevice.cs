@@ -192,6 +192,8 @@ namespace Microsoft.Xna.Framework.Graphics
 				Sdl.SDL_GL_SetAttribute(Sdl.SDL_GL_ALPHA_SIZE, 8);
 			}
 			
+		 	Sdl.SDL_GL_SetAttribute(Sdl.SDL_GL_DEPTH_SIZE, 16);
+			
 			if (presentationParameters.BackBufferCount > 0)
 				Sdl.SDL_GL_SetAttribute(Sdl.SDL_GL_DOUBLEBUFFER, 1); // multiple back buffers not supported in SDL 1.2
 			

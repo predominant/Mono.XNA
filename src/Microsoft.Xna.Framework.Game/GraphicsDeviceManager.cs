@@ -7,6 +7,7 @@ All rights reserved.
 
 Authors:
  * Stuart Carnie (stuart.carnie@gmail.com)
+ * Lars Magnusson (lavima@gmail.com)
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
@@ -217,9 +218,11 @@ namespace Microsoft.Xna.Framework
 					GraphicsDeviceInformation info = new GraphicsDeviceInformation();
 					info.Adapter = GraphicsAdapter.DefaultAdapter;
 					info.DeviceType = DeviceType.Hardware;
-					info.PresentationParameters.BackBufferWidth = mode.w;
-					info.PresentationParameters.BackBufferHeight = mode.h;
+					info.PresentationParameters.BackBufferWidth = PreferredBackBufferWidth;
+					info.PresentationParameters.BackBufferHeight = PreferredBackBufferHeight;
 					info.PresentationParameters.BackBufferFormat = PreferredBackBufferFormat;
+					info.PresentationParameters.IsFullScreen = IsFullScreen;
+#warning Missing information. Could perhaps be improved slightly, but must wait for SDL 1.3 for a possible fix
 	                graphicDeviceInfoList.Add(info);
 				}
 			}
