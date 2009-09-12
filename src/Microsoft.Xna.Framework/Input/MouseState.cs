@@ -129,7 +129,14 @@ namespace Microsoft.Xna.Framework.Input
 
         public MouseState(int x, int y, int scrollWheel, Microsoft.Xna.Framework.Input.ButtonState leftButton, Microsoft.Xna.Framework.Input.ButtonState middleButton, Microsoft.Xna.Framework.Input.ButtonState rightButton, Microsoft.Xna.Framework.Input.ButtonState xButton1, Microsoft.Xna.Framework.Input.ButtonState xButton2)
         {
-            throw new NotImplementedException();
+            this.x = x;
+			this.y = y;
+			this.wheel = scrollWheel;
+			this.left = leftButton;
+			this.right = rightButton;
+			this.middle = middleButton;
+			this.xb1 = xButton1;
+			this.xb2 = xButton2;
         }
 
         public override int GetHashCode()

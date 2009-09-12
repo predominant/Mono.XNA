@@ -7,6 +7,7 @@ All rights reserved.
 
 Authors:
  * Rob Loach
+ * Tim Pambor
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
@@ -38,7 +39,6 @@ namespace Microsoft.Xna.Framework.Input
     {
         #region Private Fields
 
-        private static MouseState mouseState;
         private static IntPtr windowHandle;
 
         #endregion Fields
@@ -68,12 +68,21 @@ namespace Microsoft.Xna.Framework.Input
 
         public static MouseState GetState()
         {
-            return mouseState;
-        }
+            int x; int y;
+			byte buttons = Sdl.SDL_GetMouseState(out x,out y);		
+			ButtonState leftButton = (ButtonState)(buttons & Sdl.SDL_BUTTON(Sdl.SDL_BUTTON_LEFT));
+			MouseState MS = new MouseState(x,y,0,
+			                               ((buttons & Sdl.SDL_BUTTON(Sdl.SDL_BUTTON_LEFT)) > 0) ? ButtonState.Pressed : ButtonState.Released ,
+			                               ((buttons & Sdl.SDL_BUTTON(Sdl.SDL_BUTTON_MIDDLE)) > 0) ? ButtonState.Pressed : ButtonState.Released ,
+			                               ((buttons & Sdl.SDL_BUTTON(Sdl.SDL_BUTTON_RIGHT)) > 0) ? ButtonState.Pressed : ButtonState.Released ,
+			                               ((buttons & Sdl.SDL_BUTTON(Sdl.SDL_BUTTON_X1)) > 0) ? ButtonState.Pressed : ButtonState.Released ,
+			                               ((buttons & Sdl.SDL_BUTTON(Sdl.SDL_BUTTON_X1)) > 0) ? ButtonState.Pressed : ButtonState.Released);
+        	return MS;
+		}
 
         public static void SetPosition(int x, int y)
         {
-            throw new NotImplementedException();
+            Sdl.SDL_WarpMouse((ushort)x, (ushort)y);
         }
 
         #endregion Public Methods

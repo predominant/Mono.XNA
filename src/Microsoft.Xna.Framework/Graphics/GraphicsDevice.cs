@@ -150,7 +150,15 @@ namespace Microsoft.Xna.Framework.Graphics
         }
 
         public Viewport Viewport {
-            get { throw new NotImplementedException(); }
+            get { int[] viewport = new int[4];
+				Gl.glGetIntegerv(Gl.GL_VIEWPORT, viewport);
+				 Viewport view = new Viewport();
+				view.X = viewport[0];
+				view.Y = viewport[1];
+				view.Width = viewport[2];
+				view.Height = viewport[3];
+				return view;
+			}
             set {
                 Gl.glViewport(value.X, value.Y, value.Width, value.Height);
             }
@@ -189,10 +197,11 @@ namespace Microsoft.Xna.Framework.Graphics
 			
 			// Setup OpenGL TODO
 			
-            Gl.glShadeModel(Gl.GL_SMOOTH);
-            Gl.glEnable(Gl.GL_DEPTH_TEST);
-            Gl.glDepthFunc(Gl.GL_LEQUAL);
-            Gl.glHint(Gl.GL_PERSPECTIVE_CORRECTION_HINT, Gl.GL_NICEST);
+			//Code above make some systems crash. Need to be fixed
+            //Gl.glShadeModel(Gl.GL_SMOOTH);
+            //Gl.glEnable(Gl.GL_DEPTH_TEST);
+            //Gl.glDepthFunc(Gl.GL_LEQUAL);
+            //Gl.glHint(Gl.GL_PERSPECTIVE_CORRECTION_HINT, Gl.GL_NICEST);
 			
 			// Setup DevIL
 			

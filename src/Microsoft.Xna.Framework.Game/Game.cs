@@ -38,10 +38,6 @@ using Tao.Sdl;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Content;
 
-#if NUNITTESTS
-using Microsoft.Xna.Framework.Test;
-#endif
-
 namespace Microsoft.Xna.Framework
 {
     public class Game : IDisposable
