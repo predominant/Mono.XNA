@@ -134,7 +134,7 @@ namespace Microsoft.Xna.Framework.Graphics
             if (!isRunning)
                 throw new InvalidOperationException("Begin must be called successfully before End can be called.");
             
-			if (sortMode == SpriteSortMode.Deferred)
+			if (sortMode != SpriteSortMode.Immediate)
             {
                 ApplyGraphicsDeviceSettings();
                 Flush();
@@ -217,7 +217,7 @@ namespace Microsoft.Xna.Framework.Graphics
                 float x = (float)sp.sourceRectangle.X / (float)sp.texture.Width;
                 float y = (float)sp.sourceRectangle.Y / (float)sp.texture.Height;
                 float twidth = (float)sp.sourceRectangle.Width / (float)sp.texture.Width;
-                //float theight = (float)sp.sourceRectangle.Height / (float)sp.texture.textureHeight;
+                //float theight = (float)sp.sourceRectangle.Height / (float)sp.texture.Height;
                 float theight = 1.0f;
 
                 // Draw
@@ -378,6 +378,55 @@ namespace Microsoft.Xna.Framework.Graphics
             if (sortMode == SpriteSortMode.Immediate)
                 Flush();
         }
+
+        public void DrawString(SpriteFont spriteFont, string text, Vector2 position, Color color)
+        {
+            if (spriteFont == null)
+            {
+                throw new ArgumentNullException("spriteFont");
+            }
+            if (text == null)
+            {
+                throw new ArgumentNullException("text");
+            }
+            Vector2 one = Vector2.One;
+            spriteFont.Draw(ref text, this, position, color, 0f, Vector2.Zero, ref one, SpriteEffects.None, 0f);
+        }
+
+        public void DrawString(SpriteFont spriteFont, string text, Vector2 position, Color color, float rotation, Vector2 origin, float scale, SpriteEffects effects, float layerDepth)
+        {
+            Vector2 vector;
+            if (spriteFont == null)
+            {
+                throw new ArgumentNullException("spriteFont");
+            }
+            if (text == null)
+            {
+                throw new ArgumentNullException("text");
+            }
+            vector.X = scale;
+            vector.Y = scale;
+            spriteFont.Draw(ref text, this, position, color, rotation, origin,ref vector, effects, layerDepth);
+        }
+
+
+        //public void DrawString(SpriteFont spriteFont, StringBuilder text, Vector2 position, Color color, float rotation, Vector2 origin, float scale, SpriteEffects effects, float layerDepth)
+        //{
+        //    Vector2 vector;
+        //    if (spriteFont == null)
+        //    {
+        //        throw new ArgumentNullException("spriteFont");
+        //    }
+        //    if (text == null)
+        //    {
+        //        throw new ArgumentNullException("text");
+        //    }
+        //    vector.X = scale;
+        //    vector.Y = scale;
+        //    spriteFont.Draw(, this, position, color, rotation, origin, vector, effects, layerDepth);
+        //}
+
+ 
 
         #endregion Methods
 
