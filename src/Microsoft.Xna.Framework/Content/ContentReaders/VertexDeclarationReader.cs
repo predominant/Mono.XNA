@@ -35,7 +35,7 @@ namespace Microsoft.Xna.Framework.Content
 {
     class VertexDeclarationReader : ContentTypeReader<VertexDeclarationReader>
     {
-        internal VertexDeclarationReader()
+        public VertexDeclarationReader()
         {
             // Do nothing
         }

@@ -35,7 +35,7 @@ namespace Microsoft.Xna.Framework.Content
 {
     class BasicEffectReader : ContentTypeReader<BasicEffectReader>
     {
-        internal BasicEffectReader()
+        public BasicEffectReader()
         {
             // Do nothing
         }

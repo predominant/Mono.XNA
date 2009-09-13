@@ -35,7 +35,7 @@ namespace Microsoft.Xna.Framework.Content
 {
     class ModelReader : ContentTypeReader<Model>
     {
-        internal ModelReader()
+        public ModelReader()
         {
             // Do nothing
         }

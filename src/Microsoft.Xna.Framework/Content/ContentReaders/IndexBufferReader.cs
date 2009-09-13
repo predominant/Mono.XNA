@@ -35,7 +35,7 @@ namespace Microsoft.Xna.Framework.Content
 {
     class IndexBufferReader : ContentTypeReader<IndexBuffer>
     {
-        internal IndexBufferReader()
+        public IndexBufferReader()
         {
         }
 

@@ -197,15 +197,29 @@ namespace Microsoft.Xna.Framework.Graphics
 
         public void SetData<T>(int level, Nullable<Rectangle> rect, T[] data, int startIndex, int elementCount, SetDataOptions options)
         {
-            if (textureId == -1)
+            if (textureId == -1 || options == SetDataOptions.NoOverwrite)
             {
                 int[] texture = new int[1];
                 Gl.glGenTextures(1, texture);
                 textureId = texture[0];
             }
             Gl.glBindTexture(Gl.GL_TEXTURE_2D, textureId);	
-            Gl.glTexImage2D(Gl.GL_TEXTURE_2D, 0, 4, this.Width, this.Height, 0, Gl.GL_BGRA, Gl.GL_UNSIGNED_BYTE, data);
-            Gl.glTexParameteri(Gl.GL_TEXTURE_2D, Gl.GL_TEXTURE_MIN_FILTER, Gl.GL_LINEAR); //FIXME: Have we to set these parameters ?
+            switch (this.surfaceFormat)
+            {
+                case SurfaceFormat.Color:
+                    Gl.glTexImage2D(Gl.GL_TEXTURE_2D, 0, 4, this.width, this.height, 0, Gl.GL_BGRA, Gl.GL_UNSIGNED_BYTE, data);
+                    break;
+                case SurfaceFormat.Dxt1:
+                    Gl.glCompressedTexImage2D(Gl.GL_TEXTURE_2D, 0, Gl.GL_COMPRESSED_RGBA_S3TC_DXT1_EXT, this.width, this.height, 0, elementCount, data);
+                    break;
+                case SurfaceFormat.Dxt3:
+                    Gl.glCompressedTexImage2D(Gl.GL_TEXTURE_2D, 0, Gl.GL_COMPRESSED_RGBA_S3TC_DXT3_EXT, this.width, this.height, 0, elementCount, data);
+                    break;
+                case SurfaceFormat.Dxt5:
+                    Gl.glCompressedTexImage2D(Gl.GL_TEXTURE_2D, 0, Gl.GL_COMPRESSED_RGBA_S3TC_DXT5_EXT, this.width, this.height, 0, elementCount, data);
+                    break;
+            }
+            Gl.glTexParameteri(Gl.GL_TEXTURE_2D, Gl.GL_TEXTURE_MIN_FILTER, Gl.GL_LINEAR); 
             Gl.glTexParameteri(Gl.GL_TEXTURE_2D, Gl.GL_TEXTURE_MAG_FILTER, Gl.GL_LINEAR);
         }
 

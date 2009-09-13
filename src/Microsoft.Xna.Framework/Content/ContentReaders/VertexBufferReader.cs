@@ -35,7 +35,7 @@ namespace Microsoft.Xna.Framework.Content
 {
     class VertexBufferReader : ContentTypeReader<VertexBuffer>
     {
-        internal VertexBufferReader()
+        public VertexBufferReader()
         {
             // Do nothing
         }

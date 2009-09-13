@@ -9,7 +9,7 @@ namespace Microsoft.Xna.Framework.Content
     {
         private static EffectPool effectpool;
 
-        internal EffectReader()
+        public EffectReader()
         {
         }
 

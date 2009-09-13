@@ -34,7 +34,7 @@ namespace Microsoft.Xna.Framework.Content
 {
     internal class StringReader : ContentTypeReader<String>
     {
-        internal StringReader()
+        public StringReader()
         {
         }
 

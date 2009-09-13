@@ -29,6 +29,7 @@ using System;
 using System.IO;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using System.Collections.Generic;
 
 namespace Microsoft.Xna.Framework.Content
 {
@@ -37,6 +38,9 @@ namespace Microsoft.Xna.Framework.Content
         private ContentManager contentManager;
         private GraphicsDevice graphicsDevice;
         private string assetName;
+        private ContentTypeReader[] typeReaders;
+        private Action<IDisposable> recordDisposableObject;
+        private List<Action<object>>[] ResourceFixups;
 
         internal GraphicsDevice GraphicsDevice
         {
@@ -47,6 +51,110 @@ namespace Microsoft.Xna.Framework.Content
             : base(stream)
         {
             this.graphicsDevice = graphicsDevice;
+        }
+        internal ContentReader(ContentManager contentManager, Stream input, string assetName, Action<IDisposable> recordDisposableObject)
+            : base(PrepareStream(input, assetName))
+        {
+            this.contentManager = contentManager;
+            this.assetName = assetName;
+            this.recordDisposableObject = recordDisposableObject;
+        }
+
+        private int ReadHeader()
+        {
+            int Count = base.Read7BitEncodedInt();
+            this.typeReaders = ContentTypeReaderManager.ReadTypeManifest(Count, this);
+            int ResourceCount = base.Read7BitEncodedInt();
+            if (ResourceCount > 0)
+            {
+                this.ResourceFixups = new List<Action<object>>[ResourceCount];
+                for (int i = 0; i < ResourceCount; i++)
+                {
+                    this.ResourceFixups[i] = new List<Action<object>>();
+                }
+            }
+            return ResourceCount;
+        }
+
+        internal T ReadAsset<T>()
+        {
+            T local;
+            try
+            {
+                int ResourceCount = this.ReadHeader();
+                local = this.ReadObject<T>();
+                this.ReadSharedResources(ResourceCount);
+            }
+            catch (IOException exception)
+            {
+                throw new ContentLoadException("Bad XNB", exception);
+            }
+            return local;
+        }
+
+        private void ReadSharedResources(int ResourceCount)
+        {
+            if (ResourceCount > 0)
+            {
+                object[] Ressources = new object[ResourceCount];
+                for (int i = 0; i < ResourceCount; i++)
+                {
+                    Ressources[i] = this.ReadObject<object>();
+                }
+                for (int j = 0; j < ResourceCount; j++)
+                {
+                    foreach (Action<object> action in this.ResourceFixups[j])
+                    {
+                        action(Ressources[j]);
+                    }
+                }
+            }
+        }
+
+        private static Stream PrepareStream(Stream input, string assetName)
+        {
+            Stream stream;
+            try
+            {
+                bool flag; //Compressionflag
+                BinaryReader reader = new BinaryReader(input);
+                if (((reader.ReadByte() != 0x58) || (reader.ReadByte() != 0x4e)) || (reader.ReadByte() != 0x42)) //First three bytes have to be "XNB"
+                {
+                    throw new ContentLoadException("Bad XNB Magic");
+                }
+                if (reader.ReadByte() != 0x77) //Platform have to be "w" -> stands for windows
+                {
+                    throw new ContentLoadException("Bad XNB Platform");
+                }
+                switch (reader.ReadUInt16()) //Version
+                {
+                    case 3:
+                        flag = false; //Not compressed Stream
+                        break;
+
+                    case 0x8003:
+                        flag = true; //Compressed Stream
+                        break;
+
+                    default:
+                        throw new ContentLoadException("Bad XNB Version");
+                }
+                int num = reader.ReadInt32(); //Number of bytes
+                if (input.CanSeek && ((num - 10) > (input.Length - input.Position))) //Check if we can read the expected number of bytes
+                {
+                    throw new ContentLoadException("Bad XNB Size");
+                }
+                if (flag) //DecompressStream
+                {
+                    //TODO: Add support for compressed Content
+                }
+                stream = input;
+            }
+            catch (IOException exception)
+            {
+                throw new ContentLoadException("Bad XNB",exception);
+            }
+            return stream;
         }
 
         public ContentManager ContentManager
@@ -108,11 +216,24 @@ namespace Microsoft.Xna.Framework.Content
 
         public T ReadObject<T>()
         {
-            throw new NotImplementedException();
+            int index = base.Read7BitEncodedInt();
+            if (index == 0)
+            {
+                return default(T);
+            }
+            index--;
+            if (index >= this.typeReaders.Length)
+            {
+                throw new Exception();
+            }
+            ContentTypeReader reader = this.typeReaders[index];
+            return this.ReadObject<T>(reader);
+
         }
 
         public T ReadObject<T>(ContentTypeReader typeReader)
         {
+            //typeReader.Initialize(new ContentTypeReaderManager(this));
             return (T)typeReader.Read(this, default(T));
         }
 

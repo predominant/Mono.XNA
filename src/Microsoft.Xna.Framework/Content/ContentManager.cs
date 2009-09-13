@@ -6,7 +6,8 @@ Copyright © 2006 The Mono.Xna Team
 All rights reserved.
 
 Authors:
-Alan McGovern <alan.mcgovern@gmail.com>
+ * Alan McGovern <alan.mcgovern@gmail.com>
+ * Tim Pambor
  
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
@@ -168,33 +169,14 @@ namespace Microsoft.Xna.Framework.Content
             if (string.IsNullOrEmpty(assetName))
                 throw new ArgumentNullException("assetName");       // We can't load an asset if we don't know it's name
 
-            // Try to get a stream for the supplied asset
-            Stream assetStream = GetAssetStream(assetName);
-
-            // Get the graphics device from the service provider to pass to the contentreader
-            GraphicsDevice graphicsDevice = ((IGraphicsDeviceService)this.serviceProvider.GetService(typeof(IGraphicsDeviceService))).GraphicsDevice;
-            
-            // Create a contentreader for the stream to read out the asset (whatever it is)
-            ContentReader contentReader = new ContentReader(this, assetStream, graphicsDevice);
-
-            // Get the asset's type readers. There can be a few of these like for the model class.
-            ContentTypeReader[] assetReaders = GetAssetReaders<T>(assetStream);
-
-            assetStream.ReadByte(); //Not sure what this byte is for
-
-            // Get the 1-based index of the typereader we should use to start decoding with
-            int index = assetStream.ReadByte();
-
-            T asset;
-            if (index == 0)
+            object cached;
+            if (this.assets.TryGetValue(assetName, out cached)) //Check if cached object is available
             {
-                asset = default(T);
-            }
-            else
-            {
-                asset = contentReader.ReadObject<T>(assetReaders[index - 1]);
+                if (!(cached is T)) throw new ContentLoadException("Not an XNB file");
+                return (T)cached; //Return cached object.
             }
 
+            T asset = this.ReadAsset<T>(assetName, null);
             this.assets.Add(assetName, asset);
             return asset;
         }
@@ -211,86 +193,11 @@ namespace Microsoft.Xna.Framework.Content
             }
             using (Stream assetStream = this.OpenStream(assetName))
             {
-                // Get the graphics device from the service provider to pass to the contentreader
-                GraphicsDevice graphicsDevice = ((IGraphicsDeviceService)this.serviceProvider.GetService(typeof(IGraphicsDeviceService))).GraphicsDevice;
-
-                // Create a contentreader for the stream to read out the asset (whatever it is)
-                ContentReader contentReader = new ContentReader(this, assetStream, graphicsDevice);
-
-                // Get the asset's type readers. There can be a few of these like for the model class.
-                ContentTypeReader[] assetReaders = GetAssetReaders<T>(assetStream);
-
-                assetStream.ReadByte(); //Not sure what this byte is for
-
-                // Get the 1-based index of the typereader we should use to start decoding with
-                int index = assetStream.ReadByte();
-
-                T asset;
-                if (index == 0)
+                using (ContentReader reader = new ContentReader(this, assetStream, assetName, recordDisposableObject))
                 {
-                    asset = default(T);
+                    return reader.ReadAsset<T>();
                 }
-                else
-                {
-                    asset = contentReader.ReadObject<T>(assetReaders[index - 1]);
-                }
-
-                this.assets.Add(assetName, asset);
-                return asset;
             }
-        }
-
-        private ContentTypeReader[] GetAssetReaders<T>(Stream assetStream)
-        {
-            int length;
-            int numberOfReaders;
-            ContentTypeReader[] contentReaders;
-            BinaryReader binaryReader = new BinaryReader(assetStream);
-            // The first 4 bytes should be the "XNBw" header. i use that to detect an invalid file
-            if (assetStream.ReadByte() != 'X' ||
-                assetStream.ReadByte() != 'N' ||
-                assetStream.ReadByte() != 'B' ||
-                assetStream.ReadByte() != 'w')
-                throw new ContentLoadException("Not an XNB file");
-
-            // I think these two bytes are some kind of version number. Either for the XNB file or the type readers
-            short version = binaryReader.ReadInt16();
-
-            // The next int32 is the length of the XNB file
-            int xnbLength = binaryReader.ReadInt32();
-
-            // The next byte i read tells me the number of content readers in this XNB file
-            numberOfReaders = assetStream.ReadByte();
-            contentReaders = new ContentTypeReader[numberOfReaders];
-            
-            // For each reader in the file, we read out the length of the string which contains the type of the reader,
-            // then we read out the string. Finally we instantiate an instance of that reader using reflection
-            for (int i = 0; i < numberOfReaders; i++)
-            {
-                length = assetStream.ReadByte();
-
-                // Create a new buffer which can hold the entire string.
-                byte[] buffer = new byte[length];
-                assetStream.Read(buffer, 0, length);
-
-                // This string tells us what reader we need to decode the following data
-                string readerTypeString = Encoding.UTF8.GetString(buffer);
-
-                // I think the next 4 bytes refer to the "Version" of the type reader,
-                // although it always seems to be zero
-                int typeReaderVersion = binaryReader.ReadInt32();
-
-                // Get the type of the reader
-                Type readerType = Type.GetType(readerTypeString);
-
-                // Get the default constructor for the reader
-                ConstructorInfo info = readerType.GetConstructor(BindingFlags.NonPublic | BindingFlags.Instance, null, Type.EmptyTypes, null);
-
-                // Instantiate an instance of the reader
-                contentReaders[i] = (ContentTypeReader)info.Invoke(null);
-            }
-
-            return contentReaders;
         }
 
         public virtual void Unload()
