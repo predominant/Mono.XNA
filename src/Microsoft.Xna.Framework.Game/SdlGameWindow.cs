@@ -75,8 +75,8 @@ namespace Microsoft.Xna.Framework
 			inTransition = true;
 			this.willBeFullScreen = willBeFullScreen;
         }
-
-        public override void EndScreenDeviceChange(string screenDeviceName, int clientWidth, int clientHeight)
+		
+		public override void EndScreenDeviceChange(string screenDeviceName, int clientWidth, int clientHeight)
         {
             this.screenDeviceName = screenDeviceName;
 			OnScreenDeviceNameChanged();
@@ -84,6 +84,13 @@ namespace Microsoft.Xna.Framework
 			int flags = Sdl.SDL_OPENGL;
 			if (willBeFullScreen)
 				flags |= Sdl.SDL_FULLSCREEN;
+			
+			int bitsPerPixel = 0;
+			PresentationParameters parameters = game.GraphicsDevice.PresentationParameters;
+			if (parameters.BackBufferFormat == SurfaceFormat.Color || 
+			    parameters.BackBufferFormat == SurfaceFormat.Bgr32 ||
+			    parameters.BackBufferFormat == SurfaceFormat.Rgba32)
+				bitsPerPixel = 32;
 			
 			IntPtr sdlSurfacePtr = Sdl.SDL_SetVideoMode(clientWidth, clientHeight, 32, flags);
 			if (sdlSurfacePtr != IntPtr.Zero)

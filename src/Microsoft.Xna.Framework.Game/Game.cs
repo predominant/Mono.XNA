@@ -245,8 +245,8 @@ namespace Microsoft.Xna.Framework
 				
 				while (updateTime < TargetElapsedTime)
 				{
-					// Needs to check SDL events while waiting? TODO
-					Thread.Sleep(1);
+#warning To low resolution with ms (10^-3)
+					Thread.Sleep(1); 
 					updateTime = TimeSpan.FromMilliseconds(Sdl.SDL_GetTicks() - gameTime.TotalRealTime.TotalMilliseconds);
 				}
 				

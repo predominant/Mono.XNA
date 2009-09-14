@@ -8,6 +8,7 @@ All rights reserved.
 Authors:
  * Rob Loach
  * Olivier Dufour
+ * Lars Magnusson
  
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
@@ -46,7 +47,6 @@ namespace Microsoft.Xna.Framework.Graphics
 		private int height;
         private float minDepth;
 		private float maxDepth;
-		private float aspectRatio;
 		private Rectangle titleSafeArea;
 
         #endregion Fields
@@ -54,7 +54,7 @@ namespace Microsoft.Xna.Framework.Graphics
         #region Properties
 		
 		public float AspectRatio {
-			get { return aspectRatio; }
+			get { return width / height; }
 		}
 		
         public int Height {

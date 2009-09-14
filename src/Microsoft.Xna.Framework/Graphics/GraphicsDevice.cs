@@ -40,16 +40,17 @@ namespace Microsoft.Xna.Framework.Graphics
 {
     public class GraphicsDevice : IDisposable
     {
-        #region Private Fields
-
+        #region Private Fields		
+		
         private GraphicsAdapter adapter;
         private DeviceType deviceType;
         private IntPtr renderWindowHandle;
         private PresentationParameters presentationParameters;
         private bool isDisposed;
         private TextureCollection textures;
-        private Color clearColor = Color.Black;
-
+		private Color clearColor;
+		private Viewport viewport;
+        
         #endregion Private Fields
 		
 		#region Public Properties
@@ -99,6 +100,10 @@ namespace Microsoft.Xna.Framework.Graphics
 
         public PresentationParameters PresentationParameters {
             get { return presentationParameters; }
+			private set { 
+				presentationParameters = value;
+				setPresentationParameters();
+			}
         }
 
         public RasterStatus RasterStatus {
@@ -150,22 +155,31 @@ namespace Microsoft.Xna.Framework.Graphics
         }
 
         public Viewport Viewport {
-            get { int[] viewport = new int[4];
-				Gl.glGetIntegerv(Gl.GL_VIEWPORT, viewport);
-				 Viewport view = new Viewport();
-				view.X = viewport[0];
-				view.Y = viewport[1];
-				view.Width = viewport[2];
-				view.Height = viewport[3];
-				return view;
-			}
+            get { return viewport; }
             set {
-                Gl.glViewport(value.X, value.Y, value.Width, value.Height);
+				viewport = value;
+                Gl.glViewport(viewport.X, viewport.Y, viewport.Width, viewport.Height);
             }
         }
 		
-		#endregion
+		#endregion Properties
+		
+		#region Events
 
+        public event EventHandler DeviceLost;
+
+        public event EventHandler DeviceReset;
+
+        public event EventHandler DeviceResetting;
+
+        public event EventHandler Disposing;
+
+        public event EventHandler<ResourceCreatedEventArgs> ResourceCreated;
+
+        public event EventHandler<ResourceDestroyedEventArgs> ResourceDestroyed;		
+		
+		#endregion Events
+		
         #region Constructors
 
         public GraphicsDevice(GraphicsAdapter adapter, DeviceType deviceType, IntPtr renderWindowHandle, PresentationParameters presentationParameters)
@@ -174,39 +188,12 @@ namespace Microsoft.Xna.Framework.Graphics
 				throw new ArgumentNullException("adapter or presentationParameters is null.");
 			
 			this.adapter = adapter;
-			this.presentationParameters = presentationParameters;				
-            this.deviceType = deviceType;
+			this.deviceType = deviceType;
             this.renderWindowHandle = renderWindowHandle;
+			PresentationParameters = presentationParameters; // set through property to ensure OpenGL propagation
             
 			this.textures = new TextureCollection();
-            
-			// Setup the SDL's OpenGL interface based on the attributes specified
-			
-			if (presentationParameters.BackBufferFormat == SurfaceFormat.Color || 
-			    presentationParameters.BackBufferFormat == SurfaceFormat.Bgr32 ||
-			    presentationParameters.BackBufferFormat == SurfaceFormat.Rgba32)
-			{
-				Sdl.SDL_GL_SetAttribute(Sdl.SDL_GL_RED_SIZE, 8);
-				Sdl.SDL_GL_SetAttribute(Sdl.SDL_GL_GREEN_SIZE, 8);
-				Sdl.SDL_GL_SetAttribute(Sdl.SDL_GL_BLUE_SIZE, 8);
-				Sdl.SDL_GL_SetAttribute(Sdl.SDL_GL_ALPHA_SIZE, 8);
-			}
-			
-		 	Sdl.SDL_GL_SetAttribute(Sdl.SDL_GL_DEPTH_SIZE, 16);
-			
-			if (presentationParameters.BackBufferCount > 0)
-				Sdl.SDL_GL_SetAttribute(Sdl.SDL_GL_DOUBLEBUFFER, 1); // multiple back buffers not supported in SDL 1.2
-			
-			// Setup OpenGL TODO			
-			// Code below make some systems crash. Need to be fixed
-            //Gl.glShadeModel(Gl.GL_SMOOTH);
-            //Gl.glEnable(Gl.GL_DEPTH_TEST);
-            //Gl.glDepthFunc(Gl.GL_LEQUAL);
-            //Gl.glHint(Gl.GL_PERSPECTIVE_CORRECTION_HINT, Gl.GL_NICEST);
-			
-			// Setup DevIL
-			
-			Il.ilInit();
+			this.clearColor = Color.Black;					
         }
 
         ~GraphicsDevice()
@@ -228,7 +215,7 @@ namespace Microsoft.Xna.Framework.Graphics
         {
             if (color != clearColor)
             {
-                Gl.glClearColor((float)color.R/255f, (float)color.G/255f, (float)color.B/255f, (float)color.A/255f);
+				Gl.glClearColor((float)color.R/255f, (float)color.G/255f, (float)color.B/255f, (float)color.A/255f);
                 clearColor = color;
             }
             Gl.glClear(Gl.GL_COLOR_BUFFER_BIT);
@@ -340,7 +327,7 @@ namespace Microsoft.Xna.Framework.Graphics
 
         public void Present()
         {
-            Sdl.SDL_GL_SwapBuffers ();
+            Sdl.SDL_GL_SwapBuffers();
         }
 
         public void Present(IntPtr overrideWindowHandle)
@@ -355,12 +342,14 @@ namespace Microsoft.Xna.Framework.Graphics
 		
 		public void Reset()
         {
-            raise_DeviceResetting(this, EventArgs.Empty);
+            Reset(PresentationParameters);
         }
 
         public void Reset(PresentationParameters presentationParameters)
         {
-            throw new NotImplementedException();
+            raise_DeviceResetting(this, EventArgs.Empty);
+			PresentationParameters = presentationParameters;
+			raise_DeviceReset(this, EventArgs.Empty);
         }
 
         public void ResolveBackBuffer(Texture2D resolveTarget)
@@ -537,21 +526,38 @@ namespace Microsoft.Xna.Framework.Graphics
 		
 		#endregion Operators       
 
-		#region Events
-
-        public event EventHandler DeviceLost;
-
-        public event EventHandler DeviceReset;
-
-        public event EventHandler DeviceResetting;
-
-        public event EventHandler Disposing;
-
-        public event EventHandler<ResourceCreatedEventArgs> ResourceCreated;
-
-        public event EventHandler<ResourceDestroyedEventArgs> ResourceDestroyed;		
+		#region Private Methods
 		
-		#endregion Events
+		private void setPresentationParameters()
+		{
+			this.viewport.X = 0; 
+			this.viewport.Y = 0;
+			this.viewport.Width = presentationParameters.BackBufferWidth;
+			this.viewport.Height = presentationParameters.BackBufferHeight;
+            
+			// Setup the SDL's OpenGL interface based on the attributes specified
+			
+			if (presentationParameters.BackBufferFormat == SurfaceFormat.Color || 
+			    presentationParameters.BackBufferFormat == SurfaceFormat.Bgr32 ||
+			    presentationParameters.BackBufferFormat == SurfaceFormat.Rgba32)
+			{
+				Sdl.SDL_GL_SetAttribute(Sdl.SDL_GL_RED_SIZE, 8);
+				Sdl.SDL_GL_SetAttribute(Sdl.SDL_GL_GREEN_SIZE, 8);
+				Sdl.SDL_GL_SetAttribute(Sdl.SDL_GL_BLUE_SIZE, 8);
+				Sdl.SDL_GL_SetAttribute(Sdl.SDL_GL_ALPHA_SIZE, 8);
+			}
+			
+			if (presentationParameters.EnableAutoDepthStencil)
+			{
+				if (presentationParameters.AutoDepthStencilFormat == DepthFormat.Depth16)
+					Sdl.SDL_GL_SetAttribute(Sdl.SDL_GL_DEPTH_SIZE, 16);
+			}
+			
+			if (presentationParameters.BackBufferCount > 0)
+				Sdl.SDL_GL_SetAttribute(Sdl.SDL_GL_DOUBLEBUFFER, 1); // multiple back buffers not supported in SDL 1.2		
+		}
+		
+		#endregion
 		
     }
 }

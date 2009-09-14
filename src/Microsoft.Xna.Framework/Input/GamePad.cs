@@ -103,11 +103,7 @@ namespace Microsoft.Xna.Framework.Input
 
         static GamePad()
         {
-            // SDL currently does not detect new devices, so we'll statically initialize the array of available joysticks
-           if (Sdl.SDL_Init(Sdl.SDL_INIT_JOYSTICK) != 0); //What kind of exception we have to throw ?
-			//Joysticks.Initialize();
-
-            s_numJoysticks = Sdl.SDL_NumJoysticks() > MaxSticks ? MaxSticks : Sdl.SDL_NumJoysticks();
+           	s_numJoysticks = Sdl.SDL_NumJoysticks() > MaxSticks ? MaxSticks : Sdl.SDL_NumJoysticks();
             _state = new GamePadState[MaxSticks];
             _sticks = new IntPtr[MaxSticks];
 

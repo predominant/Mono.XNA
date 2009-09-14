@@ -1,6 +1,7 @@
 
 using System;
 using Tao.Sdl;
+using Tao.DevIl;
 using Microsoft.Xna.Framework.Graphics;
 
 namespace Microsoft.Xna.Framework
@@ -35,11 +36,13 @@ namespace Microsoft.Xna.Framework
 		
 		public void EnsureHost()
 		{
-			int result = Sdl.SDL_Init (Sdl.SDL_INIT_TIMER | Sdl.SDL_INIT_VIDEO);
+			int result = Sdl.SDL_Init (Sdl.SDL_INIT_TIMER | Sdl.SDL_INIT_VIDEO | Sdl.SDL_INIT_JOYSTICK);
 			if (result == 0)
 				System.Diagnostics.Debug.WriteLine("SDL initialized");
 			else
 				System.Diagnostics.Debug.WriteLine("Couldn't initialize SDL");
+			
+			Il.ilInit();
 			
 			window = new SdlGameWindow(game);
 		}
@@ -78,6 +81,6 @@ namespace Microsoft.Xna.Framework
 			isExiting = true;
 		}
 
-		#endregion Methods
+		#endregion IGameHost Implementation
 	}
 }

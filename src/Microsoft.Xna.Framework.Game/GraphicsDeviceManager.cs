@@ -170,7 +170,10 @@ namespace Microsoft.Xna.Framework
         public void ToggleFullScreen()
         {
             isFullScreen = !isFullScreen;
-			ChangeDevice();
+			GraphicsDevice.PresentationParameters.IsFullScreen = isFullScreen;
+			game.Window.BeginScreenDeviceChange(isFullScreen);
+			game.Window.EndScreenDeviceChange(string.Empty, preferredBackBufferWidth, preferredBackBufferHeight); 
+			GraphicsDevice.Reset();
         }
 		
 		#endregion Public Methods        
@@ -222,7 +225,6 @@ namespace Microsoft.Xna.Framework
 					info.PresentationParameters.BackBufferHeight = PreferredBackBufferHeight;
 					info.PresentationParameters.BackBufferFormat = PreferredBackBufferFormat;
 					info.PresentationParameters.IsFullScreen = IsFullScreen;
-#warning Missing information. Could perhaps be improved slightly, but must wait for SDL 1.3 for a possible fix
 	                graphicDeviceInfoList.Add(info);
 				}
 			}
@@ -234,6 +236,7 @@ namespace Microsoft.Xna.Framework
 				info.PresentationParameters.BackBufferWidth = PreferredBackBufferWidth;
 				info.PresentationParameters.BackBufferHeight = PreferredBackBufferHeight;
 				info.PresentationParameters.BackBufferFormat = PreferredBackBufferFormat;
+				info.PresentationParameters.IsFullScreen = IsFullScreen;
 	            graphicDeviceInfoList.Add(info);
 			}
 			
@@ -281,15 +284,6 @@ namespace Microsoft.Xna.Framework
 
         #endregion
 		
-		#region Private Methods
-		
-		private void ChangeDevice()
-		{
-			
-		}
-		
-		#endregion
-
 		#region IGraphicsDeviceManager Explicit Implementation
 
         bool IGraphicsDeviceManager.BeginDraw()
