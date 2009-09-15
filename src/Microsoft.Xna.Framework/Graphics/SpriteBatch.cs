@@ -37,18 +37,22 @@ using Tao.OpenGl;
 namespace Microsoft.Xna.Framework.Graphics
 {
     public class SpriteBatch : IDisposable
-    {
-        private class Sprite
-        {
-            public Texture2D texture;
-            public Rectangle destinationRectangle;
-            public Rectangle sourceRectangle;
-            public Color color;
-            public float rotation;
-            public Vector2 origin;
-            public SpriteEffects effects;
-            public float layerDepth;
-        }
+    {	
+		#region Private Fields
+        
+		private object tag = null;
+        private string name = string.Empty;
+        private GraphicsDevice device;
+        private bool disposed;
+        private static SpriteBlendMode spriteBlendMode = SpriteBlendMode.None;
+        private List<Sprite> spriteList = new List<Sprite>();
+        private SpriteSortMode sortMode;
+        private bool isRunning = false;
+        private SaveStateMode stateMode;
+        private StateBlock saveState;
+        
+		#endregion Private Fields
+		
 
         #region Constructors and Destructor
 
@@ -95,7 +99,7 @@ namespace Microsoft.Xna.Framework.Graphics
         #endregion Properties
 
 
-        #region Methods
+        #region Public Methods
 
         public void Begin()
         {
@@ -125,7 +129,7 @@ namespace Microsoft.Xna.Framework.Graphics
             spriteBlendMode = blendMode;
             this.sortMode = sortMode;
             if (sortMode == SpriteSortMode.Immediate)
-                ApplyGraphicsDeviceSettings();
+                applyGraphicsDeviceSettings();
             isRunning = true;
         }
 
@@ -136,8 +140,8 @@ namespace Microsoft.Xna.Framework.Graphics
             
 			if (sortMode != SpriteSortMode.Immediate)
             {
-                ApplyGraphicsDeviceSettings();
-                Flush();
+                applyGraphicsDeviceSettings();
+                flush();
             }
 			
             Gl.glDisable(Gl.GL_TEXTURE_2D);
@@ -147,134 +151,9 @@ namespace Microsoft.Xna.Framework.Graphics
             Gl.glMatrixMode(Gl.GL_MODELVIEW);
             Gl.glPopMatrix();
 
-            RestoreRenderState();
+            restoreRenderState();
             isRunning = false;
-        }
-
-        private void RestoreRenderState()
-        {
-            if (this.stateMode == SaveStateMode.SaveState)
-                saveState.Apply();
-        }
-
-        private class BackToFrontSpriteComparer<T> : IComparer<T> where T : Sprite
-        {
-            public int Compare(T x, T y)
-            {
-                if (x.layerDepth > y.layerDepth)
-                    return -1;
-                if (x.layerDepth < y.layerDepth)
-                    return 1;
-                return 0;
-            }
-        }
-
-        private class FrontToBackSpriteComparer<T> : IComparer<T> where T : Sprite
-        {
-            public int Compare(T x, T y)
-            {
-                if (x.layerDepth < y.layerDepth)
-                    return -1;
-                if (x.layerDepth > y.layerDepth)
-                    return 1;
-                return 0;
-            }
-        }
-
-        private void Flush()
-        {
-            switch (sortMode)
-            {
-                case SpriteSortMode.BackToFront:
-                    spriteList.Sort(new BackToFrontSpriteComparer<Sprite>());
-                    break;
-                case SpriteSortMode.FrontToBack:
-                    spriteList.Sort(new FrontToBackSpriteComparer<Sprite>());
-                    break;
-                case SpriteSortMode.Texture: // nothing here?
-                    break;
-            }
-
-            foreach (Sprite sp in spriteList)
-            {
-                // Set the color, bind the texture for drawing and prepare the texture source
-                if (sp.color.A <= 0) continue;
-                Gl.glColor4f((float)sp.color.R / 255f, (float)sp.color.G / 255f, (float)sp.color.B / 255f, (float)sp.color.A / 255f);
-                Gl.glBindTexture(Gl.GL_TEXTURE_2D, sp.texture.textureId);
-
-                // Setup the matrix
-                Gl.glPushMatrix();
-                if ((sp.destinationRectangle.X != 0) || (sp.destinationRectangle.Y != 0))
-                    Gl.glTranslatef(sp.destinationRectangle.X, sp.destinationRectangle.Y, 0f); // Position
-                if (sp.rotation != 0)
-                    Gl.glRotatef(sp.rotation, 0f, 0f, 1f); // Rotation
-                if ((sp.destinationRectangle.Width != 0 && sp.origin.X != 0) || (sp.destinationRectangle.Height != 0 && sp.origin.Y != 0))
-                    Gl.glTranslatef( // Orientation
-                        -sp.origin.X * (float)sp.destinationRectangle.Width / (float)sp.sourceRectangle.Width,
-                        -sp.origin.Y * (float)sp.destinationRectangle.Height / (float)sp.sourceRectangle.Height, 0f);
-
-                // Calculate the points on the texture
-                float x = (float)sp.sourceRectangle.X / (float)sp.texture.Width;
-                float y = (float)sp.sourceRectangle.Y / (float)sp.texture.Height;
-                float twidth = (float)sp.sourceRectangle.Width / (float)sp.texture.Width;
-                //float theight = (float)sp.sourceRectangle.Height / (float)sp.texture.Height;
-                float theight = 1.0f;
-
-                // Draw
-                Gl.glBegin(Gl.GL_QUADS);
-                {
-                    Gl.glTexCoord2f(x, 1f - y);
-                    Gl.glVertex2f(0f, sp.destinationRectangle.Height);
-
-                    Gl.glTexCoord2f(x + twidth, 1f - y);
-                    Gl.glVertex2f(sp.destinationRectangle.Width, sp.destinationRectangle.Height);
-
-                    Gl.glTexCoord2f(x + twidth, 1f - y - theight);
-                    Gl.glVertex2f(sp.destinationRectangle.Width, 0f);
-
-                    Gl.glTexCoord2f(x, 1f - y - theight);
-                    Gl.glVertex2f(0f, 0f);
-                }
-                Gl.glEnd();
-                Gl.glPopMatrix(); // Finish with the matrix
-            }
-            spriteList.Clear();
-        }
-
-        private void ApplyGraphicsDeviceSettings()
-        {
-            // Set the blend mode
-							
-            switch (spriteBlendMode)
-            {
-                case SpriteBlendMode.AlphaBlend:
-                    Gl.glEnable(Gl.GL_BLEND);
-                    Gl.glBlendFunc(Gl.GL_SRC_ALPHA, Gl.GL_ONE_MINUS_SRC_ALPHA);
-                    break;
-                case SpriteBlendMode.Additive:
-                    Gl.glEnable(Gl.GL_BLEND);
-                    Gl.glBlendFunc(Gl.GL_SRC_ALPHA, Gl.GL_ONE);
-                    break;
-                case SpriteBlendMode.None:
-                    Gl.glDisable(Gl.GL_BLEND);
-                    break;
-                default:
-                    throw new NotSupportedException("The given blend mode isn't yet supported.");
-            }
-			
-            Gl.glEnable(Gl.GL_TEXTURE_2D);
-
-            // Reset the projection matrix and use the orthographic matrix
-            int[] viewPort = new int[4];
-            Gl.glGetIntegerv(Gl.GL_VIEWPORT, viewPort);
-            Gl.glMatrixMode(Gl.GL_PROJECTION);
-            Gl.glPushMatrix();
-            Gl.glLoadIdentity();
-            Gl.glOrtho(0, viewPort[2], viewPort[3], 0, -1, 1); // viewPort[2] = width, viewPort[3] = height
-            Gl.glMatrixMode(Gl.GL_MODELVIEW);
-            Gl.glPushMatrix();
-            Gl.glLoadIdentity();
-        }
+        }        
 
         public void Dispose()
         {
@@ -308,76 +187,49 @@ namespace Microsoft.Xna.Framework.Graphics
         {
             Draw(texture, destinationRectangle, sourceRectangle, color, 0f, Vector2.Zero, SpriteEffects.None, 0f);
         }
-
-        public void Draw(Texture2D texture, Rectangle destinationRectangle, Nullable<Rectangle> sourceRectangle, Color color, float rotation, Vector2 origin, SpriteEffects effects, float layerDepth)
-        {
-            if (!isRunning)
-                throw new InvalidOperationException("Begin must be called successfully before a Draw can be called.");
-
-            Sprite sprite = new Sprite();
-            sprite.texture = texture;
-            sprite.sourceRectangle = sourceRectangle.HasValue ? sourceRectangle.Value : new Rectangle(0, 0, texture.Width, texture.Height);
-            sprite.destinationRectangle = destinationRectangle;
-            sprite.color = color;
-            sprite.rotation = rotation;
-            sprite.origin = origin;
-            sprite.effects = effects;
-            sprite.layerDepth = layerDepth;
-            spriteList.Add(sprite);
-
-            if (sortMode == SpriteSortMode.Immediate)
-                Flush();
-        }
-
-        public void Draw(Texture2D texture, Vector2 position, Color color)
+		
+		public void Draw(Texture2D texture, Vector2 position, Color color)
         {
             Draw(texture, position, null, color);
         }
 
         public void Draw(Texture2D texture, Vector2 position, Nullable<Rectangle> sourceRectangle, Color color)
         {
-            if (!isRunning)
-                throw new InvalidOperationException("Begin must be called successfully before a Draw can be called.");
-
-            Sprite sprite = new Sprite();
-            sprite.texture = texture;
-            sprite.sourceRectangle = sourceRectangle.HasValue ? sourceRectangle.Value : new Rectangle(0, 0, texture.Width, texture.Height);
-            sprite.destinationRectangle = new Rectangle((int)position.X, (int)position.Y, sprite.sourceRectangle.Width, sprite.sourceRectangle.Height);
-            sprite.color = color;
-            sprite.rotation = 0f;
-            sprite.origin = Vector2.Zero;
-            sprite.effects = SpriteEffects.None;
-            sprite.layerDepth = 0f;
-            spriteList.Add(sprite);
-
-            if (sortMode == SpriteSortMode.Immediate)
-                Flush();
+            Rectangle destination = new Rectangle((int)position.X, (int)position.Y, texture.Width, texture.Height);
+			Draw(texture, destination, sourceRectangle, color, 0f, Vector2.Zero, SpriteEffects.None, 0f);
         }
 
         public void Draw(Texture2D texture, Vector2 position, Nullable<Rectangle> sourceRectangle, Color color, float rotation, Vector2 origin, float scale, SpriteEffects effects, float layerDepth)
         {
-            Draw(texture, position, sourceRectangle, color, rotation, origin, new Vector2(scale), effects, layerDepth);
+            Rectangle destination = new Rectangle((int)position.X, (int)position.Y, (int)(texture.Width * scale), (int)(texture.Height * scale));
+			Draw(texture, destination, sourceRectangle, color, rotation, origin, effects, layerDepth);
         }
 
         public void Draw(Texture2D texture, Vector2 position, Nullable<Rectangle> sourceRectangle, Color color, float rotation, Vector2 origin, Vector2 scale, SpriteEffects effects, float layerDepth)
         {
-            if (!isRunning)
-                throw new InvalidOperationException("Begin must be call before Draw");//fix msg
+           Rectangle destination = new Rectangle((int)position.X, (int)position.Y, (int)(texture.Width * scale.X), (int)(texture.Height * scale.Y));
+			Draw(texture, destination, sourceRectangle, color, rotation, origin, effects, layerDepth);
+        }
 
-            Sprite sprite = new Sprite();
-            sprite.texture = texture;
-            sprite.sourceRectangle = sourceRectangle.HasValue ? sourceRectangle.Value : new Rectangle(0, 0, texture.Width, texture.Height);
-            sprite.destinationRectangle = new Rectangle((int)position.X, (int)position.Y, (int)((float)sprite.sourceRectangle.Width * scale.X), (int)((float)sprite.sourceRectangle.Height * scale.Y));
-            sprite.color = color;
-            sprite.rotation = rotation;
-            sprite.origin = origin;
-            sprite.effects = effects;
-            sprite.layerDepth = layerDepth;
-            spriteList.Add(sprite);
+        public void Draw(Texture2D texture, Rectangle destinationRectangle, Nullable<Rectangle> sourceRectangle, Color color, float rotation, Vector2 origin, SpriteEffects effects, float layerDepth)
+        {
+            if (!isRunning)
+                throw new InvalidOperationException("Begin must be called successfully before a Draw can be called.");
+
+            Sprite sprite = new Sprite(texture, 
+				sourceRectangle.HasValue ? sourceRectangle.Value : new Rectangle(0, 0, texture.Width, texture.Height),
+				destinationRectangle,
+				color,
+				rotation, 
+				origin, 
+				effects,
+				layerDepth);
+			
+			spriteList.Add(sprite);
 
             if (sortMode == SpriteSortMode.Immediate)
-                Flush();
-        }
+                flush();
+        }        
 
         public void DrawString(SpriteFont spriteFont, string text, Vector2 position, Color color)
         {
@@ -424,24 +276,140 @@ namespace Microsoft.Xna.Framework.Graphics
         //    vector.X = scale;
         //    vector.Y = scale;
         //    spriteFont.Draw(, this, position, color, rotation, origin, vector, effects, layerDepth);
-        //}
+        //} 
 
- 
+        #endregion Public Methods
+		
+		#region Private Methods
+		
+		private void restoreRenderState()
+        {
+            if (this.stateMode == SaveStateMode.SaveState)
+                saveState.Apply();
+        }
 
-        #endregion Methods
+        private void flush()
+        {
+            switch (sortMode)
+            {
+                case SpriteSortMode.BackToFront:
+                    spriteList.Sort(new BackToFrontSpriteComparer<Sprite>());
+                    break;
+                case SpriteSortMode.FrontToBack:
+                    spriteList.Sort(new FrontToBackSpriteComparer<Sprite>());
+                    break;
+                case SpriteSortMode.Texture: // nothing here?
+                    break;
+            }
 
+            foreach (Sprite sprite in spriteList)
+            {
+                // Set the color, bind the texture for drawing and prepare the texture source
+                if (sprite.Color.A <= 0) continue;
+                Gl.glColor4f((float)sprite.Color.R / 255f, (float)sprite.Color.G / 255f, (float)sprite.Color.B / 255f, (float)sprite.Color.A / 255f);
+                Gl.glBindTexture(Gl.GL_TEXTURE_2D, sprite.Texture.textureId);
 
-        #region Private Fields
-        private object tag = null;
-        private string name = string.Empty;
-        private GraphicsDevice device;
-        private bool disposed;
-        private static SpriteBlendMode spriteBlendMode = SpriteBlendMode.None;
-        private List<Sprite> spriteList = new List<Sprite>();
-        private SpriteSortMode sortMode;
-        private bool isRunning = false;
-        private SaveStateMode stateMode;
-        private StateBlock saveState;
-        #endregion Private Fields
+                // Setup the matrix
+                Gl.glPushMatrix();
+                if ((sprite.DestinationRectangle.X != 0) || (sprite.DestinationRectangle.Y != 0))
+                    Gl.glTranslatef(sprite.DestinationRectangle.X, sprite.DestinationRectangle.Y, 0f); // Position
+                if (sprite.Rotation != 0)
+                    Gl.glRotatef(sprite.Rotation, 0f, 0f, 1f); // Rotation
+                if ((sprite.DestinationRectangle.Width != 0 && sprite.Origin.X != 0) || (sprite.DestinationRectangle.Height != 0 && sprite.Origin.Y != 0))
+                    Gl.glTranslatef( // Orientation
+                        -sprite.Origin.X * (float)sprite.DestinationRectangle.Width / (float)sprite.SourceRectangle.Width,
+                        -sprite.Origin.Y * (float)sprite.DestinationRectangle.Height / (float)sprite.SourceRectangle.Height, 0f);
+
+                // Calculate the points on the texture
+                float x = (float)sprite.SourceRectangle.X / (float)sprite.Texture.Width;
+                float y = (float)sprite.SourceRectangle.Y / (float)sprite.Texture.Height;
+                float twidth = (float)sprite.SourceRectangle.Width / (float)sprite.Texture.Width;
+                float theight = (float)sprite.SourceRectangle.Height / (float)sprite.Texture.Height;
+
+                // Draw
+                Gl.glBegin(Gl.GL_QUADS);
+                {
+                    Gl.glTexCoord2f(x, 1f - y);
+                    Gl.glVertex2f(0f, sprite.DestinationRectangle.Height);
+
+                    Gl.glTexCoord2f(x + twidth, 1f - y);
+                    Gl.glVertex2f(sprite.DestinationRectangle.Width, sprite.DestinationRectangle.Height);
+
+                    Gl.glTexCoord2f(x + twidth, 1f - y - theight);
+                    Gl.glVertex2f(sprite.DestinationRectangle.Width, 0f);
+
+                    Gl.glTexCoord2f(x, 1f - y - theight);
+                    Gl.glVertex2f(0f, 0f);
+                }
+                Gl.glEnd();
+                Gl.glPopMatrix(); // Finish with the matrix
+            }
+            spriteList.Clear();
+        }
+
+        private void applyGraphicsDeviceSettings()
+        {
+            // Set the blend mode
+							
+            switch (spriteBlendMode)
+            {
+                case SpriteBlendMode.AlphaBlend:
+                    Gl.glEnable(Gl.GL_BLEND);
+                    Gl.glBlendFunc(Gl.GL_SRC_ALPHA, Gl.GL_ONE_MINUS_SRC_ALPHA);
+                    break;
+                case SpriteBlendMode.Additive:
+                    Gl.glEnable(Gl.GL_BLEND);
+                    Gl.glBlendFunc(Gl.GL_SRC_ALPHA, Gl.GL_ONE);
+                    break;
+                case SpriteBlendMode.None:
+                    Gl.glDisable(Gl.GL_BLEND);
+                    break;
+                default:
+                    throw new NotSupportedException("The given blend mode isn't yet supported.");
+            }
+			
+            Gl.glEnable(Gl.GL_TEXTURE_2D);
+
+            // Reset the projection matrix and use the orthographic matrix
+            int[] viewPort = new int[4];
+            Gl.glGetIntegerv(Gl.GL_VIEWPORT, viewPort);
+            Gl.glMatrixMode(Gl.GL_PROJECTION);
+            Gl.glPushMatrix();
+            Gl.glLoadIdentity();
+            Gl.glOrtho(0, viewPort[2], viewPort[3], 0, -1, 1); // viewPort[2] = width, viewPort[3] = height
+            Gl.glMatrixMode(Gl.GL_MODELVIEW);
+            Gl.glPushMatrix();
+            Gl.glLoadIdentity();
+        }
+		
+		#endregion Private Methods
+
+       	#region Comparers
+		
+		private class BackToFrontSpriteComparer<T> : IComparer<T> where T : Sprite
+        {
+            public int Compare(T x, T y)
+            {
+                if (x.LayerDepth > y.LayerDepth)
+                    return -1;
+                if (x.LayerDepth < y.LayerDepth)
+                    return 1;
+                return 0;
+            }
+        }
+
+        private class FrontToBackSpriteComparer<T> : IComparer<T> where T : Sprite
+        {
+            public int Compare(T x, T y)
+            {
+                if (x.LayerDepth < y.LayerDepth)
+                    return -1;
+                if (x.LayerDepth > y.LayerDepth)
+                    return 1;
+                return 0;
+            }
+        }        
+		
+		#endregion
     }
 }

@@ -246,7 +246,7 @@ namespace Microsoft.Xna.Framework
 				while (updateTime < TargetElapsedTime)
 				{
 #warning To low resolution with ms (10^-3)
-					Thread.Sleep(1); 
+					//Thread.Sleep(1); 
 					updateTime = TimeSpan.FromMilliseconds(Sdl.SDL_GetTicks() - gameTime.TotalRealTime.TotalMilliseconds);
 				}
 				
