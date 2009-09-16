@@ -325,8 +325,8 @@ namespace Microsoft.Xna.Framework.Graphics
                 float y = (float)sprite.SourceRectangle.Y / (float)sprite.Texture.Height;
                 float twidth = (float)sprite.SourceRectangle.Width / (float)sprite.Texture.Width;
                 float theight = (float)sprite.SourceRectangle.Height / (float)sprite.Texture.Height;
-
-                // Draw
+				
+				// Draw
                 Gl.glBegin(Gl.GL_QUADS);
                 {
                     Gl.glTexCoord2f(x, 1f - y);
