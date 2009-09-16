@@ -329,16 +329,16 @@ namespace Microsoft.Xna.Framework.Graphics
 				// Draw
                 Gl.glBegin(Gl.GL_QUADS);
                 {
-                    Gl.glTexCoord2f(x, 1f - y);
+                    Gl.glTexCoord2f(x,y + theight);
                     Gl.glVertex2f(0f, sprite.DestinationRectangle.Height);
 
-                    Gl.glTexCoord2f(x + twidth, 1f - y);
+                    Gl.glTexCoord2f(x + twidth, y + theight);
                     Gl.glVertex2f(sprite.DestinationRectangle.Width, sprite.DestinationRectangle.Height);
 
-                    Gl.glTexCoord2f(x + twidth, 1f - y - theight);
+                    Gl.glTexCoord2f(x + twidth,y);
                     Gl.glVertex2f(sprite.DestinationRectangle.Width, 0f);
 
-                    Gl.glTexCoord2f(x, 1f - y - theight);
+                    Gl.glTexCoord2f(x,y);
                     Gl.glVertex2f(0f, 0f);
                 }
                 Gl.glEnd();

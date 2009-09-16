@@ -46,8 +46,8 @@ namespace Microsoft.Xna.Framework.Audio
         #region Constructors
 
         public AudioEngine(string settingsFile)
+            : this(settingsFile, TimeSpan.Zero, Guid.Empty)
         {
-            throw new NotImplementedException();
         }
 
         public AudioEngine(string settingsFile, TimeSpan span, Guid rendererId)
