@@ -1,7 +1,7 @@
 #region License
 /*
 MIT License
-Copyright © 2006 The Mono.Xna Team
+Copyright Â© 2006 The Mono.Xna Team
 
 All rights reserved.
 
@@ -43,19 +43,6 @@ namespace Microsoft.Xna.Framework.Graphics.Tests
     [TestFixture]
     public class DisplayModeTest
     {
-        /// <summary>
-        /// A test for the constructors
-        /// </summary>
-        [Test]
-        public void ConstructorTest()
-        {
-            DisplayMode mode = new DisplayMode();
-            Assert.AreEqual(mode.RefreshRate, 0, "#1");
-            Assert.AreEqual(SurfaceFormat.Unknown, mode.Format, "#2");
-            Assert.AreEqual(mode.Height, 0, "#3");
-            Assert.AreEqual(mode.Width, 0, "#4");
-        }
-
         /// <summary>
         ///A test for Equals (object)
         ///</summary>

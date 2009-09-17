@@ -46,6 +46,10 @@ namespace Microsoft.Xna.Framework.Graphics
         #endregion Fields
 
         #region Properties
+		
+		public float AspectRatio {
+			get { return width / height; }
+		}
 
         public SurfaceFormat Format {
             get { return format; }
@@ -62,12 +66,16 @@ namespace Microsoft.Xna.Framework.Graphics
         public int Width {
             get { return this.width; }
         }
+		
+		public Rectangle TitleSafeArea {
+			get { return new Rectangle(0, 0, Width, Height); }	
+		}
 
         #endregion Properties
 
         #region Constructors
-
-        internal DisplayMode(int width, int height, int refreshRate, SurfaceFormat format)
+		
+		internal DisplayMode(int width, int height, int refreshRate, SurfaceFormat format)
         {
             this.width = width;
             this.height = height;

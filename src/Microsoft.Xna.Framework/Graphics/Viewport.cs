@@ -127,11 +127,6 @@ namespace Microsoft.Xna.Framework.Graphics
             return finalResult;
         }
 
-        public override string ToString()
-        {
-            return string.Format(CultureInfo.CurrentCulture, "{{X:{0} Y:{1} Width:{2} Height:{3} MinDepth:{4} MaxDepth:{5}}}", new object[] { x, y, width, height, minDepth, maxDepth });
-        }
-
         public Vector3 Unproject(Vector3 source, Matrix projection, Matrix view, Matrix world)
         {
             //TODO Use the ref versions of methods to speed things up
@@ -150,6 +145,11 @@ namespace Microsoft.Xna.Framework.Graphics
             result = Vector4.Transform(result, Matrix.Invert(world));
             result = Vector4.Divide(result, result.W);
             return new Vector3(result.X, result.Y, result.Z);
+        }
+		
+		public override string ToString()
+        {
+            return string.Format(CultureInfo.CurrentCulture, "{{X:{0} Y:{1} Width:{2} Height:{3} MinDepth:{4} MaxDepth:{5}}}", new object[] { x, y, width, height, minDepth, maxDepth });
         }
 
         #endregion Methods

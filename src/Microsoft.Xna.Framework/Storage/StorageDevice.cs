@@ -51,18 +51,15 @@ namespace Microsoft.Xna.Framework.Storage
 
         #region Properties
 
-        public long FreeSpace
-        {
+        public long FreeSpace {
             get { return (this.driveInfo.IsReady) ? this.driveInfo.AvailableFreeSpace : 0; }
         }
 
-        public bool IsConnected
-        {
+        public bool IsConnected {
             get { return this.driveInfo.IsReady; }
         }
 
-        public long TotalSpace
-        {
+        public long TotalSpace {
             get { return (this.driveInfo.IsReady) ? this.driveInfo.TotalSize : 0; }
         }
 

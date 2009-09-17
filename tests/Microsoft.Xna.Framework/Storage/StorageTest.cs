@@ -39,14 +39,14 @@ namespace Microsoft.Xna.Framework.Storage.Tests
 	[TestFixture]
 	public class StorageTest
 	{
-		StorageDevice sd;
-		StorageContainer sc;
+		StorageDevice storageDevice;
+		StorageContainer storageContainer;
 		
 		[SetUp]
 		public void Setup()
 		{
-			sd = StorageDevice.ShowStorageDeviceGuide(PlayerIndex.One);
-			sc = sd.OpenContainer("StorageDemo");
+			storageDevice = StorageDevice.ShowStorageDeviceGuide(PlayerIndex.One);
+			storageContainer = storageDevice.OpenContainer("StorageDemo");
 		}
 		
 		[TearDown]
@@ -59,19 +59,19 @@ namespace Microsoft.Xna.Framework.Storage.Tests
         [Test]
         public void ShowStorageDeviceTwice()
         {
-            sd = StorageDevice.ShowStorageDeviceGuide();
+            storageDevice = StorageDevice.ShowStorageDeviceGuide();
             StorageDevice sd2 = StorageDevice.ShowStorageDeviceGuide();
 
-            Assert.AreNotEqual(sd, sd2, "#1");
+            Assert.AreNotEqual(storageDevice, sd2, "#1");
         }
 
         [Test]
         public void OpenContainerTwice()
         {
             
-            StorageContainer c1 = sd.OpenContainer("Test");
-            StorageContainer c2 = sd.OpenContainer("Test1");
-            StorageContainer c3 = sd.OpenContainer("Test");
+            StorageContainer c1 = storageDevice.OpenContainer("Test");
+            StorageContainer c2 = storageDevice.OpenContainer("Test1");
+            StorageContainer c3 = storageDevice.OpenContainer("Test");
 
             Assert.AreNotEqual(c1, c3, "#1");
             Assert.AreNotSame(c1, c3, "#2");
@@ -82,13 +82,13 @@ namespace Microsoft.Xna.Framework.Storage.Tests
 		public void TestSpaceValue()
 		{
 			// if this assertion fail the other fail too
-			Assert.IsTrue(sd.IsConnected);
+			Assert.IsTrue(storageDevice.IsConnected, "#1");
 			
-			Assert.IsTrue(sd.FreeSpace > 0); // check if there is no problem
-			Assert.IsTrue(sd.TotalSpace > 0);
+			Assert.IsTrue(storageDevice.FreeSpace > 0, "#2"); // check if there is no problem
+			Assert.IsTrue(storageDevice.TotalSpace > 0, "#3");
 			
 			// not consistent
-			Assert.IsTrue(sd.FreeSpace < sd.TotalSpace);
+			Assert.IsTrue(storageDevice.FreeSpace < storageDevice.TotalSpace, "#4: " + storageDevice.TotalSpace + " " + storageDevice.FreeSpace);
 		}
 		
 		[Test] // After running it on Windows look for the exception produced
@@ -112,7 +112,7 @@ namespace Microsoft.Xna.Framework.Storage.Tests
 		public void TestOpenContainerNull()
 		{
 			// null reference passed
-			sd.OpenContainer(null);
+			storageDevice.OpenContainer(null);
 		}
 
 		// You must pass in a non-null title name
@@ -120,7 +120,7 @@ namespace Microsoft.Xna.Framework.Storage.Tests
 		public void TestOpenContainerEmpty()
 		{
 			// empty string passed
-			sd.OpenContainer(string.Empty);
+			storageDevice.OpenContainer(string.Empty);
 		}
 		
 		[Test]
@@ -165,11 +165,11 @@ namespace Microsoft.Xna.Framework.Storage.Tests
 		[Test]
 		public void TestDisposed()
 		{
-			Assert.IsFalse(sc.IsDisposed);
+			Assert.IsFalse(storageContainer.IsDisposed);
 			
 			// now we Dispose
-			sc.Dispose();
-			Assert.IsTrue(sc.IsDisposed);
+			storageContainer.Dispose();
+			Assert.IsTrue(storageContainer.IsDisposed);
 		}
 		
 		[Test]
@@ -189,18 +189,18 @@ namespace Microsoft.Xna.Framework.Storage.Tests
 		public void TestContainerStorage()
 		{
 			// is not null
-			Assert.IsTrue(sc.StorageDevice != null);
+			Assert.IsTrue(storageContainer.StorageDevice != null);
 			
 			// is the same that our device
-			Assert.IsTrue(sc.StorageDevice == sd);
+			Assert.IsTrue(storageContainer.StorageDevice == storageDevice);
 		}
 		
 		[Test]
 		public void TestContainerTitleName()
 		{
-			Assert.IsTrue(sc.TitleName != null);
+			Assert.IsTrue(storageContainer.TitleName != null);
 			
-			Assert.IsTrue(sc.TitleName == "StorageDemo");
+			Assert.IsTrue(storageContainer.TitleName == "StorageDemo");
 		}
 		
 	}
