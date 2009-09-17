@@ -201,13 +201,37 @@ namespace Microsoft.Xna.Framework.Graphics
 
         public void Draw(Texture2D texture, Vector2 position, Nullable<Rectangle> sourceRectangle, Color color, float rotation, Vector2 origin, float scale, SpriteEffects effects, float layerDepth)
         {
-            Rectangle destination = new Rectangle((int)position.X, (int)position.Y, (int)(texture.Width * scale), (int)(texture.Height * scale));
+            int width;
+            int height;
+            if (sourceRectangle.HasValue)
+            {
+                width = (int)(sourceRectangle.Value.Width * scale);
+                height = (int)(sourceRectangle.Value.Height * scale);
+            }
+            else
+            {
+                width = (int)(texture.Width * scale);
+                height = (int)(texture.Height * scale);
+            }
+            Rectangle destination = new Rectangle((int)position.X, (int)position.Y, width, height);
 			Draw(texture, destination, sourceRectangle, color, rotation, origin, effects, layerDepth);
         }
 
         public void Draw(Texture2D texture, Vector2 position, Nullable<Rectangle> sourceRectangle, Color color, float rotation, Vector2 origin, Vector2 scale, SpriteEffects effects, float layerDepth)
         {
-           Rectangle destination = new Rectangle((int)position.X, (int)position.Y, (int)(texture.Width * scale.X), (int)(texture.Height * scale.Y));
+            int width;
+            int height;
+            if (sourceRectangle.HasValue)
+            {
+                width = (int)(sourceRectangle.Value.Width * scale.X);
+                height = (int)(sourceRectangle.Value.Height * scale.Y);
+            }
+            else
+            {
+                width = (int)(texture.Width * scale.X);
+                height = (int)(texture.Height * scale.Y);
+            }
+            Rectangle destination = new Rectangle((int)position.X, (int)position.Y, width, height);
 			Draw(texture, destination, sourceRectangle, color, rotation, origin, effects, layerDepth);
         }
 

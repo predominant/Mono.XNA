@@ -125,7 +125,7 @@ namespace Microsoft.Xna.Framework.Graphics
 
                     case '\n':
                         flag = true;
-                        pos.X = spacebetween;
+                        pos.X += spacebetween;
                         if ((spriteEffects & SpriteEffects.FlipVertically) == SpriteEffects.FlipVertically)
                         {
                             pos.Y -= this.lineSpacing * scale.Y;
