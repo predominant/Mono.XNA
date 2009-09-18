@@ -34,7 +34,7 @@ namespace Microsoft.Xna.Framework.Input
     {
         #region Private Member Variables
 
-        private static KeyboardState state;
+		private static KeyboardState state;
         private static Keys[] keyDictionary;
 
         #endregion
@@ -44,8 +44,7 @@ namespace Microsoft.Xna.Framework.Input
 
         static Keyboard()
         {
-            state = new KeyboardState((int)Sdl.SDLK_LAST);
-			keyDictionary = new Keys[(int)Sdl.SDLK_LAST];
+		    keyDictionary = new Keys[(int)Sdl.SDLK_LAST];
 			
             // TODO: Fix any keys that report incorrect values
             // Any key that has a World value must be changed
@@ -210,11 +209,14 @@ namespace Microsoft.Xna.Framework.Input
 
         public static KeyboardState GetState()
         {
+			state = new KeyboardState((int)Sdl.SDLK_LAST);
 			int numKeys = 0;
             byte[] keys = Sdl.SDL_GetKeyState(out numKeys);
 			for (int key = Sdl.SDLK_UNKNOWN; key < Sdl.SDLK_LAST; key++)
-				state[keyDictionary[key]] = (keys[key] > 0) ? KeyState.Down : KeyState.Up;
-            return state;
+				if (keys[key] > 0)
+					state[keyDictionary[key]] = KeyState.Down;
+			
+			return state;
         }
 
         public static KeyboardState GetState(Microsoft.Xna.Framework.PlayerIndex playerIndex)

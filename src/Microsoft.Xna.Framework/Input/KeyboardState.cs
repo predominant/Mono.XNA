@@ -35,7 +35,7 @@ namespace Microsoft.Xna.Framework.Input
     {
         #region Private Fields
 
-        private bool[] keyStates;
+		private bool[] keyStates;
 
         #endregion Private Fields
 
