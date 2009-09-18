@@ -127,6 +127,57 @@ namespace Microsoft.Xna.Framework
             Width += horizontalValue * 2;
             Height += verticalValue * 2;
         }
+		
+		/// <summary>
+		/// It cheks if two rectangle intersects. (gsedej)
+		/// </summary>
+		/// <param name="rect">
+		/// A <see cref="Rectangle"/>
+		/// </param>
+		/// <returns>
+		/// A <see cref="System.Boolean"/>
+		/// </returns>
+		public bool Intersects(Rectangle rect)
+		{
+			// I need to compare both X and both Y values
+			// Firt, check the X aixs, if first X coordinate is grater or lesser than other
+			//	then check, if the other X in on the first line
+			//		do the same for the Y
+			if(this.X <= rect.X)//example 1
+			{
+				if((this.X + this.Width) > rect.X) // I think it is more, not "more or equal"
+				{
+					if(this.Y < rect.Y) //example 1.1
+					{
+						if((this.Y + this.Height) > rect.Y)
+							return true;
+					}
+					else // example 1.2
+					{
+						if((rect.Y + rect.Height) > this.Y)
+							return true;
+					}
+				}
+			}
+			else //example 2
+			{
+				if((rect.X + rect.Width) > this.X)
+				{
+					if(this.Y < rect.Y) //example 2.1
+					{
+						if((this.Y + this.Height) > rect.Y)
+							return true;
+					}
+					else // example 2.2
+					{
+						if((rect.Y + rect.Height) > this.Y)
+							return true;
+					}
+				}
+			}
+			return false;
+		}
+
 
         public bool Equals(Rectangle other)
         {

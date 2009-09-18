@@ -622,14 +622,62 @@ namespace Microsoft.Xna.Framework
 
         public static Matrix Invert(Matrix matrix)
         {
-            throw new NotImplementedException();
+			Invert(ref matrix, out matrix);
+			return matrix;
         }
 
 
         public static void Invert(ref Matrix matrix, out Matrix result)
         {
-            throw new NotImplementedException();
-        }
+			
+			///
+			// Use Laplace expansion theorem to calculate the inverse of a 4x4 matrix
+			// 
+			// 1. Calculate the 2x2 determinants needed
+			// 2. Find the determinant based on the 2x2 determinants (The determinant is 
+			//    calculated here to avoid finding the 2x2 determinants, needed for both 
+			//    the determinant and adjugate matrix, twice. Could as an alternative 
+			//    create an internal helper method TODO)
+			// 3. Create the adjugate matrix, which satisfies: A * adj(A) = det(A) * I
+			// 4. Divide adjugate matrix with the determinant to find the inverse
+			
+			float det1 = matrix.M11 * matrix.M22 - matrix.M12 * matrix.M21;
+			float det2 = matrix.M11 * matrix.M23 - matrix.M13 * matrix.M21;
+			float det3 = matrix.M11 * matrix.M24 - matrix.M14 * matrix.M21;
+			float det4 = matrix.M12 * matrix.M23 - matrix.M13 * matrix.M22;
+			float det5 = matrix.M12 * matrix.M24 - matrix.M14 * matrix.M22;
+			float det6 = matrix.M13 * matrix.M24 - matrix.M14 * matrix.M23;
+			float det7 = matrix.M31 * matrix.M42 - matrix.M32 * matrix.M41;
+			float det8 = matrix.M31 * matrix.M43 - matrix.M33 * matrix.M41;
+			float det9 = matrix.M31 * matrix.M44 - matrix.M34 * matrix.M41;
+			float det10 = matrix.M32 * matrix.M43 - matrix.M33 * matrix.M42;
+			float det11 = matrix.M32 * matrix.M44 - matrix.M34 * matrix.M42;
+			float det12 = matrix.M33 * matrix.M44 - matrix.M34 * matrix.M43;
+			
+			float detMatrix = det1*det12 - det2*det11 + det3*det10 + det4*det9 - det5*det8 + det6*det7;
+			float invDetMatrix = 1f / detMatrix;
+			
+			Matrix ret; // Allow for matrix and result to point to the same structure
+			
+			ret.M11 = (matrix.M22*det12 - matrix.M23*det11 + matrix.M24*det10) * invDetMatrix;
+			ret.M12 = (-matrix.M12*det12 + matrix.M13*det11 - matrix.M14*det10) * invDetMatrix;
+			ret.M13 = (matrix.M42*det6 - matrix.M43*det5 + matrix.M44*det4) * invDetMatrix;
+			ret.M14 = (-matrix.M32*det6 + matrix.M33*det5 - matrix.M34*det4) * invDetMatrix;
+			ret.M21 = (-matrix.M21*det12 + matrix.M23*det9 - matrix.M24*det8) * invDetMatrix;
+			ret.M22 = (matrix.M11*det12 - matrix.M13*det9 + matrix.M14*det8) * invDetMatrix;
+			ret.M23 = (-matrix.M41*det6 + matrix.M43*det3 - matrix.M44*det2) * invDetMatrix;
+			ret.M24 = (matrix.M31*det6 - matrix.M33*det3 + matrix.M34*det2) * invDetMatrix;
+			ret.M31 = (matrix.M21*det11 - matrix.M22*det9 + matrix.M24*det7) * invDetMatrix;
+			ret.M32 = (-matrix.M11*det11 + matrix.M12*det9 - matrix.M14*det7) * invDetMatrix;
+			ret.M33 = (matrix.M41*det5 - matrix.M42*det3 + matrix.M44*det1) * invDetMatrix;
+			ret.M34 = (-matrix.M31*det5 + matrix.M32*det3 - matrix.M34*det1) * invDetMatrix;
+			ret.M41 = (-matrix.M21*det10 + matrix.M22*det8 - matrix.M23*det7) * invDetMatrix;
+			ret.M42 = (matrix.M11*det10 - matrix.M12*det8 + matrix.M13*det7) * invDetMatrix;
+			ret.M43 = (-matrix.M41*det4 + matrix.M42*det2 - matrix.M43*det1) * invDetMatrix;
+			ret.M44 = (matrix.M31*det4 - matrix.M32*det2 + matrix.M33*det1) * invDetMatrix;
+			
+			result = ret;
+		}
 
 
         public static Matrix Lerp(Matrix matrix1, Matrix matrix2, float amount)
@@ -645,53 +693,33 @@ namespace Microsoft.Xna.Framework
 
         public static Matrix Multiply(Matrix matrix1, Matrix matrix2)
         {
-            Matrix returnMatrix = Matrix.Identity;
-
-            returnMatrix.M11 = matrix1.M11 * matrix2.M11 + matrix1.M12 * matrix2.M21 + matrix1.M13 * matrix2.M31 + matrix1.M14 * matrix2.M41;
-            returnMatrix.M21 = matrix1.M21 * matrix2.M11 + matrix1.M22 * matrix2.M21 + matrix1.M23 * matrix2.M31 + matrix1.M24 * matrix2.M41;
-            returnMatrix.M31 = matrix1.M31 * matrix2.M11 + matrix1.M32 * matrix2.M21 + matrix1.M33 * matrix2.M31 + matrix1.M34 * matrix2.M41;
-            returnMatrix.M41 = matrix1.M41 * matrix2.M11 + matrix1.M42 * matrix2.M21 + matrix1.M43 * matrix2.M31 + matrix1.M44 * matrix2.M41;
-
-            returnMatrix.M12 = matrix1.M11 * matrix2.M12 + matrix1.M12 * matrix2.M22 + matrix1.M13 * matrix2.M32 + matrix1.M14 * matrix2.M42;
-            returnMatrix.M22 = matrix1.M21 * matrix2.M12 + matrix1.M22 * matrix2.M22 + matrix1.M23 * matrix2.M32 + matrix1.M24 * matrix2.M42;
-            returnMatrix.M32 = matrix1.M31 * matrix2.M12 + matrix1.M32 * matrix2.M22 + matrix1.M33 * matrix2.M32 + matrix1.M34 * matrix2.M42;
-            returnMatrix.M42 = matrix1.M41 * matrix2.M12 + matrix1.M42 * matrix2.M22 + matrix1.M43 * matrix2.M32 + matrix1.M44 * matrix2.M42;
-            
-            returnMatrix.M13 = matrix1.M11 * matrix2.M13 + matrix1.M12 * matrix2.M23 + matrix1.M13 * matrix2.M33 + matrix1.M14 * matrix2.M43;
-            returnMatrix.M23 = matrix1.M21 * matrix2.M13 + matrix1.M22 * matrix2.M23 + matrix1.M23 * matrix2.M33 + matrix1.M24 * matrix2.M43;
-            returnMatrix.M33 = matrix1.M31 * matrix2.M13 + matrix1.M32 * matrix2.M23 + matrix1.M33 * matrix2.M33 + matrix1.M34 * matrix2.M43;
-            returnMatrix.M43 = matrix1.M41 * matrix2.M13 + matrix1.M42 * matrix2.M23 + matrix1.M43 * matrix2.M33 + matrix1.M44 * matrix2.M43;
-            
-            returnMatrix.M14 = matrix1.M11 * matrix2.M14 + matrix1.M12 * matrix2.M23 + matrix1.M13 * matrix2.M34 + matrix1.M14 * matrix2.M44;
-            returnMatrix.M24 = matrix1.M21 * matrix2.M14 + matrix1.M12 * matrix2.M23 + matrix1.M23 * matrix2.M34 + matrix1.M24 * matrix2.M44;
-            returnMatrix.M34 = matrix1.M31 * matrix2.M14 + matrix1.M32 * matrix2.M23 + matrix1.M33 * matrix2.M34 + matrix1.M34 * matrix2.M44;
-            returnMatrix.M44 = matrix1.M41 * matrix2.M14 + matrix1.M42 * matrix2.M23 + matrix1.M43 * matrix2.M34 + matrix1.M44 * matrix2.M44;
-
-            return returnMatrix;
+            Matrix ret;
+			Multiply(ref matrix1, ref matrix2, out ret);
+			return ret;
         }
 
 
         public static void Multiply(ref Matrix matrix1, ref Matrix matrix2, out Matrix result)
         {
             result.M11 = matrix1.M11 * matrix2.M11 + matrix1.M12 * matrix2.M21 + matrix1.M13 * matrix2.M31 + matrix1.M14 * matrix2.M41;
+			result.M12 = matrix1.M11 * matrix2.M12 + matrix1.M12 * matrix2.M22 + matrix1.M13 * matrix2.M32 + matrix1.M14 * matrix2.M42;
+			result.M13 = matrix1.M11 * matrix2.M13 + matrix1.M12 * matrix2.M23 + matrix1.M13 * matrix2.M33 + matrix1.M14 * matrix2.M43;
+			result.M14 = matrix1.M11 * matrix2.M14 + matrix1.M12 * matrix2.M24 + matrix1.M13 * matrix2.M34 + matrix1.M14 * matrix2.M44;
+			
             result.M21 = matrix1.M21 * matrix2.M11 + matrix1.M22 * matrix2.M21 + matrix1.M23 * matrix2.M31 + matrix1.M24 * matrix2.M41;
-            result.M31 = matrix1.M31 * matrix2.M11 + matrix1.M32 * matrix2.M21 + matrix1.M33 * matrix2.M31 + matrix1.M34 * matrix2.M41;
-            result.M41 = matrix1.M41 * matrix2.M11 + matrix1.M42 * matrix2.M21 + matrix1.M43 * matrix2.M31 + matrix1.M44 * matrix2.M41;
-
-            result.M12 = matrix1.M11 * matrix2.M12 + matrix1.M12 * matrix2.M22 + matrix1.M13 * matrix2.M32 + matrix1.M14 * matrix2.M42;
-            result.M22 = matrix1.M21 * matrix2.M12 + matrix1.M22 * matrix2.M22 + matrix1.M23 * matrix2.M32 + matrix1.M24 * matrix2.M42;
-            result.M32 = matrix1.M31 * matrix2.M12 + matrix1.M32 * matrix2.M22 + matrix1.M33 * matrix2.M32 + matrix1.M34 * matrix2.M42;
-            result.M42 = matrix1.M41 * matrix2.M12 + matrix1.M42 * matrix2.M22 + matrix1.M43 * matrix2.M32 + matrix1.M44 * matrix2.M42;
-
-            result.M13 = matrix1.M11 * matrix2.M13 + matrix1.M12 * matrix2.M23 + matrix1.M13 * matrix2.M33 + matrix1.M14 * matrix2.M43;
-            result.M23 = matrix1.M21 * matrix2.M13 + matrix1.M22 * matrix2.M23 + matrix1.M23 * matrix2.M33 + matrix1.M24 * matrix2.M43;
-            result.M33 = matrix1.M31 * matrix2.M13 + matrix1.M32 * matrix2.M23 + matrix1.M33 * matrix2.M33 + matrix1.M34 * matrix2.M43;
-            result.M43 = matrix1.M41 * matrix2.M13 + matrix1.M42 * matrix2.M23 + matrix1.M43 * matrix2.M33 + matrix1.M44 * matrix2.M43;
-
-            result.M14 = matrix1.M11 * matrix2.M14 + matrix1.M12 * matrix2.M23 + matrix1.M13 * matrix2.M34 + matrix1.M14 * matrix2.M44;
-            result.M24 = matrix1.M21 * matrix2.M14 + matrix1.M12 * matrix2.M23 + matrix1.M23 * matrix2.M34 + matrix1.M24 * matrix2.M44;
-            result.M34 = matrix1.M31 * matrix2.M14 + matrix1.M32 * matrix2.M23 + matrix1.M33 * matrix2.M34 + matrix1.M34 * matrix2.M44;
-            result.M44 = matrix1.M41 * matrix2.M14 + matrix1.M42 * matrix2.M23 + matrix1.M43 * matrix2.M34 + matrix1.M44 * matrix2.M44;
+			result.M22 = matrix1.M21 * matrix2.M12 + matrix1.M22 * matrix2.M22 + matrix1.M23 * matrix2.M32 + matrix1.M24 * matrix2.M42;
+			result.M23 = matrix1.M21 * matrix2.M13 + matrix1.M22 * matrix2.M23 + matrix1.M23 * matrix2.M33 + matrix1.M24 * matrix2.M43;
+			result.M24 = matrix1.M21 * matrix2.M14 + matrix1.M22 * matrix2.M24 + matrix1.M23 * matrix2.M34 + matrix1.M24 * matrix2.M44;
+            
+			result.M31 = matrix1.M31 * matrix2.M11 + matrix1.M32 * matrix2.M21 + matrix1.M33 * matrix2.M31 + matrix1.M34 * matrix2.M41;
+			result.M32 = matrix1.M31 * matrix2.M12 + matrix1.M32 * matrix2.M22 + matrix1.M33 * matrix2.M32 + matrix1.M34 * matrix2.M42;
+			result.M33 = matrix1.M31 * matrix2.M13 + matrix1.M32 * matrix2.M23 + matrix1.M33 * matrix2.M33 + matrix1.M34 * matrix2.M43;
+			result.M34 = matrix1.M31 * matrix2.M14 + matrix1.M32 * matrix2.M24 + matrix1.M33 * matrix2.M34 + matrix1.M34 * matrix2.M44;
+            
+			result.M41 = matrix1.M41 * matrix2.M11 + matrix1.M42 * matrix2.M21 + matrix1.M43 * matrix2.M31 + matrix1.M44 * matrix2.M41;
+			result.M42 = matrix1.M41 * matrix2.M12 + matrix1.M42 * matrix2.M22 + matrix1.M43 * matrix2.M32 + matrix1.M44 * matrix2.M42;
+			result.M43 = matrix1.M41 * matrix2.M13 + matrix1.M42 * matrix2.M23 + matrix1.M43 * matrix2.M33 + matrix1.M44 * matrix2.M43;
+            result.M44 = matrix1.M41 * matrix2.M14 + matrix1.M42 * matrix2.M24 + matrix1.M43 * matrix2.M34 + matrix1.M44 * matrix2.M44;            
         }
 
 
@@ -873,35 +901,33 @@ namespace Microsoft.Xna.Framework
 
         public static Matrix Transpose(Matrix matrix)
         {
-            Matrix returnMatrix = new Matrix();
-
-            returnMatrix.M11 = matrix.M11;
-            returnMatrix.M12 = matrix.M21;
-            returnMatrix.M13 = matrix.M31;
-            returnMatrix.M14 = matrix.M41;
-
-            returnMatrix.M21 = matrix.M12;
-            returnMatrix.M22 = matrix.M22;
-            returnMatrix.M23 = matrix.M32;
-            returnMatrix.M24 = matrix.M42;
-
-            returnMatrix.M31 = matrix.M13;
-            returnMatrix.M32 = matrix.M23;
-            returnMatrix.M33 = matrix.M33;
-            returnMatrix.M34 = matrix.M43;
-
-            returnMatrix.M41 = matrix.M14;
-            returnMatrix.M42 = matrix.M24;
-            returnMatrix.M43 = matrix.M34;
-            returnMatrix.M44 = matrix.M44;
-
-            return returnMatrix;
+			Matrix ret;
+			Transpose(ref matrix, out ret);
+			return ret;
         }
 
         
         public static void Transpose(ref Matrix matrix, out Matrix result)
         {
-            result = Transpose(matrix);
+			result.M11 = matrix.M11;
+            result.M12 = matrix.M21;
+            result.M13 = matrix.M31;
+            result.M14 = matrix.M41;
+
+            result.M21 = matrix.M12;
+            result.M22 = matrix.M22;
+            result.M23 = matrix.M32;
+            result.M24 = matrix.M42;
+
+            result.M31 = matrix.M13;
+            result.M32 = matrix.M23;
+            result.M33 = matrix.M33;
+            result.M34 = matrix.M43;
+
+            result.M41 = matrix.M14;
+            result.M42 = matrix.M24;
+            result.M43 = matrix.M34;
+            result.M44 = matrix.M44;
         }
         #endregion Public Methods
     }
