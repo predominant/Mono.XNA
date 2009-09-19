@@ -159,6 +159,8 @@ namespace Microsoft.Xna.Framework
 			targetElapsedTime = TimeSpan.FromTicks(DefaultTargetElapsedTicks);
 
 			gameHost = new SdlGameHost(this);
+			gameHost.EnsureHost();
+			
             isActive = true;
         }
 		
@@ -202,8 +204,6 @@ namespace Microsoft.Xna.Framework
 				throw new InvalidOperationException("Run Method called more than once");
 			inRun = true;
 			BeginRun();
-			
-			gameHost.EnsureHost();
 			
 			graphicsManager = (IGraphicsDeviceManager)Services.GetService(typeof (IGraphicsDeviceManager));
             if (graphicsManager != null)

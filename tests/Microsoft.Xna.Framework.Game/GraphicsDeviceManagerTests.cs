@@ -17,8 +17,15 @@ namespace Microsoft.Xna.Framework.Tests
         public void Setup()
         {
             game = new Game();
-            gdm = new GraphicsDeviceManager(game);
+			gdm = new GraphicsDeviceManager(game);
+			//game.Run();
         }
+		
+		[TearDown]
+		public void TearDown()
+		{
+			//game.Exit();	
+		}
 
         #region Constructor Tests
 

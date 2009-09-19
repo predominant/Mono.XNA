@@ -88,7 +88,7 @@ namespace Microsoft.Xna.Framework.Storage.Tests
 			Assert.IsTrue(storageDevice.TotalSpace > 0, "#3");
 			
 			// not consistent
-			Assert.IsTrue(storageDevice.FreeSpace < storageDevice.TotalSpace, "#4: " + storageDevice.TotalSpace + " " + storageDevice.FreeSpace);
+			Assert.IsTrue(storageDevice.FreeSpace <= storageDevice.TotalSpace, "#4: " + storageDevice.TotalSpace + " " + storageDevice.FreeSpace);
 		}
 		
 		[Test] // After running it on Windows look for the exception produced
