@@ -37,30 +37,7 @@ namespace Microsoft.Xna.Framework
 	[TypeConverter(typeof(MatrixConverter))]
     public struct Matrix : IEquatable<Matrix>
     {
-        #region Public Constructors
         
-        public Matrix(float m11, float m12, float m13, float m14, float m21, float m22, float m23, float m24, float m31,
-                      float m32, float m33, float m34, float m41, float m42, float m43, float m44)
-        {
-            this.M11 = m11;
-            this.M12 = m12;
-            this.M13 = m13;
-            this.M14 = m14;
-            this.M21 = m21;
-            this.M22 = m22;
-            this.M23 = m23;
-            this.M24 = m24;
-            this.M31 = m31;
-            this.M32 = m32;
-            this.M33 = m33;
-            this.M34 = m34;
-            this.M41 = m41;
-            this.M42 = m42;
-            this.M43 = m43;
-            this.M44 = m44;
-        }
-
-        #endregion Public Constructors
 
 
         #region Public Fields
@@ -85,128 +62,111 @@ namespace Microsoft.Xna.Framework
         #endregion Public Fields
 
 
-        #region Private Members
+        #region Static Properties
+		
         private static Matrix identity = new Matrix(1f, 0f, 0f, 0f, 0f, 1f, 0f, 0f, 0f, 0f, 1f, 0f, 0f, 0f, 0f, 1f);
-        #endregion Private Members
+        public static Matrix Identity {
+            get { return identity; }
+        }
+
+        #endregion Static Properties
 
 
         #region Public Properties
         
-        public Vector3 Backward
-        {
-            get
-            {
-                return new Vector3(this.M31, this.M32, this.M33);
-            }
-            set
-            {
+        public Vector3 Backward {
+            get { return new Vector3(this.M31, this.M32, this.M33); }
+            set {
                 this.M31 = value.X;
                 this.M32 = value.Y;
                 this.M33 = value.Z;
             }
         }
-
         
-        public Vector3 Down
-        {
-            get
-            {
-                return new Vector3(-this.M21, -this.M22, -this.M23);
-            }
-            set
-            {
+        public Vector3 Down {
+            get { return new Vector3(-this.M21, -this.M22, -this.M23); }
+            set {
                 this.M21 = -value.X;
                 this.M22 = -value.Y;
                 this.M23 = -value.Z;
             }
         }
-
         
-        public Vector3 Forward
-        {
-            get
-            {
-                return new Vector3(-this.M31, -this.M32, -this.M33);
-            }
-            set
-            {
+        public Vector3 Forward {
+            get { return new Vector3(-this.M31, -this.M32, -this.M33); }
+            set {
                 this.M31 = -value.X;
                 this.M32 = -value.Y;
                 this.M33 = -value.Z;
             }
-        }
-
+        }        
         
-        public static Matrix Identity
-        {
-            get { return identity; }
-        }
-
-        
-        public Vector3 Left
-        {
-            get
-            {
-                return new Vector3(-this.M11, -this.M12, -this.M13);
-            }
-            set
-            {
+        public Vector3 Left {
+            get { return new Vector3(-this.M11, -this.M12, -this.M13); }
+            set {
                 this.M11 = -value.X;
                 this.M12 = -value.Y;
                 this.M13 = -value.Z;
             }
         }
-
         
-        public Vector3 Right
-        {
-            get
-            {
-                return new Vector3(this.M11, this.M12, this.M13);
-            }
-            set
-            {
+        public Vector3 Right {
+            get { return new Vector3(this.M11, this.M12, this.M13); }
+            set {
                 this.M11 = value.X;
                 this.M12 = value.Y;
                 this.M13 = value.Z;
             }
         }
-
         
-        public Vector3 Translation
-        {
-            get
-            {
-                return new Vector3(this.M41, this.M42, this.M43);
-            }
-            set
-            {
+        public Vector3 Translation {
+            get { return new Vector3(this.M41, this.M42, this.M43); }
+            set {
                 this.M41 = value.X;
                 this.M42 = value.Y;
                 this.M43 = value.Z;
             }
         }
 
-        
-        public Vector3 Up
-        {
-            get
-            {
-                return new Vector3(this.M21, this.M22, this.M23);
-            }
-            set
-            {
+        public Vector3 Up {
+            get { return new Vector3(this.M21, this.M22, this.M23); }
+            set {
                 this.M21 = value.X;
                 this.M22 = value.Y;
                 this.M23 = value.Z;
             }
         }
+		
         #endregion Public Properties
+		
+		#region Constructors
+        
+        public Matrix(float m11, float m12, float m13, float m14, float m21, float m22, float m23, float m24, 
+		              float m31, float m32, float m33, float m34, float m41, float m42, float m43, float m44)
+        {
+            this.M11 = m11;
+            this.M12 = m12;
+            this.M13 = m13;
+            this.M14 = m14;
+            this.M21 = m21;
+            this.M22 = m22;
+            this.M23 = m23;
+            this.M24 = m24;
+            this.M31 = m31;
+            this.M32 = m32;
+            this.M33 = m33;
+            this.M34 = m34;
+            this.M41 = m41;
+            this.M42 = m42;
+            this.M43 = m43;
+            this.M44 = m44;
+        }
 
+        #endregion Constructors
 
-        #region Public Methods
-
-        public static Matrix Add(Matrix matrix1, Matrix matrix2)
+		#region Static Methods
+		
+		public static Matrix Add(Matrix matrix1, Matrix matrix2)
         {
             matrix1.M11 += matrix2.M11;
 			matrix1.M12 += matrix2.M12;
@@ -564,63 +524,37 @@ namespace Microsoft.Xna.Framework
             result.M42 = position.Y;
             result.M43 = position.Z;
         }
-
-
-        public float Determinant()
+		
+		public static Matrix Divide(Matrix matrix1, Matrix matrix2)
         {
-            // Worked this one out on paper..
-            return (M11 * M22 - M12 * M21 + M13 * M21 - M14 * M22) * (M33 * M44 - M34 * M43) +
-                   (M14 * M23 - M11 * M23) * (M32 * M44 - M34 * M42) +
-                   (M11 * M24 - M14 * M24) * (M32 * M43 - M33 * M42) +
-                   (M12 * M23 - M13 * M22) * (M31 * M44 - M34 * M41) +
-                   M13 * M24 * (M31 * M42 - M32 * M41) +
-                   M12 * M24 * (M33 * M41 - M31 * M43);
-        }
-
-
-        public static Matrix Divide(Matrix matrix1, Matrix matrix2)
-        {
-            throw new NotImplementedException();
+            Matrix ret;
+			Matrix.Divide(ref matrix1, ref matrix2, out ret);
+			return ret;
         }
 
 
         public static void Divide(ref Matrix matrix1, ref Matrix matrix2, out Matrix result)
         {
-            throw new NotImplementedException();
+			Matrix inverse = Matrix.Invert(matrix2);
+            Matrix.Multiply(ref matrix1, ref inverse, out result);
         }
 
 
         public static Matrix Divide(Matrix matrix1, float divider)
         {
-            throw new NotImplementedException();
+            Matrix ret;
+			Divide(ref matrix1, divider, out ret);
+			return ret;
         }
 
 
         public static void Divide(ref Matrix matrix1, float divider, out Matrix result)
         {
-            throw new NotImplementedException();
+            float inverseDivider = 1f / divider;
+			Matrix.Multiply(ref matrix1, inverseDivider, out result);
         }
-
-
-        public bool Equals(Matrix other)
-        {
-            throw new NotImplementedException();
-        }
-
-
-        public override bool Equals(object obj)
-        {
-            throw new NotImplementedException();
-        }
-
-
-        public override int GetHashCode()
-        {
-            throw new NotImplementedException();
-        }
-
-
-        public static Matrix Invert(Matrix matrix)
+		
+		public static Matrix Invert(Matrix matrix)
         {
 			Invert(ref matrix, out matrix);
 			return matrix;
@@ -628,8 +562,7 @@ namespace Microsoft.Xna.Framework
 
 
         public static void Invert(ref Matrix matrix, out Matrix result)
-        {
-			
+        {			
 			///
 			// Use Laplace expansion theorem to calculate the inverse of a 4x4 matrix
 			// 
@@ -779,7 +712,106 @@ namespace Microsoft.Xna.Framework
         }
 
 
-        public static Matrix operator +(Matrix matrix1, Matrix matrix2)
+        
+
+        public static Matrix Subtract(Matrix matrix1, Matrix matrix2)
+        {
+            matrix1.M11 -= matrix2.M11;
+            matrix1.M12 -= matrix2.M12;
+            matrix1.M13 -= matrix2.M13;
+            matrix1.M14 -= matrix2.M14;
+            matrix1.M21 -= matrix2.M21;
+            matrix1.M22 -= matrix2.M22;
+            matrix1.M23 -= matrix2.M23;
+            matrix1.M24 -= matrix2.M24;
+            matrix1.M31 -= matrix2.M31;
+            matrix1.M32 -= matrix2.M32;
+            matrix1.M33 -= matrix2.M33;
+            matrix1.M34 -= matrix2.M34;
+            matrix1.M41 -= matrix2.M41;
+            matrix1.M42 -= matrix2.M42;
+            matrix1.M43 -= matrix2.M43;
+            matrix1.M44 -= matrix2.M44;
+            return matrix1;
+        }
+
+
+        public static void Subtract(ref Matrix matrix1, ref Matrix matrix2, out Matrix result)
+        {
+            result.M11 = matrix1.M11 - matrix2.M11;
+            result.M12 = matrix1.M12 - matrix2.M12;
+            result.M13 = matrix1.M13 - matrix2.M13;
+            result.M14 = matrix1.M14 - matrix2.M14;
+            result.M21 = matrix1.M21 - matrix2.M21;
+            result.M22 = matrix1.M22 - matrix2.M22;
+            result.M23 = matrix1.M23 - matrix2.M23;
+            result.M24 = matrix1.M24 - matrix2.M24;
+            result.M31 = matrix1.M31 - matrix2.M31;
+            result.M32 = matrix1.M32 - matrix2.M32;
+            result.M33 = matrix1.M33 - matrix2.M33;
+            result.M34 = matrix1.M34 - matrix2.M34;
+            result.M41 = matrix1.M41 - matrix2.M41;
+            result.M42 = matrix1.M42 - matrix2.M42;
+            result.M43 = matrix1.M43 - matrix2.M43;
+            result.M44 = matrix1.M44 - matrix2.M44;
+        }
+		
+		public static Matrix Transpose(Matrix matrix)
+        {
+			Matrix ret;
+			Transpose(ref matrix, out ret);
+			return ret;
+        }
+
+        
+        public static void Transpose(ref Matrix matrix, out Matrix result)
+        {
+			result.M11 = matrix.M11;
+            result.M12 = matrix.M21;
+            result.M13 = matrix.M31;
+            result.M14 = matrix.M41;
+
+            result.M21 = matrix.M12;
+            result.M22 = matrix.M22;
+            result.M23 = matrix.M32;
+            result.M24 = matrix.M42;
+
+            result.M31 = matrix.M13;
+            result.M32 = matrix.M23;
+            result.M33 = matrix.M33;
+            result.M34 = matrix.M43;
+
+            result.M41 = matrix.M14;
+            result.M42 = matrix.M24;
+            result.M43 = matrix.M34;
+            result.M44 = matrix.M44;
+        }
+		
+		#endregion Static Methods
+
+        #region Public Methods
+
+        public float Determinant()
+        {
+            // Worked this one out on paper..
+            return (M11 * M22 - M12 * M21 + M13 * M21 - M14 * M22) * (M33 * M44 - M34 * M43) +
+                   (M14 * M23 - M11 * M23) * (M32 * M44 - M34 * M42) +
+                   (M11 * M24 - M14 * M24) * (M32 * M43 - M33 * M42) +
+                   (M12 * M23 - M13 * M22) * (M31 * M44 - M34 * M41) +
+                   M13 * M24 * (M31 * M42 - M32 * M41) +
+                   M12 * M24 * (M33 * M41 - M31 * M43);
+        }
+
+        public bool Equals(Matrix other)
+        {
+            throw new NotImplementedException();
+        }
+
+        #endregion Public Methods
+		
+		#region Operators
+		
+		public static Matrix operator +(Matrix matrix1, Matrix matrix2)
         {
             Matrix.Add(ref matrix1, ref matrix2, out matrix1);
             return matrix1;
@@ -845,50 +877,20 @@ namespace Microsoft.Xna.Framework
             Matrix.Negate(ref matrix1, out matrix1);
             return matrix1;
         }
-
-
-        public static Matrix Subtract(Matrix matrix1, Matrix matrix2)
+		
+		#endregion
+		
+		#region Object Overrides
+		
+		public override bool Equals(object obj)
         {
-            matrix1.M11 -= matrix2.M11;
-            matrix1.M12 -= matrix2.M12;
-            matrix1.M13 -= matrix2.M13;
-            matrix1.M14 -= matrix2.M14;
-            matrix1.M21 -= matrix2.M21;
-            matrix1.M22 -= matrix2.M22;
-            matrix1.M23 -= matrix2.M23;
-            matrix1.M24 -= matrix2.M24;
-            matrix1.M31 -= matrix2.M31;
-            matrix1.M32 -= matrix2.M32;
-            matrix1.M33 -= matrix2.M33;
-            matrix1.M34 -= matrix2.M34;
-            matrix1.M41 -= matrix2.M41;
-            matrix1.M42 -= matrix2.M42;
-            matrix1.M43 -= matrix2.M43;
-            matrix1.M44 -= matrix2.M44;
-            return matrix1;
+            throw new NotImplementedException();
         }
 
-
-        public static void Subtract(ref Matrix matrix1, ref Matrix matrix2, out Matrix result)
+        public override int GetHashCode()
         {
-            result.M11 = matrix1.M11 - matrix2.M11;
-            result.M12 = matrix1.M12 - matrix2.M12;
-            result.M13 = matrix1.M13 - matrix2.M13;
-            result.M14 = matrix1.M14 - matrix2.M14;
-            result.M21 = matrix1.M21 - matrix2.M21;
-            result.M22 = matrix1.M22 - matrix2.M22;
-            result.M23 = matrix1.M23 - matrix2.M23;
-            result.M24 = matrix1.M24 - matrix2.M24;
-            result.M31 = matrix1.M31 - matrix2.M31;
-            result.M32 = matrix1.M32 - matrix2.M32;
-            result.M33 = matrix1.M33 - matrix2.M33;
-            result.M34 = matrix1.M34 - matrix2.M34;
-            result.M41 = matrix1.M41 - matrix2.M41;
-            result.M42 = matrix1.M42 - matrix2.M42;
-            result.M43 = matrix1.M43 - matrix2.M43;
-            result.M44 = matrix1.M44 - matrix2.M44;
+            throw new NotImplementedException();
         }
-
 
         public override string ToString()
         {
@@ -896,39 +898,8 @@ namespace Microsoft.Xna.Framework
                     " {M21:" + M21 + " M22:" + M22 + " M23:" + M23 + " M24: " + M24 + "}" +
                     " {M31:" + M31 + " M32:" + M32 + " M33:" + M33 + " M34: " + M34 + "}" +
                     " {M41:" + M41 + " M42:" + M42 + " M43:" + M43 + " M44: " + M44 + "} }";
-        }
-
-
-        public static Matrix Transpose(Matrix matrix)
-        {
-			Matrix ret;
-			Transpose(ref matrix, out ret);
-			return ret;
-        }
-
-        
-        public static void Transpose(ref Matrix matrix, out Matrix result)
-        {
-			result.M11 = matrix.M11;
-            result.M12 = matrix.M21;
-            result.M13 = matrix.M31;
-            result.M14 = matrix.M41;
-
-            result.M21 = matrix.M12;
-            result.M22 = matrix.M22;
-            result.M23 = matrix.M32;
-            result.M24 = matrix.M42;
-
-            result.M31 = matrix.M13;
-            result.M32 = matrix.M23;
-            result.M33 = matrix.M33;
-            result.M34 = matrix.M43;
-
-            result.M41 = matrix.M14;
-            result.M42 = matrix.M24;
-            result.M43 = matrix.M34;
-            result.M44 = matrix.M44;
-        }
-        #endregion Public Methods
+        }       
+		
+        #endregion
     }
 }
