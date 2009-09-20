@@ -396,11 +396,9 @@ namespace Microsoft.Xna.Framework.Tests
 
             // Test 1
             // Check that internally it uses double instead of float to transform
-            float test1_1 = MathHelper.ToRadians(123.5671f);
-            float test1_2 = (123.5671f) * factor;
-            float test1_3 = (float)((123.5671f) * dfactor);
-            Assert.IsTrue(test1_1 != test1_2, "MathHelper.ToRadians#1.1");
-            Assert.IsTrue(test1_1 == test1_3, "MathHelper.ToRadians#1.2");
+            float test1 = MathHelper.ToRadians(123.5671f);
+            float test1_1 = (float)((123.5671f) * dfactor);
+            Assert.IsTrue(test1 == test1_1, "MathHelper.ToRadians#1.1");
         }
 
         [Test]
