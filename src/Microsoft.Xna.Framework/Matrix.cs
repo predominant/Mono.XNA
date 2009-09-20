@@ -164,7 +164,7 @@ namespace Microsoft.Xna.Framework
 
         #endregion Constructors
 
-		#region Static Methods
+		#region Public Static Methods
 		
 		public static Matrix Add(Matrix matrix1, Matrix matrix2)
         {
@@ -566,28 +566,15 @@ namespace Microsoft.Xna.Framework
 			///
 			// Use Laplace expansion theorem to calculate the inverse of a 4x4 matrix
 			// 
-			// 1. Calculate the 2x2 determinants needed
-			// 2. Find the determinant based on the 2x2 determinants (The determinant is 
-			//    calculated here to avoid finding the 2x2 determinants, needed for both 
-			//    the determinant and adjugate matrix, twice. Could as an alternative 
-			//    create an internal helper method TODO)
+			// 1. Calculate the 2x2 determinants needed the 4x4 determinant based on the 2x2 determinants 
 			// 3. Create the adjugate matrix, which satisfies: A * adj(A) = det(A) * I
 			// 4. Divide adjugate matrix with the determinant to find the inverse
 			
-			float det1 = matrix.M11 * matrix.M22 - matrix.M12 * matrix.M21;
-			float det2 = matrix.M11 * matrix.M23 - matrix.M13 * matrix.M21;
-			float det3 = matrix.M11 * matrix.M24 - matrix.M14 * matrix.M21;
-			float det4 = matrix.M12 * matrix.M23 - matrix.M13 * matrix.M22;
-			float det5 = matrix.M12 * matrix.M24 - matrix.M14 * matrix.M22;
-			float det6 = matrix.M13 * matrix.M24 - matrix.M14 * matrix.M23;
-			float det7 = matrix.M31 * matrix.M42 - matrix.M32 * matrix.M41;
-			float det8 = matrix.M31 * matrix.M43 - matrix.M33 * matrix.M41;
-			float det9 = matrix.M31 * matrix.M44 - matrix.M34 * matrix.M41;
-			float det10 = matrix.M32 * matrix.M43 - matrix.M33 * matrix.M42;
-			float det11 = matrix.M32 * matrix.M44 - matrix.M34 * matrix.M42;
-			float det12 = matrix.M33 * matrix.M44 - matrix.M34 * matrix.M43;
+			float det1, det2, det3, det4, det5, det6, det7, det8, det9, det10, det11, det12;
+			float detMatrix;
+			findDeterminants(ref matrix, out detMatrix, out det1, out det2, out det3, out det4, out det5, out det6, 
+			                 out det7, out det8, out det9, out det10, out det11, out det12);
 			
-			float detMatrix = det1*det12 - det2*det11 + det3*det10 + det4*det9 - det5*det8 + det6*det7;
 			float invDetMatrix = 1f / detMatrix;
 			
 			Matrix ret; // Allow for matrix and result to point to the same structure
@@ -709,10 +696,7 @@ namespace Microsoft.Xna.Framework
         public static void Negate(ref Matrix matrix, out Matrix result)
         {
             Matrix.Multiply(ref matrix, -1.0f, out result);
-        }
-
-
-        
+        }        
 
         public static Matrix Subtract(Matrix matrix1, Matrix matrix2)
         {
@@ -734,7 +718,6 @@ namespace Microsoft.Xna.Framework
             matrix1.M44 -= matrix2.M44;
             return matrix1;
         }
-
 
         public static void Subtract(ref Matrix matrix1, ref Matrix matrix2, out Matrix result)
         {
@@ -787,24 +770,60 @@ namespace Microsoft.Xna.Framework
             result.M44 = matrix.M44;
         }
 		
-		#endregion Static Methods
+		#endregion Public Static Methods
+		
+		#region Private Static Methods
+		
+		/// <summary>
+		/// Helper method for using the Laplace expansion theorem using two rows expansions to calculate major and 
+		/// minor determinants of a 4x4 matrix. This method is used for inverting a matrix.
+		/// </summary>
+		private static void findDeterminants(ref Matrix matrix, out float major, 
+		                                     out float minor1, out float minor2, out float minor3, out float minor4, out float minor5, out float minor6,
+		                                     out float minor7, out float minor8, out float minor9, out float minor10, out float minor11, out float minor12)
+		{
+			double det1 = (double)matrix.M11 * (double)matrix.M22 - (double)matrix.M12 * (double)matrix.M21;
+			double det2 = (double)matrix.M11 * (double)matrix.M23 - (double)matrix.M13 * (double)matrix.M21;
+			double det3 = (double)matrix.M11 * (double)matrix.M24 - (double)matrix.M14 * (double)matrix.M21;
+			double det4 = (double)matrix.M12 * (double)matrix.M23 - (double)matrix.M13 * (double)matrix.M22;
+			double det5 = (double)matrix.M12 * (double)matrix.M24 - (double)matrix.M14 * (double)matrix.M22;
+			double det6 = (double)matrix.M13 * (double)matrix.M24 - (double)matrix.M14 * (double)matrix.M23;
+			double det7 = (double)matrix.M31 * (double)matrix.M42 - (double)matrix.M32 * (double)matrix.M41;
+			double det8 = (double)matrix.M31 * (double)matrix.M43 - (double)matrix.M33 * (double)matrix.M41;
+			double det9 = (double)matrix.M31 * (double)matrix.M44 - (double)matrix.M34 * (double)matrix.M41;
+			double det10 = (double)matrix.M32 * (double)matrix.M43 - (double)matrix.M33 * (double)matrix.M42;
+			double det11 = (double)matrix.M32 * (double)matrix.M44 - (double)matrix.M34 * (double)matrix.M42;
+			double det12 = (double)matrix.M33 * (double)matrix.M44 - (double)matrix.M34 * (double)matrix.M43;
+			
+			major = (float)(det1*det12 - det2*det11 + det3*det10 + det4*det9 - det5*det8 + det6*det7);
+			minor1 = (float)det1;
+			minor2 = (float)det2;
+			minor3 = (float)det3;
+			minor4 = (float)det4;
+			minor5 = (float)det5;
+			minor6 = (float)det6;
+			minor7 = (float)det7;
+			minor8 = (float)det8;
+			minor9 = (float)det9;
+			minor10 = (float)det10;
+			minor11 = (float)det11;
+			minor12 = (float)det12;
+		}
+		
+		#endregion Private Static Methods
 
         #region Public Methods
 
         public float Determinant()
         {
-            // Worked this one out on paper..
-            return (M11 * M22 - M12 * M21 + M13 * M21 - M14 * M22) * (M33 * M44 - M34 * M43) +
-                   (M14 * M23 - M11 * M23) * (M32 * M44 - M34 * M42) +
-                   (M11 * M24 - M14 * M24) * (M32 * M43 - M33 * M42) +
-                   (M12 * M23 - M13 * M22) * (M31 * M44 - M34 * M41) +
-                   M13 * M24 * (M31 * M42 - M32 * M41) +
-                   M12 * M24 * (M33 * M41 - M31 * M43);
+			float determinant, m1, m2, m3, m4, m5, m6, m7, m8, m9, m10, m11, m12;
+            findDeterminants(ref this, out determinant, out m1, out m2, out m3, out m4, out m5, out m6, out m7, out m8, out m9, out m10, out m11, out m12);
+			return determinant;
         }
 
         public bool Equals(Matrix other)
         {
-            throw new NotImplementedException();
+            return this == other;
         }
 
         #endregion Public Methods
@@ -817,18 +836,19 @@ namespace Microsoft.Xna.Framework
             return matrix1;
         }
 
-
         public static Matrix operator /(Matrix matrix1, Matrix matrix2)
         {
-            throw new NotImplementedException();
+            Matrix ret;
+			Matrix.Divide(ref matrix1, ref matrix2, out ret);
+			return ret;
         }
-
 
         public static Matrix operator /(Matrix matrix1, float divider)
         {
-            throw new NotImplementedException();
+            Matrix ret;
+			Matrix.Divide(ref matrix1, divider, out ret);
+			return ret;
         }
-
 
         public static bool operator ==(Matrix matrix1, Matrix matrix2)
         {
@@ -842,12 +862,10 @@ namespace Microsoft.Xna.Framework
                    (matrix1.M43 == matrix2.M43) && (matrix1.M44 == matrix2.M44);
         }
 
-
         public static bool operator !=(Matrix matrix1, Matrix matrix2)
         {
             return !(matrix1 == matrix2);
         }
-
 
         public static Matrix operator *(Matrix matrix1, Matrix matrix2)
         {
@@ -855,7 +873,6 @@ namespace Microsoft.Xna.Framework
             Matrix.Multiply(ref matrix1, ref matrix2, out returnMatrix);
             return returnMatrix;
         }
-
 
         public static Matrix operator *(Matrix matrix, float scaleFactor)
         {
@@ -884,7 +901,7 @@ namespace Microsoft.Xna.Framework
 		
 		public override bool Equals(object obj)
         {
-            throw new NotImplementedException();
+            return this == (Matrix)obj;
         }
 
         public override int GetHashCode()
@@ -894,10 +911,10 @@ namespace Microsoft.Xna.Framework
 
         public override string ToString()
         {
-            return "{ {M11:" + M11 + " M12:" + M12 + " M13:" + M13 + " M14: " + M14 + "}" +
-                    " {M21:" + M21 + " M22:" + M22 + " M23:" + M23 + " M24: " + M24 + "}" +
-                    " {M31:" + M31 + " M32:" + M32 + " M33:" + M33 + " M34: " + M34 + "}" +
-                    " {M41:" + M41 + " M42:" + M42 + " M43:" + M43 + " M44: " + M44 + "} }";
+            return "{ {M11:" + M11 + " M12:" + M12 + " M13:" + M13 + " M14:" + M14 + "}" +
+                    " {M21:" + M21 + " M22:" + M22 + " M23:" + M23 + " M24:" + M24 + "}" +
+                    " {M31:" + M31 + " M32:" + M32 + " M33:" + M33 + " M34:" + M34 + "}" +
+                    " {M41:" + M41 + " M42:" + M42 + " M43:" + M43 + " M44:" + M44 + "} }";
         }       
 		
         #endregion

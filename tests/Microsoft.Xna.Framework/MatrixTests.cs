@@ -35,7 +35,6 @@ using Microsoft.Xna.Framework;
 
 namespace Microsoft.Xna.Framework.Tests
 {
-    /*
     [TestFixture]
     public class MatrixTests
     {
@@ -48,7 +47,7 @@ namespace Microsoft.Xna.Framework.Tests
             Matrix expected = new Matrix(10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10);
 
             m = m + n;
-            Assert.AreEqual(expected, m);
+            Assert.AreEqual(expected, m, "#1");
             Assert.AreEqual(n, new Matrix(9, 8, 7, 6, 5, 4, 3, 2, 1, 2, 3, 4, 5, 6, 7, 8), "test 1");
 
             m = new Matrix(1, 2, 3, 4, 5, 6, 7, 8, 9, 8, 7, 6, 5, 4, 3, 2);
@@ -158,5 +157,4 @@ namespace Microsoft.Xna.Framework.Tests
         }
         #endregion Instance methods
     }
-    */
 }
