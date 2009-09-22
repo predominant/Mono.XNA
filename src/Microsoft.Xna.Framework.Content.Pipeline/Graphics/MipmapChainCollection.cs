@@ -37,15 +37,15 @@ namespace Microsoft.Xna.Framework.Content.Pipeline.Graphics
 	public sealed class MipmapChainCollection : Collection<MipmapChain>
 	{
 
-#region Constructor
+		#region Constructor
 		
 		public MipmapChainCollection()
 		{
 		}
 
-#endregion
+		#endregion
 		
-#region Protected Methods
+		#region Protected Methods
 
 		protected override void InsertItem(int index, MipmapChain item)
 		{
@@ -67,7 +67,7 @@ namespace Microsoft.Xna.Framework.Content.Pipeline.Graphics
 			throw new NotImplementedException();
 		}
 		
-#endregion
+		#endregion
 		
 	}
 }

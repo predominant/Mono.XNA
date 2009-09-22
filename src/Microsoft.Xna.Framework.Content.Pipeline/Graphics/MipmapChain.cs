@@ -37,7 +37,7 @@ namespace Microsoft.Xna.Framework.Content.Pipeline.Graphics
 	public sealed class MipmapChain : Collection<BitmapContent>
 	{
 
-#region Constructor
+		#region Constructors
 		
 		public MipmapChain()
 		{
@@ -48,18 +48,18 @@ namespace Microsoft.Xna.Framework.Content.Pipeline.Graphics
 			
 		}
 
-#endregion
+		#endregion Constructors
 		
-#region Public Methods
+		#region Operators
 		
-		public static MipmapChain op_Implicit(BitmapContent bitmap)
+		public static implicit operator MipmapChain(BitmapContent bitmap)
 		{
 			throw new NotImplementedException();
 		}		
 		
-#endregion
+		#endregion Operators
 		
-#region Protected Methods
+		#region Protected Methods
 
 		protected override void InsertItem(int index, BitmapContent item)
 		{
@@ -71,7 +71,7 @@ namespace Microsoft.Xna.Framework.Content.Pipeline.Graphics
 			throw new NotImplementedException();
 		}
 		
-#endregion
+		#endregion Protected Methods
 		
 	}
 }

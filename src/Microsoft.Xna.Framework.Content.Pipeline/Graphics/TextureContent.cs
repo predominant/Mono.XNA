@@ -36,24 +36,23 @@ namespace Microsoft.Xna.Framework.Content.Pipeline.Graphics
 	public abstract class TextureContent : ContentItem
 	{
 
-#region Constructor
+		#region Constructor
 		
 		protected TextureContent(MipmapChainCollection faces)
 		{
 		}
 
-#endregion
+		#endregion
 		
-#region Properties
+		#region Properties
 
-		public MipmapChainCollection Faces 
-		{ 
+		public MipmapChainCollection Faces { 
 			get { throw new NotImplementedException(); }
 		}
 		
-#endregion
+		#endregion
 		
-#region Public Methods
+		#region Public Methods
 		
 		public void ConvertBitmapType(Type newBitmapType)
 		{
@@ -75,8 +74,7 @@ namespace Microsoft.Xna.Framework.Content.Pipeline.Graphics
 			throw new NotImplementedException();
 		}
 		
-#endregion
-		
+		#endregion
 		
 	}
 }
