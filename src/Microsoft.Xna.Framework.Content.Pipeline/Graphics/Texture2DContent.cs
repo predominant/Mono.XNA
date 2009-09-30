@@ -46,15 +46,14 @@ namespace Microsoft.Xna.Framework.Content.Pipeline.Graphics
 		
 #endregion 
 		
-#region Public Methods
+#region Public Properties
 
-		public MipmapChain Mipmaps 
-		{ 
+		public MipmapChain Mipmaps { 
 			get; 
 			set; 
 		}
 		
-#endregion
+#endregion Public Properties
 		
 	}
 }

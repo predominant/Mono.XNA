@@ -49,8 +49,9 @@ namespace Microsoft.Xna.Framework.Content.Pipeline.TextureImporter
 		public override TextureContent Import (string filename, ContentImporterContext context)
 		{
 			Il.ilInit();
-			Il.ilBindImage (0);
-			Il.ilLoadImage (filename);
+			int imageId = Il.ilGenImage();
+			Il.ilBindImage(imageId);
+			Il.ilLoadImage(filename);
 			IntPtr data = Il.ilGetData ();
 			
 			return null;

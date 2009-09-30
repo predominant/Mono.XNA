@@ -42,8 +42,7 @@ namespace Microsoft.Xna.Framework.Content
         private Action<IDisposable> recordDisposableObject;
         private List<Action<object>>[] ResourceFixups;
 
-        internal GraphicsDevice GraphicsDevice
-        {
+        internal GraphicsDevice GraphicsDevice {
             get { return this.graphicsDevice; }
         }
 
@@ -157,17 +156,12 @@ namespace Microsoft.Xna.Framework.Content
             return stream;
         }
 
-        public ContentManager ContentManager
-        {
+        public ContentManager ContentManager {
             get { return this.contentManager; }
         }
 
-        public string AssetName
-        {
-            get
-            {
-                return this.assetName;
-            }
+        public string AssetName {
+            get { return this.assetName; }
         }
 
         public T ReadExternalReference<T>()

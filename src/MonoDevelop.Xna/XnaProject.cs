@@ -102,6 +102,9 @@ namespace MonoDevelop.Xna
 				
 		protected override BuildResult DoBuild (IProgressMonitor monitor, string itemConfiguration)
         {
+			foreach(NestedContentProject nestedProj in nestedContentProjects)
+				nestedProj.Project.Build(monitor, itemConfiguration);
+			
             return base.DoBuild(monitor, itemConfiguration); 
         }
 		

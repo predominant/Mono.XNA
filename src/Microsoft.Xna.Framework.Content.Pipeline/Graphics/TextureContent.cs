@@ -36,10 +36,17 @@ namespace Microsoft.Xna.Framework.Content.Pipeline.Graphics
 	public abstract class TextureContent : ContentItem
 	{
 
+		#region Private Fields
+		
+		private MipmapChainCollection faces;
+		
+		#endregion Private Fields
+		
 		#region Constructor
 		
 		protected TextureContent(MipmapChainCollection faces)
 		{
+			this.faces = faces;
 		}
 
 		#endregion
@@ -61,7 +68,13 @@ namespace Microsoft.Xna.Framework.Content.Pipeline.Graphics
 		
 		public virtual void GenerateMipmaps(bool overwriteExistingMipmaps)
 		{
-			throw new NotImplementedException();
+			foreach (MipmapChain face in faces)
+			{
+				if (!overwriteExistingMipmaps && face.Count > 1)
+					continue;
+				
+				
+			}
 		}
 		
 		public virtual void Validate()

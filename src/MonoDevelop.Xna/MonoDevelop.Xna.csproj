@@ -47,6 +47,7 @@
     <Compile Include="ContentProjectNodeCommandHandler.cs" />
     <Compile Include="ContentProjectNodeBuilder.cs" />
     <Compile Include="XnaProjectNodeBuilder.cs" />
+    <Compile Include="CompileItem.cs" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="MonoDevelop.Xna.addin.xml" />
@@ -68,5 +69,6 @@
       <Package>monodevelop</Package>
     </Reference>
     <Reference Include="gdk-sharp, Version=2.12.0.0, Culture=neutral, PublicKeyToken=35e10195dab3c99f" />
+    <Reference Include="Microsoft.Build.Framework" />
   </ItemGroup>
 </Project>
