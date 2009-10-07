@@ -71,12 +71,13 @@ namespace MonoDevelop.Xna
 			contentInfo.CombineName = info.CombineName;
 			contentInfo.CombinePath = info.CombinePath;
 			contentInfo.ProjectBasePath = Path.Combine(info.ProjectBasePath, "Content");
-			contentInfo.ProjectName = "Content";			
+			contentInfo.ProjectName = "Content";
+			
+			Console.WriteLine("XnaProject.CreateProject");
 			
 			ContentProject contentProject = (ContentProject)Services.ProjectService.CreateProject("ContentProject", contentInfo, projectOptions);
 			contentProject.FileName = Path.Combine (contentInfo.ProjectBasePath, contentInfo.ProjectName);
-			if(!Directory.Exists(contentProject.BaseDirectory))
-				Directory.CreateDirectory(contentProject.BaseDirectory);
+			
 			
 			project.NestedContentProjects.Add(new NestedContentProject(project, contentProject, contentProject.FileName.Replace(info.ProjectBasePath, ".")));
 			

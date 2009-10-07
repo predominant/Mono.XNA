@@ -87,6 +87,7 @@ namespace MonoDevelop.Xna
 		
 		public override void Save (IProgressMonitor monitor)
 		{
+			Console.WriteLine("ContentProject.Save");
 			base.Save (monitor);
 		}
 

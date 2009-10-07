@@ -113,7 +113,11 @@ namespace MonoDevelop.Xna
 		{
 			Console.WriteLine ("Save " + nestedContentProjects.Count);
 			foreach(NestedContentProject nestedProj in nestedContentProjects)
+			{
+				if(!Directory.Exists(nestedProj.Project.BaseDirectory))
+					Directory.CreateDirectory(nestedProj.Project.BaseDirectory);
 				nestedProj.Project.Save(monitor);
+			}
 			
 			base.Save (monitor);
 		}
