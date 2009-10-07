@@ -37,104 +37,123 @@ namespace Microsoft.Xna.Framework.Content.Pipeline.Tasks
     public class BuildContent : Task
     {
        
+		#region Public Fields
+		
+		public const string CancelEventNameFormat = "";
+		
+		#endregion Public Fields
+		
+		#region Private Fields
+		
+		private bool compressContent;
+		private bool rebuildAll;
+		private string buildConfiguration;
+		private string intermediateDirectory;
+		private string loggerRootDirectory;
+		private string outputDirectory;
+		private string rootDirectory;
+		private string targetPlatform;
+		private ITaskItem[] intermediateFiles;
+		private ITaskItem[] outputContentFiles;
+		private ITaskItem[] pipelineAssemblies;
+		private ITaskItem[] pipelineAssemblyDependencies;
+		private ITaskItem[] rebuiltContentFiles;
+		private ITaskItem[] sourceAssets;
+		
+		#endregion Private Fields
+		
+		#region Properties
+		
+		public string BuildConfiguration { 
+			get { return buildConfiguration; }
+			set { buildConfiguration = value; }
+		}
+		
+		public bool CompressContent { 
+			get { return compressContent; }
+			set { compressContent = value; }
+		}
+		
+		public string IntermediateDirectory { 
+			get { return intermediateDirectory; }
+			set { intermediateDirectory = value; }
+		}
+		
+		[Output]
+		public ITaskItem[] IntermediateFiles { 
+			get { return intermediateFiles; }
+		}
+
+		public string LoggerRootDirectory { 
+			get { return loggerRootDirectory; }
+			set { loggerRootDirectory = value; }
+		}
+		
+		[Output]
+		public ITaskItem[] OutputContentFiles { 
+			get { return outputContentFiles; }
+		}
+		
+		public string OutputDirectory { 
+			get { return outputDirectory; }
+			set { outputDirectory = value; }
+		}
+		
+		[Required]
+		public ITaskItem[] PipelineAssemblies { 
+			get { return pipelineAssemblies; }
+			set { pipelineAssemblies = value; }
+		}
+
+		public ITaskItem[] PipelineAssemblyDependencies { 
+			get { return pipelineAssemblyDependencies; }
+			set { pipelineAssemblyDependencies = value; }
+		}
+		
+		public bool RebuildAll { 
+			get { return rebuildAll; }
+			set { rebuildAll = value; }
+		}
+		
+		[Output]
+		public ITaskItem[] RebuiltContentFiles { 
+			get { return rebuiltContentFiles; }
+		}
+
+		public string RootDirectory { 
+			get { return rootDirectory; }
+			set { rootDirectory = value; }
+		}
+		
+		[Required]
+		public ITaskItem[] SourceAssets { 
+			get { return sourceAssets; }
+			set { sourceAssets = value; }
+		}
+		
+		[Required]
+		public string TargetPlatform { 
+			get { return targetPlatform; }
+			set { targetPlatform = value; }
+		}
+		
+		#endregion
+		
 		#region Constructor
 		
         public BuildContent()
         {
         }
 		
-		#endregion
+		#endregion Constructor
 		
-		#region Public Fields
-		
-		public const string CancelEventNameFormat = "";
-		
-		#endregion
-		
-		#region Properties
-		
-		public string BuildConfiguration { 
-			get { throw new NotImplementedException(); }
-			set { throw new NotImplementedException(); }
-		}
-		
-		public bool CompressContent { 
-			get { throw new NotImplementedException(); }
-			set { throw new NotImplementedException(); }
-		}
-		
-		public string IntermediateDirectory { 
-			get { throw new NotImplementedException(); }
-			set { throw new NotImplementedException(); }
-		}
-		
-		[Output]
-		public ITaskItem[] IntermediateFiles { 
-			get { throw new NotImplementedException(); }
-		}
-
-		public string LoggerRootDirectory { 
-			get { throw new NotImplementedException(); }
-			set { throw new NotImplementedException(); }
-		}
-		
-		[Output]
-		public ITaskItem[] OutputContentFiles { 
-			get { throw new NotImplementedException(); }
-		}
-		
-		public string OutputDirectory { 
-			get { throw new NotImplementedException(); }
-			set { throw new NotImplementedException(); }
-		}
-		
-		[Required]
-		public ITaskItem[] PipelineAssemblies { 
-			get { throw new NotImplementedException(); }
-			set { throw new NotImplementedException(); }
-		}
-
-		public ITaskItem[] PipelineAssemblyDependencies { 
-			get { throw new NotImplementedException(); }
-			set { throw new NotImplementedException(); }
-		}
-		
-		public bool RebuildAll { 
-			get { throw new NotImplementedException(); }
-			set { throw new NotImplementedException(); }
-		}
-		
-		[Output]
-		public ITaskItem[] RebuiltContentFiles { 
-			get { throw new NotImplementedException(); }
-		}
-
-		public string RootDirectory { 
-			get { throw new NotImplementedException(); }
-			set { throw new NotImplementedException(); }
-		}
-		
-		[Required]
-		public ITaskItem[] SourceAssets { 
-			get { throw new NotImplementedException(); }
-			set { throw new NotImplementedException(); }
-		}
-		
-		[Required]
-		public string TargetPlatform { 
-			get { throw new NotImplementedException(); }
-			set { throw new NotImplementedException(); }
-		}
-		
-		#endregion
-		
-		#region Public Methods
+		#region Task Overrides
 		
 		public override bool Execute()
 		{
 			throw new NotImplementedException();
 		}
 		
-		#endregion
+		#endregion Task Overrides
     }
 }

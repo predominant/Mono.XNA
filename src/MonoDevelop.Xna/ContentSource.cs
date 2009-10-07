@@ -35,8 +35,8 @@ using MonoDevelop.Core.Serialization;
 namespace MonoDevelop.Xna
 {
 	
-	[DataItem]
-	public class Compile : ProjectItem
+	[DataItem("Compile")]
+	public class ContentSource : ProjectItem
 	{		
 		#region Properties
 		
@@ -72,11 +72,11 @@ namespace MonoDevelop.Xna
 		
 		#region Constructors
 		
-		public Compile()
+		public ContentSource()
 		{
 		}
 		
-		public Compile(string include, string name, string importer, string processor)
+		public ContentSource(string include, string name, string importer, string processor)
 		{
 			this.include = include;	
 			this.name = name;
@@ -85,6 +85,7 @@ namespace MonoDevelop.Xna
 		}
 		
 		#endregion
+		
 		
 		
 	}

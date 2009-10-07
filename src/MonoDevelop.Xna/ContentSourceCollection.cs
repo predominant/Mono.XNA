@@ -35,10 +35,10 @@ namespace MonoDevelop.Xna
 {
 	
 	[Serializable]
-	public class CompileCollection : ProjectItemCollection<Compile>
+	public class ContentSourceCollection : ProjectItemCollection<ContentSource>
 	{
 		
-		public CompileCollection()
+		public ContentSourceCollection()
 		{
 		}
 	}

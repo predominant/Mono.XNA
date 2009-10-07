@@ -30,7 +30,9 @@ SOFTWARE.
 
 using System;
 using MonoDevelop.Projects;
+using MonoDevelop.Ide.Gui;
 using MonoDevelop.Ide.Gui.Components;
+using MonoDevelop.Ide.Gui.Dialogs;
 using MonoDevelop.Ide.Commands;
 using MonoDevelop.Components.Commands;
 
@@ -40,8 +42,17 @@ namespace MonoDevelop.Xna
 	public class ContentProjectCommandHandler : NodeCommandHandler
 	{		
 		
-		[CommandHandler (ProjectCommands.AddNewFiles)]
-		protected void OnAddNewFile ()
+		[CommandHandler(ProjectCommands.AddNewFiles)]
+		protected void OnAddNewFile()
+		{
+			ContentProject project = (ContentProject)CurrentNode.GetParentDataItem(typeof(ContentProject), true);
+			IdeApp.ProjectOperations.CreateProjectFile(project, project.BaseDirectory);
+			IdeApp.ProjectOperations.Save(project);
+			CurrentNode.Expanded = true;
+		}
+		
+		[CommandHandler(ProjectCommands.AddFiles)]
+		protected void OnAddFiles()
 		{
 			
 		}

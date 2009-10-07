@@ -49,9 +49,9 @@ namespace MonoDevelop.Xna
 		
 		#region Properties
 		
-		private CompileCollection compileCollection;
-		public CompileCollection CompileCollection {
-			get { return compileCollection; }	
+		private ContentSourceCollection contentSources;
+		public ContentSourceCollection ContentSources {
+			get { return contentSources; }	
 		}
 		
 		#endregion
@@ -66,8 +66,8 @@ namespace MonoDevelop.Xna
 		public ContentProject (string language, ProjectCreateInformation info, XmlElement projectOptions)
 			: base (language, info, projectOptions)
 		{
-			compileCollection = new CompileCollection();
-			Items.Bind(compileCollection);
+			contentSources = new ContentSourceCollection();
+			Items.Bind(contentSources);
 		}
 		
 		#endregion

@@ -42,12 +42,11 @@
     <Compile Include="NestedContentProjectCollection.cs" />
     <Compile Include="XnaProjectBinding.cs" />
     <Compile Include="ContentProjectBinding.cs" />
-    <Compile Include="Compile.cs" />
-    <Compile Include="CompileCollection.cs" />
+    <Compile Include="ContentSource.cs" />
+    <Compile Include="ContentSourceCollection.cs" />
     <Compile Include="ContentProjectNodeCommandHandler.cs" />
     <Compile Include="ContentProjectNodeBuilder.cs" />
     <Compile Include="XnaProjectNodeBuilder.cs" />
-    <Compile Include="CompileItem.cs" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="MonoDevelop.Xna.addin.xml" />

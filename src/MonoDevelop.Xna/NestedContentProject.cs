@@ -75,12 +75,18 @@ namespace MonoDevelop.Xna
 			set { visible = value; }
 		}
 		
+		/// <value>
+		/// The parent XNA project
+		/// </value>
 		private XnaProject parent;
 		public XnaProject Parent {
 			get { return parent; }
 			set { parent = value; }
 		}
 		
+		/// <value>
+		/// A reference to the content project
+		/// </value>
 		private ContentProject project;
 		public ContentProject Project {
 		 	get { 
