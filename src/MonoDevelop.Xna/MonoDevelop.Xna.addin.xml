@@ -27,13 +27,15 @@
 			import ="$(MSBuildExtensionsPath)\Microsoft\XNA Game Studio\v3.0\Microsoft.Xna.GameStudio.ContentPipeline.targets" />
 	</Extension>
 	
-	<Extension path="/MonoDevelop/Ide/ProjectTemplates">
-		<ProjectTemplate id="WindowsGame" resource="WindowsGame.xpt.xml"/>
-	</Extension>
-	
 	<Extension path="/MonoDevelop/ProjectModel/ProjectBindings">
 		<ProjectBinding id="XnaProject" class="MonoDevelop.Xna.XnaProjectBinding" />
 		<ProjectBinding id="ContentProject" class="MonoDevelop.Xna.ContentProjectBinding" />
+	</Extension>
+	
+	<Extension path="/MonoDevelop/ProjectModel/ExtendedProperties">  
+		<ItemProperty class="MonoDevelop.Projects.ProjectFile" name="Name" type="System.String" />  
+		<ItemProperty class="MonoDevelop.Projects.ProjectFile" name="Importer" type="System.String" />
+		<ItemProperty class="MonoDevelop.Projects.ProjectFile" name="Processore" type="System.String" />  
 	</Extension>
 	
 	<Extension path="/MonoDevelop/ProjectModel/SerializableClasses">
@@ -41,9 +43,18 @@
 		<DataType class="MonoDevelop.Xna.ContentProject" />
 		<DataType class="MonoDevelop.Xna.NestedContentProject" />
 	</Extension>
+	
+	<Extension path="/MonoDevelop/Ide/ProjectTemplates">
+		<ProjectTemplate id="WindowsGame" resource="WindowsGame.xpt.xml" />
+	</Extension>
+	
+	<Extension path="/MonoDevelop/Ide/FileTemplates">
+		<FileTemplate id="XmlContent" resource="XmlContent.xft.xml" />
+		<FileTemplate id="SpriteFont" resource="SpriteFont.xft.xml" />
+	</Extension>
 
 	<Extension path="/MonoDevelop/Ide/FileFilters">
-		<FileFilter id="Content" insertbefore="AllFiles" _label="Content Files" extensions = "*.fbx" />
+		<FileFilter id="Content" insertbefore="AllFiles" _label="Content Files" extensions="*.fbx" />
 	</Extension>
 	
 	<Extension path="/MonoDevelop/Ide/Pads/ProjectPad">
@@ -52,11 +63,13 @@
 	</Extension>
 	
 	<Extension path="/MonoDevelop/Ide/ContextMenu/ProjectPad">
+		<!--
 		<Condition id="ItemType" value="ContentProject">
 			<CommandItem id="MonoDevelop.Ide.Commands.ProjectCommands.AddNewFiles" />
 			<CommandItem id="MonoDevelop.Ide.Commands.ProjectCommands.AddFiles" />
 			<SeparatorItem id="Separator1" />
 			<CommandItem id="MonoDevelop.Ide.Commands.ProjectCommands.NewFolder" />
 		</Condition>
+		-->
 	</Extension>
 </Addin>

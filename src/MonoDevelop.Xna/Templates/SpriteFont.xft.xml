@@ -1,0 +1,35 @@
+<?xml version="1.0"?>
+<Template Originator="Lars Magnusson" Created="10/07/2009" LastModified="10/07/2009">
+	
+	<TemplateConfiguration>
+		<_Name>Sprite Font</_Name>
+		<Icon>md-xml-file-icon</Icon>
+		<_Category>XNA</_Category>
+		<_Description>Creates a default sprite font xml file.</_Description>
+	</TemplateConfiguration>
+	
+	<TemplateFiles>
+		<File DefaultExtension=".xml" DefaultName="XmlContent">
+<![CDATA[<?xml version="1.0" encoding="utf-8"?>
+<XnaContent xmlns:Graphics="Microsoft.Xna.Framework.Content.Pipeline.Graphics">
+  <Asset Type="Graphics:FontDescription">
+	<FontName>Kootenay</FontName>
+	<Size>14</Size>
+	<Spacing>0</Spacing>
+	<UseKerning>true</UseKerning>
+	<Style>Regular</Style>
+	<!-- <DefaultCharacter>*</DefaultCharacter> -->
+	<CharacterRegions>
+      <CharacterRegion>
+        <Start>&#32;</Start>
+        <End>&#126;</End>
+      </CharacterRegion>
+    </CharacterRegions>
+  </Asset>
+</XnaContent>]]>
+		</File>
+	</TemplateFiles>
+	
+	<FileOptions/>
+	
+</Template>

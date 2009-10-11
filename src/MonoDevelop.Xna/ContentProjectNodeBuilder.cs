@@ -33,12 +33,13 @@ using MonoDevelop.Projects;
 using MonoDevelop.Core.Gui;
 using MonoDevelop.Ide.Gui;
 using MonoDevelop.Ide.Gui.Components;
+using MonoDevelop.Ide.Gui.Pads.ProjectPad;
 
 namespace MonoDevelop.Xna
 {
 	
 	
-	public class ContentProjectNodeBuilder : TypeNodeBuilder
+	public class ContentProjectNodeBuilder : ProjectNodeBuilder
 	{
 		
 		#region TypeNodeBuilder Overrides
@@ -48,7 +49,7 @@ namespace MonoDevelop.Xna
 		}
 		
 		public override Type CommandHandlerType {
-			get { return typeof(ContentProjectCommandHandler); }
+			get { return typeof(ContentProjectNodeCommandHandler); }
 		}
 		
 		public override string GetNodeName (ITreeNavigator thisNode, object dataObject)
@@ -56,18 +57,17 @@ namespace MonoDevelop.Xna
 			return ((ContentProject)dataObject).Name;
 		}
 		
+		protected override void Initialize ()
+		{
+			base.Initialize ();
+		}
+		
 		public override void BuildNode (ITreeBuilder treeBuilder, object dataObject, ref string label, ref Gdk.Pixbuf icon, ref Gdk.Pixbuf closedIcon)
 		{
 			label = ((ContentProject)dataObject).Name;
 			icon = Context.GetIcon (Stock.OpenReferenceFolder);
 			closedIcon = Context.GetIcon (Stock.ClosedReferenceFolder);
-		}
-
-		public override void BuildChildNodes (ITreeBuilder builder, object dataObject)
-		{
-			ContentProject project = dataObject as ContentProject;
-			if(project != null)
-				builder.AddChild(project.References);
+			
 		}
 		
 		public override bool HasChildNodes (ITreeBuilder builder, object dataObject)
@@ -76,5 +76,6 @@ namespace MonoDevelop.Xna
 		}
 		
 		#endregion
+		
 	}
 }

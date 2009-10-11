@@ -18,7 +18,7 @@
     <OutputPath>..\..\bin\Debug</OutputPath>
     <DefineConstants>DEBUG</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
+    <WarningLevel>3</WarningLevel>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>none</DebugType>
@@ -42,8 +42,6 @@
     <Compile Include="NestedContentProjectCollection.cs" />
     <Compile Include="XnaProjectBinding.cs" />
     <Compile Include="ContentProjectBinding.cs" />
-    <Compile Include="ContentSource.cs" />
-    <Compile Include="ContentSourceCollection.cs" />
     <Compile Include="ContentProjectNodeCommandHandler.cs" />
     <Compile Include="ContentProjectNodeBuilder.cs" />
     <Compile Include="XnaProjectNodeBuilder.cs" />
@@ -54,6 +52,12 @@
       <LogicalName>WindowsGame.xpt.xml</LogicalName>
     </EmbeddedResource>
     <EmbeddedResource Include="Icons\XnaGame_48x48.png" />
+    <EmbeddedResource Include="Templates\XmlContent.xft.xml">
+      <LogicalName>XmlContent.xft.xml</LogicalName>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Templates\SpriteFont.xft.xml">
+      <LogicalName>SpriteFont.xft.xml</LogicalName>
+    </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
     <Reference Include="System" />

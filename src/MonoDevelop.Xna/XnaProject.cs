@@ -111,7 +111,6 @@ namespace MonoDevelop.Xna
 		
 		public override void Save (IProgressMonitor monitor)
 		{
-			Console.WriteLine ("Save " + nestedContentProjects.Count);
 			foreach(NestedContentProject nestedProj in nestedContentProjects)
 			{
 				if(!Directory.Exists(nestedProj.Project.BaseDirectory))
@@ -124,7 +123,6 @@ namespace MonoDevelop.Xna
 		
 		protected override void OnEndLoad ()
 		{
-			Console.WriteLine ("OnEndLoad " + nestedContentProjects.Count);
 			foreach(NestedContentProject project in nestedContentProjects)
 				project.Parent = this;
 		}

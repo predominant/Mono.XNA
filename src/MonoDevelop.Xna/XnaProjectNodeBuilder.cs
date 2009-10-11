@@ -38,7 +38,7 @@ using MonoDevelop.Ide.Gui.Pads.ProjectPad;
 namespace MonoDevelop.Xna
 {	
 	
-	public class XnaProjectNodeBuilder : NodeBuilderExtension
+	public class XnaProjectNodeBuilder : ProjectNodeBuilder
 	{
 
 		#region Constructor
@@ -51,23 +51,19 @@ namespace MonoDevelop.Xna
 		
 		#region ProjectNodeBuilder Overrides
 		
-		public override bool CanBuildNode (Type dataType)
-		{
-			return typeof(XnaProject).IsAssignableFrom (dataType);
+		public override Type NodeDataType {
+			get { return typeof(XnaProject); }
 		}
+
 		
 		public override void BuildChildNodes (ITreeBuilder builder, object dataObject)
 		{
-			Console.WriteLine ("BuildChildNodes" + " " + ((XnaProject)dataObject).NestedContentProjects.Count);
 			foreach(NestedContentProject contentProject in ((XnaProject)dataObject).NestedContentProjects)
-			{
 				builder.AddChild(contentProject.Project);
-				Console.WriteLine (contentProject.Project.ToString() + " " + contentProject.Project.ItemId + " " + contentProject.Project.TargetFramework);
-			}
 			
 			base.BuildChildNodes (builder, dataObject);
 		}
 		
-		#endregion
+		#endregion ProjectNodeBuilder Overrides
 	}
 }

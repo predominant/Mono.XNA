@@ -49,11 +49,6 @@ namespace MonoDevelop.Xna
 		
 		#region Properties
 		
-		private ContentSourceCollection contentSources;
-		public ContentSourceCollection ContentSources {
-			get { return contentSources; }	
-		}
-		
 		#endregion
 		
         #region Constructors
@@ -66,8 +61,6 @@ namespace MonoDevelop.Xna
 		public ContentProject (string language, ProjectCreateInformation info, XmlElement projectOptions)
 			: base (language, info, projectOptions)
 		{
-			contentSources = new ContentSourceCollection();
-			Items.Bind(contentSources);
 		}
 		
 		#endregion
@@ -79,18 +72,21 @@ namespace MonoDevelop.Xna
 			get  { return "Content"; }
 		}
 		
-		protected override BuildResult DoBuild (IProgressMonitor monitor, string itemConfiguration)
-        {
+		public override void Save (IProgressMonitor monitor)
+		{
+			base.Save (monitor);
+		}
 		
+		protected override BuildResult DoBuild (IProgressMonitor monitor, string itemConfiguration)
+        {		
             return base.DoBuild(monitor, itemConfiguration); 
         }
 		
-		public override void Save (IProgressMonitor monitor)
+		protected override void OnFileAddedToProject (MonoDevelop.Projects.ProjectFileEventArgs e)
 		{
-			Console.WriteLine("ContentProject.Save");
-			base.Save (monitor);
+			Console.WriteLine(ParentSolution.ToString());
+			base.OnFileAddedToProject(e);
 		}
-
 
         #endregion
 	}
