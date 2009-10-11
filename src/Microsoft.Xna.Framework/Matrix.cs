@@ -139,8 +139,59 @@ namespace Microsoft.Xna.Framework
 		
         #endregion Public Properties
 		
+		
 		#region Constructors
-        
+        /// <summary>
+        /// Constructor for 4x4 Matrix
+        /// </summary>
+        /// <param name="m11">
+        /// A <see cref="System.Single"/>
+        /// </param>
+        /// <param name="m12">
+        /// A <see cref="System.Single"/>
+        /// </param>
+        /// <param name="m13">
+        /// A <see cref="System.Single"/>
+        /// </param>
+        /// <param name="m14">
+        /// A <see cref="System.Single"/>
+        /// </param>
+        /// <param name="m21">
+        /// A <see cref="System.Single"/>
+        /// </param>
+        /// <param name="m22">
+        /// A <see cref="System.Single"/>
+        /// </param>
+        /// <param name="m23">
+        /// A <see cref="System.Single"/>
+        /// </param>
+        /// <param name="m24">
+        /// A <see cref="System.Single"/>
+        /// </param>
+        /// <param name="m31">
+        /// A <see cref="System.Single"/>
+        /// </param>
+        /// <param name="m32">
+        /// A <see cref="System.Single"/>
+        /// </param>
+        /// <param name="m33">
+        /// A <see cref="System.Single"/>
+        /// </param>
+        /// <param name="m34">
+        /// A <see cref="System.Single"/>
+        /// </param>
+        /// <param name="m41">
+        /// A <see cref="System.Single"/>
+        /// </param>
+        /// <param name="m42">
+        /// A <see cref="System.Single"/>
+        /// </param>
+        /// <param name="m43">
+        /// A <see cref="System.Single"/>
+        /// </param>
+        /// <param name="m44">
+        /// A <see cref="System.Single"/>
+        /// </param>
         public Matrix(float m11, float m12, float m13, float m14, float m21, float m22, float m23, float m24, 
 		              float m31, float m32, float m33, float m34, float m41, float m42, float m43, float m44)
         {
@@ -166,6 +217,18 @@ namespace Microsoft.Xna.Framework
 
 		#region Public Static Methods
 		
+		/// <summary>
+		/// Adds second matrix to the first.
+		/// </summary>
+		/// <param name="matrix1">
+		/// A <see cref="Matrix"/>
+		/// </param>
+		/// <param name="matrix2">
+		/// A <see cref="Matrix"/>
+		/// </param>
+		/// <returns>
+		/// A <see cref="Matrix"/>
+		/// </returns>
 		public static Matrix Add(Matrix matrix1, Matrix matrix2)
         {
             matrix1.M11 += matrix2.M11;
@@ -188,6 +251,18 @@ namespace Microsoft.Xna.Framework
         }
 
 
+		/// <summary>
+		/// Adds two Matrix and save to the result Matrix
+		/// </summary>
+		/// <param name="matrix1">
+		/// A <see cref="Matrix"/>
+		/// </param>
+		/// <param name="matrix2">
+		/// A <see cref="Matrix"/>
+		/// </param>
+		/// <param name="result">
+		/// A <see cref="Matrix"/>
+		/// </param>
         public static void Add(ref Matrix matrix1, ref Matrix matrix2, out Matrix result)
         {
             result.M11 = matrix1.M11 + matrix2.M11;

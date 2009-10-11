@@ -86,12 +86,27 @@ namespace Microsoft.Xna.Framework
 
         #region Constructors
 
+		/// <summary>
+		/// Constructor foe standard 2D vector.
+		/// </summary>
+		/// <param name="x">
+		/// A <see cref="System.Single"/>
+		/// </param>
+		/// <param name="y">
+		/// A <see cref="System.Single"/>
+		/// </param>
         public Vector2(float x, float y)
         {
             this.X = x;
             this.Y = y;
         }
 
+		/// <summary>
+		/// Constructor for "square" vector.
+		/// </summary>
+		/// <param name="value">
+		/// A <see cref="System.Single"/>
+		/// </param>
         public Vector2(float value)
         {
             this.X = value;
@@ -158,6 +173,18 @@ namespace Microsoft.Xna.Framework
                 MathHelper.Clamp(value1.Y, min.Y, max.Y));
         }
 
+		/// <summary>
+		/// Returns float precison distanve between two vectors
+		/// </summary>
+		/// <param name="value1">
+		/// A <see cref="Vector2"/>
+		/// </param>
+		/// <param name="value2">
+		/// A <see cref="Vector2"/>
+		/// </param>
+		/// <returns>
+		/// A <see cref="System.Single"/>
+		/// </returns>
         public static float Distance(Vector2 value1, Vector2 value2)
         {
             float result;
@@ -165,6 +192,7 @@ namespace Microsoft.Xna.Framework
             return (float)Math.Sqrt(result);
         }
 
+		
         public static void Distance(ref Vector2 value1, ref Vector2 value2, out float result)
         {
             DistanceSquared(ref value1, ref value2, out result);
@@ -183,6 +211,18 @@ namespace Microsoft.Xna.Framework
             result = (value1.X - value2.X) * (value1.X - value2.X) + (value1.Y - value2.Y) * (value1.Y - value2.Y);
         }
 
+		/// <summary>
+		/// Devide first vector with the secund vector
+		/// </summary>
+		/// <param name="value1">
+		/// A <see cref="Vector2"/>
+		/// </param>
+		/// <param name="value2">
+		/// A <see cref="Vector2"/>
+		/// </param>
+		/// <returns>
+		/// A <see cref="Vector2"/>
+		/// </returns>
         public static Vector2 Divide(Vector2 value1, Vector2 value2)
         {
             value1.X /= value2.X;

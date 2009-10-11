@@ -108,18 +108,42 @@ namespace Microsoft.Xna.Framework
             return !(a == b);
         }
 
+		/// <summary>
+		/// Moves Rectangle for both Point values.
+		/// </summary>
+		/// <param name="offset">
+		/// A <see cref="Point"/>
+		/// </param>
         public void Offset(Point offset)
         {
             X += offset.X;
             Y += offset.Y;
         }
 
+		/// <summary>
+		/// Moves rectangle for both values.
+		/// </summary>
+		/// <param name="offsetX">
+		/// A <see cref="System.Int32"/>
+		/// </param>
+		/// <param name="offsetY">
+		/// A <see cref="System.Int32"/>
+		/// </param>
         public void Offset(int offsetX, int offsetY)
         {
             X += offsetX;
             Y += offsetY;
         }
 
+		/// <summary>
+		/// Grows the Rectangle. Down right point is in the same position.
+		/// </summary>
+		/// <param name="horizontalValue">
+		/// A <see cref="System.Int32"/>
+		/// </param>
+		/// <param name="verticalValue">
+		/// A <see cref="System.Int32"/>
+		/// </param>
         public void Inflate(int horizontalValue, int verticalValue)
         {
             X -= horizontalValue;
@@ -129,7 +153,7 @@ namespace Microsoft.Xna.Framework
         }
 		
 		/// <summary>
-		/// It cheks if two rectangle intersects. (gsedej)
+		/// It checks if two rectangle intersects.
 		/// </summary>
 		/// <param name="rect">
 		/// A <see cref="Rectangle"/>
@@ -139,36 +163,33 @@ namespace Microsoft.Xna.Framework
 		/// </returns>
 		public bool Intersects(Rectangle rect)
 		{
-			// I need to compare both X and both Y values
-			// Firt, check the X aixs, if first X coordinate is grater or lesser than other
-			//	then check, if the other X in on the first line
-			//		do the same for the Y
-			if(this.X <= rect.X)//example 1
+			//see gsedej issue on googlecode for info
+			if(this.X <= rect.X)
 			{
-				if((this.X + this.Width) > rect.X) // I think it is more, not "more or equal"
+				if((this.X + this.Width) > rect.X)
 				{
-					if(this.Y < rect.Y) //example 1.1
+					if(this.Y < rect.Y)
 					{
 						if((this.Y + this.Height) > rect.Y)
 							return true;
 					}
-					else // example 1.2
+					else
 					{
 						if((rect.Y + rect.Height) > this.Y)
 							return true;
 					}
 				}
 			}
-			else //example 2
+			else
 			{
 				if((rect.X + rect.Width) > this.X)
 				{
-					if(this.Y < rect.Y) //example 2.1
+					if(this.Y < rect.Y)
 					{
 						if((this.Y + this.Height) > rect.Y)
 							return true;
 					}
-					else // example 2.2
+					else
 					{
 						if((rect.Y + rect.Height) > this.Y)
 							return true;
@@ -184,6 +205,15 @@ namespace Microsoft.Xna.Framework
             return this == other;
         }
 
+		/// <summary>
+		/// Returns true if recangles are same
+		/// </summary>
+		/// <param name="obj">
+		/// A <see cref="System.Object"/>
+		/// </param>
+		/// <returns>
+		/// A <see cref="System.Boolean"/>
+		/// </returns>
         public override bool Equals(object obj)
         {
             return (obj is Rectangle) ? this == ((Rectangle)obj) : false;

@@ -62,7 +62,16 @@ namespace Microsoft.Xna.Framework
 
         #region Constructors
 
-        public Point(int x, int y)
+		/// <summary>
+		/// Makes new Point with integer accurate
+		/// </summary>
+		/// <param name="x">
+		/// A <see cref="System.Int32"/>
+		/// </param>
+		/// <param name="y">
+		/// A <see cref="System.Int32"/>
+		/// </param>
+		public Point(int x, int y)
         {
             this.X = x;
             this.Y = y;
