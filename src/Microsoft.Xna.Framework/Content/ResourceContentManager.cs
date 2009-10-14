@@ -33,14 +33,33 @@ namespace Microsoft.Xna.Framework.Content
 {
     public class ResourceContentManager : ContentManager
     {
+        private ResourceManager resourceManager;
+
         public ResourceContentManager(IServiceProvider serviceProvider, ResourceManager resourceManager):base(serviceProvider)
         {
-            throw new NotImplementedException();
+            if (resourceManager == null)
+            {
+                throw new ArgumentNullException("resourceManager");
+            }
+            this.resourceManager = resourceManager;
         }
 
         protected override Stream OpenStream(string assetName)
-        {
-            throw new NotImplementedException();
+        { 
+           object content = this.resourceManager.GetObject(assetName);
+           if (content == null)
+           {
+               throw new ContentLoadException("Ressource not found");
+           }
+
+           byte[] data = content as byte[];
+
+           if (data == null)
+           {
+               throw new ContentLoadException("No Binary");
+           }
+
+           return new MemoryStream(data);
         }
     }
 }

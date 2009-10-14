@@ -338,7 +338,7 @@ namespace Microsoft.Xna.Framework.Graphics
                 if ((sprite.DestinationRectangle.X != 0) || (sprite.DestinationRectangle.Y != 0))
                     Gl.glTranslatef(sprite.DestinationRectangle.X, sprite.DestinationRectangle.Y, 0f); // Position
                 if (sprite.Rotation != 0)
-                    Gl.glRotatef(sprite.Rotation, 0f, 0f, 1f); // Rotation
+                    Gl.glRotatef(MathHelper.ToDegrees(sprite.Rotation), 0f, 0f, 1f); // Rotation
                 if ((sprite.DestinationRectangle.Width != 0 && sprite.Origin.X != 0) || (sprite.DestinationRectangle.Height != 0 && sprite.Origin.Y != 0))
                     Gl.glTranslatef( // Orientation
                         -sprite.Origin.X * (float)sprite.DestinationRectangle.Width / (float)sprite.SourceRectangle.Width,

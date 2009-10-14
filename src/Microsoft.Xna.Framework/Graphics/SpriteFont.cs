@@ -99,11 +99,11 @@ namespace Microsoft.Xna.Framework.Graphics
             Matrix.CreateTranslation(-origin.X * scale.X, -origin.Y * scale.Y, 0f, out matrix);
             Matrix.Multiply(ref matrix, ref Rotationmatrix, out Rotationmatrix);
             int flip = 1;
-            float spacebetween = 0f;
+            float beginningofline = 0f;
             bool flag = true;
             if ((spriteEffects & SpriteEffects.FlipHorizontally) == SpriteEffects.FlipHorizontally)
             {
-                spacebetween = this.Measure(ref text).X * scale.X;
+                beginningofline = this.Measure(ref text).X * scale.X;
                 flip = -1;
             }
             if ((spriteEffects & SpriteEffects.FlipVertically) == SpriteEffects.FlipVertically)
@@ -114,7 +114,7 @@ namespace Microsoft.Xna.Framework.Graphics
             {
                 pos.Y = 0f;
             }
-            pos.X = spacebetween;
+            pos.X = beginningofline;
             for (int i = 0; i < text.Length; i++)
             {
                 char character = text[i];
@@ -125,7 +125,7 @@ namespace Microsoft.Xna.Framework.Graphics
 
                     case '\n':
                         flag = true;
-                        pos.X += spacebetween;
+                        pos.X = beginningofline;
                         if ((spriteEffects & SpriteEffects.FlipVertically) == SpriteEffects.FlipVertically)
                         {
                             pos.Y -= this.lineSpacing * scale.Y;
