@@ -54,7 +54,6 @@ namespace MonoDevelop.Xna
 		public override Type NodeDataType {
 			get { return typeof(XnaProject); }
 		}
-
 		
 		public override void BuildChildNodes (ITreeBuilder builder, object dataObject)
 		{

@@ -56,6 +56,7 @@ namespace MonoDevelop.Xna
 		public ContentProject (string languageName)
 			: base (languageName)
 		{
+			Visible = false;
 		}
 
 		public ContentProject (string language, ProjectCreateInformation info, XmlElement projectOptions)
@@ -82,11 +83,12 @@ namespace MonoDevelop.Xna
             return base.DoBuild(monitor, itemConfiguration); 
         }
 		
-		protected override void OnFileAddedToProject (MonoDevelop.Projects.ProjectFileEventArgs e)
+		protected override void OnEndLoad ()
 		{
-			Console.WriteLine(ParentSolution.ToString());
-			base.OnFileAddedToProject(e);
+			
+			base.OnEndLoad ();
 		}
+
 
         #endregion
 	}

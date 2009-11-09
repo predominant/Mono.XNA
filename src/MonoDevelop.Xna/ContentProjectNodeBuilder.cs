@@ -52,25 +52,20 @@ namespace MonoDevelop.Xna
 			get { return typeof(ContentProjectNodeCommandHandler); }
 		}
 		
-		public override string GetNodeName (ITreeNavigator thisNode, object dataObject)
-		{
-			return ((ContentProject)dataObject).Name;
-		}
-		
-		protected override void Initialize ()
+		protected override void Initialize()
 		{
 			base.Initialize ();
 		}
 		
-		public override void BuildNode (ITreeBuilder treeBuilder, object dataObject, ref string label, ref Gdk.Pixbuf icon, ref Gdk.Pixbuf closedIcon)
+		public override void BuildNode(ITreeBuilder treeBuilder, object dataObject, ref string label, ref Gdk.Pixbuf icon, ref Gdk.Pixbuf closedIcon)
 		{
-			label = ((ContentProject)dataObject).Name;
+			ContentProject project = ((ContentProject)dataObject);
+			label = project.Name;
 			icon = Context.GetIcon (Stock.OpenReferenceFolder);
 			closedIcon = Context.GetIcon (Stock.ClosedReferenceFolder);
-			
 		}
 		
-		public override bool HasChildNodes (ITreeBuilder builder, object dataObject)
+		public override bool HasChildNodes(ITreeBuilder builder, object dataObject)
 		{
 			return true;
 		}

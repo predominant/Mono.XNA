@@ -15,12 +15,12 @@
 	</Actions>
 	
 	<!-- Template Content -->
-	<Combine name = "${ProjectName}" directory = ".">
+	<Combine name="${ProjectName}" directory=".">
 		<Options>
 			<StartupProject>${ProjectName}</StartupProject>
 		</Options>
 		
-		<Project name = "${ProjectName}" directory = "." type = "XnaProject">
+		<Project name="${ProjectName}" directory="." type="XnaProject">
 			<!-- Is it possible to set the OutputType without using the Target attribute? -->
 			<Options Target="WinExe">
 			</Options>

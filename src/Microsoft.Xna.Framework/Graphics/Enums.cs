@@ -500,4 +500,51 @@ namespace Microsoft.Xna.Framework.Graphics
         SingleThreaded = 268435456,
         SinglePrecision = 536870912,
     }
+	
+	public enum VertexElementFormat
+    {
+        Single = 0,
+        Vector2 = 1,
+        Vector3 = 2,
+        Vector4 = 3,
+        Color = 4,
+        Byte4 = 5,
+        Short2 = 6,
+        Short4 = 7,
+        Rgba32 = 8,
+        NormalizedShort2 = 9,
+        NormalizedShort4 = 10,
+        Rg32 = 11,
+        Rgba64 = 12,
+        UInt101010 = 13,
+        Normalized101010 = 14,
+        HalfVector2 = 15,
+        HalfVector4 = 16,
+        Unused = 17,
+    }
+
+    public enum VertexElementMethod
+    {
+        Default = 0,
+        UV = 4,
+        LookUp = 5,
+        LookUpPresampled = 6,
+    }
+
+    public enum VertexElementUsage
+    {
+        Position = 0,
+        BlendWeight = 1,
+        BlendIndices = 2,
+        Normal = 3,
+        PointSize = 4,
+        TextureCoordinate = 5,
+        Tangent = 6,
+        Binormal = 7,
+        TessellateFactor = 8,
+        Color = 10,
+        Fog = 11,
+        Depth = 12,
+        Sample = 13,
+    }
 }

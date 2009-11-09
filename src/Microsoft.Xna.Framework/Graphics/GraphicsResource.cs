@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /*
 MIT License
 Copyright © 2006 The Mono.Xna Team
@@ -32,13 +32,23 @@ namespace Microsoft.Xna.Framework.Graphics
 
     public abstract class GraphicsResource : IDisposable
     {
-        internal GraphicsResource()
-        {
-        }
-
-        ~GraphicsResource()
-        {
-        }
+		#region Protected Fields
+		
+		protected GraphicsDevice graphicsDevice;
+		
+		#endregion Protected Fields
+		
+		#region Private Fields
+		
+		private bool isDisposed;
+		private string name;
+		private int priority;
+		private ResourceType resourceType;
+		private object tag;
+		
+		#endregion Private Fields
+		
+		#region Operators
 
         public static bool operator !=(GraphicsResource left, GraphicsResource right)
         {
@@ -49,60 +59,85 @@ namespace Microsoft.Xna.Framework.Graphics
         {
             throw new NotImplementedException();
         }
+		
+		#endregion Operators
+		
+		#region Properties
 
-        public virtual GraphicsDevice GraphicsDevice
-        {
-            get { throw new NotImplementedException(); }
+        public virtual GraphicsDevice GraphicsDevice {
+            get { return graphicsDevice; }
         }
 
-        public bool IsDisposed
-        {
-            get { throw new NotImplementedException(); }
+        public bool IsDisposed {
+            get { return isDisposed; }
         }
 
-        public string Name
-        {
-            get { throw new NotImplementedException(); }
-            set { throw new NotImplementedException(); }
+        public string Name {
+            get { return name; }
+            set { name = value; }
         }
 
-        public int Priority
-        {
-            get { throw new NotImplementedException(); }
-            set { throw new NotImplementedException(); }
+        public int Priority {
+            get { return priority; }
+            set { priority = value; }
         }
 
-        public virtual ResourceType ResourceType
-        {
-            get { throw new NotImplementedException(); }
+        public virtual ResourceType ResourceType {
+            get { return resourceType; }
         }
 
-        public object Tag
-        {
-            get { throw new NotImplementedException(); }
-            set { throw new NotImplementedException(); }
+        public object Tag {
+            get { return tag; }
+            set { tag = value; }
         }
+		
+		#endregion Properties
+		
+		#region Events
 
         public event EventHandler Disposing;
-
-        public void Dispose()
+		
+		#endregion Events
+		
+		#region Constructor/Destructor
+		
+        internal GraphicsResource()
         {
-            throw new NotImplementedException();
+			isDisposed = false;
         }
+		
+		~GraphicsResource()
+        {
+			Dispose(false);
+        }
+		
+		#endregion Constructor/Destructor
+		
+		#region IDisposable Implementation
+		
+		public void Dispose()
+        {           
+			Dispose(true);
+        }
+		
+		#endregion
+		
+		#region Protected Methods
 
         protected virtual void Dispose(bool disposing)
         {
-            throw new NotImplementedException();
+			if(isDisposed)
+				return;
+			
+            isDisposed = true;
         }
-
-        public override int GetHashCode()
+		
+		protected void raise_Disposing(object sender, EventArgs e)
         {
-            throw new NotImplementedException();
+            if(Disposing != null)
+				Disposing(sender, e);
         }
-
-        protected void raise_Disposing(object sender, EventArgs e)
-        {
-            throw new NotImplementedException();
-        }
+		
+		#endregion
     }
 }

@@ -68,16 +68,16 @@ namespace MonoDevelop.Xna
 			XnaProject project = new XnaProject(language, info, projectOptions);
 			
 			ProjectCreateInformation contentInfo = new ProjectCreateInformation();
-			contentInfo.CombineName = info.CombineName;
-			contentInfo.CombinePath = info.CombinePath;
-			contentInfo.ProjectBasePath = Path.Combine(info.ProjectBasePath, "Content");
+			contentInfo.DefaultPlatform = info.DefaultPlatform;
+			contentInfo.SolutionName = info.SolutionName;
+			contentInfo.SolutionPath = info.SolutionPath;
+			contentInfo.ProjectBasePath = info.ProjectBasePath.Combine("Content");
 			contentInfo.ProjectName = "Content";
 			
 			ContentProject contentProject = (ContentProject)Services.ProjectService.CreateProject("ContentProject", contentInfo, projectOptions);
-			contentProject.FileName = Path.Combine (contentInfo.ProjectBasePath, contentInfo.ProjectName);			
-			project.NestedContentProjects.Add(new NestedContentProject(project, contentProject, contentProject.FileName.Replace(info.ProjectBasePath, ".")));
-			
-			
+			FilePath includePath = info.ProjectBasePath.Combine("Content").Combine(contentProject.FileName);
+			NestedContentProject nestedContent = new NestedContentProject(project, contentProject, includePath);
+			project.NestedContentProjects.Add(nestedContent);
 			
 			return project;
 		}

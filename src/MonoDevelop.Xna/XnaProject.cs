@@ -111,11 +111,12 @@ namespace MonoDevelop.Xna
 		
 		public override void Save (IProgressMonitor monitor)
 		{
-			foreach(NestedContentProject nestedProj in nestedContentProjects)
+			foreach(NestedContentProject nested in nestedContentProjects)
 			{
-				if(!Directory.Exists(nestedProj.Project.BaseDirectory))
-					Directory.CreateDirectory(nestedProj.Project.BaseDirectory);
-				nestedProj.Project.Save(monitor);
+				FilePath nestedPath = this.BaseDirectory.Combine(nested.Include);
+				if(!Directory.Exists(nestedPath.ParentDirectory))
+					Directory.CreateDirectory(nestedPath.ParentDirectory);
+				nested.Project.Save(nestedPath, monitor);
 			}
 			
 			base.Save (monitor);
@@ -123,8 +124,19 @@ namespace MonoDevelop.Xna
 		
 		protected override void OnEndLoad ()
 		{
-			foreach(NestedContentProject project in nestedContentProjects)
-				project.Parent = this;
+			// This makes the nested content projects able to load when needed
+			foreach(NestedContentProject nestedProject in nestedContentProjects)
+				nestedProject.Parent = this;
+		}
+		
+		protected override void OnConfigurationAdded (ConfigurationEventArgs args)
+		{
+			base.OnConfigurationAdded (args);
+		}
+		
+		protected override void OnConfigurationRemoved (ConfigurationEventArgs args)
+		{
+			base.OnConfigurationRemoved (args);
 		}
 
         #endregion
