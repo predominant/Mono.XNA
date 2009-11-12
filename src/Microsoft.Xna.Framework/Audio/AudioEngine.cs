@@ -28,6 +28,7 @@ SOFTWARE.
 using System;
 using System.Collections.ObjectModel;
 using System.Runtime.InteropServices;
+using Tao.OpenAl;
 
 namespace Microsoft.Xna.Framework.Audio
 {
@@ -35,6 +36,10 @@ namespace Microsoft.Xna.Framework.Audio
     public class AudioEngine : IDisposable
     {
         public const int ContentVersion = 41;
+
+        internal int source;
+
+        internal System.Collections.Generic.List<WaveBank> Wavebanks = new System.Collections.Generic.List<WaveBank>();
 
         #region Events
 
@@ -48,11 +53,40 @@ namespace Microsoft.Xna.Framework.Audio
         public AudioEngine(string settingsFile)
             : this(settingsFile, TimeSpan.Zero, Guid.Empty)
         {
+            Alut.alutInit();
+
+            // Generate an OpenAL source.
+            Al.alGenSources(1, out source);
+            if (Al.alGetError() != Al.AL_NO_ERROR)
+            {
+                //ERROR
+            }
+
+            Al.alSourcef(source, Al.AL_PITCH, 1.0f);
+            Al.alSourcef(source, Al.AL_GAIN, 1.0f);
+            //Al.alSourcefv(source, Al.AL_POSITION, sourcePosition);
+            //Al.alSourcefv(source, Al.AL_VELOCITY, sourceVelocity);
+            Al.alSourcei(source, Al.AL_LOOPING, 0);
+
+            // Do a final error check and then return.
+            if (Al.alGetError() == Al.AL_NO_ERROR)
+            {
+                //ERROR
+            }
+
+            float[] listenerPosition = { 0, 0, 0 };
+            float[] listenerVelocity = { 0, 0, 0 };
+            float[] listenerOrientation = { 0, 0, -1, 0, 1, 0 };
+
+            Al.alListenerfv(Al.AL_POSITION, listenerPosition);
+            Al.alListenerfv(Al.AL_VELOCITY, listenerVelocity);
+            Al.alListenerfv(Al.AL_ORIENTATION, listenerOrientation);
+
         }
 
         public AudioEngine(string settingsFile, TimeSpan span, Guid rendererId)
         {
-            throw new NotImplementedException();
+            //throw new NotImplementedException();
         }
 
         #endregion Constructors

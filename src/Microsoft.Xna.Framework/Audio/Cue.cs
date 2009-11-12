@@ -26,11 +26,17 @@ SOFTWARE.
 #endregion License
 
 using System;
+using Tao.OpenAl;
 
 namespace Microsoft.Xna.Framework.Audio
 {
     public sealed class Cue : IDisposable
     {
+
+        string name;
+        int buffer;
+        int source;
+
         #region Events
 
         public event EventHandler Disposing;
@@ -82,7 +88,7 @@ namespace Microsoft.Xna.Framework.Audio
 
         public string Name
         {
-            get { throw new NotImplementedException(); }
+            get { return name; }
         }
 
         #endregion Public Properties
@@ -90,8 +96,11 @@ namespace Microsoft.Xna.Framework.Audio
 
         #region Constructors
 
-        private Cue()
+        internal Cue(string cuename, int bufferid, int sourceid)
         {
+            name = cuename;
+            buffer = bufferid;
+            source = sourceid;
         }
 
         #endregion Constructors
@@ -145,7 +154,9 @@ namespace Microsoft.Xna.Framework.Audio
 
         public void Play()
         {
-            throw new NotImplementedException();
+            // Bind the buffer with the source.
+            Al.alSourcei(source, Al.AL_BUFFER, buffer);
+            Al.alSourcePlay(source);
         }
 
         public void Resume()

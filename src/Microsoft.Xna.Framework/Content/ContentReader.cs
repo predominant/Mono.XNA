@@ -59,6 +59,17 @@ namespace Microsoft.Xna.Framework.Content
             this.recordDisposableObject = recordDisposableObject;
         }
 
+        internal string PathToReference(string referenceName)
+        {
+            int length = this.assetName.LastIndexOfAny(new char[] { '\\', '/', Path.DirectorySeparatorChar });
+            string str = "";
+            if (length != -1)
+             {
+                str = this.assetName.Substring(0, length);
+             }
+            return ContentManager.CleanPath(Path.Combine(str, referenceName));
+        }
+
         private int ReadHeader()
         {
             int Count = base.Read7BitEncodedInt();

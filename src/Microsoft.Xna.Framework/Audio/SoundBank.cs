@@ -26,11 +26,18 @@ SOFTWARE.
 #endregion License
 
 using System;
+using System.IO;
 
 namespace Microsoft.Xna.Framework.Audio
 {
     public class SoundBank : IDisposable
     {
+
+        string name;
+        string targetname;
+        string[] cues;
+        AudioEngine audioengine;
+
         #region Events
 
         public event EventHandler Disposing;
@@ -57,7 +64,24 @@ namespace Microsoft.Xna.Framework.Audio
 
         public SoundBank(AudioEngine audioEngine, string filename)
         {
-            throw new NotImplementedException();
+            audioengine = audioEngine;
+            BinaryReader soundbankreader = new BinaryReader(new FileStream(filename, FileMode.Open));
+            //byte[] identifier = soundbankreader.ReadBytes(4);
+
+            soundbankreader.BaseStream.Seek(30, SeekOrigin.Begin);
+            int cuelength = soundbankreader.ReadInt32();
+
+            soundbankreader.BaseStream.Seek(42, SeekOrigin.Begin);
+            int cueoffset = soundbankreader.ReadInt32();
+
+            soundbankreader.BaseStream.Seek(74, SeekOrigin.Begin);
+            name = System.Text.Encoding.UTF8.GetString(soundbankreader.ReadBytes(64)).Replace("\0","");
+
+            targetname = System.Text.Encoding.UTF8.GetString(soundbankreader.ReadBytes(64)).Replace("\0", "");
+
+            soundbankreader.BaseStream.Seek(cueoffset, SeekOrigin.Begin);
+
+            cues = System.Text.Encoding.UTF8.GetString(soundbankreader.ReadBytes(cuelength)).Split('\0');
         }
 
         #endregion Constructors
@@ -96,6 +120,19 @@ namespace Microsoft.Xna.Framework.Audio
 
         public Cue GetCue(string name)
         {
+            for (int i = 0; i < cues.Length - 1; i++)
+            {
+                if (cues[i] == name)
+                {
+                    foreach (WaveBank wavebank in audioengine.Wavebanks)
+                    {
+                        if (wavebank.BankName == targetname)
+                        {
+                            return new Cue(cues[i], wavebank.buffer[i], audioengine.source);
+                        }
+                    }
+                }
+            }
             throw new NotImplementedException();
         }
 

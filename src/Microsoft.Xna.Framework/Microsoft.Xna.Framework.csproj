@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="3.5">
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
@@ -42,9 +42,13 @@
   <ItemGroup>
     <Compile Include="Audio\AudioEmitter.cs" />
     <Compile Include="Audio\AudioListener.cs" />
+    <Compile Include="Audio\SoundEffect.cs" />
     <Compile Include="BoundingBox.cs" />
     <Compile Include="BoundingFrustum.cs" />
     <Compile Include="BoundingSphere.cs" />
+    <Compile Include="Content\ContentReaders\Int32Reader.cs" />
+    <Compile Include="Content\ContentReaders\SongReader.cs" />
+    <Compile Include="Content\ContentReaders\SoundEffectReader.cs" />
     <Compile Include="Curve.cs" />
     <Compile Include="CurveKey.cs" />
     <Compile Include="CurveKeyCollection.cs" />
@@ -54,6 +58,27 @@
     <Compile Include="Graphics\TextureUsage.cs" />
     <Compile Include="MathHelper.cs" />
     <Compile Include="Matrix.cs" />
+    <Compile Include="Media\Album.cs" />
+    <Compile Include="Media\AlbumCollection.cs" />
+    <Compile Include="Media\Artist.cs" />
+    <Compile Include="Media\ArtistCollection.cs" />
+    <Compile Include="Media\Genre.cs" />
+    <Compile Include="Media\GenreCollection.cs" />
+    <Compile Include="Media\MediaLibrary.cs" />
+    <Compile Include="Media\MediaPlayer.cs" />
+    <Compile Include="Media\MediaQueue.cs" />
+    <Compile Include="Media\MediaSource.cs" />
+    <Compile Include="Media\Picture.cs" />
+    <Compile Include="Media\PictureAlbum.cs" />
+    <Compile Include="Media\PictureAlbumCollection.cs" />
+    <Compile Include="Media\PictureCollection.cs" />
+    <Compile Include="Media\Playlist.cs" />
+    <Compile Include="Media\PlaylistCollection.cs" />
+    <Compile Include="Media\Song.cs" />
+    <Compile Include="Media\SongCollection.cs" />
+    <Compile Include="Media\Video.cs" />
+    <Compile Include="Media\VideoPlayer.cs" />
+    <Compile Include="Media\VisualizationData.cs" />
     <Compile Include="Net\NetworkException.cs" />
     <Compile Include="Plane.cs" />
     <Compile Include="Point.cs" />
@@ -260,11 +285,10 @@
     <Reference Include="Tao.DevIl, Version=1.6.8.3, Culture=neutral, PublicKeyToken=7ec4053013524957">
       <Package>tao-devil-1.6</Package>
     </Reference>
+    <Reference Include="Tao.OpenAl, Version=1.1.0.1, Culture=neutral, PublicKeyToken=a7579dda88828311, processorArchitecture=MSIL" />
+    <Reference Include="Tao.OpenGl, Version=2.1.0.12, Culture=neutral, PublicKeyToken=1ca010269a4501ef, processorArchitecture=MSIL" />
     <Reference Include="Tao.Sdl, Version=1.2.13.0, Culture=neutral, PublicKeyToken=9c7a200e36c0094e">
       <Package>tao-sdl-1.2</Package>
-    </Reference>
-    <Reference Include="Tao.OpenGl, Version=3.0.0.0, Culture=neutral, PublicKeyToken=1ca010269a4501ef">
-      <Package>tao-opengl-3.0</Package>
     </Reference>
   </ItemGroup>
 </Project>

@@ -155,6 +155,23 @@ namespace Microsoft.Xna.Framework.Content
 
         #region Public Methods
 
+        internal static string CleanPath(string path)
+        {
+            int lastindex;
+            path = path.Replace(Path.AltDirectorySeparatorChar, Path.DirectorySeparatorChar);
+            for (int i = 1; i < path.Length; i = Math.Max(lastindex - 1, 1))
+            {
+                i = path.IndexOf(@"\..\", i);
+                if (i < 0)
+                {
+                    return path;
+                }
+                lastindex = path.LastIndexOf(Path.DirectorySeparatorChar, i - 1) + 1;
+                path = path.Remove(lastindex, (i - lastindex) + @"\..\".Length);
+            }
+            return path;
+        }
+
         public void Dispose()
         {
             this.Dispose(true);

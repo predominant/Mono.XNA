@@ -246,6 +246,13 @@ namespace Microsoft.Xna.Framework.Input
         OemClear = 254,
         ChatPadGreen = 0xCA,
         ChatPadOrange = 0xCB,
-        Pause = 0x13
+        Pause = 0x13,
+        ImeConvert = 0x1c,
+        ImeNoConvert = 0x1d,
+        Kana = 0x15,
+        Kanji = 0x19,
+        OemAuto = 0xf3,
+        OemCopy = 0xf2,
+        OemEnlW = 0xf4
     }
 }
