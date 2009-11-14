@@ -487,6 +487,56 @@ namespace Microsoft.Xna.Framework
             return result;
         }
 
+        public static Vector4 Transform(Vector2 value, Quaternion rotation)
+        {
+            throw new NotImplementedException();
+        }
+
+        public static Vector4 Transform(Vector3 value, Quaternion rotation)
+        {
+            throw new NotImplementedException();
+        }
+
+        public static Vector4 Transform(Vector4 value, Quaternion rotation)
+        {
+            throw new NotImplementedException();
+        }
+
+        public static void Transform(ref Vector2 value, ref Quaternion rotation, out Vector4 result)
+        {
+            throw new NotImplementedException();
+        }
+
+        public static void Transform(ref Vector3 value, ref Quaternion rotation, out Vector4 result)
+        {
+            throw new NotImplementedException();
+        }
+
+        public static void Transform(ref Vector4 value, ref Quaternion rotation, out Vector4 result)
+        {
+            throw new NotImplementedException();
+        }
+
+        public static void Transform(Vector4[] sourceArray, ref Quaternion rotation, Vector4[] destinationArray)
+        {
+            throw new NotImplementedException();
+        }
+
+        public static void Transform(Vector4[] sourceArray, ref Matrix matrix, Vector4[] destinationArray)
+        {
+            throw new NotImplementedException();
+        }
+
+        public static void Transform(Vector4[] sourceArray, int sourceIndex, ref Matrix matrix, Vector4[] destinationArray, int destinationIndex, int length)
+        {
+            throw new NotImplementedException();
+        }
+
+        public static void Transform(Vector4[] sourceArray, int sourceIndex, ref Quaternion rotation, Vector4[] destinationArray, int destinationIndex, int length)
+        {
+            throw new NotImplementedException();
+        }
+
         public static Vector4 Transform(Vector3 position, Matrix matrix)
         {
             Vector4 result;

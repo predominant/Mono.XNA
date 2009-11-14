@@ -167,6 +167,15 @@ namespace Microsoft.Xna.Framework
             return result;
         }
 
+        public float? Intersects(Plane plane)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void Intersects(ref Plane plane, out float? result)
+        {
+            throw new NotImplementedException();
+        }
 
         public void Intersects(ref BoundingSphere sphere, out float? result)
         {

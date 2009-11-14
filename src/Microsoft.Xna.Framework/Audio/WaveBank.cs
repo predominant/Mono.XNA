@@ -366,7 +366,7 @@ namespace Microsoft.Xna.Framework.Audio
 
         #region Public Methods
 
-        public static bool operator ==(WaveBank left, WaveBank right)
+        /*public static bool operator ==(WaveBank left, WaveBank right)
         {
             throw new NotImplementedException();
         }
@@ -374,14 +374,14 @@ namespace Microsoft.Xna.Framework.Audio
         public static bool operator !=(WaveBank left, WaveBank right)
         {
             throw new NotImplementedException();
-        }
+        }*/
 
         public void Dispose()
         {
             throw new NotImplementedException();
         }
 
-        public override bool Equals(object obj)
+        /*public override bool Equals(object obj)
         {
             throw new NotImplementedException();
         }
@@ -389,7 +389,7 @@ namespace Microsoft.Xna.Framework.Audio
         public override int GetHashCode()
         {
             throw new NotImplementedException();
-        }
+        }*/
 
         #endregion
 
@@ -401,10 +401,10 @@ namespace Microsoft.Xna.Framework.Audio
             throw new NotImplementedException();
         }
 
-        protected void raise_Disposing(object sender, EventArgs args)
+        /*protected void raise_Disposing(object sender, EventArgs args)
         {
             throw new NotImplementedException();
-        }
+        }*/
 
         #endregion Protected Methods
     }

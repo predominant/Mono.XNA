@@ -35,10 +35,14 @@ namespace Microsoft.Xna.Framework.Storage
 {
     public sealed class StorageDevice
     {
+        #region Events
+        public static event EventHandler<EventArgs> DeviceChanged;
+        #endregion
+
         #region Fields
 
-        private static showStorage deleg = ShowStorageDeviceGuide;
-        private static showStorage2 deleg2 = ShowStorageDeviceGuide;
+        //private static showStorage deleg = ShowStorageDeviceGuide;
+        //private static showStorage2 deleg2 = ShowStorageDeviceGuide;
 
         private DriveInfo driveInfo;
         private PlayerIndex playerIndex;
@@ -90,7 +94,7 @@ namespace Microsoft.Xna.Framework.Storage
 
         #region Methods
 
-        public static IAsyncResult BeginShowStorageDeviceGuide(AsyncCallback callback, object stateObject)
+        /*public static IAsyncResult BeginShowStorageDeviceGuide(AsyncCallback callback, object stateObject)
         {
             // TODO: Is this actually thread safe?
             return deleg.BeginInvoke(callback, stateObject);
@@ -111,7 +115,7 @@ namespace Microsoft.Xna.Framework.Storage
             // TODO: Is this actually thread safe?
             return (((AsyncResult)asyncResult).AsyncDelegate is showStorage) ? deleg.EndInvoke(asyncResult)
                 : deleg2.EndInvoke(asyncResult);
-        }
+        }*/
 
         public StorageContainer OpenContainer(string titleName)
         {
@@ -122,7 +126,7 @@ namespace Microsoft.Xna.Framework.Storage
             return new StorageContainer(this, titleName, playerSpecified, playerIndex);
         }
 
-        public static StorageDevice ShowStorageDeviceGuide()
+        /*public static StorageDevice ShowStorageDeviceGuide()
         {
             // TODO: Is this right?
             return new StorageDevice();
@@ -132,6 +136,11 @@ namespace Microsoft.Xna.Framework.Storage
         {
             // TODO: Is this right?
             return new StorageDevice(playerIndex);
+        }*/
+
+        public void DeleteContainer(string titleName)
+        {
+            throw new NotImplementedException();
         }
 
         #endregion Methods

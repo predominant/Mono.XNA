@@ -80,6 +80,50 @@ namespace Microsoft.Xna.Framework
             result.Z = quaternion1.Z + quaternion2.Z;
         }
 
+        public static Quaternion Concatenate(Quaternion value1, Quaternion value2)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void Conjugate()
+        {
+            this.X = -this.X;
+            this.Y = -this.Y;
+            this.Z = -this.Z;
+        }
+
+        public static Quaternion Conjugate(Quaternion value)
+        {
+            Quaternion quaternion;
+            quaternion.X = -value.X;
+            quaternion.Y = -value.Y;
+            quaternion.Z = -value.Z;
+            quaternion.W = value.W;
+            return quaternion;
+        }
+
+        public static void Conjugate(ref Quaternion value, out Quaternion result)
+        {
+            result.X = -value.X;
+            result.Y = -value.Y;
+            result.Z = -value.Z;
+            result.W = value.W;
+        }
+
+        public static void Concatenate(ref Quaternion value1, ref Quaternion value2, out Quaternion result)
+        {
+            throw new NotImplementedException();
+        }
+
+        public static Quaternion CreateFromYawPitchRoll(float yaw, float pitch, float roll)
+        {
+            throw new NotImplementedException();
+        }
+
+        public static void CreateFromYawPitchRoll(float yaw, float pitch, float roll, out Quaternion result)
+        {
+            throw new NotImplementedException();
+        }
 
         public static Quaternion CreateFromAxisAngle(Vector3 axis, float angle)
         {
@@ -609,12 +653,5 @@ namespace Microsoft.Xna.Framework
             return sb.ToString();
         }
 
-        private static void Conjugate(ref Quaternion quaternion, out Quaternion result)
-        {
-            result.X = -quaternion.X;
-            result.Y = -quaternion.Y;
-            result.Z = -quaternion.Z;
-            result.W = quaternion.W;
-        }
     }
 }

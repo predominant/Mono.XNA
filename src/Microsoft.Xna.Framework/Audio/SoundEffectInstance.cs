@@ -4,14 +4,44 @@ using System.Text;
 
 namespace Microsoft.Xna.Framework.Audio
 {
-    public sealed class SoundEffect : IDisposable
+    public sealed class SoundEffectInstance : IDisposable
     {
-
-        internal SoundEffect()
+        internal SoundEffectInstance()
         {
         }
 
-        public SoundEffectInstance CreateInstance()
+        public void Apply3D(AudioListener listener, AudioEmitter emitter)
+        {
+            this.Apply3D(new AudioListener[] { listener }, emitter);
+        }
+
+        public void Apply3D(AudioListener[] listeners, AudioEmitter emitter)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void Pause()
+        {
+            throw new NotImplementedException();
+        }
+
+        public void Play()
+        {
+            throw new NotImplementedException();
+        }
+
+        public void Resume()
+        {
+            throw new NotImplementedException();
+        }
+        
+        public void Stop()
+        {
+            this.Stop(true);
+        }
+
+
+        public void Stop(bool immediate)
         {
             throw new NotImplementedException();
         }
@@ -24,48 +54,7 @@ namespace Microsoft.Xna.Framework.Audio
 
         private void Dispose(bool disposing)
         {
-        }
-
-        public bool Play()
-        {
-            return this.Play(1f, 0f, 0f);
-        }
-
-        public bool Play(float volume, float pitch, float pan)
-        {
             throw new NotImplementedException();
-        }
-
-        public static float DistanceScale
-        {
-            get
-            {
-                throw new NotImplementedException();
-            }
-            set
-            {
-                throw new NotImplementedException();
-            }
-        }
-
-        public static float DopplerScale
-        {
-            get
-            {
-                throw new NotImplementedException();
-            }
-            set
-            {
-                throw new NotImplementedException();
-            }
-        }
-
-        public TimeSpan Duration
-        {
-            get
-            {
-                throw new NotImplementedException();
-            }
         }
 
         public bool IsDisposed
@@ -76,7 +65,7 @@ namespace Microsoft.Xna.Framework.Audio
             }
         }
 
-        public static float MasterVolume
+        public bool IsLooped
         {
             get
             {
@@ -88,7 +77,7 @@ namespace Microsoft.Xna.Framework.Audio
             }
         }
 
-        public string Name
+        public float Pan
         {
             get
             {
@@ -100,7 +89,27 @@ namespace Microsoft.Xna.Framework.Audio
             }
         }
 
-        public static float SpeedOfSound
+        public float Pitch
+        {
+            get
+            {
+                throw new NotImplementedException();
+            }
+            set
+            {
+                throw new NotImplementedException();
+            }
+        }
+
+        public SoundState State
+        {
+            get
+            {
+                throw new NotImplementedException();
+            }
+        }
+
+        public float Volume
         {
             get
             {
@@ -113,5 +122,4 @@ namespace Microsoft.Xna.Framework.Audio
         }
 
     }
-
 }

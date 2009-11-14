@@ -29,10 +29,11 @@ SOFTWARE.
 
 using System;
 using System.Runtime.Serialization;
+using System.Runtime.InteropServices;
 
 namespace Microsoft.Xna.Framework.Storage
 {
-    public class StorageDeviceNotConnectedException : Exception
+    public class StorageDeviceNotConnectedException : ExternalException
     {
         public StorageDeviceNotConnectedException()
             : base()

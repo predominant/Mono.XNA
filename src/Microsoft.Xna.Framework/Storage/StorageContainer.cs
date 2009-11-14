@@ -148,10 +148,10 @@ namespace Microsoft.Xna.Framework.Storage
 
         #region Public Methods
 
-        public void Delete()
+        /*public void Delete()
         {
             Dispose();
-        }
+        }*/
 
         public void Dispose()
         {

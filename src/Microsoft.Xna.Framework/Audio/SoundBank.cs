@@ -98,7 +98,12 @@ namespace Microsoft.Xna.Framework.Audio
 
         #region Public Methods
 
-        public static bool operator !=(SoundBank left, SoundBank right)
+        public void PlayCue(string name, AudioListener listener, AudioEmitter emitter)
+        {
+            throw new NotImplementedException();
+        }
+
+        /*public static bool operator !=(SoundBank left, SoundBank right)
         {
             throw new NotImplementedException();
         }
@@ -106,17 +111,17 @@ namespace Microsoft.Xna.Framework.Audio
         public static bool operator ==(SoundBank left, SoundBank right)
         {
             throw new NotImplementedException();
-        }
+        }*/
 
         public void Dispose()
         {
             throw new NotImplementedException();
         }
 
-        public override bool Equals(object obj)
+        /*public override bool Equals(object obj)
         {
             throw new NotImplementedException();
-        }
+        }*/
 
         public Cue GetCue(string name)
         {
@@ -136,10 +141,10 @@ namespace Microsoft.Xna.Framework.Audio
             throw new NotImplementedException();
         }
 
-        public override int GetHashCode()
+        /*public override int GetHashCode()
         {
             throw new NotImplementedException();
-        }
+        }*/
 
         public void PlayCue(string name)
         {
@@ -156,10 +161,10 @@ namespace Microsoft.Xna.Framework.Audio
             throw new NotImplementedException();
         }
 
-        protected void raise_Disposing(object sender, EventArgs args)
+        /*protected void raise_Disposing(object sender, EventArgs args)
         {
             throw new NotImplementedException();
-        }
+        }*/
         
         #endregion Protected Methods
     }

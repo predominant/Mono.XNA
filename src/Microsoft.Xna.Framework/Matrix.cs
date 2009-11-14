@@ -216,7 +216,68 @@ namespace Microsoft.Xna.Framework
         #endregion Constructors
 
 		#region Public Static Methods
-		
+
+        public static Matrix CreateWorld(Vector3 position, Vector3 forward, Vector3 up)
+        {
+            throw new NotImplementedException();
+        }
+
+        public static void CreateWorld(ref Vector3 position, ref Vector3 forward, ref Vector3 up, out Matrix result)
+        {
+            throw new NotImplementedException();
+        }
+
+        public static Matrix CreateShadow(Vector3 lightDirection, Plane plane)
+        {
+            throw new NotImplementedException();
+        }
+
+        public static void CreateShadow(ref Vector3 lightDirection, ref Plane plane, out Matrix result)
+        {
+            throw new NotImplementedException();
+        }
+
+        public static void CreateReflection(ref Plane value, out Matrix result)
+        {
+            throw new NotImplementedException();
+        }
+
+        public static Matrix CreateReflection(Plane value)
+        {
+            throw new NotImplementedException();
+        }
+
+        public static Matrix CreateFromYawPitchRoll(float yaw, float pitch, float roll)
+        {
+            Matrix matrix;
+            Quaternion quaternion;
+            Quaternion.CreateFromYawPitchRoll(yaw, pitch, roll, out quaternion);
+            CreateFromQuaternion(ref quaternion, out matrix);
+            return matrix;
+        }
+
+        public static void CreateFromYawPitchRoll(float yaw, float pitch, float roll, out Matrix result)
+        {
+            Quaternion quaternion;
+            Quaternion.CreateFromYawPitchRoll(yaw, pitch, roll, out quaternion);
+            CreateFromQuaternion(ref quaternion, out result);
+        }
+
+        public static void Transform(ref Matrix value, ref Quaternion rotation, out Matrix result)
+        {
+            throw new NotImplementedException();
+        }
+
+        public static Matrix Transform(Matrix value, Quaternion rotation)
+        {
+            throw new NotImplementedException();
+        }
+
+        public bool Decompose(out Vector3 scale, out Quaternion rotation, out Vector3 translation)
+        {
+            throw new NotImplementedException();
+        }
+
 		/// <summary>
 		/// Adds second matrix to the first.
 		/// </summary>
@@ -955,6 +1016,27 @@ namespace Microsoft.Xna.Framework
             return matrix;
         }
 
+        public static Matrix operator *(float scaleFactor, Matrix matrix)
+        {
+            Matrix target;
+            target.M11 = matrix.M11 * scaleFactor;
+            target.M12 = matrix.M12 * scaleFactor;
+            target.M13 = matrix.M13 * scaleFactor;
+            target.M14 = matrix.M14 * scaleFactor;
+            target.M21 = matrix.M21 * scaleFactor;
+            target.M22 = matrix.M22 * scaleFactor;
+            target.M23 = matrix.M23 * scaleFactor;
+            target.M24 = matrix.M24 * scaleFactor;
+            target.M31 = matrix.M31 * scaleFactor;
+            target.M32 = matrix.M32 * scaleFactor;
+            target.M33 = matrix.M33 * scaleFactor;
+            target.M34 = matrix.M34 * scaleFactor;
+            target.M41 = matrix.M41 * scaleFactor;
+            target.M42 = matrix.M42 * scaleFactor;
+            target.M43 = matrix.M43 * scaleFactor;
+            target.M44 = matrix.M44 * scaleFactor;
+            return target;
+        }
 
         public static Matrix operator -(Matrix matrix1, Matrix matrix2)
         {

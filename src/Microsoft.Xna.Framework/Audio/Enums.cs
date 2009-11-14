@@ -6,7 +6,14 @@ namespace Microsoft.Xna.Framework.Audio
 {
     public enum AudioStopOptions
     {
-        AsAuthored = 0,
-        Immediate = 2,
+        AsAuthored,
+        Immediate
+    }
+
+    public enum SoundState
+    {
+        Playing,
+        Paused,
+        Stopped
     }
 }

@@ -2,56 +2,51 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace Microsoft.Xna.Framework.Audio
+namespace Microsoft.Xna.Framework
 {
-    public class AudioListener
+    public static class PowerStatus
     {
-        public Vector3 Forward
+        public static event EventHandler PowerStateChanged;
+
+        public static PowerLineStatus PowerLineStatus
         {
             get
-            {
-                throw new NotImplementedException();
-            }
-            set
             {
                 throw new NotImplementedException();
             }
         }
 
-        public Vector3 Position
+        public static TimeSpan? BatteryLifeRemaining
         {
             get
-            {
-                throw new NotImplementedException();
-            }
-            set
             {
                 throw new NotImplementedException();
             }
         }
 
-        public Vector3 Up
+        public static float? BatteryLifePercent
         {
             get
-            {
-                throw new NotImplementedException();
-            }
-            set
             {
                 throw new NotImplementedException();
             }
         }
 
-        public Vector3 Velocity
+        public static TimeSpan? BatteryFullLifetime
         {
             get
             {
                 throw new NotImplementedException();
             }
-            set
+        }
+
+        public static BatteryChargeStatus BatteryChargeStatus
+        {
+            get
             {
                 throw new NotImplementedException();
             }
         }
+
     }
 }

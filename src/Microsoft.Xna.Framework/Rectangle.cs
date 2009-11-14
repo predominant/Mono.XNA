@@ -33,7 +33,7 @@ using Microsoft.Xna.Framework.Design;
 namespace Microsoft.Xna.Framework
 {
 
-    [Serializable]
+    [Serializable, TypeConverter(typeof(RectangleConverter))]
     public struct Rectangle : IEquatable<Rectangle>
     {
         #region Private Fields
@@ -54,6 +54,35 @@ namespace Microsoft.Xna.Framework
 
 
         #region Public Properties
+
+        public Point Center
+        {
+            get
+            {
+                return new Point(this.X + (this.Width / 2), this.Y + (this.Height / 2));
+            }
+        }
+
+        public Point Location
+        {
+            get
+            {
+                return new Point(this.X, this.Y);
+            }
+            set
+            {
+                this.X = value.X;
+                this.Y = value.Y;
+            }
+        }
+
+        public bool IsEmpty
+        {
+            get
+            {
+                return ((((this.Width == 0) && (this.Height == 0)) && (this.X == 0)) && (this.Y == 0));
+            }
+        }
 
         public static Rectangle Empty
         {
@@ -97,6 +126,56 @@ namespace Microsoft.Xna.Framework
 
 
         #region Public Methods
+
+        public static Rectangle Union(Rectangle value1, Rectangle value2)
+        {
+            throw new NotImplementedException();
+        }
+
+        public static void Union(ref Rectangle value1, ref Rectangle value2, out Rectangle result)
+        {
+            throw new NotImplementedException();
+        }
+
+        public static Rectangle Intersect(Rectangle value1, Rectangle value2)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void Intersects(ref Rectangle value, out bool result)
+        {
+            result = (((value.X < (this.X + this.Width)) && (this.X < (value.X + value.Width))) && (value.Y < (this.Y + this.Height))) && (this.Y < (value.Y + value.Height));
+        }
+
+        public bool Contains(Point value)
+        {
+            return ((((this.X <= value.X) && (value.X < (this.X + this.Width))) && (this.Y <= value.Y)) && (value.Y < (this.Y + this.Height)));
+        }
+
+        public bool Contains(Rectangle value)
+        {
+            return ((((this.X <= value.X) && ((value.X + value.Width) <= (this.X + this.Width))) && (this.Y <= value.Y)) && ((value.Y + value.Height) <= (this.Y + this.Height)));
+        }
+
+        public void Contains(ref Rectangle value, out bool result)
+        {
+            result = (((this.X <= value.X) && ((value.X + value.Width) <= (this.X + this.Width))) && (this.Y <= value.Y)) && ((value.Y + value.Height) <= (this.Y + this.Height));
+        }
+
+        public bool Contains(int x, int y)
+        {
+            return ((((this.X <= x) && (x < (this.X + this.Width))) && (this.Y <= y)) && (y < (this.Y + this.Height)));
+        }
+
+        public void Contains(ref Point value, out bool result)
+        {
+            result = (((this.X <= value.X) && (value.X < (this.X + this.Width))) && (this.Y <= value.Y)) && (value.Y < (this.Y + this.Height));
+        }
+
+        public static void Intersect(ref Rectangle value1, ref Rectangle value2, out Rectangle result)
+        {
+            throw new NotImplementedException();
+        }
 
         public static bool operator ==(Rectangle a, Rectangle b)
         {

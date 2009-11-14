@@ -29,6 +29,24 @@ using System;
 
 namespace Microsoft.Xna.Framework
 {
+    public enum PowerLineStatus
+    {
+        Offline,
+        Online,
+        Unknown
+    }
+
+    [Flags]
+    public enum BatteryChargeStatus
+    {
+        Charging = 8,
+        Critical = 4,
+        High = 1,
+        Low = 2,
+        NoSystemBattery = 0x80,
+        Unknown = 0xff
+    }
+
     public enum PlayerIndex
     {
         One,
@@ -63,7 +81,8 @@ namespace Microsoft.Xna.Framework
     {
         Unknown,
         Windows,
-        Xbox360
+        Xbox360,
+        Zune
     }
 
     public enum PlaneIntersectionType

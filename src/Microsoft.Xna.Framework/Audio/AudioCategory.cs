@@ -29,9 +29,40 @@ using System;
 
 namespace Microsoft.Xna.Framework.Audio
 {
-    public struct AudioCategory
+    public struct AudioCategory : IEquatable<AudioCategory>
+
     {
         #region Public Methods
+
+        public override int GetHashCode()
+        {
+            throw new NotImplementedException();
+        }
+
+        public override string ToString()
+        {
+            throw new NotImplementedException();
+        }
+
+        public override bool Equals(object obj)
+        {
+            throw new NotImplementedException();
+        }
+
+        public bool Equals(AudioCategory other)
+        {
+            throw new NotImplementedException();
+        }
+
+        public static bool operator !=(AudioCategory value1, AudioCategory value2)
+        {
+            throw new NotImplementedException();
+        }
+
+        public static bool operator ==(AudioCategory value1, AudioCategory value2)
+        {
+            throw new NotImplementedException();
+        }
 
         public string Name
         {

@@ -35,7 +35,7 @@ namespace Microsoft.Xna.Framework.Audio
 
     public class AudioEngine : IDisposable
     {
-        public const int ContentVersion = 41;
+        public const int ContentVersion = 39;
 
         internal int source;
 
@@ -50,8 +50,11 @@ namespace Microsoft.Xna.Framework.Audio
 
         #region Constructors
 
-        public AudioEngine(string settingsFile)
-            : this(settingsFile, TimeSpan.Zero, Guid.Empty)
+        public AudioEngine(string settingsFile) : this(settingsFile, TimeSpan.FromMilliseconds(250.0), string.Empty)
+        {
+        }
+
+        public AudioEngine(string settingsFile, TimeSpan lookAheadTime, string rendererId)
         {
             Alut.alutInit();
 
@@ -84,11 +87,6 @@ namespace Microsoft.Xna.Framework.Audio
 
         }
 
-        public AudioEngine(string settingsFile, TimeSpan span, Guid rendererId)
-        {
-            //throw new NotImplementedException();
-        }
-
         #endregion Constructors
 
 
@@ -103,7 +101,7 @@ namespace Microsoft.Xna.Framework.Audio
 
         #region Public Methods
 
-        public static bool operator !=(AudioEngine left, AudioEngine right)
+        /*public static bool operator !=(AudioEngine left, AudioEngine right)
         {
             throw new NotImplementedException();
         }
@@ -111,7 +109,7 @@ namespace Microsoft.Xna.Framework.Audio
         public static bool operator ==(AudioEngine left, AudioEngine right)
         {
             throw new NotImplementedException();
-        }
+        }*/
 
         public bool IsDisposed
         {
@@ -128,10 +126,10 @@ namespace Microsoft.Xna.Framework.Audio
             throw new NotImplementedException();
         }
 
-        public override bool Equals(object obj)
+        /*public override bool Equals(object obj)
         {
             throw new NotImplementedException();
-        }
+        }*/
 
         public AudioCategory GetCategory(string name)
         {
@@ -143,10 +141,10 @@ namespace Microsoft.Xna.Framework.Audio
             throw new NotImplementedException();
         }
 
-        public override int GetHashCode()
+        /*public override int GetHashCode()
         {
             throw new NotImplementedException();
-        }
+        }*/
 
         public void SetGlobalVariable(string name, float value)
         {
@@ -168,10 +166,10 @@ namespace Microsoft.Xna.Framework.Audio
             throw new NotImplementedException();
         }
 
-        protected void raise_Disposing(object sender, EventArgs args)
+        /*protected void raise_Disposing(object sender, EventArgs args)
         {
             throw new NotImplementedException();
-        }
+        }*/
 
         #endregion Protected Methods
     }

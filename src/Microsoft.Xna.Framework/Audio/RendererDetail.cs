@@ -39,7 +39,7 @@ namespace Microsoft.Xna.Framework.Audio
             get { throw new NotImplementedException(); }
         }
 
-        public Guid RendererId
+        public string RendererId
         {
             get { throw new NotImplementedException(); }
         }

@@ -78,6 +78,71 @@ namespace Microsoft.Xna.Framework
 
         #region Public Methods
 
+        public float Dot(Vector4 value)
+        {
+            return ((((this.Normal.X * value.X) + (this.Normal.Y * value.Y)) + (this.Normal.Z * value.Z)) + (this.D * value.W));
+        }
+
+        public void Dot(ref Vector4 value, out float result)
+        {
+            result = (((this.Normal.X * value.X) + (this.Normal.Y * value.Y)) + (this.Normal.Z * value.Z)) + (this.D * value.W);
+        }
+
+        public float DotCoordinate(Vector3 value)
+        {
+            return ((((this.Normal.X * value.X) + (this.Normal.Y * value.Y)) + (this.Normal.Z * value.Z)) + this.D);
+        }
+
+        public void DotCoordinate(ref Vector3 value, out float result)
+        {
+            result = (((this.Normal.X * value.X) + (this.Normal.Y * value.Y)) + (this.Normal.Z * value.Z)) + this.D;
+        }
+
+        public float DotNormal(Vector3 value)
+        {
+            return (((this.Normal.X * value.X) + (this.Normal.Y * value.Y)) + (this.Normal.Z * value.Z));
+        }
+
+        public void DotNormal(ref Vector3 value, out float result)
+        {
+            result = ((this.Normal.X * value.X) + (this.Normal.Y * value.Y)) + (this.Normal.Z * value.Z);
+        }
+
+        public static void Transform(ref Plane plane, ref Quaternion rotation, out Plane result)
+        {
+            throw new NotImplementedException();
+        }
+
+        public static void Transform(ref Plane plane, ref Matrix matrix, out Plane result)
+        {
+            throw new NotImplementedException();
+        }
+
+        public static Plane Transform(Plane plane, Quaternion rotation)
+        {
+            throw new NotImplementedException();
+        }
+
+        public static Plane Transform(Plane plane, Matrix matrix)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void Normalize()
+        {
+            throw new NotImplementedException();
+        }
+
+        public static Plane Normalize(Plane value)
+        {
+            throw new NotImplementedException();
+        }
+
+        public static void Normalize(ref Plane value, out Plane result)
+        {
+            throw new NotImplementedException();
+        }
+
         public static bool operator !=(Plane plane1, Plane plane2)
         {
             return !plane1.Equals(plane2);

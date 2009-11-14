@@ -31,10 +31,12 @@ SOFTWARE.
 using System;
 using System.Collections.Generic;
 using System.Globalization;
+using System.ComponentModel;
+using Microsoft.Xna.Framework.Design;
 
 namespace Microsoft.Xna.Framework
 {
-    [Serializable]
+    [Serializable, TypeConverter(typeof(BoundingSphereConverter))]
     public struct BoundingSphere : IEquatable<BoundingSphere>
     {
         #region Public Fields
@@ -57,6 +59,20 @@ namespace Microsoft.Xna.Framework
 
 
         #region Public Methods
+
+        public BoundingSphere Transform(Matrix matrix)
+        {
+            BoundingSphere sphere = new BoundingSphere();
+            sphere.Center = Vector3.Transform(this.Center, matrix);
+            sphere.Radius = this.Radius * ((float)Math.Sqrt((double)Math.Max(((matrix.M11 * matrix.M11) + (matrix.M12 * matrix.M12)) + (matrix.M13 * matrix.M13), Math.Max(((matrix.M21 * matrix.M21) + (matrix.M22 * matrix.M22)) + (matrix.M23 * matrix.M23), ((matrix.M31 * matrix.M31) + (matrix.M32 * matrix.M32)) + (matrix.M33 * matrix.M33)))));
+            return sphere;
+        }
+
+        public void Transform(ref Matrix matrix, out BoundingSphere result)
+        {
+            result.Center = Vector3.Transform(this.Center, matrix);
+            result.Radius = this.Radius * ((float)Math.Sqrt((double)Math.Max(((matrix.M11 * matrix.M11) + (matrix.M12 * matrix.M12)) + (matrix.M13 * matrix.M13), Math.Max(((matrix.M21 * matrix.M21) + (matrix.M22 * matrix.M22)) + (matrix.M23 * matrix.M23), ((matrix.M31 * matrix.M31) + (matrix.M32 * matrix.M32)) + (matrix.M33 * matrix.M33)))));
+        }
 
         public ContainmentType Contains(BoundingBox box)
         {

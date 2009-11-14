@@ -118,6 +118,16 @@ namespace Microsoft.Xna.Framework
 
         #region Public Methods
 
+        public static void Reflect(ref Vector2 vector, ref Vector2 normal, out Vector2 result)
+        {
+            throw new NotImplementedException();
+        }
+
+        public static Vector2 Reflect(Vector2 vector, Vector2 normal)
+        {
+            throw new NotImplementedException();
+        }
+
         public static Vector2 Add(Vector2 value1, Vector2 value2)
         {
             value1.X += value2.X;
@@ -443,6 +453,36 @@ namespace Microsoft.Xna.Framework
                                  (position.X * matrix.M12) + (position.Y * matrix.M22) + matrix.M42);
         }
 
+        public static Vector2 Transform(Vector2 value, Quaternion rotation)
+        {
+            throw new NotImplementedException();
+        }
+
+        public static void Transform(ref Vector2 value, ref Quaternion rotation, out Vector2 result)
+        {
+            throw new NotImplementedException();
+        }
+
+        public static void Transform(Vector2[] sourceArray, ref Matrix matrix, Vector2[] destinationArray)
+        {
+            throw new NotImplementedException();
+        }
+
+        public static void Transform(Vector2[] sourceArray, ref Quaternion rotation, Vector2[] destinationArray)
+        {
+            throw new NotImplementedException();
+        }
+
+        public static void Transform(Vector2[] sourceArray, int sourceIndex, ref Matrix matrix, Vector2[] destinationArray, int destinationIndex, int length)
+        {
+            throw new NotImplementedException();
+        }
+
+        public static void Transform(Vector2[] sourceArray, int sourceIndex, ref Quaternion rotation, Vector2[] destinationArray, int destinationIndex, int length)
+        {
+            throw new NotImplementedException();
+        }
+
         public static Vector2 TransformNormal(Vector2 normal, Matrix matrix)
         {
             Vector2.TransformNormal(ref normal, ref matrix, out normal);
@@ -453,6 +493,16 @@ namespace Microsoft.Xna.Framework
         {
             result = new Vector2((normal.X * matrix.M11) + (normal.Y * matrix.M21),
                                  (normal.X * matrix.M12) + (normal.Y * matrix.M22));
+        }
+
+        public static void TransformNormal(Vector2[] sourceArray, ref Matrix matrix, Vector2[] destinationArray)
+        {
+            throw new NotImplementedException();
+        }
+
+        public static void TransformNormal(Vector2[] sourceArray, int sourceIndex, ref Matrix matrix, Vector2[] destinationArray, int destinationIndex, int length)
+        {
+            throw new NotImplementedException();
         }
 
         public override string ToString()

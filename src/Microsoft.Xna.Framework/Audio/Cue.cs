@@ -117,7 +117,12 @@ namespace Microsoft.Xna.Framework.Audio
 
         #region Public Methods
 
-        public static bool operator !=(Cue left, Cue right)
+        public void Apply3D(AudioListener listener, AudioEmitter emitter)
+        {
+            throw new NotImplementedException();
+        }
+
+        /*public static bool operator !=(Cue left, Cue right)
         {
             throw new NotImplementedException();
         }
@@ -125,14 +130,14 @@ namespace Microsoft.Xna.Framework.Audio
         public static bool operator ==(Cue left, Cue right)
         {
             throw new NotImplementedException();
-        }
+        }*/
 
         public void Dispose()
         {
             throw new NotImplementedException();
         }
 
-        public override bool Equals(object obj)
+        /*public override bool Equals(object obj)
         {
             throw new NotImplementedException();
         }
@@ -140,7 +145,7 @@ namespace Microsoft.Xna.Framework.Audio
         public override int GetHashCode()
         {
             throw new NotImplementedException();
-        }
+        }*/
 
         public float GetVariable(string name)
         {
@@ -164,10 +169,10 @@ namespace Microsoft.Xna.Framework.Audio
             throw new NotImplementedException();
         }
 
-        public void SetMatrixCoefficients(int sourceChannelCount, int destinationChannelCount, float[] matrixCoefficients)
+        /*public void SetMatrixCoefficients(int sourceChannelCount, int destinationChannelCount, float[] matrixCoefficients)
         {
             throw new NotImplementedException();
-        }
+        }*/
 
         public void SetVariable(string name, float value)
         {

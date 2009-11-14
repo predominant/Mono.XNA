@@ -263,6 +263,42 @@ namespace Microsoft.Xna.Framework
             };
         }
 
+        public void GetCorners(Vector3[] corners)
+        {
+            if (corners == null)
+            {
+                throw new ArgumentNullException("corners");
+            }
+            if (corners.Length < 8)
+            {
+                throw new ArgumentOutOfRangeException("corners", "Not Enought Corners");
+            }
+            corners[0].X = this.Min.X;
+            corners[0].Y = this.Max.Y;
+            corners[0].Z = this.Max.Z;
+            corners[1].X = this.Max.X;
+            corners[1].Y = this.Max.Y;
+            corners[1].Z = this.Max.Z;
+            corners[2].X = this.Max.X;
+            corners[2].Y = this.Min.Y;
+            corners[2].Z = this.Max.Z;
+            corners[3].X = this.Min.X;
+            corners[3].Y = this.Min.Y;
+            corners[3].Z = this.Max.Z;
+            corners[4].X = this.Min.X;
+            corners[4].Y = this.Max.Y;
+            corners[4].Z = this.Min.Z;
+            corners[5].X = this.Max.X;
+            corners[5].Y = this.Max.Y;
+            corners[5].Z = this.Min.Z;
+            corners[6].X = this.Max.X;
+            corners[6].Y = this.Min.Y;
+            corners[6].Z = this.Min.Z;
+            corners[7].X = this.Min.X;
+            corners[7].Y = this.Min.Y;
+            corners[7].Z = this.Min.Z;
+        }
+
         public override int GetHashCode()
         {
             return this.Min.GetHashCode() + this.Max.GetHashCode();
