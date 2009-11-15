@@ -33,10 +33,10 @@ namespace Microsoft.Xna.Framework.Graphics
 {
     public interface IGraphicsDeviceService
     {
-        event EventHandler DeviceCreated;
+        /*event EventHandler DeviceCreated;
         event EventHandler DeviceDisposing;
         event EventHandler DeviceReset;
-        event EventHandler DeviceResetting;
+        event EventHandler DeviceResetting;*/
 
         GraphicsDevice GraphicsDevice { get; }
     }

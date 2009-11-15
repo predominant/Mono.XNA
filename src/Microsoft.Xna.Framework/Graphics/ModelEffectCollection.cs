@@ -34,11 +34,11 @@ namespace Microsoft.Xna.Framework.Graphics
 {
     public sealed class ModelEffectCollection : ReadOnlyCollection<Effect>
     {
-        // TODO: Not sure how to stub this constructor
-        private ModelEffectCollection()
-            : base(null)
+        internal ModelEffectCollection()
+            : base(new List<Effect>())
         {
-            throw new NotImplementedException();
+          //TODO  
         }
+
     }
 }

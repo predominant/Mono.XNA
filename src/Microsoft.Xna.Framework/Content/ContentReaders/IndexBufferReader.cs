@@ -41,7 +41,12 @@ namespace Microsoft.Xna.Framework.Content
 
         protected internal override IndexBuffer Read(ContentReader input, IndexBuffer existingInstance)
         {
-            throw new Exception("The method or operation is not implemented.");
+            bool flag = input.ReadBoolean();
+            int count = input.ReadInt32();
+            byte[] data = input.ReadBytes(count);
+            IndexBuffer buffer = new IndexBuffer(input.GraphicsDevice, count, BufferUsage.None, flag ? IndexElementSize.SixteenBits : IndexElementSize.ThirtyTwoBits);
+            buffer.SetData<byte>(data);
+            return buffer;
         }
     }
 }

@@ -42,8 +42,23 @@ namespace Microsoft.Xna.Framework.Content
         private Action<IDisposable> recordDisposableObject;
         private List<Action<object>>[] ResourceFixups;
 
-        internal GraphicsDevice GraphicsDevice {
-            get { return this.graphicsDevice; }
+        internal GraphicsDevice GraphicsDevice 
+        {
+            get
+            {
+                IGraphicsDeviceService service = (IGraphicsDeviceService)this.contentManager.ServiceProvider.GetService(typeof(IGraphicsDeviceService));
+                if (service == null)
+                {
+                    throw new ContentLoadException("No GraphicsDevice");
+                }
+                GraphicsDevice graphicsDevice = service.GraphicsDevice;
+                if (graphicsDevice == null)
+                {
+                    throw new ContentLoadException("No GraphicsDevice");
+                }
+                return graphicsDevice;
+            }
+
         }
 
         internal ContentReader(ContentManager manager, Stream stream, GraphicsDevice graphicsDevice)
@@ -177,7 +192,13 @@ namespace Microsoft.Xna.Framework.Content
 
         public T ReadExternalReference<T>()
         {
-            throw new NotImplementedException();
+            string str = this.ReadString();
+            if (string.IsNullOrEmpty(str))
+            {
+                return default(T);
+            }
+            string pathToReference = this.PathToReference(str);
+            return this.contentManager.Load<T>(pathToReference);
         }
 
         public Matrix ReadMatrix()
@@ -279,8 +300,27 @@ namespace Microsoft.Xna.Framework.Content
 
         public void ReadSharedResource<T>(Action<T> fixup)
         {
-            throw new NotImplementedException();
-        }
+            if (fixup == null)
+            {
+                throw new ArgumentNullException("fixup");
+            }
+            int index = base.Read7BitEncodedInt();
+            if (index != 0)
+            {
+                index--;
+                if ( index >= this.ResourceFixups.Length)
+                {
+                    throw new ContentLoadException("Bad XNB");
+                }
+                this.ResourceFixups[index].Add(delegate (object value) {
+                    if (!(value is T))
+                    {
+                        throw new ContentLoadException("Bad XNB");
+                    }
+                    fixup((T) value);
+                });
+            }       
+         }
 
         public Vector2 ReadVector2()
         {

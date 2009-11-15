@@ -40,6 +40,6 @@ namespace Microsoft.Xna.Framework.Graphics
 
         public Plane Plane { get { throw new NotImplementedException(); } set { throw new NotImplementedException(); } }
 
-        public override string ToString() { throw new NotImplementedException(); }
+        //public override string ToString() { throw new NotImplementedException(); }
     }
 }

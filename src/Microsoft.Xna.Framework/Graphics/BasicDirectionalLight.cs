@@ -33,33 +33,96 @@ namespace Microsoft.Xna.Framework.Graphics
 {
     public sealed class BasicDirectionalLight
     {
-        private Vector3 diffuseColor;
-        private Vector3 direction;
         private bool enabled;
-        private Vector3 specularColor;
+        private EffectParameter diffuseColorParam;
+        private EffectParameter directionParam;
+        private EffectParameter specularColorParam;
+        private Vector3 cachedDiffuseColor;
+        private Vector3 cachedSpecularColor;
+
+        internal BasicDirectionalLight(EffectParameter direction, EffectParameter diffuseColor, EffectParameter specularColor)
+        {
+            this.directionParam = direction;
+            this.diffuseColorParam = diffuseColor;
+            this.specularColorParam = specularColor;
+        }
+
+        internal void Copy(BasicDirectionalLight from)
+        {
+            this.enabled = from.enabled;
+            this.cachedDiffuseColor = from.cachedDiffuseColor;
+            this.cachedSpecularColor = from.cachedSpecularColor;
+            this.diffuseColorParam.SetValue(this.cachedDiffuseColor);
+            this.specularColorParam.SetValue(this.cachedSpecularColor);
+        }
 
         public Vector3 DiffuseColor
         {
-            get { return diffuseColor; }
-            set { diffuseColor = value; }
+            get
+            {
+                return this.cachedDiffuseColor;
+            }
+            set
+            {
+                if (this.enabled)
+                {
+                    this.diffuseColorParam.SetValue(value);
+                }
+                this.cachedDiffuseColor = value;
+            }
         }
 
         public Vector3 Direction
         {
-            get { return direction; }
-            set { direction = value; }
+            get
+            {
+                return this.directionParam.GetValueVector3();
+            }
+            set
+            {
+                this.directionParam.SetValue(value);
+            }
         }
 
         public bool Enabled
         {
-            get { return enabled; }
-            set { Enabled = value; }
+            get
+            {
+                return this.enabled;
+            }
+            set
+            {
+                if (this.enabled != value)
+                {
+                    this.enabled = value;
+                    if (this.enabled)
+                    {
+                        this.diffuseColorParam.SetValue(this.cachedDiffuseColor);
+                        this.specularColorParam.SetValue(this.cachedSpecularColor);
+                    }
+                    else
+                    {
+                        this.diffuseColorParam.SetValue(Vector3.Zero);
+                        this.specularColorParam.SetValue(Vector3.Zero);
+                    }
+                }
+            }
         }
 
         public Vector3 SpecularColor
         {
-            get { return specularColor; }
-            set { specularColor = value; }
+            get
+            {
+                return this.cachedSpecularColor;
+            }
+            set
+            {
+                if (this.enabled)
+                {
+                    this.specularColorParam.SetValue(value);
+                }
+                this.cachedSpecularColor = value;
+            }
         }
     }
 }

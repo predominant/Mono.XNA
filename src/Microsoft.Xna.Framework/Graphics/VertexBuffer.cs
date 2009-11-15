@@ -35,25 +35,15 @@ namespace Microsoft.Xna.Framework.Graphics
     {
 		#region Constructors 
 		
-        public VertexBuffer(GraphicsDevice graphicsDevice, int sizeInBytes, ResourceUsage usage) 
-		{ 
-			throw new NotImplementedException(); 
-		}
+        public VertexBuffer(GraphicsDevice graphicsDevice, int sizeInBytes, BufferUsage usage)
+        {
+            //TODO
+        }
 
-        public VertexBuffer(GraphicsDevice graphicsDevice, int sizeInBytes, ResourceUsage usage, ResourceManagementMode resourceManagementMode) 
-		{ 
-			throw new NotImplementedException(); 
-		}
-
-        public VertexBuffer(GraphicsDevice graphicsDevice, Type vertexType, int elementCount, ResourceUsage usage) 
-		{ 
-			throw new NotImplementedException(); 
-		}
-
-        public VertexBuffer(GraphicsDevice graphicsDevice, Type vertexType, int elementCount, ResourceUsage usage, ResourceManagementMode resourceManagementMode) 
-		{ 
-			throw new NotImplementedException(); 
-		}
+        public VertexBuffer(GraphicsDevice graphicsDevice, Type vertexType, int elementCount, BufferUsage usage)
+        {
+            //TODO
+        }
 		
 		#endregion Constructors
 		
@@ -125,7 +115,7 @@ namespace Microsoft.Xna.Framework.Graphics
 
         public void SetData<T>(T[] data) 
 		{ 
-			throw new NotImplementedException(); 
+			 
 		}
 
         public void SetData<T>(T[] data, int startIndex, int elementCount, SetDataOptions options) 

@@ -35,9 +35,9 @@ namespace Microsoft.Xna.Framework.Graphics
 
     public abstract class Texture : GraphicsResource
     {
-        public static bool operator !=(Texture left, Texture right) { throw new NotImplementedException(); }
+        //public static bool operator !=(Texture left, Texture right) { throw new NotImplementedException(); }
 
-        public static bool operator ==(Texture left, Texture right) { throw new NotImplementedException(); }
+        //public static bool operator ==(Texture left, Texture right) { throw new NotImplementedException(); }
 
 
         public int LevelCount { get { throw new NotImplementedException(); } }

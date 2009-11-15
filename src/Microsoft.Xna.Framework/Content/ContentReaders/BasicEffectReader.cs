@@ -33,16 +33,63 @@ using Microsoft.Xna.Framework.Graphics;
 
 namespace Microsoft.Xna.Framework.Content
 {
-    class BasicEffectReader : ContentTypeReader<BasicEffectReader>
+    class BasicEffectReader : ContentTypeReader<BasicEffect>
     {
+        private static Dictionary<GraphicsDevice, BasicEffect> sharedEffects;
+
         public BasicEffectReader()
         {
             // Do nothing
         }
 
-        protected internal override BasicEffectReader Read(ContentReader input, BasicEffectReader existingInstance)
+        static BasicEffectReader()
         {
-            throw new Exception("The method or operation is not implemented.");
+            sharedEffects = new Dictionary<GraphicsDevice, BasicEffect>();
         }
+
+        private static BasicEffect GetSharedEffect(GraphicsDevice device)
+        {
+            BasicEffect effect;
+            if (!sharedEffects.TryGetValue(device, out effect))
+            {
+                effect = new BasicEffect(device, null);
+                sharedEffects.Add(device, effect);
+                device.Disposing += new EventHandler(BasicEffectReader.RemoveDevice);
+            }
+            return effect;
+        }
+
+        private static void RemoveDevice(object sender, EventArgs e)
+        {
+            GraphicsDevice key = (GraphicsDevice)sender;
+            sharedEffects[key].Dispose();
+            sharedEffects.Remove(key);
+        }
+
+        protected internal override BasicEffect Read(ContentReader input, BasicEffect existingInstance)
+        {
+            GraphicsDevice graphicsDevice = input.GraphicsDevice;
+            BasicEffect effect = (BasicEffect)GetSharedEffect(graphicsDevice).Clone(graphicsDevice);
+            Texture texture = input.ReadExternalReference<Texture>();
+            //Skip because Effects aren't implemented
+            //if (texture != null)
+            //{
+            //    Texture2D textured = texture as Texture2D;
+            //    if (textured == null)
+            //    {
+            //        throw new ContentLoadException("BasicEffect can only Texture2D");
+            //    }
+            //    effect.Texture = textured;
+            //    effect.TextureEnabled = true;
+            //}
+            /*effect.DiffuseColor =*/ input.ReadVector3();
+            /*effect.EmissiveColor =*/ input.ReadVector3();
+            /*effect.SpecularColor =*/ input.ReadVector3();
+            /*effect.SpecularPower =*/ input.ReadSingle();
+            /*effect.Alpha =*/ input.ReadSingle();
+            /*effect.VertexColorEnabled =*/ input.ReadBoolean();
+            return effect;
+        }
+
     }
 }

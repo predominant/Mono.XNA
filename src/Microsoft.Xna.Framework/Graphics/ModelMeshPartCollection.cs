@@ -39,5 +39,12 @@ namespace Microsoft.Xna.Framework.Graphics
         {
             throw new NotImplementedException();
         }
+
+        internal ModelMeshPartCollection(ModelMeshPart[] parts)
+            : base(parts)
+        {
+            //TODO
+        }
+
     }
 }

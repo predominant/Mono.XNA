@@ -42,7 +42,11 @@ namespace Microsoft.Xna.Framework.Content
 
         protected internal override VertexBuffer Read(ContentReader input, VertexBuffer existingInstance)
         {
-            throw new Exception("The method or operation is not implemented.");
+            int count = input.ReadInt32();
+            byte[] data = input.ReadBytes(count);
+            VertexBuffer buffer = new VertexBuffer(input.GraphicsDevice, count, BufferUsage.None);
+            buffer.SetData<byte>(data);
+            return buffer;
         }
     }
 }

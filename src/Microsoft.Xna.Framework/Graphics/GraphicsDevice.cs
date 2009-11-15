@@ -42,6 +42,7 @@ namespace Microsoft.Xna.Framework.Graphics
     {
         #region Private Fields		
 		
+        private GraphicsDeviceCapabilities graphicsDeviceCapabilities;
         private GraphicsAdapter adapter;
         private DeviceType deviceType;
         private IntPtr renderWindowHandle;
@@ -77,7 +78,9 @@ namespace Microsoft.Xna.Framework.Graphics
         }
 
         public GraphicsDeviceCapabilities GraphicsDeviceCapabilities {
-            get { throw new NotImplementedException(); }
+            get {
+                return graphicsDeviceCapabilities;
+            }
         }
 
         public GraphicsDeviceStatus GraphicsDeviceStatus {
@@ -186,7 +189,7 @@ namespace Microsoft.Xna.Framework.Graphics
         {
 			if (adapter == null || presentationParameters == null) 
 				throw new ArgumentNullException("adapter or presentationParameters is null.");
-			
+            this.graphicsDeviceCapabilities = new GraphicsDeviceCapabilities();
 			this.adapter = adapter;
 			this.deviceType = deviceType;
             this.renderWindowHandle = renderWindowHandle;
@@ -270,10 +273,10 @@ namespace Microsoft.Xna.Framework.Graphics
             throw new NotImplementedException();
         }
 
-        public override bool Equals(object obj)
-        {
-            throw new NotImplementedException();
-        }
+        //public override bool Equals(object obj)
+        //{
+        //    throw new NotImplementedException();
+        //}
 
         public void EvictManagedResources()
         {
@@ -285,10 +288,10 @@ namespace Microsoft.Xna.Framework.Graphics
             throw new NotImplementedException();
         }
 
-        public override int GetHashCode()
-        {
-            throw new NotImplementedException();
-        }
+        //public override int GetHashCode()
+        //{
+        //    throw new NotImplementedException();
+        //}
 
         public bool[] GetPixelShaderBooleanConstant(int startRegister, int constantCount)
         {

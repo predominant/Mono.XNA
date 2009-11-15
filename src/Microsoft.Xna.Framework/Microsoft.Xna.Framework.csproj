@@ -59,6 +59,7 @@
     <Compile Include="Enums.cs" />
     <Compile Include="FrameworkDispatcher.cs" />
     <Compile Include="GamerServices\Enums.cs" />
+    <Compile Include="Graphics\DynamicIndexBuffer.cs" />
     <Compile Include="Graphics\TextureUsage.cs" />
     <Compile Include="MathHelper.cs" />
     <Compile Include="Matrix.cs" />

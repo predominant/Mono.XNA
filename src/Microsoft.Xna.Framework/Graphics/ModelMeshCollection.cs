@@ -34,10 +34,19 @@ namespace Microsoft.Xna.Framework.Graphics
 {
     public sealed class ModelMeshCollection : ReadOnlyCollection<ModelMesh>
     {
+
+        private ModelMesh[] meshArray;
+
         private ModelMeshCollection()
             : base(null)
         {
             throw new NotImplementedException();
+        }
+
+        internal ModelMeshCollection(ModelMesh[] meshes)
+            : base(meshes)
+        {
+            this.meshArray = meshes;
         }
 
         public ModelMesh this[string meshName]
@@ -49,5 +58,6 @@ namespace Microsoft.Xna.Framework.Graphics
         {
             throw new NotImplementedException();
         }
+
     }
 }

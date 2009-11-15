@@ -42,65 +42,7 @@ namespace Microsoft.Xna.Framework.Content
 
         protected internal override Model Read(ContentReader input, Model existingInstance)
         {
-            //pea_proj.xnb
-
-            //must read : bones, mesh, root, tag
-            // for bone : index, name, parent, transform (DONE)
-            // for mesh : boundingSphere, effects, indexBuffer, meshParts, name, parentBone, tag, vertex buffer
-            // for boundingSphere : Center, Radius
-            // for effects : list of effect is count and lot of things here ...
-            // for indexBuffer : lot of things here ...
-            // for vertexBuffer : lot of things here ...
-            // for meshParts : lot of things here ...
-            // for root : index of bones
-            // for tag  : object ???
-
-            //in file we have some reader : model reader , stringreader, vertexDeclarationReader, vertexBufferReader, Index buffer reader, basic effect reader
-            Model result = new Model();
-            int bonesCount = input.ReadInt32();
-            ModelBone[] bones = new ModelBone[bonesCount];
-
-
-            for (int i = 0; i < bonesCount; i++)
-            {
-                string name = input.ReadString();
-                Matrix transform = input.ReadMatrix();
-                bones[i] = new ModelBone(i, name, transform);
-            }
-            result.bones = new ModelBoneCollection(bones);
-
-            foreach (ModelBone bone in result.bones)
-            {
-                int parentIndex = input.ReadByte();
-                bone.parent = result.Bones[parentIndex - 1];
-
-                int childCount = input.ReadInt32();
-                ModelBone[] childs = new ModelBone[childCount];
-                for (int j = 0; j < childCount; j++)
-                {
-                    int childIndex = input.ReadByte();
-                    childs[j] = result.Bones[childIndex - 1];
-                }
-                bone.children = new ModelBoneCollection(childs);
-            }
-
-            //mesh now
-            //0x01f1
-            //0x04 bytes =  unk
-            //lot onf unknow here
-
-            //0x0212
-            //0x04 bytes = mesh count
-            //foreach mesh
-            //0x?? bytes = string (name)
-            //
-            //
-            //
-            //
-            //
-            //boundingSphere, effects, indexBuffer, meshParts, parentBone, tag, vertex buffer
-
-            throw new NotImplementedException();
+           return Model.Read(input);
         }
     }
 }

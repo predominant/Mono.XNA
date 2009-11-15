@@ -50,6 +50,12 @@ namespace Microsoft.Xna.Framework.Graphics
             this.transform = transform;
         }
 
+        internal void SetParentChildren(ModelBone Parent, ModelBone[] Children)
+        {
+            this.parent = Parent;
+            this.children = new ModelBoneCollection(Children);
+        }
+
         public ModelBoneCollection Children
         {
             get { return children; }

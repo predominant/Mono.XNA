@@ -212,10 +212,10 @@ namespace Microsoft.Xna.Framework
 			graphicsService = (IGraphicsDeviceService)Services.GetService(typeof (IGraphicsDeviceService));
             if (graphicsService != null)
             {
-                graphicsService.DeviceCreated += DeviceCreated;
+                /*graphicsService.DeviceCreated += DeviceCreated;
                 graphicsService.DeviceResetting += DeviceResetting;
                 graphicsService.DeviceReset += DeviceReset;
-                graphicsService.DeviceDisposing += DeviceDisposing;
+                graphicsService.DeviceDisposing += DeviceDisposing;*/
             }   
 			
 			gameHost.Initialize();

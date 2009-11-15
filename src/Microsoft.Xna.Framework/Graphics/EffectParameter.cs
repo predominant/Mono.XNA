@@ -158,7 +158,10 @@ namespace Microsoft.Xna.Framework.Graphics
 
         public void SetValue(string value) { throw new NotImplementedException(); }
 
-        public void SetValue(Texture value) { throw new NotImplementedException(); }
+        public void SetValue(Texture value) 
+        {
+            //TODO
+        }
 
         public void SetValue(Vector2 value) { throw new NotImplementedException(); }
 

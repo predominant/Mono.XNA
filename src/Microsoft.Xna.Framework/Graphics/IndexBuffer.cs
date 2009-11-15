@@ -31,26 +31,16 @@ namespace Microsoft.Xna.Framework.Graphics
 {
     public class IndexBuffer : GraphicsResource
     {
-        public IndexBuffer(GraphicsDevice graphicsDevice, int sizeInBytes, ResourceUsage usage, IndexElementSize elementSize)
+        internal protected IndexBuffer()
         {
-            throw new NotImplementedException();
         }
 
-        public IndexBuffer(GraphicsDevice graphicsDevice, Type indexType, int elementCount, ResourceUsage usage)
+        public IndexBuffer(GraphicsDevice graphicsDevice, int sizeInBytes, BufferUsage usage, IndexElementSize elementSize)
         {
-            throw new NotImplementedException();
         }
 
-        public IndexBuffer(GraphicsDevice graphicsDevice, int sizeInBytes, ResourceUsage usage,
-            ResourceManagementMode resourceManagementMode, IndexElementSize elementSize)
+        public IndexBuffer(GraphicsDevice graphicsDevice, Type indexType, int elementCount, BufferUsage usage)
         {
-            throw new NotImplementedException();
-        }
-
-        public IndexBuffer(GraphicsDevice graphicsDevice, Type indexType, int elementCount, ResourceUsage usage,
-            ResourceManagementMode resourceManagementMode)
-        {
-            throw new NotImplementedException();
         }
 
         public static bool operator !=(IndexBuffer left, IndexBuffer right)
@@ -115,7 +105,7 @@ namespace Microsoft.Xna.Framework.Graphics
 
         public void SetData<T>(T[] data)
         {
-            throw new NotImplementedException();
+            //TODO: High Priority
         }
 
         public void SetData<T>(T[] data, int startIndex, int elementCount, SetDataOptions options)

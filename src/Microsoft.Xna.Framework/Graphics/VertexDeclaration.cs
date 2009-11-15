@@ -33,7 +33,14 @@ namespace Microsoft.Xna.Framework.Graphics
 {
     public class VertexDeclaration : IDisposable
     {
-        public VertexDeclaration(GraphicsDevice graphicsDevice, VertexElement[] elements) { throw new NotImplementedException(); }
+        VertexElement[] vertexelements;
+        GraphicsDevice graphicsDevice;
+
+        public VertexDeclaration(GraphicsDevice graphicsDevice, VertexElement[] elements) 
+        {
+        //Internaly emulate the VertexDeclaration because there isn't something like that in OpenGl
+            vertexelements = elements;
+        }
 
         ~VertexDeclaration()
         {
@@ -61,9 +68,51 @@ namespace Microsoft.Xna.Framework.Graphics
 
         public override int GetHashCode() { throw new NotImplementedException(); }
 
-        public VertexElement[] GetVertexElements() { throw new NotImplementedException(); }
+        public VertexElement[] GetVertexElements() 
+        {
+            return vertexelements; 
+        }
 
-        public int GetVertexStrideSize(int stream) { throw new NotImplementedException(); }
+        public int GetVertexStrideSize(int stream) 
+        {
+            int size = 0;
+
+            foreach ( VertexElement element in vertexelements)
+            {
+                int typesize = 0;
+
+                if (element.Stream != stream) continue;
+
+                switch (element.VertexElementFormat)
+                {
+                    case VertexElementFormat.Vector2:
+                        typesize = 2 * 4;
+                        break;
+                    case VertexElementFormat.Vector3:
+                        typesize = 3 * 4;
+                        break;
+                    case VertexElementFormat.Byte4:
+                        typesize = 4 * 1;
+                        break;
+                    case VertexElementFormat.Color:
+                        typesize = 4 * 1;
+                        break;
+                    case VertexElementFormat.HalfVector2:
+                        //typesize = 3 * 4; Unknown
+                        break;
+                    case VertexElementFormat.HalfVector4:
+                        //typesize = 3 * 4; Unknown
+                        break;
+                    case VertexElementFormat.Rgba32:
+                        //typesize = 3 * 4; Unknown
+                        break;
+                }
+
+                if (element.Offset + typesize > size) size = element.Offset + typesize;
+            }
+
+            return size;
+        }
 
         public static int GetVertexStrideSize(VertexElement[] elements, int stream) { throw new NotImplementedException(); }
 

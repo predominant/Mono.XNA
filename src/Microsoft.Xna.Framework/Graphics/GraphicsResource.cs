@@ -50,15 +50,15 @@ namespace Microsoft.Xna.Framework.Graphics
 		
 		#region Operators
 
-        public static bool operator !=(GraphicsResource left, GraphicsResource right)
-        {
-            throw new NotImplementedException();
-        }
+        //public static bool operator !=(GraphicsResource left, GraphicsResource right)
+        //{
+        //    throw new NotImplementedException();
+        //}
 
-        public static bool operator ==(GraphicsResource left, GraphicsResource right)
-        {
-            throw new NotImplementedException();
-        }
+        //public static bool operator ==(GraphicsResource left, GraphicsResource right)
+        //{
+        //    throw new NotImplementedException();
+        //}
 		
 		#endregion Operators
 		

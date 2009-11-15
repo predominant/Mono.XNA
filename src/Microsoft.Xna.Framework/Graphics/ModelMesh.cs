@@ -33,8 +33,37 @@ namespace Microsoft.Xna.Framework.Graphics
 {
     public sealed class ModelMesh
     {
+
+        private BoundingSphere boundingSphere;
+        private ModelEffectCollection effects;
+        private IndexBuffer indexBuffer;
+        private ModelMeshPartCollection meshParts;
+        private string name;
+        private ModelBone parentBone;
+        private object tag;
+        private VertexBuffer vertexBuffer;
+
         private ModelMesh()
         {
+        }
+
+        internal ModelMesh(string name, ModelBone parentBone, BoundingSphere boundingSphere, VertexBuffer vertexBuffer, IndexBuffer indexBuffer, ModelMeshPart[] meshParts, object tag)
+        {
+            this.boundingSphere = new BoundingSphere();
+            this.effects = new ModelEffectCollection();
+            this.name = name;
+            this.parentBone = parentBone;
+            this.boundingSphere = boundingSphere;
+            this.vertexBuffer = vertexBuffer;
+            this.indexBuffer = indexBuffer;
+            this.meshParts = new ModelMeshPartCollection(meshParts);
+            this.tag = tag;
+            int length = meshParts.Length;
+            for (int i = 0; i < length; i++)
+            {
+                ModelMeshPart part = meshParts[i];
+                part.parent = this;
+            }
         }
 
         public BoundingSphere BoundingSphere

@@ -142,7 +142,10 @@ namespace Microsoft.Xna.Framework.Graphics
 
         public ShaderProfile MaxPixelShaderProfile
         {
-            get { throw new NotImplementedException(); }
+            get 
+            {
+                return ShaderProfile.Unknown;
+            }
         }
 
         public float MaxPointSize

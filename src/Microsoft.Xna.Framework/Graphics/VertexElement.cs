@@ -29,36 +29,134 @@ SOFTWARE.
 using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Globalization;
 
 namespace Microsoft.Xna.Framework.Graphics
 {
     [Serializable]
     public struct VertexElement
     {
+        internal short stream;
+        internal short offset;
+        internal VertexElementFormat format;
+        internal VertexElementMethod method;
+        internal VertexElementUsage usage;
+        internal byte usageIndex;
+
         public VertexElement(short stream, short offset, VertexElementFormat elementFormat,
             VertexElementMethod elementMethod, VertexElementUsage elementUsage, byte usageIndex)
-        { throw new NotImplementedException(); }
+        {
+            this.stream = stream;
+            this.offset = offset;
+            this.usageIndex = usageIndex;
+            this.format = elementFormat;
+            this.method = elementMethod;
+            this.usage = elementUsage;
+        }
 
-        public static bool operator !=(VertexElement left, VertexElement right) { throw new NotImplementedException(); }
+        public static bool operator !=(VertexElement left, VertexElement right)
+        {
+            return !(left == right);
+        }
 
-        public static bool operator ==(VertexElement left, VertexElement right) { throw new NotImplementedException(); }
+        public static bool operator ==(VertexElement left, VertexElement right)
+        {
+            return (((((left.stream == right.stream) && (left.offset == right.offset)) && ((left.usageIndex == right.usageIndex) && (left.usage == right.usage))) && (left.format == right.format)) && (left.method == right.method));
+        }
 
-        public short Offset { get { throw new NotImplementedException(); } set { throw new NotImplementedException(); } }
+        public short Offset
+        {
+            get
+            {
+                return this.offset;
+            }
+            set
+            {
+                this.offset = value;
+            }
+        }
+ 
 
-        public short Stream { get { throw new NotImplementedException(); } set { throw new NotImplementedException(); } }
+        public short Stream 
+        {
+            get 
+            {
+                return stream;
+            }
+            set 
+            {
+                this.stream = value;
+            } 
+        }
 
-        public byte UsageIndex { get { throw new NotImplementedException(); } set { throw new NotImplementedException(); } }
+        public byte UsageIndex
+        {
+            get
+            {
+                return this.usageIndex;
+            }
+            set
+            {
+                this.usageIndex = value;
+            }
+        }
 
-        public VertexElementFormat VertexElementFormat { get { throw new NotImplementedException(); } set { throw new NotImplementedException(); } }
+        public VertexElementFormat VertexElementFormat
+        {
+            get
+            {
+                return this.format;
+            }
+            set
+            {
+                this.format = value;
+            }
+        }
 
-        public VertexElementMethod VertexElementMethod { get { throw new NotImplementedException(); } set { throw new NotImplementedException(); } }
 
-        public VertexElementUsage VertexElementUsage { get { throw new NotImplementedException(); } set { throw new NotImplementedException(); } }
+        public VertexElementMethod VertexElementMethod
+        {
+            get
+            {
+                return this.method;
+            }
+            set
+            {
+                this.method = value;
+            }
+        }
 
-        public override bool Equals(object obj) { throw new NotImplementedException(); }
+
+        public VertexElementUsage VertexElementUsage
+        {
+            get
+            {
+                return this.usage;
+            }
+            set
+            {
+                this.usage = value;
+            }
+        }
+
+        public override bool Equals(object obj)
+        {
+            if (obj == null)
+            {
+                return false;
+            }
+            if (obj.GetType() != base.GetType())
+            {
+                return false;
+            }
+            return (this == ((VertexElement)obj));
+        }
 
         public override int GetHashCode() { throw new NotImplementedException(); }
 
-        public override string ToString() { throw new NotImplementedException(); }
+        public override string ToString()
+        {
+            return string.Format(CultureInfo.CurrentCulture, "{{Stream:{0} Offset:{1} Format:{2} Method:{3} Usage:{4} UsageIndex:{5}}}", new object[] { this.Stream, this.Offset, this.VertexElementFormat, this.VertexElementMethod, this.VertexElementUsage, this.UsageIndex });
+        }
     }
 }

@@ -110,8 +110,8 @@ namespace Microsoft.Xna.Framework
             if (_graphicsService == null)
                 throw new InvalidOperationException("Drawable components require IGraphicsDeviceService in the Services collection.");
 
-            _graphicsService.DeviceResetting += DeviceResetting;
-            _graphicsService.DeviceReset += DeviceReset;
+            //_graphicsService.DeviceResetting += DeviceResetting;
+            //_graphicsService.DeviceReset += DeviceReset;
             
             LoadGraphicsContent(true);
             LoadContent();

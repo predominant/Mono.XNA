@@ -33,16 +33,45 @@ namespace Microsoft.Xna.Framework.Graphics
 {
     public sealed class ModelMeshPart
     {
+        private int baseVertex;
+        private Effect effect;
+        private IndexBuffer indexBuffer;
+        private int numVertices;
+        private int primitiveCount;
+        private int startIndex;
+        private int streamOffset;
+        private object tag;
+        private VertexBuffer vertexBuffer;
+        private VertexDeclaration vertexDeclaration;
+        private int vertexStride;
+        internal ModelMesh parent;
+
         private ModelMeshPart()
         {
+        }
+
+        internal ModelMeshPart(int streamOffset, int baseVertex, int numVertices, int startIndex, int primitiveCount, VertexBuffer vertexBuffer, IndexBuffer indexBuffer, VertexDeclaration vertexDeclaration, object tag)
+        {
+            this.vertexBuffer = vertexBuffer;
+            this.indexBuffer = indexBuffer;
+            this.streamOffset = streamOffset;
+            this.baseVertex = baseVertex;
+            this.numVertices = numVertices;
+            this.startIndex = startIndex;
+            this.primitiveCount = primitiveCount;
+            this.vertexDeclaration = vertexDeclaration;
+            this.tag = tag;
+            this.vertexStride = vertexDeclaration.GetVertexStrideSize(0);
         }
 
         public int BaseVertex {
             get { throw new NotImplementedException(); } }
 
-        public Effect Effect { 
-            get { throw new NotImplementedException(); } 
-            set { throw new NotImplementedException(); } }
+        public Effect Effect
+        {
+            get { return effect; }
+            set { effect = value; }
+        }
 
         public int NumVertices { 
             get { throw new NotImplementedException(); } }

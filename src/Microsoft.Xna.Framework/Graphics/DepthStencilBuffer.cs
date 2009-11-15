@@ -40,9 +40,9 @@ namespace Microsoft.Xna.Framework.Graphics
         {
         }
 
-        public static bool operator !=(DepthStencilBuffer left, DepthStencilBuffer right){ throw new NotImplementedException(); }
+        //public static bool operator !=(DepthStencilBuffer left, DepthStencilBuffer right){ throw new NotImplementedException(); }
         
-        public static bool operator ==(DepthStencilBuffer left, DepthStencilBuffer right){ throw new NotImplementedException(); }
+        //public static bool operator ==(DepthStencilBuffer left, DepthStencilBuffer right){ throw new NotImplementedException(); }
 
         public DepthFormat Format { get{ throw new NotImplementedException(); } }
         
@@ -61,17 +61,25 @@ namespace Microsoft.Xna.Framework.Graphics
         public object Tag { get{ throw new NotImplementedException(); } set{ throw new NotImplementedException(); } }
         
         public int Width { get{ throw new NotImplementedException(); } }
-        
-        public event EventHandler Disposing;
+
+        public bool IsContentLost
+        {
+            get
+            {
+                throw new NotImplementedException();
+            }
+        }
+
+        //public event EventHandler Disposing;
         
         public void Dispose(){ throw new NotImplementedException(); }
         
-        protected void Dispose(bool disposing){ throw new NotImplementedException(); }
+        protected virtual void Dispose(bool disposing){ throw new NotImplementedException(); }
         
-        public override bool Equals(object obj){ throw new NotImplementedException(); }
+        /*public override bool Equals(object obj){ throw new NotImplementedException(); }
         
         public override int GetHashCode(){ throw new NotImplementedException(); }
         
-        protected void raise_Disposing(object sender, EventArgs e){ throw new NotImplementedException(); }
+        protected void raise_Disposing(object sender, EventArgs e){ throw new NotImplementedException(); }*/
     }
 }

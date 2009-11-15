@@ -34,16 +34,38 @@ namespace Microsoft.Xna.Framework.Graphics
 {
     public class Effect : IDisposable
     {
-        protected Effect(GraphicsDevice graphicsDevice, Effect cloneSource) { throw new NotImplementedException(); }
+        private EffectTechniqueCollection TechniqueCollection;
+        private EffectParameterCollection ParamCollection;
+ 
+        protected Effect(GraphicsDevice graphicsDevice, Effect cloneSource) 
+        {
+            //TODO
+        }
 
         ~Effect()
         {
         }
 
-        public Effect(GraphicsDevice graphicsDevice, byte[] effectCode, CompilerOptions options, EffectPool pool) { throw new NotImplementedException(); }
-        public Effect(GraphicsDevice graphicsDevice, Stream effectCodeFileStream, CompilerOptions options, EffectPool pool) { throw new NotImplementedException(); }
-        public Effect(GraphicsDevice graphicsDevice, string effectCodeFile, CompilerOptions options, EffectPool pool) { throw new NotImplementedException(); }
-        public Effect(GraphicsDevice graphicsDevice, Stream effectCodeFileStream, int numberBytes, CompilerOptions options, EffectPool pool) { throw new NotImplementedException(); }
+        public Effect(GraphicsDevice graphicsDevice, byte[] effectCode, CompilerOptions options, EffectPool pool) 
+        {
+            //TODO
+        }
+        
+        public Effect(GraphicsDevice graphicsDevice, Stream effectCodeFileStream, CompilerOptions options, EffectPool pool) 
+        {
+            throw new NotImplementedException(); 
+        }
+       
+        public Effect(GraphicsDevice graphicsDevice, string effectCodeFile, CompilerOptions options, EffectPool pool) 
+        {
+            throw new NotImplementedException();
+        }
+
+        public Effect(GraphicsDevice graphicsDevice, Stream effectCodeFileStream, int numberBytes, CompilerOptions options, EffectPool pool) 
+        {
+            throw new NotImplementedException(); 
+        }
+
         public static bool operator !=(Effect left, Effect right) { throw new NotImplementedException(); }
         public static bool operator ==(Effect left, Effect right) { throw new NotImplementedException(); }
         public string Creator { get { throw new NotImplementedException(); } }
@@ -52,14 +74,33 @@ namespace Microsoft.Xna.Framework.Graphics
         public EffectFunctionCollection Functions { get { throw new NotImplementedException(); } }
         public GraphicsDevice GraphicsDevice { get { throw new NotImplementedException(); } }
         public bool IsDisposed { get { throw new NotImplementedException(); } }
-        public EffectParameterCollection Parameters { get { throw new NotImplementedException(); } }
-        public EffectTechniqueCollection Techniques { get { throw new NotImplementedException(); } }
+        
+        public EffectParameterCollection Parameters
+        {
+            get
+            {
+                return ParamCollection;
+            }
+        }
+        
+        public EffectTechniqueCollection Techniques 
+        {
+            get 
+            {
+                return TechniqueCollection;
+            } 
+        }
         public event EventHandler Disposing;
         public event EventHandler Lost;
         public event EventHandler Reset;
         public void Begin() { throw new NotImplementedException(); }
         public void Begin(SaveStateMode saveStateMode) { throw new NotImplementedException(); }
-        public virtual Effect Clone(GraphicsDevice device) { throw new NotImplementedException(); }
+        
+        public virtual Effect Clone(GraphicsDevice device)
+        {
+            return new Effect(device, this);
+        }
+
         public void CommitChanges() { throw new NotImplementedException(); }
         public static CompiledEffect CompileEffectFromFile(Stream effectFileStream, CompilerMacro[] preprocessorDefines, CompilerIncludeHandler includeHandler, CompilerOptions options, TargetPlatform platform) { throw new NotImplementedException(); }
         public static CompiledEffect CompileEffectFromFile(string effectFile, CompilerMacro[] preprocessorDefines, CompilerIncludeHandler includeHandler, CompilerOptions options, TargetPlatform platform) { throw new NotImplementedException(); }

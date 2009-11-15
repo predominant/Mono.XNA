@@ -31,6 +31,8 @@ using System.Text;
 
 namespace Microsoft.Xna.Framework.Graphics
 {
+
+
     public enum Blend
     {
         Zero = 1,
@@ -50,6 +52,13 @@ namespace Microsoft.Xna.Framework.Graphics
         InverseBlendFactor = 15,
     }
 
+    [Flags]
+    public enum BufferUsage
+    {
+        None = 0,
+        Points = 0x40,
+        WriteOnly = 8
+    }
 
     public enum BlendFunction
     {

@@ -33,17 +33,27 @@ using Microsoft.Xna.Framework.Graphics;
 
 namespace Microsoft.Xna.Framework.Content
 {
-    class VertexDeclarationReader : ContentTypeReader<VertexDeclarationReader>
+    class VertexDeclarationReader : ContentTypeReader<VertexDeclaration>
     {
         public VertexDeclarationReader()
         {
             // Do nothing
         }
-        protected internal override VertexDeclarationReader Read(ContentReader input, VertexDeclarationReader existingInstance)
+        protected internal override VertexDeclaration Read(ContentReader input, VertexDeclaration existingInstance)
         {
-            //must have name, tag, VertexElements
-            //vertexElement is stream, offset, elementFormat, elementMethod, elementUsage, usageIndex
-            throw new Exception("The method or operation is not implemented.");
+            int size = input.ReadInt32();
+            VertexElement[] elements = new VertexElement[size];
+            for (int i = 0; i < size; i++)
+            {
+                short stream = input.ReadInt16();
+                short offset = input.ReadInt16();
+                VertexElementFormat elementFormat = (VertexElementFormat)input.ReadByte();
+                VertexElementMethod elementMethod = (VertexElementMethod)input.ReadByte();
+                VertexElementUsage elementUsage = (VertexElementUsage)input.ReadByte();
+                byte usageIndex = input.ReadByte();
+                elements[i] = new VertexElement(stream, offset, elementFormat, elementMethod, elementUsage, usageIndex);
+            }
+            return new VertexDeclaration(input.GraphicsDevice, elements);
         }
     }
 }
