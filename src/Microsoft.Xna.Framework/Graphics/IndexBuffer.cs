@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /*
 MIT License
 Copyright © 2006 The Mono.Xna Team
@@ -31,17 +31,19 @@ namespace Microsoft.Xna.Framework.Graphics
 {
     public class IndexBuffer : GraphicsResource
     {
-        internal protected IndexBuffer()
-        {
-        }
-
+		#region Constructors
+		
         public IndexBuffer(GraphicsDevice graphicsDevice, int sizeInBytes, BufferUsage usage, IndexElementSize elementSize)
-        {
-        }
-
-        public IndexBuffer(GraphicsDevice graphicsDevice, Type indexType, int elementCount, BufferUsage usage)
-        {
-        }
+		{
+			
+		}
+		
+		public IndexBuffer(GraphicsDevice graphicsDevice, Type indexType, int elementCount, BufferUsage usage)
+		{
+			
+		}
+		
+		#endregion Constructors
 
         public static bool operator !=(IndexBuffer left, IndexBuffer right)
         {
@@ -53,23 +55,15 @@ namespace Microsoft.Xna.Framework.Graphics
             throw new NotImplementedException();
         }
 
-        public IndexElementSize IndexElementSize
-        {
+		public BufferUsage BufferUsage { 
+			get { throw new NotImplementedException(); } 
+		}
+		
+        public IndexElementSize IndexElementSize {
             get { throw new NotImplementedException(); }
         }
 
-        public ResourceManagementMode ResourceManagementMode
-        {
-            get { throw new NotImplementedException(); }
-        }
-
-        public ResourceUsage ResourceUsage
-        {
-            get { throw new NotImplementedException(); }
-        }
-
-        public int SizeInBytes
-        {
+        public int SizeInBytes {
             get { throw new NotImplementedException(); }
         }
 
@@ -105,7 +99,7 @@ namespace Microsoft.Xna.Framework.Graphics
 
         public void SetData<T>(T[] data)
         {
-            //TODO: High Priority
+            throw new NotImplementedException();
         }
 
         public void SetData<T>(T[] data, int startIndex, int elementCount, SetDataOptions options)

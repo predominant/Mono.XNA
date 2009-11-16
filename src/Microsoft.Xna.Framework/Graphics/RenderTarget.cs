@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /*
 MIT License
 Copyright © 2006 The Mono.Xna Team
@@ -31,6 +31,22 @@ namespace Microsoft.Xna.Framework.Graphics
 {
     public abstract class RenderTarget : IDisposable
     {
+		#region Protected Fields
+		
+		protected GraphicsDevice graphicsDevice;
+		
+		#endregion Protected Fields
+		
+		#region Private Fields
+		
+		private bool isDisposed;
+		private string name;
+		private object tag;
+		
+		#endregion Private Fields
+		
+		#region Constructor/Destructor
+		
         internal RenderTarget()
         {
             throw new NotImplementedException();
@@ -38,7 +54,12 @@ namespace Microsoft.Xna.Framework.Graphics
 
         ~RenderTarget()
         {
+			Dispose(false);
         }
+		
+		#endregion
+		
+		#region Operators
 
         public static bool operator !=(RenderTarget left, RenderTarget right)
         {
@@ -49,84 +70,89 @@ namespace Microsoft.Xna.Framework.Graphics
         {
             throw new NotImplementedException();
         }
+		
+		#endregion Operators
+		
+		#region Properties
 
-        public SurfaceFormat Format
-        {
+        public SurfaceFormat Format {
             get { throw new NotImplementedException(); }
         }
 
-        public GraphicsDevice GraphicsDevice
-        {
+        public GraphicsDevice GraphicsDevice {
+            get { return graphicsDevice; }
+        }
+
+        public int Height {
             get { throw new NotImplementedException(); }
         }
 
-        public int Height
-        {
+        public bool IsDisposed {
+            get { return isDisposed; }
+        }
+
+        public int MultiSampleQuality {
             get { throw new NotImplementedException(); }
         }
 
-        public bool IsDisposed
-        {
+        public MultiSampleType MultiSampleType {
             get { throw new NotImplementedException(); }
         }
 
-        public int MultiSampleQuality
-        {
-            get { throw new NotImplementedException(); }
+        public string Name {
+            get { return name; }
+            set { name = value; }
         }
 
-        public MultiSampleType MultiSampleType
-        {
-            get { throw new NotImplementedException(); }
+        public object Tag {
+            get { return tag; }
+            set { tag = value; }
         }
 
-        public string Name
-        {
-            get { throw new NotImplementedException(); }
-            set { throw new NotImplementedException(); }
-        }
-
-        public ResourceManagementMode ResourceManagementMode
-        {
+        public int Width {
             get { throw new NotImplementedException(); }
         }
+		
+		#endregion Properties
+		
+		#region Events
 
-        public object Tag
-        {
-            get { throw new NotImplementedException(); }
-            set { throw new NotImplementedException(); }
-        }
-
-        public int Width
-        {
-            get { throw new NotImplementedException(); }
-        }
-
+		public virtual event EventHandler ContentLost;
         public event EventHandler Disposing;
+		
+		#endregion Events
+		
+		#region IDispose Implementation
 
         public void Dispose()
         {
-            throw new NotImplementedException();
+            Dispose(true);
         }
+		
+		#endregion IDispose Implementation
+		
+		#region Protected Methods
 
-        protected void Dispose(bool disposing)
+        protected virtual void Dispose(bool disposing)
         {
-            throw new NotImplementedException();
+            if(isDisposed)
+				return;
+			
+            isDisposed = true;
         }
-
-        public override bool Equals(object obj)
-        {
-            throw new NotImplementedException();
-        }
-
-        public override int GetHashCode()
-        {
-            throw new NotImplementedException();
-        }
+		
+		protected virtual void raise_ContentLost(Object sender, EventArgs e)
+		{
+			if(ContentLost != null)
+				ContentLost(sender, e);
+		}
 
         protected void raise_Disposing(object sender, EventArgs e)
         {
-            throw new NotImplementedException();
+            if(Disposing != null)
+				Disposing(sender, e);
         }
+		
+		#endregion Protected Methods
     }
 }

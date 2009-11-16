@@ -28,22 +28,35 @@ SOFTWARE.
 using System;
 using System.Collections.Generic;
 using System.Text;
+using Tao.OpenGl;
+using System.Runtime.InteropServices;
 
 namespace Microsoft.Xna.Framework.Graphics
 {
     public class VertexBuffer : GraphicsResource
-    {
+    {	
+		#region Private Fields
+		
+		private BufferUsage bufferUsage;
+		private int sizeInBytes;
+		private int bufferIdentifier;
+		
+		#endregion Private Fields
+		
 		#region Constructors 
 		
         public VertexBuffer(GraphicsDevice graphicsDevice, int sizeInBytes, BufferUsage usage)
-        {
-            //TODO
-        }
-
-        public VertexBuffer(GraphicsDevice graphicsDevice, Type vertexType, int elementCount, BufferUsage usage)
-        {
-            //TODO
-        }
+		{
+			// Create VBO and allocate memory
+			Gl.glGenBuffers(1, out bufferIdentifier);
+			Gl.glBindBuffer(Gl.GL_ARRAY_BUFFER, bufferIdentifier);
+			Gl.glBufferData(Gl.GL_ARRAY_BUFFER, new IntPtr(sizeInBytes), IntPtr.Zero, Gl.GL_DYNAMIC_DRAW);			
+		}
+		
+		public VertexBuffer(GraphicsDevice graphicsDevice, Type vertexType, int elementCount, BufferUsage usage)
+		{
+			
+		}
 		
 		#endregion Constructors
 		
@@ -61,21 +74,25 @@ namespace Microsoft.Xna.Framework.Graphics
 		
 		#endregion Operators
 		
-		#region Properties
+		#region Public Properties
 		
-        public ResourceManagementMode ResourceManagementMode { 
-			get { throw new NotImplementedException(); } 
+		public BufferUsage BufferUsage { 
+			get { return bufferUsage; }
 		}
-
-        public ResourceUsage ResourceUsage { 
-			get { throw new NotImplementedException(); } 
-		}
-
-        public int SizeInBytes { 
-			get { throw new NotImplementedException(); } 
+        
+		public int SizeInBytes { 
+			get { return sizeInBytes; } 
 		}
 		
-		#endregion Properties
+		#endregion Public Properties
+		
+		#region Internal Properties
+		
+		internal int BufferIdentifier {
+			get { return bufferIdentifier; }	
+		}
+		
+		#endregion Internal Properties
 		
 		#region GraphicsResource Overrides
 
@@ -84,12 +101,16 @@ namespace Microsoft.Xna.Framework.Graphics
 			throw new NotImplementedException(); 
 		}
 		
+		#endregion GraphicsResource Overrides
+		
+		#region Object Overrides
+		
 		public override bool Equals(object obj) 
 		{ 
 			throw new NotImplementedException(); 
 		}
 		
-		#endregion GraphicsResource Overrides
+		#endregion Object Overrides
 		
 		#region Public Methods        
 
@@ -115,7 +136,7 @@ namespace Microsoft.Xna.Framework.Graphics
 
         public void SetData<T>(T[] data) 
 		{ 
-			 
+			throw new NotImplementedException(); 
 		}
 
         public void SetData<T>(T[] data, int startIndex, int elementCount, SetDataOptions options) 

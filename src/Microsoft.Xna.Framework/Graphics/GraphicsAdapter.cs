@@ -135,14 +135,14 @@ namespace Microsoft.Xna.Framework.Graphics
             throw new NotImplementedException();
         }
 
-        public bool CheckDeviceFormat(DeviceType deviceType, SurfaceFormat adapterFormat, ResourceUsage usage,
-            QueryUsages queryUsages, ResourceType resourceType, DepthFormat checkFormat)
+        public bool CheckDeviceFormat(DeviceType deviceType, SurfaceFormat adapterFormat, TextureUsage usage,
+			QueryUsages queryUsages, ResourceType resourceType, DepthFormat checkFormat)
         {
             throw new NotImplementedException();
         }
 
-        public bool CheckDeviceFormat(DeviceType deviceType, SurfaceFormat adapterFormat, ResourceUsage usage,
-            QueryUsages queryUsages, ResourceType resourceType, SurfaceFormat checkFormat)
+        public bool CheckDeviceFormat(DeviceType deviceType, SurfaceFormat adapterFormat, TextureUsage usage,
+			QueryUsages queryUsages, ResourceType resourceType, SurfaceFormat checkFormat)
         {
             throw new NotImplementedException();
         }

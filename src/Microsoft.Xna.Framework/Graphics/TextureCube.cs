@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /*
 MIT License
 Copyright © 2006 The Mono.Xna Team
@@ -34,26 +34,36 @@ namespace Microsoft.Xna.Framework.Graphics
 
     public class TextureCube : Texture
     {
+		#region Constructor
+		
+		public TextureCube(GraphicsDevice graphicsDevice, int size, int numberLevels, TextureUsage usage, SurfaceFormat format)
+		{
+			
+		}
+		
+		#endregion Constructor
+		
+		#region Properties
+		
+		public SurfaceFormat Format { 
+			get { throw new NotImplementedException(); } 
+		}
 
-        public TextureCube(GraphicsDevice graphicsDevice, int edgeLength, int numberLevels, ResourceUsage usage, SurfaceFormat format) { throw new NotImplementedException(); }
-
-        public TextureCube(GraphicsDevice graphicsDevice, int edgeLength, int numberLevels, ResourceUsage usage, SurfaceFormat format, ResourceManagementMode resourceManagementMode) { throw new NotImplementedException(); }
+        public int Size { 
+			get { throw new NotImplementedException(); } 
+		}
+		
+		#endregion Properties
+		
+		#region Operators
 
         public static bool operator !=(TextureCube left, TextureCube right) { throw new NotImplementedException(); }
 
         public static bool operator ==(TextureCube left, TextureCube right) { throw new NotImplementedException(); }
+		
+		#endregion Operators 
 
-        public SurfaceFormat Format { get { throw new NotImplementedException(); } }
-
-        public ResourceManagementMode ResourceManagementMode { get { throw new NotImplementedException(); } }
-
-        public ResourceUsage ResourceUsage { get { throw new NotImplementedException(); } }
-
-        public int Size { get { throw new NotImplementedException(); } }
-
-        protected override void Dispose(bool disposing) { throw new NotImplementedException(); }
-
-        public override bool Equals(object obj) { throw new NotImplementedException(); }
+		#region Public Methods
 
         public new static TextureCube FromFile(GraphicsDevice graphicsDevice, Stream textureStream) { throw new NotImplementedException(); }
 
@@ -82,7 +92,25 @@ namespace Microsoft.Xna.Framework.Graphics
         public void SetData<T>(CubeMapFace faceType, T[] data, int startIndex, int elementCount, SetDataOptions options) { throw new NotImplementedException(); }
 
         public void SetData<T>(CubeMapFace faceType, int level, Rectangle? rect, T[] data, int startIndex, int elementCount, SetDataOptions options) { throw new NotImplementedException(); }
+		
+		#endregion Public Methods
 
-        public override string ToString() { throw new NotImplementedException(); }
+		#region Texture Overrides
+		
+		protected override void Dispose(bool disposing) 
+		{ 
+			throw new NotImplementedException(); 
+		}
+
+		#endregion Texture Overrides
+		
+		#region Object Overrides
+		
+        public override string ToString() 
+		{ 
+			throw new NotImplementedException(); 
+		}
+		
+		#endregion Object Overrides
     }
 }

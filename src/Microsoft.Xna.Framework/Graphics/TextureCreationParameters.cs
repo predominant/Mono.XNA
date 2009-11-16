@@ -31,78 +31,123 @@ using System.Runtime.InteropServices;
 namespace Microsoft.Xna.Framework.Graphics
 {
     [Serializable]
-    [StructLayout(LayoutKind.Sequential)]
     public struct TextureCreationParameters
     {
+		#region Private Fields
+		
         private int m_Width;
         private int m_Height;
         private int m_Depth;
         private int m_MipLevels;
         private SurfaceFormat m_Format;
-        private ResourceManagementMode m_ResourceManagementMode;
-        private ResourceUsage m_ResourceUsage;
         private Color m_ColorKey;
         private FilterOptions m_Filter;
         private FilterOptions m_MipFilter;
         private static TextureCreationParameters m_Default;
+		
+		#endregion Private Fields
+		
+		#region Properties
 
-        public int Width { get { return m_Width; } set { m_Width = value; } }
+        public int Width { 
+			get { return m_Width; } 
+			set { m_Width = value; } 
+		}
         
-        public int Height { get { return m_Height; } set { m_Height = value; } }
+        public int Height { 
+			get { return m_Height; } 
+			set { m_Height = value; } 
+		}
         
-        public int Depth { get { return m_Depth; } set { m_Depth = value; } }
+        public int Depth { 
+			get { return m_Depth; } 
+			set { m_Depth = value; } 
+		}
         
-        public int MipLevels { get { return m_MipLevels; } set { m_MipLevels = value; } }
+        public int MipLevels { 
+			get { return m_MipLevels; } 
+			set { m_MipLevels = value; } 
+		}
         
-        public SurfaceFormat Format { get { return m_Format; } set { m_Format = value; } }
+        public SurfaceFormat Format { 
+			get { return m_Format; } 
+			set { m_Format = value; } 
+		}
         
-        public ResourceManagementMode ResourceManagementMode { get { return m_ResourceManagementMode; } set { m_ResourceManagementMode = value; } }
+        public Color ColorKey { 
+			get { return m_ColorKey; } 
+			set { m_ColorKey = value; } 
+		}
         
-        public ResourceUsage ResourceUsage { get { return m_ResourceUsage; } set { m_ResourceUsage = value; } }
+        public FilterOptions Filter { 
+			get { return m_Filter; } 
+			set { m_Filter = value; } 
+		}
         
-        public Color ColorKey { get { return m_ColorKey; } set { m_ColorKey = value; } }
+        public FilterOptions MipFilter { 
+			get { return m_MipFilter; } 
+			set { m_MipFilter = value; } 
+		}
         
-        public FilterOptions Filter { get { return m_Filter; } set { m_Filter = value; } }
+        public static TextureCreationParameters Default { 
+			get { return m_Default; } 
+		}
+		
+		#endregion Properties
+		
+		#region Constructors
         
-        public FilterOptions MipFilter { get { return m_MipFilter; } set { m_MipFilter = value; } }
-        
-        public static TextureCreationParameters Default { get { return m_Default; } }
-        
-        public TextureCreationParameters(int width, int height, int depth, int mipLevels, SurfaceFormat format, ResourceUsage resourceUsage, ResourceManagementMode resourceManagementMode, Color colorKey, FilterOptions filter, FilterOptions mipFilter)
+        public TextureCreationParameters(int width, int height, int depth, int mipLevels, SurfaceFormat format, 
+			TextureUsage textureUsage, Color colorKey, FilterOptions filter, FilterOptions mipFilter)
         {
             m_Width = width;
             m_Height = height;
             m_Depth = depth;
             m_MipLevels = mipLevels;
             m_Format = format;
-            m_ResourceUsage = resourceUsage;
-            m_ResourceManagementMode = resourceManagementMode;
             m_ColorKey = colorKey;
             m_Filter = filter;
             m_MipFilter = mipFilter;
-
-        }
+		}
 
         static TextureCreationParameters()
         {
             TextureCreationParameters.m_Default = new TextureCreationParameters(
                 0, 0, 0, 0,
                 SurfaceFormat.Unknown,
-                ResourceUsage.None,
-                ResourceManagementMode.Automatic,
+                TextureUsage.None,
                 Color.TransparentBlack,
                 FilterOptions.Dither | FilterOptions.Triangle,
                 FilterOptions.Box);
         }
+		
+		#endregion Constructors
+		
+		#region Operators
    
         public static bool operator !=(TextureCreationParameters left, TextureCreationParameters right) { throw new NotImplementedException(); }
 
         public static bool operator ==(TextureCreationParameters left, TextureCreationParameters right) { throw new NotImplementedException(); }
+		
+		#endregion Operators
  
-        public override bool Equals(object obj) { throw new NotImplementedException(); }
+		#region Object Overrides
+		
+        public override bool Equals(object obj) 
+		{ 
+			throw new NotImplementedException(); 
+		}
 
-        public override int GetHashCode() { throw new NotImplementedException(); }
+        public override int GetHashCode() 
+		{ 
+			throw new NotImplementedException(); 
+		}
 
-        public override string ToString() { throw new NotImplementedException(); }
+        public override string ToString() 
+		{ 
+			throw new NotImplementedException(); 
+		}
+		
+		#endregion Object Overrides
     }
 }

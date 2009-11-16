@@ -32,43 +32,134 @@ namespace Microsoft.Xna.Framework.Graphics
 {
     public class Texture3D : Texture
     {
-        public Texture3D(GraphicsDevice graphicsDevice, int width, int height, int depth, int numberLevels, ResourceUsage usage, SurfaceFormat format)
+		#region Constructor
+		
+        public Texture3D(GraphicsDevice graphicsDevice, int width, int height, int depth,
+			int numberLevels, TextureUsage usage, SurfaceFormat format)
         {
             throw new NotImplementedException();
         }
+		
+		#endregion Constructor
+		
+		#region Properties
+		
+		public int Depth { 
+			get { throw new NotImplementedException(); } 
+		}
+		
+        public SurfaceFormat Format { 
+			get { throw new NotImplementedException(); } 
+		}
+		
+        public int Height { 
+			get { throw new NotImplementedException(); } 
+		}
+		
+        public int Width { 
+			get { throw new NotImplementedException(); } 
+		}
+		
+		#endregion Properties
+		
+		#region Operators
+		
+		public static bool operator ==(Texture3D left, Texture3D right) 
+		{ 
+			throw new NotImplementedException(); 
+		}
+        public static bool operator !=(Texture3D left, Texture3D right) 
+		{ 
+			throw new NotImplementedException(); 
+		}
+		
+		#endregion Operators
+		
+		#region Texture Overrides
 
-        protected override void Dispose(bool disposing) { throw new NotImplementedException(); }
+        protected override void Dispose(bool disposing) 
+		{ 
+			base.Dispose(disposing); 
+		}
+		
+		#endregion Texture Overrides
+		
+		#region Public Methods
 
-        public override bool Equals(object obj) { throw new NotImplementedException(); }
+        public new static Texture3D FromFile(GraphicsDevice graphicsDevice, Stream textureStream) 
+		{ 
+			throw new NotImplementedException(); 
+		}
+        
+		public new static Texture3D FromFile(GraphicsDevice graphicsDevice, string filename) 
+		{ 
+			throw new NotImplementedException(); 
+		}
+        
+		public new static Texture3D FromFile(GraphicsDevice graphicsDevice, Stream textureStream, TextureCreationParameters creationParameters) 
+		{ 
+			throw new NotImplementedException(); 
+		}
+        
+		public new static Texture3D FromFile(GraphicsDevice graphicsDevice, Stream textureStream, int numberBytes) 
+		{ 
+			throw new NotImplementedException(); 
+		}
+		
+        public new static Texture3D FromFile(GraphicsDevice graphicsDevice, string filename, TextureCreationParameters creationParameters) 
+		{ 
+			throw new NotImplementedException(); 
+		}
+		
+        public new static Texture3D FromFile(GraphicsDevice graphicsDevice, Stream textureStream, int numberBytes, TextureCreationParameters creationParameters) 
+		{ 
+			throw new NotImplementedException(); 
+		}
+		
+        public new static Texture3D FromFile(GraphicsDevice graphicsDevice, string filename, int width, int height, int depth) 
+		{ 
+			throw new NotImplementedException(); 
+		}
 
-        public new static Texture3D FromFile(GraphicsDevice graphicsDevice, Stream textureStream) { throw new NotImplementedException(); }
-        public new static Texture3D FromFile(GraphicsDevice graphicsDevice, string filename) { throw new NotImplementedException(); }
-        public new static Texture3D FromFile(GraphicsDevice graphicsDevice, Stream textureStream, TextureCreationParameters creationParameters) { throw new NotImplementedException(); }
-        public new static Texture3D FromFile(GraphicsDevice graphicsDevice, Stream textureStream, int numberBytes) { throw new NotImplementedException(); }
-        public new static Texture3D FromFile(GraphicsDevice graphicsDevice, string filename, TextureCreationParameters creationParameters) { throw new NotImplementedException(); }
-        public new static Texture3D FromFile(GraphicsDevice graphicsDevice, Stream textureStream, int numberBytes, TextureCreationParameters creationParameters) { throw new NotImplementedException(); }
-        public new static Texture3D FromFile(GraphicsDevice graphicsDevice, string filename, int width, int height, int depth) { throw new NotImplementedException(); }
+        public void GetData<T>(T[] data) where T : struct 
+		{ 
+			throw new NotImplementedException(); 
+		}
+		
+        public void GetData<T>(T[] data, int startIndex, int elementCount) where T : struct 
+		{ 
+			throw new NotImplementedException(); 
+		}
+		
+        public void GetData<T>(int level, int left, int top, int right, int bottom, int front, int back, T[] data, int startIndex, int elementCount) where T : struct 
+		{ 
+			throw new NotImplementedException(); 
+		}
 
-        public void GetData<T>(T[] data) where T : struct { throw new NotImplementedException(); }
-        public void GetData<T>(T[] data, int startIndex, int elementCount) where T : struct { throw new NotImplementedException(); }
-        public void GetData<T>(int level, int left, int top, int right, int bottom, int front, int back, T[] data, int startIndex, int elementCount) where T : struct { throw new NotImplementedException(); }
+        public void SetData<T>(T[] data) where T : struct 
+		{ 
+			throw new NotImplementedException(); 
+		}
+		
+        public void SetData<T>(T[] data, int startIndex, int elementCount, SetDataOptions options) where T : struct 
+		{ 
+			throw new NotImplementedException(); 
+		}
+		
+        public void SetData<T>(int level, int left, int top, int right, int bottom, int front, int back, T[] data, int startIndex, int elementCount, SetDataOptions options) where T : struct 
+		{ 
+			throw new NotImplementedException(); 
+		}
+		
+		#endregion Public Methods
 
-        public override int GetHashCode() { throw new NotImplementedException(); }
-
-        public static bool operator ==(Texture3D left, Texture3D right) { throw new NotImplementedException(); }
-        public static bool operator !=(Texture3D left, Texture3D right) { throw new NotImplementedException(); }
-
-        public void SetData<T>(T[] data) where T : struct { throw new NotImplementedException(); }
-        public void SetData<T>(T[] data, int startIndex, int elementCount, SetDataOptions options) where T : struct { throw new NotImplementedException(); }
-        public void SetData<T>(int level, int left, int top, int right, int bottom, int front, int back, T[] data, int startIndex, int elementCount, SetDataOptions options) where T : struct { throw new NotImplementedException(); }
-
-        public override string ToString() { throw new NotImplementedException(); }
-
-        public int Depth { get { throw new NotImplementedException(); } }
-        public SurfaceFormat Format { get { throw new NotImplementedException(); } }
-        public int Height { get { throw new NotImplementedException(); } }
-        public ResourceManagementMode ResourceManagementMode { get { throw new NotImplementedException(); } }
-        public ResourceUsage ResourceUsage { get { throw new NotImplementedException(); } }
-        public int Width { get { throw new NotImplementedException(); } }
+		#region Object Overrides
+		
+        public override string ToString() 
+		{ 
+			throw new NotImplementedException(); 
+		}        
+		
+		#endregion Object Overrides
     }
 }

@@ -31,8 +31,14 @@ using System.Text;
 
 namespace Microsoft.Xna.Framework.Graphics
 {
-
-
+	[Flags]
+	public enum BufferUsage
+	{
+		None = 0, 
+		Point = 1, 
+		WriteOnly = 2
+	}
+	
     public enum Blend
     {
         Zero = 1,
@@ -315,24 +321,7 @@ namespace Microsoft.Xna.Framework.Graphics
         Default = Discard,
     }
 
-
-    [Flags]
-    public enum ResourceUsage
-    {
-        Tiled = -2147483648,
-        None = 0,
-        ResolveTarget = 1,
-        WriteOnly = 8,
-        SoftwareProcessing = 16,
-        DoNotClip = 32,
-        Points = 64,
-        Dynamic = 512,
-        AutoGenerateMipMap = 1024,
-        Linear = 1073741824,
-    }
-
-
-    [Flags]
+	[Flags]
     public enum QueryUsages
     {
         None = 0,
@@ -423,13 +412,6 @@ namespace Microsoft.Xna.Framework.Graphics
     {
         SixteenBits = 0,
         ThirtyTwoBits = 1,
-    }
-
-
-    public enum ResourceManagementMode
-    {
-        Manual = 0,
-        Automatic = 1,
     }
 
 
@@ -556,4 +538,29 @@ namespace Microsoft.Xna.Framework.Graphics
         Depth = 12,
         Sample = 13,
     }
+	
+	#region Old Enumerations
+	/* 
+	[Flags]
+    public enum ResourceUsage
+    {
+        Tiled = -2147483648,
+        None = 0,
+        ResolveTarget = 1,
+        WriteOnly = 8,
+        SoftwareProcessing = 16,
+        DoNotClip = 32,
+        Points = 64,
+        Dynamic = 512,
+        AutoGenerateMipMap = 1024,
+        Linear = 1073741824,
+    }
+    
+    public enum ResourceManagementMode
+    {
+        Manual = 0,
+        Automatic = 1,
+    }
+    */	
+	#endregion
 }
