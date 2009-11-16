@@ -31,15 +31,7 @@ using System.Text;
 
 namespace Microsoft.Xna.Framework.Graphics
 {
-	[Flags]
-	public enum BufferUsage
-	{
-		None = 0, 
-		Point = 1, 
-		WriteOnly = 2
-	}
-	
-    public enum Blend
+	public enum Blend
     {
         Zero = 1,
         One = 2,

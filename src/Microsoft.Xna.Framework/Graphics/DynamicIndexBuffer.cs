@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Text;
 
@@ -7,10 +7,12 @@ namespace Microsoft.Xna.Framework.Graphics
     public class DynamicIndexBuffer : IndexBuffer
     {
         public DynamicIndexBuffer(GraphicsDevice graphicsDevice, int sizeInBytes, BufferUsage usage, IndexElementSize elementSize)
+			: base (graphicsDevice, sizeInBytes, usage, elementSize)
         {
             throw new NotImplementedException();
         }
         public DynamicIndexBuffer(GraphicsDevice graphicsDevice, Type indexType, int elementCount, BufferUsage usage)
+			: base (graphicsDevice, indexType, elementCount, usage)
         {
             throw new NotImplementedException();
         }
