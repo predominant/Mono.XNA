@@ -28,8 +28,8 @@ SOFTWARE.
 using System;
 using System.Collections.Generic;
 using System.Text;
-using Tao.OpenGl;
 using System.Runtime.InteropServices;
+using Tao.OpenGl;
 
 namespace Microsoft.Xna.Framework.Graphics
 {
@@ -45,36 +45,34 @@ namespace Microsoft.Xna.Framework.Graphics
 		
 		#region Constructors 
 		
-        public VertexBuffer(GraphicsDevice graphicsDevice, int sizeInBytes, BufferUsage usage)
+		private VertexBuffer(GraphicsDevice graphicsDevice, BufferUsage usage)
 		{
-			// Create VBO and allocate memory
-			Gl.glGenBuffers(1, out bufferIdentifier);
-			Gl.glBindBuffer(Gl.GL_ARRAY_BUFFER, bufferIdentifier);
-			Gl.glBufferData(Gl.GL_ARRAY_BUFFER, new IntPtr(sizeInBytes), IntPtr.Zero, Gl.GL_DYNAMIC_DRAW);			
+			if(graphicsDevice == null)
+				throw new ArgumentNullException("The graphicsDevice parameter cannot be null");
+			
+			this.graphicsDevice = graphicsDevice;
+			this.bufferUsage = usage;
+		}
+		
+        public VertexBuffer(GraphicsDevice graphicsDevice, int sizeInBytes, BufferUsage usage)
+			: this(graphicsDevice, usage)
+		{
+			if(sizeInBytes <= 0)
+				throw new ArgumentOutOfRangeException("The sizeInBytes parameter must be larger than 0");
+			this.sizeInBytes = sizeInBytes;
+			createHostBuffer();
 		}
 		
 		public VertexBuffer(GraphicsDevice graphicsDevice, Type vertexType, int elementCount, BufferUsage usage)
+			: this(graphicsDevice, usage)
 		{
-			
+			sizeInBytes = Marshal.SizeOf(vertexType) * elementCount;
+			createHostBuffer();
 		}
 		
 		#endregion Constructors
 		
-		#region Operators
-
-        public static bool operator !=(VertexBuffer left, VertexBuffer right) 
-		{ 
-			throw new NotImplementedException(); 
-		}
-
-        public static bool operator ==(VertexBuffer left, VertexBuffer right) 
-		{ 
-			throw new NotImplementedException(); 
-		}
-		
-		#endregion Operators
-		
-		#region Public Properties
+		#region Properties
 		
 		public BufferUsage BufferUsage { 
 			get { return bufferUsage; }
@@ -84,33 +82,11 @@ namespace Microsoft.Xna.Framework.Graphics
 			get { return sizeInBytes; } 
 		}
 		
-		#endregion Public Properties
-		
-		#region Internal Properties
-		
 		internal int BufferIdentifier {
 			get { return bufferIdentifier; }	
 		}
 		
-		#endregion Internal Properties
-		
-		#region GraphicsResource Overrides
-
-        protected override void Dispose(bool disposing) 
-		{ 
-			throw new NotImplementedException(); 
-		}
-		
-		#endregion GraphicsResource Overrides
-		
-		#region Object Overrides
-		
-		public override bool Equals(object obj) 
-		{ 
-			throw new NotImplementedException(); 
-		}
-		
-		#endregion Object Overrides
+		#endregion Properties
 		
 		#region Public Methods        
 
@@ -129,27 +105,65 @@ namespace Microsoft.Xna.Framework.Graphics
 			throw new NotImplementedException(); 
 		}
 
-        public override int GetHashCode() 
-		{ 
-			throw new NotImplementedException(); 
-		}
-
         public void SetData<T>(T[] data) 
 		{ 
-			throw new NotImplementedException(); 
+			Gl.glBindBuffer(Gl.GL_ARRAY_BUFFER, bufferIdentifier);
+			Gl.glBufferData(Gl.GL_ARRAY_BUFFER, new IntPtr(sizeInBytes), data, Gl.GL_DYNAMIC_DRAW);
 		}
 
         public void SetData<T>(T[] data, int startIndex, int elementCount, SetDataOptions options) 
 		{ 
-			throw new NotImplementedException(); 
+			data = getSubData<T>(data, startIndex, elementCount);				
+			Gl.glBindBuffer(Gl.GL_ARRAY_BUFFER, bufferIdentifier);
+			Gl.glBufferSubData(Gl.GL_ARRAY_BUFFER, IntPtr.Zero, new IntPtr(Marshal.SizeOf(typeof(T)) * elementCount), data);
 		}
 
         public void SetData<T>(int offsetInBytes, T[] data, int startIndex, int elementCount, int vertexStride, SetDataOptions options) 
 		{ 
-			throw new NotImplementedException(); 
+			data = getSubData<T>(data, startIndex, elementCount);				
+			Gl.glBindBuffer(Gl.GL_ARRAY_BUFFER, bufferIdentifier);
+			Gl.glBufferSubData(Gl.GL_ARRAY_BUFFER, new IntPtr(offsetInBytes), new IntPtr(vertexStride * elementCount), data);
 		}
 		
 		#endregion Public Methods
+		
+		#region Private Methods
+		
+		private void createHostBuffer()
+		{
+			Gl.glGenBuffers(1, out bufferIdentifier);
+			Gl.glBindBuffer(Gl.GL_ARRAY_BUFFER, bufferIdentifier);
+			Gl.glBufferData(Gl.GL_ARRAY_BUFFER, new IntPtr(sizeInBytes), IntPtr.Zero, Gl.GL_DYNAMIC_DRAW);
+		}
+		
+		private T[] getSubData<T>(T[] data, int startIndex, int elementCount)
+		{
+			if (startIndex != 0 || elementCount != data.Length)
+			{
+				T[] temp = new T[elementCount];
+				for (int i=0; i<elementCount; i++)
+					temp[i] = data[i];					
+				data = temp;
+			}
+			return data;
+		}
+		
+		#endregion Private Methods
+		
+		#region Overrides
+
+		public override string ToString ()
+		{
+			return string.Format("[VertexBuffer: BufferUsage={0}, SizeInBytes={1}]", BufferUsage, SizeInBytes);
+		}
+		
+        protected override void Dispose(bool disposing) 
+		{ 
+			throw new NotImplementedException(); 
+		}
+		
+		#endregion Overrides
+		
     }
 
 }
