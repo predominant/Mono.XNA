@@ -245,7 +245,8 @@ namespace Microsoft.Xna.Framework
             if (graphicDeviceInfoList.Count == 0)
                 throw new NoSuitableGraphicsDeviceException("The process of ranking devices removed all compatible devices.");  // LOCALIZE
 
-            return graphicDeviceInfoList[0];
+			
+			return graphicDeviceInfoList[0];
         }
 		
 		protected virtual void RankDevices(List<GraphicsDeviceInformation> foundDevices)
@@ -293,16 +294,16 @@ namespace Microsoft.Xna.Framework
 
         void IGraphicsDeviceManager.CreateDevice()
         {
-            GraphicsDeviceInformation info = FindBestDevice(true);
-            OnPreparingDeviceSettings(this, new PreparingDeviceSettingsEventArgs(info));
-            
+			GraphicsDeviceInformation info = FindBestDevice(true);
+			OnPreparingDeviceSettings(this, new PreparingDeviceSettingsEventArgs(info));
+			
 			graphicsDevice = new GraphicsDevice(info.Adapter, info.DeviceType, game.Window.Handle, info.PresentationParameters);
 			graphicsDevice.Disposing += new EventHandler(OnDeviceDisposing);
             graphicsDevice.DeviceResetting += new EventHandler(OnDeviceResetting);
             graphicsDevice.DeviceReset += new EventHandler(OnDeviceReset);
             
             OnDeviceCreated(this, EventArgs.Empty);
-        }
+		}
 
         void IGraphicsDeviceManager.EndDraw()
         {

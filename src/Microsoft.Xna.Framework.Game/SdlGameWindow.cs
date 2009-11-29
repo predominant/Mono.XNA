@@ -58,10 +58,11 @@ namespace Microsoft.Xna.Framework
 		public override IntPtr Handle {
             get {
 #warning Only windows support in Tao.Sdl?
-				Sdl.SDL_SysWMinfo_Windows info;
-				if (Sdl.SDL_GetWMInfo(out info) != 0)
-					return new IntPtr(info.window);
-				else 
+#warning Commented out to ensure proper operation in Ubuntu 9.10				
+				//Sdl.SDL_SysWMinfo_Windows info;
+				//if (Sdl.SDL_GetWMInfo(out info) != 0)
+				//	return new IntPtr(info.window);
+				//else 
 					return IntPtr.Zero;
 			}
         }
@@ -78,7 +79,7 @@ namespace Microsoft.Xna.Framework
 		
 		public override void EndScreenDeviceChange(string screenDeviceName, int clientWidth, int clientHeight)
         {
-            this.screenDeviceName = screenDeviceName;
+			this.screenDeviceName = screenDeviceName;
 			OnScreenDeviceNameChanged();
 			
 			int flags = Sdl.SDL_OPENGL;

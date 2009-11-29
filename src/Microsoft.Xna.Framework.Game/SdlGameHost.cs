@@ -36,7 +36,7 @@ namespace Microsoft.Xna.Framework
 		
 		public void EnsureHost()
 		{
-			int result = Sdl.SDL_Init (Sdl.SDL_INIT_TIMER | Sdl.SDL_INIT_VIDEO | Sdl.SDL_INIT_JOYSTICK);
+			int result = Sdl.SDL_Init(Sdl.SDL_INIT_TIMER | Sdl.SDL_INIT_VIDEO | Sdl.SDL_INIT_JOYSTICK);
 			if (result == 0)
 				System.Diagnostics.Debug.WriteLine("SDL initialized");
 			else
@@ -58,7 +58,7 @@ namespace Microsoft.Xna.Framework
 		}
 		
 		public void Run()
-		{			
+		{	
 			while (!isExiting)
 			{
 				Sdl.SDL_Event sdlEvent;
