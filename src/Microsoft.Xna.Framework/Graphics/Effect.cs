@@ -29,6 +29,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 using System.IO;
+using Tao.OpenGl;
 
 namespace Microsoft.Xna.Framework.Graphics
 {
@@ -37,6 +38,11 @@ namespace Microsoft.Xna.Framework.Graphics
         private EffectTechniqueCollection TechniqueCollection;
         private EffectParameterCollection ParamCollection;
  
+        private int fragment_handle;
+        private int vertex_handle;
+        private bool fragment;
+        private bool vertex;
+
         protected Effect(GraphicsDevice graphicsDevice, Effect cloneSource) 
         {
             //TODO
@@ -48,7 +54,45 @@ namespace Microsoft.Xna.Framework.Graphics
 
         public Effect(GraphicsDevice graphicsDevice, byte[] effectCode, CompilerOptions options, EffectPool pool) 
         {
-            //TODO
+            int fragmentblocklength = BitConverter.ToInt32(effectCode, 0);
+
+            int vertexblocklength = BitConverter.ToInt32(effectCode, fragmentblocklength + 4);
+
+            if (fragmentblocklength != 0)
+            {
+                fragment_handle = Gl.glCreateShader(Gl.GL_FRAGMENT_SHADER);
+                fragment = true;
+            }
+
+            if (vertexblocklength != 0)
+            {
+                vertex_handle = Gl.glCreateShader(Gl.GL_VERTEX_SHADER);
+                vertex = true;
+            }
+
+            if (fragment)
+            {
+                string[] fragmentstring = new string[1] { Encoding.UTF8.GetString(effectCode, 4, fragmentblocklength) };
+                int[] fragmentLength = new int[1] { fragmentstring[0].Length };
+                Gl.glShaderSource(fragment_handle, 1, fragmentstring, fragmentLength);
+            }
+
+            if (vertex)
+            {
+                string[] vertexstring = new string[1] { Encoding.UTF8.GetString(effectCode, fragmentblocklength + 8, vertexblocklength) };
+                int[] vertexLength = new int[1] { vertexstring[0].Length };
+                Gl.glShaderSource(vertex_handle, 1, vertexstring, vertexLength);
+            }
+
+            if (fragment)
+            {
+                Gl.glCompileShader(fragment_handle);
+            }
+
+            if (vertex)
+            {
+                Gl.glCompileShader(fragment_handle);
+            }
         }
         
         public Effect(GraphicsDevice graphicsDevice, Stream effectCodeFileStream, CompilerOptions options, EffectPool pool) 

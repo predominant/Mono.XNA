@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="3.5">
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
@@ -58,7 +58,28 @@
     <Compile Include="Design\ColorConverter.cs" />
     <Compile Include="Enums.cs" />
     <Compile Include="FrameworkDispatcher.cs" />
+    <Compile Include="GamerServices\AvatarAnimation.cs" />
+    <Compile Include="GamerServices\AvatarDescription.cs" />
+    <Compile Include="GamerServices\AvatarExpression.cs" />
+    <Compile Include="GamerServices\AvatarRenderer.cs" />
     <Compile Include="GamerServices\Enums.cs" />
+    <Compile Include="GamerServices\FriendCollection.cs" />
+    <Compile Include="GamerServices\FriendGamer.cs" />
+    <Compile Include="GamerServices\GameDefaults.cs" />
+    <Compile Include="GamerServices\GamePrivilegeException.cs" />
+    <Compile Include="GamerServices\Gamer.cs" />
+    <Compile Include="GamerServices\GamerCollection.cs" />
+    <Compile Include="GamerServices\GamerPresence.cs" />
+    <Compile Include="GamerServices\GamerPrivileges.cs" />
+    <Compile Include="GamerServices\GamerProfile.cs" />
+    <Compile Include="GamerServices\GamerServicesDispatcher.cs" />
+    <Compile Include="GamerServices\GamerServicesNotAvailableException.cs" />
+    <Compile Include="GamerServices\Guide.cs" />
+    <Compile Include="GamerServices\GuideAlreadyVisibleException.cs" />
+    <Compile Include="GamerServices\SignedInEventArgs.cs" />
+    <Compile Include="GamerServices\SignedInGamer.cs" />
+    <Compile Include="GamerServices\SignedInGamerCollection.cs" />
+    <Compile Include="GamerServices\SignedOutEventArgs.cs" />
     <Compile Include="Graphics\DynamicIndexBuffer.cs" />
     <Compile Include="Graphics\TextureUsage.cs" />
     <Compile Include="MathHelper.cs" />
@@ -84,7 +105,27 @@
     <Compile Include="Media\Video.cs" />
     <Compile Include="Media\VideoPlayer.cs" />
     <Compile Include="Media\VisualizationData.cs" />
+    <Compile Include="Net\AvailableNetworkSession.cs" />
+    <Compile Include="Net\AvailableNetworkSessionCollection.cs" />
+    <Compile Include="Net\Enums.cs" />
+    <Compile Include="Net\GameEndedEventArgs.cs" />
+    <Compile Include="Net\GamerJoinedEventArgs.cs" />
+    <Compile Include="Net\GamerLeftEventArgs.cs" />
+    <Compile Include="Net\GameStartedEventArgs.cs" />
+    <Compile Include="Net\HostChangedEventArgs.cs" />
+    <Compile Include="Net\InviteAcceptedEventArgs.cs" />
+    <Compile Include="Net\LocalNetworkGamer.cs" />
     <Compile Include="Net\NetworkException.cs" />
+    <Compile Include="Net\NetworkGamer.cs" />
+    <Compile Include="Net\NetworkMachine.cs" />
+    <Compile Include="Net\NetworkNotAvailableException.cs" />
+    <Compile Include="Net\NetworkSession.cs" />
+    <Compile Include="Net\NetworkSessionEndedEventArgs.cs" />
+    <Compile Include="Net\NetworkSessionJoinException.cs" />
+    <Compile Include="Net\NetworkSessionProperties.cs" />
+    <Compile Include="Net\PacketReader.cs" />
+    <Compile Include="Net\PacketWriter.cs" />
+    <Compile Include="Net\QualityOfService.cs" />
     <Compile Include="Plane.cs" />
     <Compile Include="Point.cs" />
     <Compile Include="PowerStatus.cs" />
