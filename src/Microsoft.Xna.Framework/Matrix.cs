@@ -37,9 +37,6 @@ namespace Microsoft.Xna.Framework
 	[TypeConverter(typeof(MatrixConverter))]
     public struct Matrix : IEquatable<Matrix>
     {
-        
-
-
         #region Public Fields
 
         public float M11;

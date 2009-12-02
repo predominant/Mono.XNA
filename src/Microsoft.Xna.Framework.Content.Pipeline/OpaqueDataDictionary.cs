@@ -28,16 +28,23 @@ SOFTWARE.
 #endregion License
 
 using System;
+using System.Text;
+using System.Xml;
+using Microsoft.Xna.Framework.Content.Pipeline.Serialization.Intermediate;
 
 namespace Microsoft.Xna.Framework.Content.Pipeline
 {
-	
-	
-	public sealed class OpaqueDataDictionary : NamedValueDictionary<Object>
+
+    /// <summary>Provides properties that define opaque data for a game asset.</summary>
+    [ContentSerializerCollectionItemName("Data")]
+    public sealed class OpaqueDataDictionary : NamedValueDictionary<Object>
 	{
+        private string xmlContent;
+
 		#region Constructor
-		
-		public OpaqueDataDictionary()
+
+        /// <summary>Initializes a new instance of OpaqueDataDictionary.</summary>
+        public OpaqueDataDictionary()
 		{
 		}
 		
@@ -47,42 +54,88 @@ namespace Microsoft.Xna.Framework.Content.Pipeline
 		
 		public string GetContentAsXml()
 		{
-			throw new NotImplementedException();
-		}
-		
-		public T GetValue<T>(string key, T defaultValue)
-		{
-			throw new NotImplementedException();
-		}
+            if (xmlContent == null)
+            {
+                if (base.Count == 0)
+                {
+                    xmlContent = string.Empty;
+                }
+                else
+                {
+                    StringBuilder output = new StringBuilder();
+
+                    using (XmlWriter writer = XmlWriter.Create(output))
+                    {
+                        IntermediateSerializer.Serialize<OpaqueDataDictionary>(writer, this, null);
+                    }
+                    this.xmlContent = output.ToString();
+                }
+            }
+            return this.xmlContent;
+        }
+
+        /// <summary>Gets the value of the specified key/value pair of the asset.</summary>
+        /// <param name="key">The name of the key.</param>
+        /// <param name="defaultValue">The value to return if the key cannot be found. This can be null for reference types, 0 for primitive types, and a zero-filled structure for structure types.</param>
+        public T GetValue<T>(string key, T defaultValue)
+        {
+            object result = null;
+
+            if (base.TryGetValue(key, out result) && (result is T))
+                return (T)result;
+
+            return defaultValue;
+        }
+ 
 		
 		#endregion
 		
 		#region Protected Methods
-		
-		protected override void SetItem(string key, Object value)
+
+        /// <summary>Modifies the value of an existing element.</summary>
+        /// <param name="key">The key of the element to be modified.</param>
+        /// <param name="value">The value to be set.</param>
+        protected override void SetItem(string key, object value)
+        {
+            xmlContent = null;
+
+            base.SetItem(key, value);
+        }
+
+        /// <summary>Specifies the type hint for the intermediate serializer.</summary>
+        protected internal override Type DefaultSerializerType 
 		{
-			throw new NotImplementedException();
-		}
-		
-		protected internal override Type DefaultSerializerType 
-		{ 
-			get { throw new NotImplementedException(); }
+            get { return typeof(string); }
 		}
 
-		protected override void AddItem(string key, Object value)
-		{
-			throw new NotImplementedException();
-		}
-		
-		protected override void ClearItems()
-		{
-			throw new NotImplementedException();
-		}
+        /// <summary>Adds an element to the dictionary.</summary>
+        /// <param name="key">The key of the new element.</param>
+        /// <param name="value">The value of the new element.</param>
+        protected override void AddItem(string key, object value)
+        {
+            xmlContent = null;
 
-		protected override bool RemoveItem(string key)
-		{
-			throw new NotImplementedException();
-		}
+            base.AddItem(key, value);
+        }
+
+        /// <summary>Removes all elements from the dictionary.</summary>
+        protected override void ClearItems()
+        {
+            xmlContent = null;
+
+            base.ClearItems();
+        }
+
+        /// <summary>Removes the specified element from the dictionary.</summary>
+        /// <param name="key">Identity of the key of the data pair to be removed.</param>
+        protected override bool RemoveItem(string key)
+        {
+            xmlContent = null;
+
+            return base.RemoveItem(key);
+        }
+
+ 
 
 		#endregion
 		

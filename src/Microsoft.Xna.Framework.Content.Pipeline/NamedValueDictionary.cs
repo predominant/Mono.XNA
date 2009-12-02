@@ -34,146 +34,182 @@ using System.Collections.Generic;
 namespace Microsoft.Xna.Framework.Content.Pipeline
 {
 	
-	
+	/// <summary>
+    /// Base class for dictionaries that map string identifiers to data values
+	/// </summary>
+	/// <typeparam name="T">the type of data value</typeparam>
 	public class NamedValueDictionary<T> : IDictionary<string, T>, ICollection<KeyValuePair<string, T>>, IEnumerable<KeyValuePair<string, T>>, IEnumerable
 	{
-
+		#region Private Fields
+		
 		private Dictionary<string, T> dictionary;
 		
-#region Constructors
+		#endregion Private Fields
 		
-		public NamedValueDictionary()
+		#region Constructors
+
+        /// <summary>Initializes an instance of NamedValueDictionary.</summary>
+        public NamedValueDictionary()
 		{
 			dictionary = new Dictionary<string,T>();
 		}
 
-#endregion
+		#endregion Constructors
 		
-#region Properties
-		
-		public T this[string key]
-		{
+		#region Properties
+
+        /// <summary>Gets or sets the specified item.</summary>
+        public T this[string key] {
 			get { return dictionary[key]; }
 			set { dictionary[key] = value; }
 		}
-		
-		public int Count 
-		{ 
+
+        /// <summary>Gets the number of items in the dictionary.</summary>
+        public int Count { 
 			get { return dictionary.Count; }
 		}
 
-		public ICollection<string> Keys 
-		{ 
+        /// <summary>Gets all keys contained in the dictionary.</summary>
+        public ICollection<string> Keys { 
 			get { return dictionary.Keys; }
 		}
 
-		public ICollection<T> Values 
-		{ 
+        /// <summary>Gets all values contained in the dictionary.</summary>
+        public ICollection<T> Values { 
 			get { return dictionary.Values; }
 		}
 
-		protected internal virtual Type DefaultSerializerType 
-		{ 
-			get { throw new NotImplementedException(); }
+		protected internal virtual Type DefaultSerializerType { 
+			get { return typeof(T); }
 		}
 		
-#endregion
+		#endregion Properties
 		
-#region Public Methods
+		#region Public Methods
 
-		public void Add(string key, T value)
+        /// <summary>Adds the specified key and value to the dictionary.</summary>
+        /// <param name="key">Identity of the key of the new data pair.</param>
+        /// <param name="value">The value of the new data pair.</param>
+        public void Add(string key, T value)
 		{
-			
-		}
-		
-		public void Clear()
+            AddItem(key, value);
+        }
+
+        /// <summary>Removes all keys and values from the dictionary.</summary>
+        public void Clear()
 		{
-		}
-		
-		public bool ContainsKey(string key)
-		{
-			throw new NotImplementedException();
-		}
-		
-		public IEnumerator<KeyValuePair<string, T>> GetEnumerator()
-		{
-			throw new NotImplementedException();
+            ClearItems();
 		}
 
-		public bool Remove(string key)
+        /// <summary>Determines whether the specified key is present in the dictionary.</summary>
+        /// <param name="key">A key to look for</param>
+        public bool ContainsKey(string key)
 		{
-			throw new NotImplementedException();
+            return dictionary.ContainsKey(key);
 		}
+
+        /// <summary>Gets an enumerator that iterates through items in a dictionary.</summary>
+        public IEnumerator<KeyValuePair<string, T>> GetEnumerator()
+		{
+            return (IEnumerator<KeyValuePair<string, T>>)dictionary.GetEnumerator();
+        }
+
+        /// <summary>Removes the specified key and value from the dictionary.</summary>
+        /// <param name="key">A key to be removed.</param>
+        public bool Remove(string key)
+		{
+            return RemoveItem(key);
+        }
 		
 		public bool TryGetValue(string key, out T value)
 		{
-			throw new NotImplementedException();
-		}
+            return dictionary.TryGetValue(key, out value);
+        }
 		
-#endregion
+		#endregion Public Methods
 		
-#region Protected Methods
+		#region Protected Methods
 		
 		protected virtual void AddItem(string key, T value)
 		{
+            if (string.IsNullOrEmpty(key))
+                return; // mey be throw an exception here
+
+            dictionary.Add(key, value);
 		}
 		
+        /// <summary>
+        /// Removes all elements from the dictionary
+        /// </summary>
 		protected virtual void ClearItems()
 		{
+            dictionary.Clear();
 		}
 
 		protected virtual bool RemoveItem(string key)
 		{
-			return true;
-		}
+            if (string.IsNullOrEmpty(key))
+                return false;
+
+            return dictionary.Remove(key);
+        }
 		
 		protected virtual void SetItem(string key, T value)
 		{
-			
+            if (string.IsNullOrEmpty(key))
+            {
+                throw new ArgumentNullException("key");
+            }
+            if (value == null)
+            {
+                throw new ArgumentNullException("value");
+            }
+            
+            dictionary[key] = value;
 		}
 		
-#endregion
+		#endregion Protected Methods
 		
-#region ICollection Explicit
-		
+		#region ICollection Explicit		
 		
 		bool ICollection<KeyValuePair<string, T>>.IsReadOnly
 		{ 
-			get { throw new NotImplementedException(); } 
+			get { return false; } 
 		}
 		
 		void ICollection<KeyValuePair<string,T>>.Add(KeyValuePair<string, T> item)
 		{
-			throw new NotImplementedException();
+            AddItem(item.Key, item.Value);
 		}
 		
 		bool ICollection<KeyValuePair<string,T>>.Contains(KeyValuePair<string, T> item)
 		{
-			throw new NotImplementedException();
+            return dictionary.ContainsKey(item.Key);
 		}
 		
 		void ICollection<KeyValuePair<string,T>>.CopyTo(KeyValuePair<string, T>[] array, int arrayIndex)
 		{
-			throw new NotImplementedException();
+            (dictionary as ICollection<KeyValuePair<string,T>>).CopyTo(array, arrayIndex);
 		}
 		
 		bool ICollection<KeyValuePair<System.String,T>>.Remove(KeyValuePair<string, T> item)
 		{
-			throw new NotImplementedException();
-		}
-		
-#endregion
-		
+            if (!(dictionary as ICollection<KeyValuePair<string, T>>).Contains(item))
+                return false;
 
+            return RemoveItem(item.Key);
+        }
 		
-#region IEnumerator Unused
+		#endregion ICollection Explicit
+		
+		#region IEnumerator Unused
 		
 		IEnumerator IEnumerable.GetEnumerator()
 		{
-			throw new NotImplementedException();
+            return dictionary.GetEnumerator();
 		}		
 		
-#endregion
+		#endregion IEnumerator Unused
 		
 	}
 }

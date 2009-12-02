@@ -155,6 +155,9 @@ namespace Microsoft.Xna.Framework.Tests
 
             Assert.AreEqual(expected, m);
         }
+		
+		public void Invert
+		
         #endregion Instance methods
     }
 }

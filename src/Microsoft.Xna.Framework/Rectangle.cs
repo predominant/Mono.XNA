@@ -242,7 +242,6 @@ namespace Microsoft.Xna.Framework
 		/// </returns>
 		public bool Intersects(Rectangle rect)
 		{
-			//see gsedej issue on googlecode for info
 			if(this.X <= rect.X)
 			{
 				if((this.X + this.Width) > rect.X)

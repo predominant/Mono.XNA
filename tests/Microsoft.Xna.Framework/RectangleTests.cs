@@ -1,7 +1,7 @@
 #region License
 /*
 MIT License
-Copyright © 2006-2007 The Mono.Xna Team
+Copyright  2006-2007 The Mono.Xna Team
 
 All rights reserved.
 
@@ -70,5 +70,83 @@ namespace Microsoft.Xna.Framework.Tests
 			r.Offset(1, 2);
 			Assert.IsTrue(r.Equals(new Rectangle(1, 2, 50, 20)), "#Offset1");
         }
+		
+		[Test]
+		public void IntersectsTest()
+		{
+            Rectangle rect1 = new Rectangle(50, 50, 50, 50);
+            Rectangle rect2 = new Rectangle(0, 0, 20, 20);
+
+            // 1 false
+			Assert.IsFalse(rect1.Intersects(rect2), "#Intersects1");
+            // 2 false
+            rect2.X = 20;
+            rect2.Y = 20;
+            Assert.IsFalse(rect1.Intersects(rect2), "#Intersects2");
+            // 3 false      upper left
+            rect2.X = 30;
+            rect2.Y = 30;
+            Assert.IsFalse(rect1.Intersects(rect2), "#Intersects3");
+            // 4 false
+            rect2.X = 50;
+            rect2.Y = 30;
+            Assert.IsFalse(rect1.Intersects(rect2), "#Intersects4");
+            // 5 false
+            rect2.X = 30;
+            rect2.Y = 50;
+            Assert.IsFalse(rect1.Intersects(rect2), "#Intersects5");
+            // 6 true
+            rect2.X = 31;
+            rect2.Y = 50;
+            Assert.IsTrue(rect1.Intersects(rect2), "#Intersects6");
+            // 7 true
+            rect2.X = 50;
+            rect2.Y = 31;
+            Assert.IsTrue(rect1.Intersects(rect2), "#Intersects7");
+            // 8 true
+            rect2.X = 31;
+            rect2.Y = 31;
+            Assert.IsTrue(rect1.Intersects(rect2), "#Intersects8");
+            // 9 false       upper right
+            rect2.X = 100;
+            rect2.Y = 30;
+            Assert.IsFalse(rect1.Intersects(rect2), "#Intersects9");
+            // 10 true
+            rect2.X = 99;
+            rect2.Y = 31;
+            Assert.IsTrue(rect1.Intersects(rect2), "#Intersects10");
+            // 11 false
+            rect2.X = 100;
+            rect2.Y = 31;
+            Assert.IsFalse(rect1.Intersects(rect2), "#Intersects11");
+            // 12 false
+            rect2.X = 99;
+            rect2.Y = 30;
+            Assert.IsFalse(rect1.Intersects(rect2), "#Intersects12");
+            // 13 false
+            rect2.X = 100;
+            rect2.Y = 50;
+            Assert.IsFalse(rect1.Intersects(rect2), "#Intersects13");
+            // 14 true
+            rect2.X = 99;
+            rect2.Y = 50;
+            Assert.IsTrue(rect1.Intersects(rect2), "#Intersects14");
+            // 15 fase      down left
+            rect2.X = 100;
+            rect2.Y = 100;
+            Assert.IsFalse(rect1.Intersects(rect2), "#Intersects15");
+            // 16  true
+            rect2.X = 99;
+            rect2.Y = 99;
+            Assert.IsTrue(rect1.Intersects(rect2), "#Intersects16");
+            // 17 false
+            rect2.X = 99;
+            rect2.Y = 100;
+            Assert.IsFalse(rect1.Intersects(rect2), "#Intersects17");
+            // 18 false
+            rect2.X = 100;
+            rect2.Y = 99;
+            Assert.IsFalse(rect1.Intersects(rect2), "#Intersects18");
+		}
     }
 }
