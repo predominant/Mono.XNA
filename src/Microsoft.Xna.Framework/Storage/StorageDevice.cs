@@ -36,13 +36,12 @@ namespace Microsoft.Xna.Framework.Storage
     public sealed class StorageDevice
     {
         #region Events
+		
         public static event EventHandler<EventArgs> DeviceChanged;
+		
         #endregion
 
-        #region Fields
-
-        //private static showStorage deleg = ShowStorageDeviceGuide;
-        //private static showStorage2 deleg2 = ShowStorageDeviceGuide;
+        #region Fields        
 
         private DriveInfo driveInfo;
         private PlayerIndex playerIndex;
@@ -50,7 +49,7 @@ namespace Microsoft.Xna.Framework.Storage
         private delegate StorageDevice showStorage();
         private delegate StorageDevice showStorage2(PlayerIndex index);
 
-        #endregion
+        #endregion Fields
 
 
         #region Properties
@@ -67,8 +66,7 @@ namespace Microsoft.Xna.Framework.Storage
             get { return (this.driveInfo.IsReady) ? this.driveInfo.TotalSize : 0; }
         }
 
-        #endregion
-
+        #endregion Properties
 
         #region Constructors
 
@@ -92,9 +90,30 @@ namespace Microsoft.Xna.Framework.Storage
         #endregion Constructors
 
 
-        #region Methods
+        #region Methods        
 
-        /*public static IAsyncResult BeginShowStorageDeviceGuide(AsyncCallback callback, object stateObject)
+        public StorageContainer OpenContainer(string titleName)
+        {
+            // TODO: What happens if we open several times?
+            if (string.IsNullOrEmpty(titleName))
+                throw new ArgumentNullException("You must pass in a non-null title name");
+
+            return new StorageContainer(this, titleName, playerSpecified, playerIndex);
+        }
+
+        public void DeleteContainer(string titleName)
+        {
+            throw new NotImplementedException();
+        }
+
+        #endregion Methods
+		
+		#region Old Code		
+		/*
+		private static showStorage deleg = ShowStorageDeviceGuide;
+        private static showStorage2 deleg2 = ShowStorageDeviceGuide;
+        
+        public static IAsyncResult BeginShowStorageDeviceGuide(AsyncCallback callback, object stateObject)
         {
             // TODO: Is this actually thread safe?
             return deleg.BeginInvoke(callback, stateObject);
@@ -115,18 +134,9 @@ namespace Microsoft.Xna.Framework.Storage
             // TODO: Is this actually thread safe?
             return (((AsyncResult)asyncResult).AsyncDelegate is showStorage) ? deleg.EndInvoke(asyncResult)
                 : deleg2.EndInvoke(asyncResult);
-        }*/
-
-        public StorageContainer OpenContainer(string titleName)
-        {
-            // TODO: What happens if we open several times?
-            if (string.IsNullOrEmpty(titleName))
-                throw new ArgumentNullException("You must pass in a non-null title name");
-
-            return new StorageContainer(this, titleName, playerSpecified, playerIndex);
         }
-
-        /*public static StorageDevice ShowStorageDeviceGuide()
+        
+        public static StorageDevice ShowStorageDeviceGuide()
         {
             // TODO: Is this right?
             return new StorageDevice();
@@ -136,13 +146,8 @@ namespace Microsoft.Xna.Framework.Storage
         {
             // TODO: Is this right?
             return new StorageDevice(playerIndex);
-        }*/
-
-        public void DeleteContainer(string titleName)
-        {
-            throw new NotImplementedException();
         }
-
-        #endregion Methods
+        */		
+		#endregion Old Code
     }
 }

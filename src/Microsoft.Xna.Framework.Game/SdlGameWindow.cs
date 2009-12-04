@@ -57,13 +57,17 @@ namespace Microsoft.Xna.Framework
 
 		public override IntPtr Handle {
             get {
-#warning Only windows support in Tao.Sdl?
-#warning Commented out to ensure proper operation in Ubuntu 9.10				
-				//Sdl.SDL_SysWMinfo_Windows info;
-				//if (Sdl.SDL_GetWMInfo(out info) != 0)
-				//	return new IntPtr(info.window);
-				//else 
-					return IntPtr.Zero;
+				// Check OS
+				int p = (int) Environment.OSVersion.Platform;				
+            	if ((p == 4) || (p == 128)) // Running UNIX
+                   	return IntPtr.Zero; 
+				else { 						// Running something else
+					Sdl.SDL_SysWMinfo_Windows info;						
+					if (Sdl.SDL_GetWMInfo(out info) != 0)
+						return new IntPtr(info.window);
+					else 
+						return IntPtr.Zero;
+            	}
 			}
         }
 

@@ -156,7 +156,17 @@ namespace Microsoft.Xna.Framework.Tests
             Assert.AreEqual(expected, m);
         }
 		
-		public void Invert
+		[Test()]
+		public void Invert()
+		{
+			Matrix test1 = Matrix.Invert(Matrix.Identity);
+            Matrix test2 = Matrix.Invert(new Matrix(1f, 0f, 0f, 2f, 0f, 1f, 3f, 0f, 4f, 0f, 1f, 0f, 0f, 0f, 0f, 1f));
+			Matrix true1 = Matrix.Identity;
+            Matrix true2 = new Matrix(1f, 0f, 0f, -2f, 12f, 1f, -3f, -24f, -4f, 0f, 1f, 8f, 0f, 0f, 0f, 1f);
+			
+			Assert.AreEqual(test1, true1, "#1 Identity");
+			Assert.AreEqual(test2, true2, "#2 Non-orthogonal");
+		}
 		
         #endregion Instance methods
     }

@@ -45,7 +45,6 @@ namespace Microsoft.Xna.Framework.Storage.Tests
 		[SetUp]
 		public void Setup()
 		{
-			storageDevice = StorageDevice.ShowStorageDeviceGuide(PlayerIndex.One);
 			storageContainer = storageDevice.OpenContainer("StorageDemo");
 		}
 		
@@ -55,15 +54,6 @@ namespace Microsoft.Xna.Framework.Storage.Tests
 			Directory.Delete(Environment.GetFolderPath(Environment.SpecialFolder.Personal) + Path.DirectorySeparatorChar
 				+ "SavedGames", true);
 		}
-
-        [Test]
-        public void ShowStorageDeviceTwice()
-        {
-            storageDevice = StorageDevice.ShowStorageDeviceGuide();
-            StorageDevice sd2 = StorageDevice.ShowStorageDeviceGuide();
-
-            Assert.AreNotEqual(storageDevice, sd2, "#1");
-        }
 
         [Test]
         public void OpenContainerTwice()
@@ -91,23 +81,6 @@ namespace Microsoft.Xna.Framework.Storage.Tests
 			Assert.IsTrue(storageDevice.FreeSpace <= storageDevice.TotalSpace, "#4: " + storageDevice.TotalSpace + " " + storageDevice.FreeSpace);
 		}
 		
-		[Test] // After running it on Windows look for the exception produced
-		public void TestShowOverflow()
-		{
-			// Overflow
-			StorageDevice.ShowStorageDeviceGuide((PlayerIndex)40);
-			StringBuilder path = new StringBuilder(50);
-			path.Append(Environment.GetFolderPath(Environment.SpecialFolder.Personal));
-			path.Append(Path.DirectorySeparatorChar);
-			path.Append("SavedGames");
-			path.Append(Path.DirectorySeparatorChar);
-			path.Append("StorageDemo");
-			path.Append(Path.DirectorySeparatorChar);
-			path.Append("Player1");
-
-			Assert.IsTrue(Directory.Exists(path.ToString()));
-		}
-		
 		[Test, ExpectedException(typeof(System.ArgumentNullException))]
 		public void TestOpenContainerNull()
 		{
@@ -121,45 +94,6 @@ namespace Microsoft.Xna.Framework.Storage.Tests
 		{
 			// empty string passed
 			storageDevice.OpenContainer(string.Empty);
-		}
-		
-		[Test]
-		public void TestAsyncShowOverflow()
-		{
-			// Overflow
-			StorageDevice.BeginShowStorageDeviceGuide((PlayerIndex)40, null, null);
-		}
-		
-		[Test]
-		public void TestShowNegative()
-		{
-			StorageDevice.ShowStorageDeviceGuide((PlayerIndex)(-4));
-			StringBuilder path = new StringBuilder(50);
-			path.Append(Environment.GetFolderPath(Environment.SpecialFolder.Personal));
-			path.Append(Path.DirectorySeparatorChar);
-			path.Append("SavedGames");
-			path.Append(Path.DirectorySeparatorChar);
-			path.Append("StorageDemo");
-			path.Append(Path.DirectorySeparatorChar);
-			path.Append("Player1");
-
-			Assert.IsTrue(Directory.Exists(path.ToString()));
-		}
-		
-		// It's more a Mono problem
-		/* [Test]
-		public void TestAsyncBadResult()
-		{
-			// a wrong IAsyncResult
-			StorageDevice.EndShowStorageDeviceGuide(new System.Runtime.Remoting.Messaging.AsyncResult());
-		}
-		*/ 
-		
-		[Test, ExpectedException(typeof(System.ArgumentException))]
-		public void TestAsyncNull()
-		{
-			// Null reference passed
-			StorageDevice.EndShowStorageDeviceGuide(null);
 		}
 		
 		[Test]
@@ -203,6 +137,64 @@ namespace Microsoft.Xna.Framework.Storage.Tests
 			Assert.IsTrue(storageContainer.TitleName == "StorageDemo");
 		}
 		
+		#region Old Code
+		/*
+		[Test] // After running it on Windows look for the exception produced
+		public void TestShowOverflow()
+		{
+			// Overflow
+			StorageDevice.ShowStorageDeviceGuide((PlayerIndex)40);
+			StringBuilder path = new StringBuilder(50);
+			path.Append(Environment.GetFolderPath(Environment.SpecialFolder.Personal));
+			path.Append(Path.DirectorySeparatorChar);
+			path.Append("SavedGames");
+			path.Append(Path.DirectorySeparatorChar);
+			path.Append("StorageDemo");
+			path.Append(Path.DirectorySeparatorChar);
+			path.Append("Player1");
+
+			Assert.IsTrue(Directory.Exists(path.ToString()));
+		}
+		
+		[Test]
+		public void TestAsyncShowOverflow()
+		{
+			// Overflow
+			StorageDevice.BeginShowStorageDeviceGuide((PlayerIndex)40, null, null);
+		}
+		
+		[Test]
+		public void TestShowNegative()
+		{
+			StorageDevice.ShowStorageDeviceGuide((PlayerIndex)(-4));
+			StringBuilder path = new StringBuilder(50);
+			path.Append(Environment.GetFolderPath(Environment.SpecialFolder.Personal));
+			path.Append(Path.DirectorySeparatorChar);
+			path.Append("SavedGames");
+			path.Append(Path.DirectorySeparatorChar);
+			path.Append("StorageDemo");
+			path.Append(Path.DirectorySeparatorChar);
+			path.Append("Player1");
+
+			Assert.IsTrue(Directory.Exists(path.ToString()));
+		}
+		
+		// It's more a Mono problem
+		[Test]
+		public void TestAsyncBadResult()
+		{
+			// a wrong IAsyncResult
+			StorageDevice.EndShowStorageDeviceGuide(new System.Runtime.Remoting.Messaging.AsyncResult());
+		}
+		
+		[Test, ExpectedException(typeof(System.ArgumentException))]
+		public void TestAsyncNull()
+		{
+			// Null reference passed
+			StorageDevice.EndShowStorageDeviceGuide(null);
+		}
+		*/
+		#endregion Old Code
 	}
 }
 
