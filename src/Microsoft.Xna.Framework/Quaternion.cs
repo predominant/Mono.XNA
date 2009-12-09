@@ -82,7 +82,12 @@ namespace Microsoft.Xna.Framework
 
         public static Quaternion Concatenate(Quaternion value1, Quaternion value2)
         {
-            throw new NotImplementedException();
+            Quaternion quaternion;
+            quaternion.X = ((value2.X * value1.W) + (value1.X * value2.W)) + (value2.Y * value1.Z) - (value2.Z * value1.Y);
+            quaternion.Y = ((value2.Y * value1.W) + (value1.Y * value2.W)) + (value2.Z * value1.X) - (value2.X * value1.Z);
+            quaternion.Z = ((value2.Z * value1.W) + (value1.Z * value2.W)) + (value2.X * value1.Y) - (value2.Y * value1.X);
+            quaternion.W = (value2.W * value1.W) - ((value2.X * value1.X) + (value2.Y * value1.Y)) + (value2.Z * value1.Z);
+            return quaternion;
         }
 
         public void Conjugate()
@@ -112,17 +117,28 @@ namespace Microsoft.Xna.Framework
 
         public static void Concatenate(ref Quaternion value1, ref Quaternion value2, out Quaternion result)
         {
-            throw new NotImplementedException();
+            result.X = ((value2.X * value1.W) + (value1.X * value2.W)) + (value2.Y * value1.Z) - (value2.Z * value1.Y);
+            result.Y = ((value2.Y * value1.W) + (value1.Y * value2.W)) + (value2.Z * value1.X) - (value2.X * value1.Z);
+            result.Z = ((value2.Z * value1.W) + (value1.Z * value2.W)) + (value2.X * value1.Y) - (value2.Y * value1.X);
+            result.W = (value2.W * value1.W) - ((value2.X * value1.X) + (value2.Y * value1.Y)) + (value2.Z * value1.Z);
         }
 
         public static Quaternion CreateFromYawPitchRoll(float yaw, float pitch, float roll)
         {
-            throw new NotImplementedException();
+            Quaternion quaternion;
+            quaternion.X = (((float)Math.Cos((double)(yaw * 0.5f)) * (float)Math.Sin((double)(pitch * 0.5f))) * (float)Math.Cos((double)(roll * 0.5f))) + (((float)Math.Sin((double)(yaw * 0.5f)) * (float)Math.Cos((double)(pitch * 0.5f))) * (float)Math.Sin((double)(roll * 0.5f)));
+            quaternion.Y = (((float)Math.Sin((double)(yaw * 0.5f)) * (float)Math.Cos((double)(pitch * 0.5f))) * (float)Math.Cos((double)(roll * 0.5f))) - (((float)Math.Cos((double)(yaw * 0.5f)) * (float)Math.Sin((double)(pitch * 0.5f))) * (float)Math.Sin((double)(roll * 0.5f)));
+            quaternion.Z = (((float)Math.Cos((double)(yaw * 0.5f)) * (float)Math.Cos((double)(pitch * 0.5f))) * (float)Math.Sin((double)(roll * 0.5f))) - (((float)Math.Sin((double)(yaw * 0.5f)) * (float)Math.Sin((double)(pitch * 0.5f))) * (float)Math.Cos((double)(roll * 0.5f)));
+            quaternion.W = (((float)Math.Cos((double)(yaw * 0.5f)) * (float)Math.Cos((double)(pitch * 0.5f))) * (float)Math.Cos((double)(roll * 0.5f))) + (((float)Math.Sin((double)(yaw * 0.5f)) * (float)Math.Sin((double)(pitch * 0.5f))) * (float)Math.Sin((double)(roll * 0.5f)));
+            return quaternion;
         }
 
         public static void CreateFromYawPitchRoll(float yaw, float pitch, float roll, out Quaternion result)
         {
-            throw new NotImplementedException();
+            result.X = (((float)Math.Cos((double)(yaw * 0.5f)) * (float)Math.Sin((double)(pitch * 0.5f))) * (float)Math.Cos((double)(roll * 0.5f))) + (((float)Math.Sin((double)(yaw * 0.5f)) * (float)Math.Cos((double)(pitch * 0.5f))) * (float)Math.Sin((double)(roll * 0.5f)));
+            result.Y = (((float)Math.Sin((double)(yaw * 0.5f)) * (float)Math.Cos((double)(pitch * 0.5f))) * (float)Math.Cos((double)(roll * 0.5f))) - (((float)Math.Cos((double)(yaw * 0.5f)) * (float)Math.Sin((double)(pitch * 0.5f))) * (float)Math.Sin((double)(roll * 0.5f)));
+            result.Z = (((float)Math.Cos((double)(yaw * 0.5f)) * (float)Math.Cos((double)(pitch * 0.5f))) * (float)Math.Sin((double)(roll * 0.5f))) - (((float)Math.Sin((double)(yaw * 0.5f)) * (float)Math.Sin((double)(pitch * 0.5f))) * (float)Math.Cos((double)(roll * 0.5f)));
+            result.W = (((float)Math.Cos((double)(yaw * 0.5f)) * (float)Math.Cos((double)(pitch * 0.5f))) * (float)Math.Cos((double)(roll * 0.5f))) + (((float)Math.Sin((double)(yaw * 0.5f)) * (float)Math.Sin((double)(pitch * 0.5f))) * (float)Math.Sin((double)(roll * 0.5f)));
         }
 
         public static Quaternion CreateFromAxisAngle(Vector3 axis, float angle)
