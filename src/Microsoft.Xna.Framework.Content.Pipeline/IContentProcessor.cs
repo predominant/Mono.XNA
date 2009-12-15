@@ -36,25 +36,23 @@ namespace Microsoft.Xna.Framework.Content.Pipeline
 	public interface IContentProcessor
 	{
 
-#region Properties
+		#region Properties
 		
-		Type InputType 
-		{ 
+		Type InputType { 
 			get; 
 		}
 		
-		Type OutputType 
-		{ 
+		Type OutputType { 
 			get; 
 		}
 		
-#endregion
+		#endregion Properties
 		
-#region Methods
+		#region Methods
 
 		Object Process(Object input, ContentProcessorContext context);
 		
-#endregion
+		#endregion Methods
 
 	}
 }

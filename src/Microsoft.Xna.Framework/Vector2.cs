@@ -120,12 +120,20 @@ namespace Microsoft.Xna.Framework
 
         public static void Reflect(ref Vector2 vector, ref Vector2 normal, out Vector2 result)
         {
-            throw new NotImplementedException();
+			//float dot = Dot(vector, normal);
+            float dot = (vector.X * normal.X) + (vector.Y * normal.Y);
+			result.X = vector.X - ((2f * dot) * normal.X);
+			result.Y = vector.Y - ((2f * dot) * normal.Y);
         }
 
         public static Vector2 Reflect(Vector2 vector, Vector2 normal)
         {
-            throw new NotImplementedException();
+            Vector2 result;
+			//float dot = Dot(vector, normal);
+			float dot = (vector.X * normal.X) + (vector.Y * normal.Y);
+			result.X = vector.X - ((2f * dot) * normal.X);
+			result.Y = vector.Y - ((2f * dot) * normal.Y);
+			return result;
         }
 
         public static Vector2 Add(Vector2 value1, Vector2 value2)

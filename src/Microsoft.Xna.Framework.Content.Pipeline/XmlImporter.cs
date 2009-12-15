@@ -32,26 +32,26 @@ using System;
 namespace Microsoft.Xna.Framework.Content.Pipeline
 {
 	
-	
+	[ContentImporter(".xml")]
 	public class XmlImporter : ContentImporter<object>
 	{
 		
-#region Constructor
+		#region Constructor
 		
 		public XmlImporter()
 		{
 		}
 		
-#endregion
+		#endregion Constructor
 		
-#region Public Methods
+		#region Public Methods
 		
 		public override object Import(string filename, ContentImporterContext context)
 		{
 			throw new NotImplementedException();
 		}
 		
-#endregion
+		#endregion Public Methods
 		
 	}
 }

@@ -1,7 +1,7 @@
 #region License
 /*
 MIT License
-Copyright © 2006 The Mono.Xna Team
+Copyright Â© 2006 The Mono.Xna Team
 
 All rights reserved.
 
@@ -53,6 +53,31 @@ namespace Microsoft.Xna.Framework.Tests
             v3 = new Vector2(-16.3254f, 65.251353f);
         }
 
+		[Test]
+		public void ReflectTest()
+		{
+			Vector2 v1 = new Vector2(30, 50);
+			Vector2 v2 = new Vector2(50, 30);
+			Vector2 result = new Vector2();
+			Vector2 expected = new Vector2(-299970,-179950);
+			
+			Vector2.Reflect(ref v1, ref v2, out result);
+			Assert.AreEqual(expected, result, "#1");
+			
+			v1 = new Vector2(0.5f, 0.5f);
+			v2 = new Vector2(0.0f, 1.0f);
+			result = Vector2.Reflect(v1, v2);
+			expected = new Vector2(0.5f, -0.5f);
+			Assert.AreEqual(expected, result, "#2");
+
+			v1 = new Vector2(1.1f, -0.77f);
+			v2 = new Vector2(0.33f, -2.04f);
+			result = Vector2.Reflect(v1, v2);
+			expected = new Vector2(-0.176308f, 7.119904f);
+			Assert.AreEqual(expected, result, "#3");
+			
+		}
+		
         [Test]
         public void AddTest()
         {

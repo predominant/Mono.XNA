@@ -48,7 +48,7 @@ namespace Microsoft.Xna.Framework.Content.Pipeline.Processors
 
 		public override Object Process(Object input, ContentProcessorContext context)
 		{
-			throw new NotImplementedException();
+			return input;
 		}
 		
 #endregion 

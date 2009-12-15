@@ -85,7 +85,7 @@ namespace MonoDevelop.Xna
 		}
 		
 		/// <value>
-		/// A reference to the content project
+		/// A reference to the content project itself
 		/// </value>
 		private ContentProject project;
 		public ContentProject Project {

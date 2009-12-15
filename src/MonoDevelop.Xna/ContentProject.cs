@@ -30,10 +30,15 @@ SOFTWARE.
 
 using System;
 using System.Xml;
+using System.Collections;
+using System.Collections.Generic;
+using MonoDevelop.Ide.Gui;
 using MonoDevelop.Core;
 using MonoDevelop.Core.Serialization;
 using MonoDevelop.Projects;
 using MonoDevelop.Projects.Dom;
+using System.Reflection;
+using Microsoft.Xna.Framework.Content.Pipeline;
 
 namespace MonoDevelop.Xna
 {	
@@ -43,13 +48,24 @@ namespace MonoDevelop.Xna
 		#region Fields
 		
 		[ItemProperty("XnaFrameworkVersion")]
-		protected string xnaFrameworkVersion = "v2.0";
+		private string xnaFrameworkVersion = "v2.0";
+		
+		private List<ContentImporterInfo> importers;
+		private List<ContentProcessorInfo> processors;
 
-		#endregion
+		#endregion Fields
 		
 		#region Properties
 		
-		#endregion
+		public IEnumerable<ContentImporterInfo> Importers {
+			get { return importers.ToArray(); }
+		}
+		
+		public IEnumerable<ContentProcessorInfo> Processors {
+			get { return processors.ToArray(); }	
+		}
+		
+		#endregion Properties
 		
         #region Constructors
 		
@@ -57,14 +73,71 @@ namespace MonoDevelop.Xna
 			: base (languageName)
 		{
 			Visible = false;
+			importers = new List<ContentImporterInfo>();
+			processors = new List<ContentProcessorInfo>();
 		}
 
 		public ContentProject (string language, ProjectCreateInformation info, XmlElement projectOptions)
 			: base (language, info, projectOptions)
 		{
+			Visible = false;
+			importers = new List<ContentImporterInfo>();
+			processors = new List<ContentProcessorInfo>();
 		}
 		
-		#endregion
+		#endregion Constructors
+		
+		#region Public Methods
+		
+		public ICollection GetImporterNames()
+		{
+			List<string> ret = new List<string>();
+			foreach (ContentImporterInfo info in importers)
+				ret.Add(info.DisplayName);
+			return ret;
+		}
+		
+		#endregion Public Methods
+		
+		#region Private Methods
+		
+		/// <summary>
+		/// Search through the assembly and find content importers and processors.
+		/// </summary>
+		private void findPipelineEntries (ProjectReference reference)
+		{
+			string[] filenames = reference.GetReferencedFileNames(IdeApp.Workspace.ActiveConfiguration);
+			if (filenames.Length == 0)
+				return;
+			
+			Assembly assembly = Assembly.LoadFrom(filenames[0]);			
+			foreach (Type type in assembly.GetTypes())
+			{
+				foreach (object attribute in type.GetCustomAttributes(true))
+				{
+					if (attribute is ContentImporterAttribute)
+					{
+						ContentImporterAttribute ia = attribute as ContentImporterAttribute;
+						if (ia.DisplayName != string.Empty)
+							importers.Add(new ContentImporterInfo(type, ia.DisplayName, ia.FileExtensions, ia.DefaultProcessor, ia.CacheImportedData));
+						else
+							importers.Add(new ContentImporterInfo(type, type.ToString(), ia.FileExtensions, ia.DefaultProcessor, ia.CacheImportedData));
+					}
+					else if (attribute is ContentProcessorAttribute)
+					{
+						ContentProcessorAttribute pa = attribute as ContentProcessorAttribute;
+						if(pa.DisplayName != string.Empty)
+							processors.Add(new ContentProcessorInfo(type, pa.DisplayName));
+						else
+							processors.Add(new ContentProcessorInfo(type, type.ToString()));
+					}
+				}
+			}
+			Console.WriteLine(importers.Count);
+			Console.WriteLine(processors.Count);
+		}
+		
+		#endregion Private Methods
 
 
         #region DotNetProject Overrides
@@ -89,7 +162,12 @@ namespace MonoDevelop.Xna
 			base.OnEndLoad ();
 		}
 
+		protected override void OnReferenceAddedToProject (ProjectReferenceEventArgs e)
+		{
+			findPipelineEntries(e.ProjectReference);
+			base.OnReferenceAddedToProject (e);
+		}
 
-        #endregion
+        #endregion DotNetProject Overrides
 	}
 }

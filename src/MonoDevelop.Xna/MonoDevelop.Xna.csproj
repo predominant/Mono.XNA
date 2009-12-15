@@ -45,6 +45,9 @@
     <Compile Include="ContentProjectNodeCommandHandler.cs" />
     <Compile Include="ContentProjectNodeBuilder.cs" />
     <Compile Include="XnaProjectNodeBuilder.cs" />
+    <Compile Include="ContentPropertyProvider.cs" />
+    <Compile Include="ContentImporterInfo.cs" />
+    <Compile Include="ContentProcessorInfo.cs" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="MonoDevelop.Xna.addin.xml" />
@@ -79,5 +82,14 @@
     <Reference Include="MonoDevelop.Projects, Version=2.2.0.0, Culture=neutral">
       <Package>monodevelop</Package>
     </Reference>
+    <Reference Include="MonoDevelop.DesignerSupport, Version=2.2.0.0, Culture=neutral">
+      <Package>monodevelop-core-addins</Package>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Microsoft.Xna.Framework.Content.Pipeline\Microsoft.Xna.Framework.Content.Pipeline.csproj">
+      <Project>{2B43FFD0-D80F-4D49-9CF7-2B2A2E674C49}</Project>
+      <Name>Microsoft.Xna.Framework.Content.Pipeline</Name>
+    </ProjectReference>
   </ItemGroup>
 </Project>

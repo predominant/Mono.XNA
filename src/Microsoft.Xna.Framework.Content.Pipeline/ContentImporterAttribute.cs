@@ -36,8 +36,16 @@ namespace Microsoft.Xna.Framework.Content.Pipeline
 	
 	public class ContentImporterAttribute : Attribute
 	{
+		#region Private Fields
 
-#region Constructors
+		private bool cacheImportedData;
+		private string defaultProcessor;
+		private string displayName;
+		private List<string> fileExtensions;		
+		
+		#endregion Private Fields
+		
+		#region Constructors
 		
 		public ContentImporterAttribute (string fileExtension)
 		{
@@ -50,38 +58,34 @@ namespace Microsoft.Xna.Framework.Content.Pipeline
 			this.fileExtensions = new List<string>(fileExtensions); 
 		}
 		
-#endregion
+		#endregion Constructor
 		
-#region Properties
+		#region Properties
 		
-		private bool cacheImportedData;
 		public bool CacheImportedData 
 		{ 
 			get { return cacheImportedData; } 
 			set { cacheImportedData = value; } 
 		}
 
-		private string defaultProcessor;
 		public string DefaultProcessor 
 		{ 
 			get { return defaultProcessor; } 
 			set { defaultProcessor = value; } 
 		}
 		
-		private string displayName;
 		public virtual string DisplayName 
 		{ 
 			get { return displayName; }
 			set { displayName = value; } 
 		}
 		
-		private List<string> fileExtensions;		
 		public IEnumerable<string> FileExtensions 
 		{ 
 			get { return fileExtensions; }
 		}
 
-#endregion
+		#endregion Properties
 
 	}
 }

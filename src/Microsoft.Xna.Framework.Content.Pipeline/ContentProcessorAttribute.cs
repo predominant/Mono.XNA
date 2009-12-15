@@ -35,25 +35,29 @@ namespace Microsoft.Xna.Framework.Content.Pipeline
 	
 	public class ContentProcessorAttribute : Attribute
 	{
+		#region Private Fields
 		
-#region Constructor
+		private string displayName;
+		
+		#endregion Private Fields
+		
+		#region Constructor
 		
 		public ContentProcessorAttribute()
 		{
 		}
 		
-#endregion
+		#endregion Constructor
 		
-#region Properties
-		
-		private string displayName;
+		#region Properties
+				
 		public virtual string DisplayName 
 		{ 
 			get { return displayName; }
 			set { displayName = value; }
 		}
 
-#endregion
+		#endregion Properties
 		
 	}
 }
