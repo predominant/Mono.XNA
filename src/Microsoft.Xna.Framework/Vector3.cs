@@ -458,12 +458,17 @@ namespace Microsoft.Xna.Framework
 
         public static Vector3 Reflect(Vector3 vector, Vector3 normal)
         {
-            throw new NotImplementedException();
+            Vector3 result;
+			Reflect(ref vector, ref normal, out result);
+			return result;
         }
 
         public static void Reflect(ref Vector3 vector, ref Vector3 normal, out Vector3 result)
         {
-            throw new NotImplementedException();
+			float dot = Dot(vector, normal);
+			result.X = vector.X - ((2f * dot) * normal.X);
+			result.Y = vector.Y - ((2f * dot) * normal.Y);
+			result.Z = vector.Z - ((2f * dot) * normal.Z);
         }
 
         public static Vector3 SmoothStep(Vector3 value1, Vector3 value2, float amount)

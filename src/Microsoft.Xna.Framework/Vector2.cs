@@ -120,8 +120,7 @@ namespace Microsoft.Xna.Framework
 
         public static void Reflect(ref Vector2 vector, ref Vector2 normal, out Vector2 result)
         {
-			//float dot = Dot(vector, normal);
-            float dot = (vector.X * normal.X) + (vector.Y * normal.Y);
+			float dot = Dot(vector, normal);
 			result.X = vector.X - ((2f * dot) * normal.X);
 			result.Y = vector.Y - ((2f * dot) * normal.Y);
         }
@@ -129,10 +128,7 @@ namespace Microsoft.Xna.Framework
         public static Vector2 Reflect(Vector2 vector, Vector2 normal)
         {
             Vector2 result;
-			//float dot = Dot(vector, normal);
-			float dot = (vector.X * normal.X) + (vector.Y * normal.Y);
-			result.X = vector.X - ((2f * dot) * normal.X);
-			result.Y = vector.Y - ((2f * dot) * normal.Y);
+			Reflect(ref vector, ref normal, out result);
 			return result;
         }
 
