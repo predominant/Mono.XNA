@@ -167,6 +167,32 @@ namespace Microsoft.Xna.Framework.Tests
             Assert.AreEqual(4.0f, v.Z, "Constructor#6.Z");
         }
 
+				[Test]
+		public void ReflectTest()
+		{
+			Vector3 v1 = new Vector3(1.1f, -0.77f, 0.33f);
+			Vector3 v2 = new Vector3(1.00f, 1.00f, 0.00f);
+			Vector3 result = new Vector3();
+			Vector3 expected = new Vector3(0.4399999f, -1.43f, 0.33f);
+			
+			Vector3.Reflect(ref v1, ref v2, out result);
+			//Assert.AreEqual(expected, result, "#1");
+			Assert.IsTrue(TestHelper.ApproximatelyEquals(expected, result), "#3");
+			
+			v1 = new Vector3(-1.00f, -0.66f, -0.66f);
+			v2 = new Vector3(0.00f, -1.00f, 0.00f);
+			result = Vector3.Reflect(v1, v2);
+			expected = new Vector3(-1.00f, 0.66f, -0.66f);
+			Assert.AreEqual(expected, result, "#2");
+
+			v1 = new Vector3(1.00f, 0.66f, -0.66f);
+			v2 = new Vector3(0.00f, 0.00f, 0.00f);
+			result = Vector3.Reflect(v1, v2);
+			expected = new Vector3(1, 0.66f, -0.66f);
+			Assert.IsTrue(TestHelper.ApproximatelyEquals(expected, result), "#3");
+			
+		}
+		
         [Test]
         public void AddTest()
         {

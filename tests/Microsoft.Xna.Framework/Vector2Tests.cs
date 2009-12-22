@@ -74,7 +74,7 @@ namespace Microsoft.Xna.Framework.Tests
 			v2 = new Vector2(0.33f, -2.04f);
 			result = Vector2.Reflect(v1, v2);
 			expected = new Vector2(-0.176308f, 7.119904f);
-			Assert.AreEqual(expected, result, "#3");
+			Assert.IsTrue(TestHelper.ApproximatelyEquals(expected, result), "#3");
 			
 		}
 		
