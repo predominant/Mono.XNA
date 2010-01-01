@@ -62,3 +62,8 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyVersion("3.1.0.0")]
 [assembly: AssemblyFileVersion("3.1.10527.0")]
 [assembly: GuidAttribute("d8fc7d8b-6798-479a-9ad2-67a1fb0757ff")]
+
+#if MONO
+[assembly: AssemblyDelaySign(true)]
+[assembly: AssemblyKeyFile("../xna.pub")]
+#endif

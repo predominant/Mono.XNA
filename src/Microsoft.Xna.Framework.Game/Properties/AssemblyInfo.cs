@@ -68,3 +68,8 @@ using System.IO;
 //
 [assembly: AssemblyVersion("3.1.0.0")]
 [assembly: AssemblyFileVersion("3.1.10527.0")]
+
+#if MONO
+[assembly: AssemblyDelaySign(true)]
+[assembly: AssemblyKeyFile("../xna.pub")]
+#endif

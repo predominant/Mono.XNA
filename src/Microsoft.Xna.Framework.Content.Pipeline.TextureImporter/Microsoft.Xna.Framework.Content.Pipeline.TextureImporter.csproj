@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="3.5">
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
@@ -11,17 +11,18 @@
     <RootNamespace>Microsoft.Xna.Framework.Content.Pipeline.TextureImporter</RootNamespace>
     <TargetFrameworkVersion>v2.0</TargetFrameworkVersion>
     <SignAssembly>true</SignAssembly>
-    <AssemblyOriginatorKeyFile>xna.pub</AssemblyOriginatorKeyFile>
     <DelaySign>true</DelaySign>
+    <ReleaseVersion>3.1</ReleaseVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
     <OutputPath>..\..\bin\Debug</OutputPath>
-    <DefineConstants>DEBUG</DefineConstants>
+    <DefineConstants>DEBUG; MONO</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <AssemblyOriginatorKeyFile>xna.pub</AssemblyOriginatorKeyFile>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>none</DebugType>
@@ -29,16 +30,49 @@
     <OutputPath>..\..\bin\Release</OutputPath>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <AssemblyOriginatorKeyFile>xna.pub</AssemblyOriginatorKeyFile>
+    <DefineConstants>MONO</DefineConstants>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Test|AnyCPU' ">
     <DebugType>none</DebugType>
     <Optimize>false</Optimize>
     <OutputPath>..\..\bin\Test</OutputPath>
     <WarningLevel>4</WarningLevel>
+    <AssemblyOriginatorKeyFile>xna.pub</AssemblyOriginatorKeyFile>
+    <DefineConstants>NUNITTESTS; MONO</DefineConstants>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug_Dotnet|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>..\..\bin\Debug_Dotnet</OutputPath>
+    <DefineConstants>DEBUG; DOTNET</DefineConstants>
+    <WarningLevel>4</WarningLevel>
+    <PlatformTarget>x86</PlatformTarget>
+    <AssemblyOriginatorKeyFile>..\Microsoft.Xna.Framework\Microsoft.Xna.snk</AssemblyOriginatorKeyFile>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release_Dotnet|AnyCPU' ">
+    <DebugType>none</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>..\..\bin\Release_Dotnet</OutputPath>
+    <DefineConstants>DOTNET</DefineConstants>
+    <WarningLevel>4</WarningLevel>
+    <AssemblyOriginatorKeyFile>..\Microsoft.Xna.Framework\Microsoft.Xna.snk</AssemblyOriginatorKeyFile>
+    <PlatformTarget>x86</PlatformTarget>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Test_Dotnet|AnyCPU' ">
+    <DebugType>none</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>..\..\bin\Test_Dotnet</OutputPath>
+    <DefineConstants>NUNITTESTS; DOTNET</DefineConstants>
+    <WarningLevel>4</WarningLevel>
+    <AssemblyOriginatorKeyFile>..\Microsoft.Xna.Framework\Microsoft.Xna.snk</AssemblyOriginatorKeyFile>
+    <PlatformTarget>x86</PlatformTarget>
   </PropertyGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>
     <Compile Include="TextureImporter.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Microsoft.Xna.Framework.Content.Pipeline\Microsoft.Xna.Framework.Content.Pipeline.csproj">

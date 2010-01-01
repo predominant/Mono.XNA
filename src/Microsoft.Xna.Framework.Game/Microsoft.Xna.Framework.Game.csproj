@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="3.5">
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
@@ -10,15 +10,15 @@
     <RootNamespace>Microsoft.Xna.Framework</RootNamespace>
     <AssemblyName>Microsoft.Xna.Framework.Game</AssemblyName>
     <TargetFrameworkVersion>v2.0</TargetFrameworkVersion>
-    <AssemblyOriginatorKeyFile>xna.pub</AssemblyOriginatorKeyFile>
     <DelaySign>true</DelaySign>
+    <ReleaseVersion>3.1</ReleaseVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
     <OutputPath>..\..\bin\Debug</OutputPath>
-    <DefineConstants>DEBUG</DefineConstants>
+    <DefineConstants>DEBUG; MONO</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>3</WarningLevel>
     <SignAssembly>true</SignAssembly>
@@ -34,13 +34,46 @@
     <SignAssembly>true</SignAssembly>
     <AssemblyOriginatorKeyFile>xna.pub</AssemblyOriginatorKeyFile>
     <DelaySign>true</DelaySign>
+    <DefineConstants>MONO</DefineConstants>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Test|AnyCPU' ">
     <DebugType>none</DebugType>
     <Optimize>false</Optimize>
     <OutputPath>..\..\bin\Test</OutputPath>
-    <DefineConstants>NUNITTESTS</DefineConstants>
+    <DefineConstants>NUNITTESTS; MONO</DefineConstants>
     <WarningLevel>3</WarningLevel>
+    <AssemblyOriginatorKeyFile>xna.pub</AssemblyOriginatorKeyFile>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug_Dotnet|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug_Dotnet</OutputPath>
+    <DefineConstants>DEBUG; DOTNET</DefineConstants>
+    <WarningLevel>4</WarningLevel>
+    <PlatformTarget>x86</PlatformTarget>
+    <SignAssembly>true</SignAssembly>
+    <AssemblyOriginatorKeyFile>..\Microsoft.Xna.Framework\Microsoft.Xna.snk</AssemblyOriginatorKeyFile>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release_Dotnet|AnyCPU' ">
+    <DebugType>none</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Release_Dotnet</OutputPath>
+    <DefineConstants>DOTNET</DefineConstants>
+    <WarningLevel>4</WarningLevel>
+    <AssemblyOriginatorKeyFile>..\Microsoft.Xna.Framework\Microsoft.Xna.snk</AssemblyOriginatorKeyFile>
+    <PlatformTarget>x86</PlatformTarget>
+    <SignAssembly>true</SignAssembly>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Test_Dotnet|AnyCPU' ">
+    <DebugType>none</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Test_Dotnet</OutputPath>
+    <DefineConstants>NUNITTESTS; DOTNET</DefineConstants>
+    <WarningLevel>4</WarningLevel>
+    <AssemblyOriginatorKeyFile>..\Microsoft.Xna.Framework\Microsoft.Xna.snk</AssemblyOriginatorKeyFile>
+    <PlatformTarget>x86</PlatformTarget>
+    <SignAssembly>true</SignAssembly>
   </PropertyGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>
@@ -79,13 +112,10 @@
     <Reference Include="System.Drawing" />
     <Reference Include="System.Xml" />
     <Reference Include="Tao.Sdl, Version=1.2.13.0, Culture=neutral, PublicKeyToken=9c7a200e36c0094e">
-      <Package>tao-sdl-1.2</Package>
     </Reference>
     <Reference Include="Tao.DevIl, Version=1.6.8.3, Culture=neutral, PublicKeyToken=7ec4053013524957">
-      <Package>tao-devil-1.6</Package>
     </Reference>
     <Reference Include="Tao.OpenGl, Version=3.0.0.0, Culture=neutral, PublicKeyToken=1ca010269a4501ef">
-      <Package>tao-opengl-3.0</Package>
     </Reference>
   </ItemGroup>
   <ItemGroup>

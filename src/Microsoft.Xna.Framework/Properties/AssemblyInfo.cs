@@ -73,3 +73,8 @@ using System.IO;
 [assembly: SecurityPermission(SecurityAction.RequestMinimum, UnmanagedCode = true)]
 [assembly: SecurityPermission(SecurityAction.RequestMinimum, Execution = true)]
 [assembly: SecurityPermission(SecurityAction.RequestMinimum, SkipVerification = true)]
+
+#if MONO
+[assembly: AssemblyDelaySign(true)]
+[assembly: AssemblyKeyFile("../xna.pub")]
+#endif
