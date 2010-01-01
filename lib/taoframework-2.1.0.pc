@@ -1,0 +1,6 @@
+libdir=/usr/lib/mono/taoframework-2.1.0/
+
+Name: Tao Framework
+Description: Tao Framework
+Version: 2.1.0
+Libs: -r:${libdir}/Tao.OpenGl.dll -r:${libdir}/Tao.Sdl.dll -r:${libdir}/Tao.DevIl.dll

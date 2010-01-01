@@ -1,0 +1,19 @@
+Mono.Xna Contributing Guidelines
+================================
+
+1) Never decompile Microsoft binaries to see how they
+   work. You cannot contribute if you've done this.
+
+2) Create NUnit tests for everything that you can
+   when contributing new code. All methods should be
+   tested where possible. A seperate post will be
+   written to explain how best to do that.
+
+3) If someone says no, then no means no. They should
+   give reasons why code isn't being accepted, if
+   they don't, annoy them until they do. If reasons
+   are given as to why code isn't being accepted, then
+   the code will only be accepted once the relevant
+   changes are made. Complaining about it won't help.
+
+4) Have fun.

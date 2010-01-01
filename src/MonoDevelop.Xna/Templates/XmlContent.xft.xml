@@ -1,0 +1,22 @@
+<?xml version="1.0"?>
+<Template Originator="Lars Magnusson" Created="10/07/2009" LastModified="10/07/2009">
+	
+	<TemplateConfiguration>
+		<_Name>XML Content</_Name>
+		<Icon>md-xml-file-icon</Icon>
+		<_Category>XNA</_Category>
+		<_Description>Creates an empty xml content file.</_Description>
+	</TemplateConfiguration>
+	
+	<TemplateFiles>
+		<File DefaultExtension=".xml" DefaultName="XmlContent" BuildAction="Compile">
+<![CDATA[<?xml version="1.0" encoding="utf-8" ?>
+<XnaContent>
+	<Asset Type="System.String">Replace with own content</Asset>
+</XnaContent>]]>
+		</File>
+	</TemplateFiles>
+	
+	<FileOptions/>
+	
+</Template>

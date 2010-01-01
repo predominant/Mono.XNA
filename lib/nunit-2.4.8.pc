@@ -1,0 +1,6 @@
+libdir=/usr/lib/mono/nunit-2.4.8/
+
+Name: NUnit
+Description: NUnit test libraries
+Version: 2.4.8
+Libs: -r:${libdir}/nunit.core.dll -r:${libdir}/nunit.framework.dll -r:${libdir}/nunit.core.interfaces.dll

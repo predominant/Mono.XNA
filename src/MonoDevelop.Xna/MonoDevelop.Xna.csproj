@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="3.5">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>8.0.50727</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{FC6A627F-E91A-49F2-92A2-5922A63C047D}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AssemblyName>MonoDevelop.Xna</AssemblyName>
+    <RootNamespace>MonoDevelop.Xna</RootNamespace>
+    <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>..\..\bin\Debug</OutputPath>
+    <DefineConstants>DEBUG</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>3</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>none</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>..\..\bin\Release</OutputPath>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Test|AnyCPU' ">
+    <DebugType>none</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>..\..\bin\Test</OutputPath>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
+  <ItemGroup>
+    <Compile Include="ContentProject.cs" />
+    <Compile Include="Enums.cs" />
+    <Compile Include="XnaProject.cs" />
+    <Compile Include="NestedContentProject.cs" />
+    <Compile Include="NestedContentProjectCollection.cs" />
+    <Compile Include="XnaProjectBinding.cs" />
+    <Compile Include="ContentProjectBinding.cs" />
+    <Compile Include="ContentProjectNodeCommandHandler.cs" />
+    <Compile Include="ContentProjectNodeBuilder.cs" />
+    <Compile Include="XnaProjectNodeBuilder.cs" />
+    <Compile Include="ContentPropertyProvider.cs" />
+    <Compile Include="ContentImporterInfo.cs" />
+    <Compile Include="ContentProcessorInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="MonoDevelop.Xna.addin.xml" />
+    <EmbeddedResource Include="Templates\WindowsGame.xpt.xml">
+      <LogicalName>WindowsGame.xpt.xml</LogicalName>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Icons\XnaGame_48x48.png" />
+    <EmbeddedResource Include="Templates\XmlContent.xft.xml">
+      <LogicalName>XmlContent.xft.xml</LogicalName>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Templates\SpriteFont.xft.xml">
+      <LogicalName>SpriteFont.xft.xml</LogicalName>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.Xml" />
+    <Reference Include="Microsoft.Build.Framework" />
+    <Reference Include="gdk-sharp, Version=2.12.0.0, Culture=neutral, PublicKeyToken=35e10195dab3c99f" />
+    <Reference Include="MonoDevelop.Components, Version=2.2.0.0, Culture=neutral">
+      <Package>monodevelop</Package>
+    </Reference>
+    <Reference Include="MonoDevelop.Core, Version=2.2.0.0, Culture=neutral">
+      <Package>monodevelop</Package>
+    </Reference>
+    <Reference Include="MonoDevelop.Core.Gui, Version=2.2.0.0, Culture=neutral">
+      <Package>monodevelop</Package>
+    </Reference>
+    <Reference Include="MonoDevelop.Ide, Version=2.2.0.0, Culture=neutral">
+      <Package>monodevelop</Package>
+    </Reference>
+    <Reference Include="MonoDevelop.Projects, Version=2.2.0.0, Culture=neutral">
+      <Package>monodevelop</Package>
+    </Reference>
+    <Reference Include="MonoDevelop.DesignerSupport, Version=2.2.0.0, Culture=neutral">
+      <Package>monodevelop-core-addins</Package>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Microsoft.Xna.Framework.Content.Pipeline\Microsoft.Xna.Framework.Content.Pipeline.csproj">
+      <Project>{2B43FFD0-D80F-4D49-9CF7-2B2A2E674C49}</Project>
+      <Name>Microsoft.Xna.Framework.Content.Pipeline</Name>
+    </ProjectReference>
+  </ItemGroup>
+</Project>

@@ -1,0 +1,48 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>Microsoft.Xna.Framework.Game</name>
+    </assembly>
+    <members>
+        <member name="M:Microsoft.Xna.Framework.DrawableGameComponent.Initialize">
+            <summary>
+            Initializes this instance.
+            </summary>
+        </member>
+        <member name="P:Microsoft.Xna.Framework.SdlGameWindow.Visible">
+            <summary>
+            Gets a value indicating whether this <see cref="T:Microsoft.Xna.Framework.SdlGameWindow"/> is visible.
+            </summary>
+        </member>
+        <member name="T:Microsoft.Xna.Framework.GameClock">
+            <summary>
+            Gamer Timer that tracks game and real time
+            </summary>
+        </member>
+        <member name="P:Microsoft.Xna.Framework.IGameClock.ElapsedMilliseconds">
+            <summary>
+            Gets the number of milliseconds elapsed since the last tick
+            </summary>
+        </member>
+        <member name="P:Microsoft.Xna.Framework.IGameClock.TotalElapsedMilliseconds">
+            <summary>
+            Gets the total game time in elapsed milliseconds since <see cref="M:Microsoft.Xna.Framework.GameClock.Start"/> was called.
+            </summary>
+        </member>
+        <member name="P:Microsoft.Xna.Framework.GameClock.ElapsedMilliseconds">
+            <summary>
+            Gets the number of milliseconds elapsed since the last tick
+            </summary>
+        </member>
+        <member name="P:Microsoft.Xna.Framework.GameClock.TotalElapsedMilliseconds">
+            <summary>
+            Gets the total game time in elapsed milliseconds since <see cref="M:Microsoft.Xna.Framework.GameClock.Start"/> was called.
+            </summary>
+        </member>
+        <member name="M:Microsoft.Xna.Framework.Game.FixedTimeStepTick">
+            <summary>
+            The fixed time step
+            </summary>
+        </member>
+    </members>
+</doc>

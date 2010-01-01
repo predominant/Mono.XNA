@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="3.5">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>9.0.30729</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{A386789A-F38E-423A-BEB0-2A7A30094F22}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AssemblyName>Tests</AssemblyName>
+    <TargetFrameworkVersion>v2.0</TargetFrameworkVersion>
+    <RootNamespace>Tests</RootNamespace>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>..\bin\Debug</OutputPath>
+    <DefineConstants>DEBUG</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>none</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>..\bin\Release</OutputPath>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>3</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Test|AnyCPU' ">
+    <DebugType>none</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>..\bin\Test</OutputPath>
+    <WarningLevel>3</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="nunit.framework, Version=2.4.8.0, Culture=neutral, PublicKeyToken=96d09a1eb7f44a77" />
+  </ItemGroup>
+  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
+  <ItemGroup>
+    <Compile Include="ResourceReader.cs" />
+    <None Include="TestClock.cs" />
+    <None Include="TestGame.cs" />
+    <None Include="TestGameWindow.cs" />
+    <Compile Include="TestGraphicsDeviceManager.cs" />
+    <Compile Include="TestHelper.cs" />
+    <Compile Include="Microsoft.Xna.Framework\BoundingBoxTests.cs" />
+    <Compile Include="Microsoft.Xna.Framework\BoundingFrustumTests.cs" />
+    <Compile Include="Microsoft.Xna.Framework\BoundingSphereTests.cs" />
+    <Compile Include="Microsoft.Xna.Framework\ContainmentTypeTests.cs" />
+    <Compile Include="Microsoft.Xna.Framework\CurveContinuityTests.cs" />
+    <None Include="Microsoft.Xna.Framework\CurveKeyCollectionTests.cs" />
+    <Compile Include="Microsoft.Xna.Framework\CurveKeyTests.cs" />
+    <Compile Include="Microsoft.Xna.Framework\CurveLoopTypeTests.cs" />
+    <Compile Include="Microsoft.Xna.Framework\CurveTests.cs" />
+    <Compile Include="Microsoft.Xna.Framework\MathHelperTests.cs" />
+    <Compile Include="Microsoft.Xna.Framework\MatrixTests.cs" />
+    <Compile Include="Microsoft.Xna.Framework\PlaneTests.cs" />
+    <Compile Include="Microsoft.Xna.Framework\PointTests.cs" />
+    <Compile Include="Microsoft.Xna.Framework\QuaternionTests.cs" />
+    <Compile Include="Microsoft.Xna.Framework\RayTests.cs" />
+    <Compile Include="Microsoft.Xna.Framework\RectangleTests.cs" />
+    <Compile Include="Microsoft.Xna.Framework\Vector2Tests.cs" />
+    <Compile Include="Microsoft.Xna.Framework\Vector3Tests.cs" />
+    <Compile Include="Microsoft.Xna.Framework\Vector4Tests.cs" />
+    <None Include="Microsoft.Xna.Framework\Content\ContentManagerTests.cs" />
+    <Compile Include="Microsoft.Xna.Framework\Content\ContentSerializerAttributeTests.cs" />
+    <Compile Include="Microsoft.Xna.Framework\Content\ContentTypeReaderTests.cs" />
+    <Compile Include="Microsoft.Xna.Framework\Graphics\ColorTests.cs" />
+    <Compile Include="Microsoft.Xna.Framework\Graphics\DisplayModeTests.cs" />
+    <Compile Include="Microsoft.Xna.Framework\Graphics\PresentationParametersTests.cs" />
+    <None Include="Microsoft.Xna.Framework\Graphics\SpriteBatchTests.cs" />
+    <None Include="Microsoft.Xna.Framework\Graphics\Texture2DTests.cs" />
+    <Compile Include="Microsoft.Xna.Framework\Graphics\TextureInformationTests.cs" />
+    <None Include="Microsoft.Xna.Framework\Graphics\VertexStreamCollectionTest.cs" />
+    <Compile Include="Microsoft.Xna.Framework\Graphics\ViewportTest.cs" />
+    <None Include="Microsoft.Xna.Framework\Input\GamePadDPadTests.cs" />
+    <Compile Include="Microsoft.Xna.Framework\Input\GamePadEnumsTests.cs" />
+    <Compile Include="Microsoft.Xna.Framework\Input\GamePadTests.cs" />
+    <Compile Include="Microsoft.Xna.Framework\Input\GamePadThumbSticksTests.cs" />
+    <Compile Include="Microsoft.Xna.Framework\Storage\StorageTest.cs" />
+    <Compile Include="Microsoft.Xna.Framework.Game\DrawableGameComponentTests.cs" />
+    <None Include="Microsoft.Xna.Framework.Game\GameClockTests.cs" />
+    <None Include="Microsoft.Xna.Framework.Game\GameComponentCollectionEventArgsTests.cs" />
+    <None Include="Microsoft.Xna.Framework.Game\GameComponentCollectionTests.cs" />
+    <Compile Include="Microsoft.Xna.Framework.Game\GameComponentTests.cs" />
+    <None Include="Microsoft.Xna.Framework.Game\GameServiceContainerTests.cs" />
+    <None Include="Microsoft.Xna.Framework.Game\GameTests.cs" />
+    <Compile Include="Microsoft.Xna.Framework.Game\GameTimeTests.cs" />
+    <Compile Include="Microsoft.Xna.Framework.Game\GameWindowTests.cs" />
+    <None Include="Microsoft.Xna.Framework.Game\GraphicsDeviceInformationTests.cs" />
+    <Compile Include="Microsoft.Xna.Framework.Game\GraphicsDeviceManagerTests.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Microsoft.Xna.Framework\Graphics\VertexBufferTests.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\src\Microsoft.Xna.Framework\Microsoft.Xna.Framework.csproj">
+      <Project>{46FFE266-DAC6-4CBC-9DDF-1A4CC094F701}</Project>
+      <Name>Microsoft.Xna.Framework</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\src\Microsoft.Xna.Framework.Game\Microsoft.Xna.Framework.Game.csproj">
+      <Project>{3683434E-94E4-4225-A3CA-E7390CF51B48}</Project>
+      <Name>Microsoft.Xna.Framework.Game</Name>
+    </ProjectReference>
+  </ItemGroup>
+</Project>

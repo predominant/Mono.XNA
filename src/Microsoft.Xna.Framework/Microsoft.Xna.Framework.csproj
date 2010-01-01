@@ -1,0 +1,345 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="3.5">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>9.0.30729</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{46FFE266-DAC6-4CBC-9DDF-1A4CC094F701}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AssemblyName>Microsoft.Xna.Framework</AssemblyName>
+    <RootNamespace>Microsoft.Xna.Framework</RootNamespace>
+    <TargetFrameworkVersion>v2.0</TargetFrameworkVersion>
+    <SignAssembly>true</SignAssembly>
+    <AssemblyOriginatorKeyFile>xna.pub</AssemblyOriginatorKeyFile>
+    <DelaySign>true</DelaySign>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>..\..\bin\Debug</OutputPath>
+    <DefineConstants>DEBUG</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>3</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>none</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>..\..\bin\Release</OutputPath>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>3</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Test|AnyCPU' ">
+    <DebugType>none</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>..\..\bin\Test</OutputPath>
+    <DefineConstants>NUNITTESTS</DefineConstants>
+    <WarningLevel>3</WarningLevel>
+  </PropertyGroup>
+  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
+  <ItemGroup>
+    <Compile Include="Audio\AudioEmitter.cs" />
+    <Compile Include="Audio\AudioListener.cs" />
+    <Compile Include="Audio\SoundEffect.cs" />
+    <Compile Include="Audio\SoundEffectInstance.cs" />
+    <Compile Include="BoundingBox.cs" />
+    <Compile Include="BoundingFrustum.cs" />
+    <Compile Include="BoundingSphere.cs" />
+    <Compile Include="Content\ContentReaders\Int32Reader.cs" />
+    <Compile Include="Content\ContentReaders\SongReader.cs" />
+    <Compile Include="Content\ContentReaders\SoundEffectReader.cs" />
+    <Compile Include="Content\ContentSerializerRuntimeTypeAttribute.cs" />
+    <Compile Include="Content\ContentSerializerTypeVersionAttribute.cs" />
+    <Compile Include="Curve.cs" />
+    <Compile Include="CurveKey.cs" />
+    <Compile Include="CurveKeyCollection.cs" />
+    <Compile Include="Design\ColorConverter.cs" />
+    <Compile Include="Enums.cs" />
+    <Compile Include="FrameworkDispatcher.cs" />
+    <Compile Include="GamerServices\AvatarAnimation.cs" />
+    <Compile Include="GamerServices\AvatarDescription.cs" />
+    <Compile Include="GamerServices\AvatarExpression.cs" />
+    <Compile Include="GamerServices\AvatarRenderer.cs" />
+    <Compile Include="GamerServices\Enums.cs" />
+    <Compile Include="GamerServices\FriendCollection.cs" />
+    <Compile Include="GamerServices\FriendGamer.cs" />
+    <Compile Include="GamerServices\GameDefaults.cs" />
+    <Compile Include="GamerServices\GamePrivilegeException.cs" />
+    <Compile Include="GamerServices\Gamer.cs" />
+    <Compile Include="GamerServices\GamerCollection.cs" />
+    <Compile Include="GamerServices\GamerPresence.cs" />
+    <Compile Include="GamerServices\GamerPrivileges.cs" />
+    <Compile Include="GamerServices\GamerProfile.cs" />
+    <Compile Include="GamerServices\GamerServicesDispatcher.cs" />
+    <Compile Include="GamerServices\GamerServicesNotAvailableException.cs" />
+    <Compile Include="GamerServices\Guide.cs" />
+    <Compile Include="GamerServices\GuideAlreadyVisibleException.cs" />
+    <Compile Include="GamerServices\SignedInEventArgs.cs" />
+    <Compile Include="GamerServices\SignedInGamer.cs" />
+    <Compile Include="GamerServices\SignedInGamerCollection.cs" />
+    <Compile Include="GamerServices\SignedOutEventArgs.cs" />
+    <Compile Include="Graphics\DynamicIndexBuffer.cs" />
+    <Compile Include="Graphics\TextureUsage.cs" />
+    <Compile Include="MathHelper.cs" />
+    <Compile Include="Matrix.cs" />
+    <Compile Include="Media\Album.cs" />
+    <Compile Include="Media\AlbumCollection.cs" />
+    <Compile Include="Media\Artist.cs" />
+    <Compile Include="Media\ArtistCollection.cs" />
+    <Compile Include="Media\Genre.cs" />
+    <Compile Include="Media\GenreCollection.cs" />
+    <Compile Include="Media\MediaLibrary.cs" />
+    <Compile Include="Media\MediaPlayer.cs" />
+    <Compile Include="Media\MediaQueue.cs" />
+    <Compile Include="Media\MediaSource.cs" />
+    <Compile Include="Media\Picture.cs" />
+    <Compile Include="Media\PictureAlbum.cs" />
+    <Compile Include="Media\PictureAlbumCollection.cs" />
+    <Compile Include="Media\PictureCollection.cs" />
+    <Compile Include="Media\Playlist.cs" />
+    <Compile Include="Media\PlaylistCollection.cs" />
+    <Compile Include="Media\Song.cs" />
+    <Compile Include="Media\SongCollection.cs" />
+    <Compile Include="Media\Video.cs" />
+    <Compile Include="Media\VideoPlayer.cs" />
+    <Compile Include="Media\VisualizationData.cs" />
+    <Compile Include="Net\AvailableNetworkSession.cs" />
+    <Compile Include="Net\AvailableNetworkSessionCollection.cs" />
+    <Compile Include="Net\Enums.cs" />
+    <Compile Include="Net\GameEndedEventArgs.cs" />
+    <Compile Include="Net\GamerJoinedEventArgs.cs" />
+    <Compile Include="Net\GamerLeftEventArgs.cs" />
+    <Compile Include="Net\GameStartedEventArgs.cs" />
+    <Compile Include="Net\HostChangedEventArgs.cs" />
+    <Compile Include="Net\InviteAcceptedEventArgs.cs" />
+    <Compile Include="Net\LocalNetworkGamer.cs" />
+    <Compile Include="Net\NetworkException.cs" />
+    <Compile Include="Net\NetworkGamer.cs" />
+    <Compile Include="Net\NetworkMachine.cs" />
+    <Compile Include="Net\NetworkNotAvailableException.cs" />
+    <Compile Include="Net\NetworkSession.cs" />
+    <Compile Include="Net\NetworkSessionEndedEventArgs.cs" />
+    <Compile Include="Net\NetworkSessionJoinException.cs" />
+    <Compile Include="Net\NetworkSessionProperties.cs" />
+    <Compile Include="Net\PacketReader.cs" />
+    <Compile Include="Net\PacketWriter.cs" />
+    <Compile Include="Net\QualityOfService.cs" />
+    <Compile Include="Plane.cs" />
+    <Compile Include="Point.cs" />
+    <Compile Include="PowerStatus.cs" />
+    <Compile Include="Quaternion.cs" />
+    <Compile Include="Ray.cs" />
+    <Compile Include="Rectangle.cs" />
+    <Compile Include="Vector2.cs" />
+    <Compile Include="Vector3.cs" />
+    <Compile Include="Vector4.cs" />
+    <Compile Include="Audio\AudioCategory.cs" />
+    <Compile Include="Audio\AudioEngine.cs" />
+    <Compile Include="Audio\Cue.cs" />
+    <Compile Include="Audio\Enums.cs" />
+    <Compile Include="Audio\InstancePlayLimitException.cs" />
+    <Compile Include="Audio\NoAudioHardwareException.cs" />
+    <Compile Include="Audio\RendererDetail.cs" />
+    <Compile Include="Audio\SoundBank.cs" />
+    <Compile Include="Audio\WaveBank.cs" />
+    <Compile Include="Content\ContentLoadException.cs" />
+    <Compile Include="Content\ContentManager.cs" />
+    <Compile Include="Content\ContentReader.cs" />
+    <Compile Include="Content\ContentSerializerAttribute.cs" />
+    <Compile Include="Content\ContentSerializerCollectionItemNameAttribute.cs" />
+    <Compile Include="Content\ContentSerializerIgnoreAttribute.cs" />
+    <Compile Include="Content\ContentTypeReader.cs" />
+    <Compile Include="Content\ContentTypeReaderManager.cs" />
+    <Compile Include="Content\ResourceContentManager.cs" />
+    <Compile Include="Content\ContentReaders\BasicEffectReader.cs" />
+    <Compile Include="Content\ContentReaders\IndexBufferReader.cs" />
+    <Compile Include="Content\ContentReaders\ModelTypeReader.cs" />
+    <Compile Include="Content\ContentReaders\StringReader.cs" />
+    <Compile Include="Content\ContentReaders\Texture2DReader.cs" />
+    <Compile Include="Content\ContentReaders\VertexBufferReader.cs" />
+    <Compile Include="Content\ContentReaders\VertexDeclarationReader.cs" />
+    <Compile Include="Design\BoundingBoxConverter.cs" />
+    <Compile Include="Design\BoundingSphereConverter.cs" />
+    <Compile Include="Design\MathTypeConverter.cs" />
+    <Compile Include="Design\MatrixConverter.cs" />
+    <Compile Include="Design\PlaneConverter.cs" />
+    <Compile Include="Design\PointConverter.cs" />
+    <Compile Include="Design\QuaternionConverter.cs" />
+    <Compile Include="Design\RayConverter.cs" />
+    <Compile Include="Design\RectangleConverter.cs" />
+    <Compile Include="Design\Vector2Converter.cs" />
+    <Compile Include="Design\Vector3Converter.cs" />
+    <Compile Include="Design\Vector4Converter.cs" />
+    <Compile Include="Graphics\AddressCaps.cs" />
+    <Compile Include="Graphics\BasicDirectionalLight.cs" />
+    <Compile Include="Graphics\BasicEffect.cs" />
+    <Compile Include="Graphics\BlendCaps.cs" />
+    <Compile Include="Graphics\ClipPlane.cs" />
+    <Compile Include="Graphics\ClipPlaneCollection.cs" />
+    <Compile Include="Graphics\Color.cs" />
+    <Compile Include="Graphics\CompareCaps.cs" />
+    <Compile Include="Graphics\CompilationFailedException.cs" />
+    <Compile Include="Graphics\CompiledEffect.cs" />
+    <Compile Include="Graphics\CompiledShader.cs" />
+    <Compile Include="Graphics\Compiler.cs" />
+    <Compile Include="Graphics\CursorCaps.cs" />
+    <Compile Include="Graphics\DeclarationTypeCaps.cs" />
+    <Compile Include="Graphics\DepthStencilBuffer.cs" />
+    <Compile Include="Graphics\DeviceCaps.cs" />
+    <Compile Include="Graphics\DeviceLostException.cs" />
+    <Compile Include="Graphics\DeviceNotResetException.cs" />
+    <Compile Include="Graphics\DeviceNotSupportedException.cs" />
+    <Compile Include="Graphics\DeviceStillDrawingException.cs" />
+    <Compile Include="Graphics\DisplayMode.cs" />
+    <Compile Include="Graphics\DisplayModeCollection.cs" />
+    <Compile Include="Graphics\DriverCaps.cs" />
+    <Compile Include="Graphics\DriverInternalErrorException.cs" />
+    <Compile Include="Graphics\Effect.cs" />
+    <Compile Include="Graphics\EffectAnnotation.cs" />
+    <Compile Include="Graphics\EffectAnnotationCollection.cs" />
+    <Compile Include="Graphics\EffectFunction.cs" />
+    <Compile Include="Graphics\EffectFunctionCollection.cs" />
+    <Compile Include="Graphics\EffectParameter.cs" />
+    <Compile Include="Graphics\EffectParameterBlock.cs" />
+    <Compile Include="Graphics\EffectPass.cs" />
+    <Compile Include="Graphics\EffectPassCollection.cs" />
+    <Compile Include="Graphics\EffectPool.cs" />
+    <Compile Include="Graphics\EffectTechnique.cs" />
+    <Compile Include="Graphics\EffectTechniqueCollection.cs" />
+    <Compile Include="Graphics\Enums.cs" />
+    <Compile Include="Graphics\FilterCaps.cs" />
+    <Compile Include="Graphics\GammaRamp.cs" />
+    <Compile Include="Graphics\GraphicsAdapter.cs" />
+    <Compile Include="Graphics\GraphicsDevice.cs" />
+    <Compile Include="Graphics\GraphicsDeviceCapabilities.cs" />
+    <Compile Include="Graphics\GraphicsDeviceCreationParameters.cs" />
+    <Compile Include="Graphics\GraphicsResource.cs" />
+    <Compile Include="Graphics\IGraphicsDeviceService.cs" />
+    <Compile Include="Graphics\IndexBuffer.cs" />
+    <Compile Include="Graphics\LineCaps.cs" />
+    <Compile Include="Graphics\Model.cs" />
+    <Compile Include="Graphics\ModelBone.cs" />
+    <Compile Include="Graphics\ModelBoneCollection.cs" />
+    <Compile Include="Graphics\ModelEffectCollection.cs" />
+    <Compile Include="Graphics\ModelMesh.cs" />
+    <Compile Include="Graphics\ModelMeshCollection.cs" />
+    <Compile Include="Graphics\ModelMeshPart.cs" />
+    <Compile Include="Graphics\ModelMeshPartCollection.cs" />
+    <Compile Include="Graphics\OutOfVideoMemoryException.cs" />
+    <Compile Include="Graphics\PixelShader.cs" />
+    <Compile Include="Graphics\PixelShaderCaps.cs" />
+    <Compile Include="Graphics\PresentationParameters.cs" />
+    <Compile Include="Graphics\PrimitiveCaps.cs" />
+    <Compile Include="Graphics\RasterCaps.cs" />
+    <Compile Include="Graphics\RasterStatus.cs" />
+    <Compile Include="Graphics\RenderState.cs" />
+    <Compile Include="Graphics\RenderTarget.cs" />
+    <Compile Include="Graphics\RenderTarget2D.cs" />
+    <Compile Include="Graphics\RenderTargetCube.cs" />
+    <Compile Include="Graphics\ResourceCreatedEventArgs.cs" />
+    <Compile Include="Graphics\ResourceDestroyedEventArgs.cs" />
+    <Compile Include="Graphics\SamplerState.cs" />
+    <Compile Include="Graphics\SamplerStateCollection.cs" />
+    <Compile Include="Graphics\ShaderCompiler.cs" />
+    <Compile Include="Graphics\ShaderConstant.cs" />
+    <Compile Include="Graphics\ShaderConstantCollection.cs" />
+    <Compile Include="Graphics\ShaderConstantTable.cs" />
+    <Compile Include="Graphics\ShaderSemantic.cs" />
+    <Compile Include="Graphics\ShadingCaps.cs" />
+    <Compile Include="Graphics\SpriteBatch.cs" />
+    <Compile Include="Graphics\StateBlock.cs" />
+    <Compile Include="Graphics\StencilCaps.cs" />
+    <Compile Include="Graphics\Texture.cs" />
+    <Compile Include="Graphics\Texture2D.cs" />
+    <Compile Include="Graphics\Texture3D.cs" />
+    <Compile Include="Graphics\TextureCaps.cs" />
+    <Compile Include="Graphics\TextureCollection.cs" />
+    <Compile Include="Graphics\TextureCreationParameters.cs" />
+    <Compile Include="Graphics\TextureCube.cs" />
+    <Compile Include="Graphics\TextureInformation.cs" />
+    <Compile Include="Graphics\VertexBuffer.cs" />
+    <Compile Include="Graphics\VertexDeclaration.cs" />
+    <Compile Include="Graphics\VertexElement.cs" />
+    <Compile Include="Graphics\VertexFormatCaps.cs" />
+    <Compile Include="Graphics\VertexPositionColor.cs" />
+    <Compile Include="Graphics\VertexPositionColorTexture.cs" />
+    <Compile Include="Graphics\VertexPositionNormalTexture.cs" />
+    <Compile Include="Graphics\VertexPositionTexture.cs" />
+    <Compile Include="Graphics\VertexProcessingCaps.cs" />
+    <Compile Include="Graphics\VertexShader.cs" />
+    <Compile Include="Graphics\VertexShaderCaps.cs" />
+    <Compile Include="Graphics\VertexStream.cs" />
+    <Compile Include="Graphics\VertexStreamCollection.cs" />
+    <Compile Include="Graphics\Viewport.cs" />
+    <Compile Include="Graphics\PackedVector\Alpha8.cs" />
+    <Compile Include="Graphics\PackedVector\Bgr565.cs" />
+    <Compile Include="Graphics\PackedVector\Bgra5551.cs" />
+    <Compile Include="Graphics\PackedVector\Byte4.cs" />
+    <Compile Include="Graphics\PackedVector\HalfSingle.cs" />
+    <Compile Include="Graphics\PackedVector\HalfVector2.cs" />
+    <Compile Include="Graphics\PackedVector\HalfVector4.cs" />
+    <Compile Include="Graphics\PackedVector\IPackedVector.cs" />
+    <Compile Include="Graphics\PackedVector\Normalized101010.cs" />
+    <Compile Include="Graphics\PackedVector\NormalizedByte2.cs" />
+    <Compile Include="Graphics\PackedVector\NormalizedByte4.cs" />
+    <Compile Include="Graphics\PackedVector\NormalizedShort2.cs" />
+    <Compile Include="Graphics\PackedVector\NormalizedShort4.cs" />
+    <Compile Include="Graphics\PackedVector\Rg32.cs" />
+    <Compile Include="Graphics\PackedVector\Rgba32.cs" />
+    <Compile Include="Graphics\PackedVector\Rgba64.cs" />
+    <Compile Include="Graphics\PackedVector\Rgba1010102.cs" />
+    <Compile Include="Graphics\PackedVector\Short2.cs" />
+    <Compile Include="Graphics\PackedVector\Short4.cs" />
+    <Compile Include="Graphics\PackedVector\UInt101010.cs" />
+    <Compile Include="HelperCode\PlaneHelper.cs" />
+    <Compile Include="Input\Enums.cs" />
+    <Compile Include="Input\GamePadButtons.cs" />
+    <Compile Include="Input\GamePadCapabilities.cs" />
+    <Compile Include="Input\GamePadDPad.cs" />
+    <Compile Include="Input\GamePadState.cs" />
+    <Compile Include="Input\GamePadThumbSticks.cs" />
+    <Compile Include="Input\GamePadTriggers.cs" />
+    <Compile Include="Input\Keyboard.cs" />
+    <Compile Include="Input\KeyboardState.cs" />
+    <Compile Include="Input\MouseState.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Storage\StorageContainer.cs" />
+    <Compile Include="Storage\StorageDevice.cs" />
+    <Compile Include="Storage\StorageDeviceNotConnectedException.cs" />
+    <Compile Include="Design\FieldDescriptor.cs" />
+    <Compile Include="Input\GamePad.cs" />
+    <Compile Include="Input\Mouse.cs" />
+    <Compile Include="Content\ContentReaders\ArrayReader.cs" />
+    <Compile Include="Content\ContentReaders\CharReader.cs" />
+    <Compile Include="Content\ContentReaders\EffectReader.cs" />
+    <Compile Include="Content\ContentReaders\ListReader.cs" />
+    <Compile Include="Content\ContentReaders\ObjectReader.cs" />
+    <Compile Include="Content\ContentReaders\RectangleReader.cs" />
+    <Compile Include="Content\ContentReaders\SpriteFontReader.cs" />
+    <Compile Include="Content\ContentReaders\Vector3Reader.cs" />
+    <Compile Include="Graphics\SpriteFont.cs" />
+    <Compile Include="Media\Enums.cs" />
+    <Compile Include="Graphics\Sprite.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.Configuration" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Xml" />
+    <Reference Include="Tao.DevIl, Version=1.6.8.3, Culture=neutral, PublicKeyToken=7ec4053013524957">
+      <Package>tao-devil-1.6</Package>
+    </Reference>
+    <Reference Include="Tao.OpenAl, Version=1.1.0.1, Culture=neutral, PublicKeyToken=a7579dda88828311, processorArchitecture=MSIL" />
+    <Reference Include="Tao.Sdl, Version=1.2.13.0, Culture=neutral, PublicKeyToken=9c7a200e36c0094e">
+      <Package>tao-sdl-1.2</Package>
+    </Reference>
+    <Reference Include="Tao.OpenGl, Version=3.0.0.0, Culture=neutral, PublicKeyToken=1ca010269a4501ef">
+      <Package>tao-opengl-3.0</Package>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="xna.pub" />
+  </ItemGroup>
+</Project>
