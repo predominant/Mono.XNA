@@ -38,7 +38,42 @@ namespace Microsoft.Xna.Framework.Tests
     [TestFixture]
     public class MatrixTests
     {
+		#region Static methods
+		
+		[Test]
+		public void CreateWorld()
+		{
+			Matrix m1, m2; 
+			Vector3 position = Vector3.Zero;
+			Vector3 forward = Vector3.Forward;
+			Vector3 up = Vector3.Up;
+			
+			m1 = Matrix.CreateWorld(position, forward, up);
+			Matrix.CreateWorld(ref position, ref forward, ref up, out m2);
+			
+			Assert.AreEqual(TestHelper.Approximate(m1), TestHelper.Approximate(m2), "#1");
+			Assert.AreEqual(TestHelper.Approximate(Matrix.Identity), TestHelper.Approximate(m1), "#2");
+			
+			position = new Vector3(1f, 2f, 3f);
+			forward = new Vector3(1f, 1f, 1f);
+			up = new Vector3(1f, 1f, 0f);
+			
+			m1 = Matrix.CreateWorld(position, forward, up);
+			Matrix.CreateWorld(ref position, ref forward, ref up, out m2);
+			
+			Matrix result = new Matrix(-0.7071068f, 0.7071068f, 0f, 0f, 
+			                           0.4082483f, 0.4082483f, -0.8164966f, 0f, 
+			                           -0.5773503f, -0.5773503f, -0.5773503f, 0f, 
+			                           1f, 2f, 3f, 1f);
+			
+			Assert.AreEqual(TestHelper.Approximate(m1), TestHelper.Approximate(m2), "#3");
+			Assert.AreEqual(TestHelper.Approximate(result), TestHelper.Approximate(m1), "#4");			
+		}
+		
+		#endregion Static methods
+		
         #region Instance methods
+		
         [Test]
         public void Add()
         {
@@ -76,10 +111,12 @@ namespace Microsoft.Xna.Framework.Tests
         public void Determinant()
         {
             Matrix m = new Matrix(1, 2, 3, 4, 5, 6, 7, 8, 9, 8, 7, 6, 5, 4, 3, 2);
-            Assert.AreEqual(0, m.Determinant(), "test 1");
+            Assert.AreEqual(0, m.Determinant(), "#1");
 
             m = new Matrix(1, 2, 3, 2.665f, 3, 2, 31.43234f, 3, 6, 4, 2, 6, 3, 6, 532, 3);
-            Assert.AreEqual(-1216.07629f, m.Determinant(), "test 2");
+
+			//Assert.AreEqual(TestHelper.Approximate(-1216.07629f), TestHelper.Approximate(m.Determinant()), "#2");
+			Assert.AreEqual(-1216.07629f, m.Determinant(), "#2");
         }
 
 
@@ -160,12 +197,17 @@ namespace Microsoft.Xna.Framework.Tests
 		public void Invert()
 		{
 			Matrix test1 = Matrix.Invert(Matrix.Identity);
-            Matrix test2 = Matrix.Invert(new Matrix(1f, 0f, 0f, 2f, 0f, 1f, 3f, 0f, 4f, 0f, 1f, 0f, 0f, 0f, 0f, 1f));
-			Matrix true1 = Matrix.Identity;
-            Matrix true2 = new Matrix(1f, 0f, 0f, -2f, 12f, 1f, -3f, -24f, -4f, 0f, 1f, 8f, 0f, 0f, 0f, 1f);
+			Matrix expected1 = Matrix.Identity;
 			
-			Assert.AreEqual(test1, true1, "#1 Identity");
-			Assert.AreEqual(test2, true2, "#2 Non-orthogonal");
+            Matrix test2 = Matrix.Invert(new Matrix(1f, 0f, 0f, 2f, 0f, 1f, 3f, 0f, 4f, 0f, 1f, 0f, 0f, 0f, 0f, 1f));			
+            Matrix expected2 = new Matrix(1f, 0f, 0f, -2f, 12f, 1f, -3f, -24f, -4f, 0f, 1f, 8f, 0f, 0f, 0f, 1f);
+			
+			Matrix test3 = Matrix.Invert(new Matrix(1, 2, 3, 2.665f, 3, 2, 31.43234f, 3, 6, 4, 2, 6, 3, 6, 532, 3));
+			Matrix expected3 = new Matrix(-0.6006006f, -0.5434364f, 0.5217183f, 0.03353353f, 0f, -4.362136f, 2.056068f,  0.25f, 0f, 0.03285978f, -0.01642989f, 0f, 0.6006006f, 3.440574f, -1.720287f, -0.2002002f);
+			
+			Assert.AreEqual(expected1, test1, "#1 Identity");
+			Assert.AreEqual(expected2, test2, "#2 Non-orthogonal");
+			Assert.AreEqual(TestHelper.Approximate(expected3), TestHelper.Approximate(test3), "#3 Non-orthogonal");
 		}
 		
         #endregion Instance methods

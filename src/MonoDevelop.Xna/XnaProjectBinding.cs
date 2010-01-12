@@ -34,6 +34,7 @@ using System.Xml;
 using MonoDevelop.Core;
 using MonoDevelop.Projects;
 using MonoDevelop.Projects.Dom;
+using MonoDevelop.Projects.Formats.MSBuild;
 
 namespace MonoDevelop.Xna
 {
@@ -74,6 +75,7 @@ namespace MonoDevelop.Xna
 			contentInfo.ProjectBasePath = info.ProjectBasePath.Combine("Content");
 			contentInfo.ProjectName = "Content";
 			
+			//ContentProject contentProject = new ContentProject(language, contentInfo, projectOptions);
 			ContentProject contentProject = (ContentProject)Services.ProjectService.CreateProject("ContentProject", contentInfo, projectOptions);
 			FilePath includePath = info.ProjectBasePath.Combine("Content").Combine(contentProject.FileName);
 			NestedContentProject nestedContent = new NestedContentProject(project, contentProject, includePath);

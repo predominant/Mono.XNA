@@ -216,12 +216,26 @@ namespace Microsoft.Xna.Framework
 
         public static Matrix CreateWorld(Vector3 position, Vector3 forward, Vector3 up)
         {
-            throw new NotImplementedException();
+            Matrix ret;
+			CreateWorld(ref position, ref forward, ref up, out ret);
+			return ret;
         }
 
         public static void CreateWorld(ref Vector3 position, ref Vector3 forward, ref Vector3 up, out Matrix result)
         {
-            throw new NotImplementedException();
+			Vector3 x, y, z;
+			Vector3.Normalize(ref forward, out z);
+			Vector3.Cross(ref forward, ref up, out x);
+			Vector3.Cross(ref x, ref forward, out y);
+			x.Normalize();
+			y.Normalize();            
+			
+			result = new Matrix();
+			result.Right = x;
+			result.Up = y;
+			result.Forward = z;
+			result.Translation = position;
+			result.M44 = 1f;
         }
 
         public static Matrix CreateShadow(Vector3 lightDirection, Plane plane)
@@ -699,14 +713,23 @@ namespace Microsoft.Xna.Framework
 			///
 			// Use Laplace expansion theorem to calculate the inverse of a 4x4 matrix
 			// 
-			// 1. Calculate the 2x2 determinants needed the 4x4 determinant based on the 2x2 determinants 
+			// 1. Calculate the 2x2 determinants needed and the 4x4 determinant based on the 2x2 determinants 
 			// 3. Create the adjugate matrix, which satisfies: A * adj(A) = det(A) * I
 			// 4. Divide adjugate matrix with the determinant to find the inverse
+			float det1 = matrix.M11 * matrix.M22 - matrix.M12 * matrix.M21;
+			float det2 = matrix.M11 * matrix.M23 - matrix.M13 * matrix.M21;
+			float det3 = matrix.M11 * matrix.M24 - matrix.M14 * matrix.M21;
+			float det4 = matrix.M12 * matrix.M23 - matrix.M13 * matrix.M22;
+			float det5 = matrix.M12 * matrix.M24 - matrix.M14 * matrix.M22;
+			float det6 = matrix.M13 * matrix.M24 - matrix.M14 * matrix.M23;
+			float det7 = matrix.M31 * matrix.M42 - matrix.M32 * matrix.M41;
+			float det8 = matrix.M31 * matrix.M43 - matrix.M33 * matrix.M41;
+			float det9 = matrix.M31 * matrix.M44 - matrix.M34 * matrix.M41;
+			float det10 = matrix.M32 * matrix.M43 - matrix.M33 * matrix.M42;
+			float det11 = matrix.M32 * matrix.M44 - matrix.M34 * matrix.M42;
+			float det12 = matrix.M33 * matrix.M44 - matrix.M34 * matrix.M43;
 			
-			float det1, det2, det3, det4, det5, det6, det7, det8, det9, det10, det11, det12;
-			float detMatrix;
-			findDeterminants(ref matrix, out detMatrix, out det1, out det2, out det3, out det4, out det5, out det6, 
-			                 out det7, out det8, out det9, out det10, out det11, out det12);
+			float detMatrix = (float)(det1*det12 - det2*det11 + det3*det10 + det4*det9 - det5*det8 + det6*det7);
 			
 			float invDetMatrix = 1f / detMatrix;
 			
@@ -905,53 +928,23 @@ namespace Microsoft.Xna.Framework
 		
 		#endregion Public Static Methods
 		
-		#region Private Static Methods
-		
-		/// <summary>
-		/// Helper method for using the Laplace expansion theorem using two rows expansions to calculate major and 
-		/// minor determinants of a 4x4 matrix. This method is used for inverting a matrix.
-		/// </summary>
-		private static void findDeterminants(ref Matrix matrix, out float major, 
-		                                     out float minor1, out float minor2, out float minor3, out float minor4, out float minor5, out float minor6,
-		                                     out float minor7, out float minor8, out float minor9, out float minor10, out float minor11, out float minor12)
-		{
-			double det1 = (double)matrix.M11 * (double)matrix.M22 - (double)matrix.M12 * (double)matrix.M21;
-			double det2 = (double)matrix.M11 * (double)matrix.M23 - (double)matrix.M13 * (double)matrix.M21;
-			double det3 = (double)matrix.M11 * (double)matrix.M24 - (double)matrix.M14 * (double)matrix.M21;
-			double det4 = (double)matrix.M12 * (double)matrix.M23 - (double)matrix.M13 * (double)matrix.M22;
-			double det5 = (double)matrix.M12 * (double)matrix.M24 - (double)matrix.M14 * (double)matrix.M22;
-			double det6 = (double)matrix.M13 * (double)matrix.M24 - (double)matrix.M14 * (double)matrix.M23;
-			double det7 = (double)matrix.M31 * (double)matrix.M42 - (double)matrix.M32 * (double)matrix.M41;
-			double det8 = (double)matrix.M31 * (double)matrix.M43 - (double)matrix.M33 * (double)matrix.M41;
-			double det9 = (double)matrix.M31 * (double)matrix.M44 - (double)matrix.M34 * (double)matrix.M41;
-			double det10 = (double)matrix.M32 * (double)matrix.M43 - (double)matrix.M33 * (double)matrix.M42;
-			double det11 = (double)matrix.M32 * (double)matrix.M44 - (double)matrix.M34 * (double)matrix.M42;
-			double det12 = (double)matrix.M33 * (double)matrix.M44 - (double)matrix.M34 * (double)matrix.M43;
-			
-			major = (float)(det1*det12 - det2*det11 + det3*det10 + det4*det9 - det5*det8 + det6*det7);
-			minor1 = (float)det1;
-			minor2 = (float)det2;
-			minor3 = (float)det3;
-			minor4 = (float)det4;
-			minor5 = (float)det5;
-			minor6 = (float)det6;
-			minor7 = (float)det7;
-			minor8 = (float)det8;
-			minor9 = (float)det9;
-			minor10 = (float)det10;
-			minor11 = (float)det11;
-			minor12 = (float)det12;
-		}
-		
-		#endregion Private Static Methods
-
-        #region Public Methods
+		#region Public Methods
 
         public float Determinant()
         {
-			float determinant, m1, m2, m3, m4, m5, m6, m7, m8, m9, m10, m11, m12;
-            findDeterminants(ref this, out determinant, out m1, out m2, out m3, out m4, out m5, out m6, out m7, out m8, out m9, out m10, out m11, out m12);
-			return determinant;
+			float minor1, minor2, minor3, minor4, minor5, minor6;
+            
+			minor1 = M31 * M42 - M32 * M41;
+			minor2 = M31 * M43 - M33 * M41;
+			minor3 = M31 * M44 - M34 * M41;
+			minor4 = M32 * M43 - M33 * M42;
+			minor5 = M32 * M44 - M34 * M42;
+			minor6 = M33 * M44 - M34 * M43;
+			
+			return 	M11 * (M22 * minor6 - M23 * minor5 + M24 * minor4) -
+				  	M12 * (M21 * minor6 - M23 * minor3 + M24 * minor2) +
+					M13 * (M21 * minor5 - M22 * minor3 + M24 * minor1) -
+					M14 * (M21 * minor4 - M22 * minor2 + M23 * minor1);
         }
 
         public bool Equals(Matrix other)

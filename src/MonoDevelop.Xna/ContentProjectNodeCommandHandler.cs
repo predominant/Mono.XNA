@@ -48,6 +48,6 @@ namespace MonoDevelop.Xna
 		protected void SetAsStartupProjectUpdateHandler(CommandInfo info)
 		{
 		    info.Enabled = false;
-		}		
+		}
 	}
 }

@@ -357,10 +357,11 @@ namespace Microsoft.Xna.Framework.Tests
             Matrix m = new Matrix(135, 11, 53, 1, 6, 1, 47, 2, 51, 36, 743, 2, 15, 35, 6, 2);
 
             Vector4 expected = new Vector4(1338.455f, 79.3959f, -5015.873f, -230.9282f);
-            Assert.IsTrue(TestHelper.ApproximatelyEquals(expected, Vector4.Transform(new Vector2(15.32f, -124.1241f), m)), "#1");
-
+            //Assert.IsTrue(TestHelper.ApproximatelyEquals(expected, Vector4.Transform(new Vector2(15.32f, -124.1241f), m)), "#1");
+			Assert.AreEqual(TestHelper.Approximate(expected), TestHelper.Approximate(Vector4.Transform(new Vector2(15.32f, -124.1241f), m)), "#1");
+			
             expected = new Vector4(2619.779f, 983.8599f, 13651.26f, -180.6802f);
-            Assert.IsTrue(TestHelper.ApproximatelyEquals(expected, Vector4.Transform(new Vector3(15.32f, -124.1241f, 25.124f), m)), "#2");
+            Assert.AreEqual(TestHelper.Approximate(expected), TestHelper.Approximate(Vector4.Transform(new Vector3(15.32f, -124.1241f, 25.124f), m)), "#2");
 
             expected = new Vector4(4041.455f, 1987.396f, 34363.13f, -124.9282f);
             Assert.IsTrue(TestHelper.ApproximatelyEquals(expected, Vector4.Transform(new Vector4(15.32f, -124.1241f, 53, 1), m)), "#3");

@@ -37,6 +37,7 @@ using MonoDevelop.Core;
 using MonoDevelop.Core.Serialization;
 using MonoDevelop.Projects;
 using MonoDevelop.Projects.Dom;
+using MonoDevelop.Projects.Formats.MSBuild;
 using System.Reflection;
 using Microsoft.Xna.Framework.Content.Pipeline;
 
@@ -72,7 +73,6 @@ namespace MonoDevelop.Xna
 		public ContentProject (string languageName)
 			: base (languageName)
 		{
-			Visible = false;
 			importers = new List<ContentImporterInfo>();
 			processors = new List<ContentProcessorInfo>();
 		}
@@ -80,7 +80,8 @@ namespace MonoDevelop.Xna
 		public ContentProject (string language, ProjectCreateInformation info, XmlElement projectOptions)
 			: base (language, info, projectOptions)
 		{
-			Visible = false;
+			FileName = new FilePath(info.ProjectName).Combine(".contentproj");
+			Console.WriteLine(FileName);
 			importers = new List<ContentImporterInfo>();
 			processors = new List<ContentProcessorInfo>();
 		}
@@ -93,6 +94,14 @@ namespace MonoDevelop.Xna
 		{
 			List<string> ret = new List<string>();
 			foreach (ContentImporterInfo info in importers)
+				ret.Add(info.DisplayName);
+			return ret;
+		}
+		
+		public ICollection GetProcessorNames()
+		{
+			List<string> ret = new List<string>();
+			foreach (ContentProcessorInfo info in processors)
 				ret.Add(info.DisplayName);
 			return ret;
 		}
@@ -118,23 +127,21 @@ namespace MonoDevelop.Xna
 					if (attribute is ContentImporterAttribute)
 					{
 						ContentImporterAttribute ia = attribute as ContentImporterAttribute;
-						if (ia.DisplayName != string.Empty)
+						if (ia.DisplayName != null && ia.DisplayName != string.Empty)
 							importers.Add(new ContentImporterInfo(type, ia.DisplayName, ia.FileExtensions, ia.DefaultProcessor, ia.CacheImportedData));
 						else
-							importers.Add(new ContentImporterInfo(type, type.ToString(), ia.FileExtensions, ia.DefaultProcessor, ia.CacheImportedData));
+							importers.Add(new ContentImporterInfo(type, type.Name, ia.FileExtensions, ia.DefaultProcessor, ia.CacheImportedData));
 					}
 					else if (attribute is ContentProcessorAttribute)
 					{
 						ContentProcessorAttribute pa = attribute as ContentProcessorAttribute;
-						if(pa.DisplayName != string.Empty)
+						if(pa.DisplayName != null && pa.DisplayName != string.Empty)
 							processors.Add(new ContentProcessorInfo(type, pa.DisplayName));
 						else
-							processors.Add(new ContentProcessorInfo(type, type.ToString()));
+							processors.Add(new ContentProcessorInfo(type, type.Name));
 					}
 				}
 			}
-			Console.WriteLine(importers.Count);
-			Console.WriteLine(processors.Count);
 		}
 		
 		#endregion Private Methods
@@ -146,16 +153,12 @@ namespace MonoDevelop.Xna
 			get  { return "Content"; }
 		}
 		
-		public override void Save (IProgressMonitor monitor)
+		protected override void OnSave (IProgressMonitor monitor)
 		{
-			base.Save (monitor);
+			Console.WriteLine(FileName);
+			base.OnSave (monitor);
 		}
-		
-		protected override BuildResult DoBuild (IProgressMonitor monitor, string itemConfiguration)
-        {		
-            return base.DoBuild(monitor, itemConfiguration); 
-        }
-		
+
 		protected override void OnEndLoad ()
 		{
 			
