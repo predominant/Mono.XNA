@@ -23,6 +23,7 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>3</WarningLevel>
     <AssemblyOriginatorKeyFile>xna.pub</AssemblyOriginatorKeyFile>
+    <DelaySign>true</DelaySign>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>none</DebugType>
@@ -32,6 +33,7 @@
     <WarningLevel>4</WarningLevel>
     <AssemblyOriginatorKeyFile>xna.pub</AssemblyOriginatorKeyFile>
     <DefineConstants>MONO</DefineConstants>
+    <DelaySign>true</DelaySign>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Test|AnyCPU' ">
     <DebugType>none</DebugType>
@@ -40,6 +42,7 @@
     <WarningLevel>4</WarningLevel>
     <AssemblyOriginatorKeyFile>xna.pub</AssemblyOriginatorKeyFile>
     <DefineConstants>NUNITTESTS; MONO</DefineConstants>
+    <DelaySign>true</DelaySign>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug_Dotnet|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -49,6 +52,7 @@
     <DefineConstants>DEBUG; DOTNET</DefineConstants>
     <WarningLevel>4</WarningLevel>
     <PlatformTarget>x86</PlatformTarget>
+    <DelaySign>false</DelaySign>
     <AssemblyOriginatorKeyFile>..\Microsoft.Xna.Framework\Microsoft.Xna.snk</AssemblyOriginatorKeyFile>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release_Dotnet|AnyCPU' ">
@@ -57,6 +61,7 @@
     <OutputPath>..\..\bin\Release_Dotnet</OutputPath>
     <DefineConstants>DOTNET</DefineConstants>
     <WarningLevel>4</WarningLevel>
+    <DelaySign>false</DelaySign>
     <AssemblyOriginatorKeyFile>..\Microsoft.Xna.Framework\Microsoft.Xna.snk</AssemblyOriginatorKeyFile>
     <PlatformTarget>x86</PlatformTarget>
   </PropertyGroup>
@@ -66,6 +71,7 @@
     <OutputPath>..\..\bin\Test_Dotnet</OutputPath>
     <DefineConstants>NUNITTEST; DOTNET</DefineConstants>
     <WarningLevel>4</WarningLevel>
+    <DelaySign>false</DelaySign>
     <AssemblyOriginatorKeyFile>..\Microsoft.Xna.Framework\Microsoft.Xna.snk</AssemblyOriginatorKeyFile>
   </PropertyGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />

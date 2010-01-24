@@ -28,6 +28,7 @@
       </CustomCommands>
     </CustomCommands>
     <AssemblyOriginatorKeyFile>xna.pub</AssemblyOriginatorKeyFile>
+    <DelaySign>true</DelaySign>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>none</DebugType>
@@ -37,6 +38,7 @@
     <WarningLevel>4</WarningLevel>
     <AssemblyOriginatorKeyFile>xna.pub</AssemblyOriginatorKeyFile>
     <DefineConstants>MONO</DefineConstants>
+    <DelaySign>true</DelaySign>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Test|AnyCPU' ">
     <DebugType>none</DebugType>
@@ -45,6 +47,7 @@
     <DefineConstants>NUNITTESTS; MONO</DefineConstants>
     <WarningLevel>4</WarningLevel>
     <AssemblyOriginatorKeyFile>xna.pub</AssemblyOriginatorKeyFile>
+    <DelaySign>true</DelaySign>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug_Dotnet|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
