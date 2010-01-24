@@ -73,6 +73,7 @@ namespace MonoDevelop.Xna
 		public ContentProject (string languageName)
 			: base (languageName)
 		{
+			Visible = false;
 			importers = new List<ContentImporterInfo>();
 			processors = new List<ContentProcessorInfo>();
 		}
@@ -80,8 +81,7 @@ namespace MonoDevelop.Xna
 		public ContentProject (string language, ProjectCreateInformation info, XmlElement projectOptions)
 			: base (language, info, projectOptions)
 		{
-			FileName = new FilePath(info.ProjectName).Combine(".contentproj");
-			Console.WriteLine(FileName);
+			Visible = false;
 			importers = new List<ContentImporterInfo>();
 			processors = new List<ContentProcessorInfo>();
 		}
@@ -142,6 +142,8 @@ namespace MonoDevelop.Xna
 					}
 				}
 			}
+			Console.WriteLine("Importers found: " + importers.Count);
+			Console.WriteLine("Processors found: " + processors.Count);
 		}
 		
 		#endregion Private Methods
@@ -155,7 +157,6 @@ namespace MonoDevelop.Xna
 		
 		protected override void OnSave (IProgressMonitor monitor)
 		{
-			Console.WriteLine(FileName);
 			base.OnSave (monitor);
 		}
 
@@ -168,7 +169,7 @@ namespace MonoDevelop.Xna
 		protected override void OnReferenceAddedToProject (ProjectReferenceEventArgs e)
 		{
 			findPipelineEntries(e.ProjectReference);
-			base.OnReferenceAddedToProject (e);
+			base.OnReferenceAddedToProject(e);
 		}
 
         #endregion DotNetProject Overrides

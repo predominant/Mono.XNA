@@ -155,6 +155,7 @@ namespace Microsoft.Xna.Framework.Content.Pipeline.Tasks
 			{
 				
 			}
+			return true;
 		}
 		
 		#endregion Task Overrides
