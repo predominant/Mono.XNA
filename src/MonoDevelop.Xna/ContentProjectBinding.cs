@@ -32,7 +32,6 @@ namespace MonoDevelop.Xna
 		
 		public Project CreateProject (string language, ProjectCreateInformation info, XmlElement projectOptions)
 		{
-			Console.WriteLine("test: "+language);
 			return new ContentProject(language, info, projectOptions);
 		}
 		

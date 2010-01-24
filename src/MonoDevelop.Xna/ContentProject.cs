@@ -142,8 +142,6 @@ namespace MonoDevelop.Xna
 					}
 				}
 			}
-			Console.WriteLine("Importers found: " + importers.Count);
-			Console.WriteLine("Processors found: " + processors.Count);
 		}
 		
 		#endregion Private Methods
