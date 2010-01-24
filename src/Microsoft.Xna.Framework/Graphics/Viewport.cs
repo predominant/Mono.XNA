@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /*
 MIT License
 Copyright © 2006 - 2007 The Mono.Xna Team
@@ -114,8 +114,8 @@ namespace Microsoft.Xna.Framework.Graphics
             */
             //here must do projection			
             Vector4 result = Vector4.Transform(source, world);
-            result = Vector4.Transform(source, view);
-            result = Vector4.Transform(source, projection);
+            result = Vector4.Transform(result, view);
+            result = Vector4.Transform(result, projection);
             result.Z = result.Z * (this.maxDepth - this.minDepth);
             result = Vector4.Divide(result, result.W);
 

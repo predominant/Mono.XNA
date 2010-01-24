@@ -116,6 +116,7 @@ namespace MonoDevelop.Xna
 			[LocalizedCategory("MonoXNA")]
 			[LocalizedDisplayName("Processor")]
 			[LocalizedDescription("The processor to use when building the content file.")]
+			[TypeConverter(typeof(ProcessorStringsConverter))]
 			public string Processor {
 				get {
 					object result = file.ExtendedProperties[processorKey];
@@ -126,46 +127,39 @@ namespace MonoDevelop.Xna
 			
 			#endregion Properties
 			
-			#region Nested ImporterStringsConverter
-		
-			//[MonoDevelop.Components.PropertyGrid.PropertyEditors.StandardValuesSeparator("--")]
-			class ImporterStringsConverter : TypeConverter
+			#region Nested ContentStringsConverter Class
+			
+			class ContentStringsConverter : TypeConverter 
 			{
 				#region TypeConverter Overrides
 				
 				public override bool CanConvertTo (ITypeDescriptorContext context, Type destinationType)
 				{
-					Console.WriteLine("CanConvertTo");
-					return destinationType is string;
+					return destinationType == typeof(string);
 				}
 				
 				public override bool CanConvertFrom (ITypeDescriptorContext context, Type sourceType)
 				{
-					Console.WriteLine("CanConvertFrom");
-					return sourceType is string;	
+					return sourceType == typeof(string);	
 				}
 				
 				public override object ConvertFrom (ITypeDescriptorContext context, CultureInfo culture, object value)
 				{
-					Console.WriteLine("ConvertFrom");
 					return value as string;
 				}
 
 				public override object ConvertTo (ITypeDescriptorContext context, CultureInfo culture, object value, Type destinationType)
 				{
-					Console.WriteLine("ConvertTo");
 					return value as string;
 				}
 				
 				public override bool GetStandardValuesSupported (ITypeDescriptorContext context)
 				{
-					Console.WriteLine("GetStandardValuesSupported");
 					return true;
 				}
 				
 				public override bool GetStandardValuesExclusive (ITypeDescriptorContext context)
 				{
-					Console.WriteLine("GetStandardValuesExclusive");
 					ContentFileWrapper wrapper = context != null ? context.Instance as ContentFileWrapper : null;
 					if (wrapper != null && wrapper.file != null)
 					{
@@ -174,14 +168,24 @@ namespace MonoDevelop.Xna
 					}
 					return false;
 				}
-	
+				
+				#endregion TypeConverter Overrides
+			}
+			
+			#endregion Nested ContentStringConverter Class
+			
+			#region Nested ImporterStringConverter Class
+		
+			[MonoDevelop.Components.PropertyGrid.PropertyEditors.StandardValuesSeparator("--")]
+			class ImporterStringsConverter : ContentStringsConverter
+			{
+				#region TypeConverter Overrides
+				
 				public override StandardValuesCollection GetStandardValues (ITypeDescriptorContext context)
 				{
 					ContentFileWrapper wrapper = context != null ? context.Instance as ContentFileWrapper : null;
-					Console.WriteLine("GetStandardValues1");
 					if (wrapper != null && wrapper.file != null)
 					{
-						Console.WriteLine("GetStandardValues2");
 						ContentProject project = wrapper.file.Project as ContentProject;
 						if (project != null)
 							return new StandardValuesCollection(project.GetImporterNames());
@@ -191,7 +195,6 @@ namespace MonoDevelop.Xna
 				
 				public override bool IsValid (ITypeDescriptorContext context, object value)
 				{
-					Console.WriteLine("IsValid");
 					if (!(value is string))
 						return false;
 					string str = value as string;
@@ -213,8 +216,54 @@ namespace MonoDevelop.Xna
 				
 				#endregion TypeConverter Overrides
 			}
+			
+			#endregion Nested ImporterStringsConverter Class
+			
+			#region Nested ProcessorStringsConverter Class
 		
-			#endregion Nested ImporterStringsConverter
+			[MonoDevelop.Components.PropertyGrid.PropertyEditors.StandardValuesSeparator("--")]
+			class ProcessorStringsConverter : ContentStringsConverter
+			{
+				#region TypeConverter Overrides
+				
+				public override StandardValuesCollection GetStandardValues (ITypeDescriptorContext context)
+				{
+					ContentFileWrapper wrapper = context != null ? context.Instance as ContentFileWrapper : null;
+					if (wrapper != null && wrapper.file != null)
+					{
+						ContentProject project = wrapper.file.Project as ContentProject;
+						if (project != null)
+							return new StandardValuesCollection(project.GetProcessorNames());
+					}
+					return new StandardValuesCollection(null);
+				}
+				
+				public override bool IsValid (ITypeDescriptorContext context, object value)
+				{
+					if (!(value is string))
+						return false;
+					string str = value as string;
+					ContentFileWrapper wrapper = context != null ? context.Instance as ContentFileWrapper : null;
+					if (wrapper != null && wrapper.file != null)
+					{
+						ContentProject project = wrapper.file.Project as ContentProject;
+						if (project != null)
+						{
+							foreach (string name in project.GetProcessorNames())
+							{
+								if (name == str)
+									return true;
+							}
+						}
+					}
+					return false;
+				}
+				
+				#endregion TypeConverter Overrides
+			}
+			
+			#endregion Nested ProcessorStringsConverter Class
+			
 		}
 		
 		#endregion Nested ContentFileWrapper Class		

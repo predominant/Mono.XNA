@@ -175,10 +175,11 @@ namespace Microsoft.Xna.Framework.Tests
             Quaternion expected = new Quaternion(405.8f, 196.35f, 59.95f, 607.9f);
             Quaternion actual = b * c;
 
-            Assert.IsTrue(TestHelper.ApproximatelyEquals(expected.X, actual.X), "#1");
-            Assert.IsTrue(TestHelper.ApproximatelyEquals(expected.Y, actual.Y), "#2");
-            Assert.IsTrue(TestHelper.ApproximatelyEquals(expected.Z, actual.Z), "#3");
-            Assert.IsTrue(TestHelper.ApproximatelyEquals(expected.W, actual.W), "#4");
+			Assert.AreEqual(TestHelper.Approximate(expected), TestHelper.Approximate(actual), "#2");
+            //Assert.IsTrue(TestHelper.ApproximatelyEquals(expected.X, actual.X), "#1");
+            //Assert.IsTrue(TestHelper.ApproximatelyEquals(expected.Y, actual.Y), "#2");
+            //Assert.IsTrue(TestHelper.ApproximatelyEquals(expected.Z, actual.Z), "#3");
+            //Assert.IsTrue(TestHelper.ApproximatelyEquals(expected.W, actual.W), "#4");
         }
 
         [Test]
@@ -186,11 +187,12 @@ namespace Microsoft.Xna.Framework.Tests
         {
             Quaternion expected = new Quaternion(0f, 0f, 0f, 1f);
             Quaternion actual = a / a;
-
-            Assert.IsTrue(TestHelper.ApproximatelyEquals(expected.W, actual.W), "#1");
-            Assert.IsTrue(TestHelper.ApproximatelyEquals(expected.X, actual.X), "#2");
-            Assert.IsTrue(TestHelper.ApproximatelyEquals(expected.Y, actual.Y), "#3");
-            Assert.IsTrue(TestHelper.ApproximatelyEquals(expected.Z, actual.Z), "#4");
+			
+			Assert.AreEqual(TestHelper.Approximate(expected), TestHelper.Approximate(actual), "#1");
+            //Assert.IsTrue(TestHelper.ApproximatelyEquals(expected.W, actual.W), "#1");
+            //Assert.IsTrue(TestHelper.ApproximatelyEquals(expected.X, actual.X), "#2");
+            //Assert.IsTrue(TestHelper.ApproximatelyEquals(expected.Y, actual.Y), "#3");
+            //Assert.IsTrue(TestHelper.ApproximatelyEquals(expected.Z, actual.Z), "#4");
         }
     }
      

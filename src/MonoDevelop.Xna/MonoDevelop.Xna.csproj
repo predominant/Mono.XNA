@@ -60,13 +60,13 @@
     <Compile Include="NestedContentProject.cs" />
     <Compile Include="NestedContentProjectCollection.cs" />
     <Compile Include="XnaProjectBinding.cs" />
-    <Compile Include="ContentProjectBinding.cs" />
     <Compile Include="ContentProjectNodeCommandHandler.cs" />
     <Compile Include="ContentProjectNodeBuilder.cs" />
     <Compile Include="XnaProjectNodeBuilder.cs" />
     <Compile Include="ContentPropertyProvider.cs" />
     <Compile Include="ContentImporterInfo.cs" />
     <Compile Include="ContentProcessorInfo.cs" />
+    <Compile Include="ContentProjectBinding.cs" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="MonoDevelop.Xna.addin.xml" />

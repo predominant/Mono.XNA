@@ -65,14 +65,12 @@
 	</Extension>
 	
 	<Extension path="/MonoDevelop/Ide/ContextMenu/ProjectPad">
-		<!--
 		<Condition id="ItemType" value="ContentProject">
 			<CommandItem id="MonoDevelop.Ide.Commands.ProjectCommands.AddNewFiles" />
 			<CommandItem id="MonoDevelop.Ide.Commands.ProjectCommands.AddFiles" />
 			<SeparatorItem id="Separator1" />
 			<CommandItem id="MonoDevelop.Ide.Commands.ProjectCommands.NewFolder" />
 		</Condition>
-		-->
 	</Extension>
 	
 	<Extension path="/MonoDevelop/DesignerSupport/PropertyProviders">

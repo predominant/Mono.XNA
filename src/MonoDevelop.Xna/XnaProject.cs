@@ -100,14 +100,13 @@ namespace MonoDevelop.Xna
 			get  { return "Xna"; }
 		}
 				
-		protected override BuildResult DoBuild (IProgressMonitor monitor, string itemConfiguration)
-        {
+		protected override BuildResult DoBuild (IProgressMonitor monitor, ConfigurationSelector configuration)
+		{
 			foreach(NestedContentProject nestedProj in nestedContentProjects)
-				nestedProj.Project.Build(monitor, itemConfiguration);
+				nestedProj.Project.Build(monitor, configuration);
 			
-            return base.DoBuild(monitor, itemConfiguration); 
-        }
-		
+            return base.DoBuild(monitor, configuration); 
+		}		
 		
 		public override void Save (IProgressMonitor monitor)
 		{

@@ -31,8 +31,10 @@ SOFTWARE.
 using System;
 using System.IO;
 using MonoDevelop.Projects;
+using MonoDevelop.Projects.Formats.MSBuild;
 using MonoDevelop.Core.Serialization;
 using MonoDevelop.Core.ProgressMonitoring;
+
 
 namespace MonoDevelop.Xna
 {
@@ -93,10 +95,9 @@ namespace MonoDevelop.Xna
 				if (project==null)
 				{
 					Project = (ContentProject)ContentProject.LoadProject(parent.BaseDirectory.Combine(include), new SimpleProgressMonitor());
-					parent.ParentFolder.AddItem(project, true);
-					parent.ParentSolution.Save(new SimpleProgressMonitor());
-				}
-				
+ 					parent.ParentFolder.AddItem(project);
+					parent.ParentFolder.Save(new SimpleProgressMonitor());
+ 				}	
 				return project; 
 			}
 			set { 
@@ -105,7 +106,7 @@ namespace MonoDevelop.Xna
 			}
 		}
 		
-		#endregion
+		#endregion Properties
 		
 		#region Constructors
 		

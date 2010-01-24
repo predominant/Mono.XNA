@@ -151,7 +151,11 @@ namespace Microsoft.Xna.Framework.Content.Pipeline.Tasks
 		
 		public override bool Execute()
 		{
-			throw new NotImplementedException();
+			foreach (ITaskItem sourceAsset in sourceAssets)
+			{
+				
+			}
+			return true;
 		}
 		
 		#endregion Task Overrides

@@ -37,6 +37,7 @@ using MonoDevelop.Core;
 using MonoDevelop.Core.Serialization;
 using MonoDevelop.Projects;
 using MonoDevelop.Projects.Dom;
+using MonoDevelop.Projects.Formats.MSBuild;
 using System.Reflection;
 using Microsoft.Xna.Framework.Content.Pipeline;
 
@@ -97,6 +98,14 @@ namespace MonoDevelop.Xna
 			return ret;
 		}
 		
+		public ICollection GetProcessorNames()
+		{
+			List<string> ret = new List<string>();
+			foreach (ContentProcessorInfo info in processors)
+				ret.Add(info.DisplayName);
+			return ret;
+		}
+		
 		#endregion Public Methods
 		
 		#region Private Methods
@@ -118,23 +127,23 @@ namespace MonoDevelop.Xna
 					if (attribute is ContentImporterAttribute)
 					{
 						ContentImporterAttribute ia = attribute as ContentImporterAttribute;
-						if (ia.DisplayName != string.Empty)
+						if (ia.DisplayName != null && ia.DisplayName != string.Empty)
 							importers.Add(new ContentImporterInfo(type, ia.DisplayName, ia.FileExtensions, ia.DefaultProcessor, ia.CacheImportedData));
 						else
-							importers.Add(new ContentImporterInfo(type, type.ToString(), ia.FileExtensions, ia.DefaultProcessor, ia.CacheImportedData));
+							importers.Add(new ContentImporterInfo(type, type.Name, ia.FileExtensions, ia.DefaultProcessor, ia.CacheImportedData));
 					}
 					else if (attribute is ContentProcessorAttribute)
 					{
 						ContentProcessorAttribute pa = attribute as ContentProcessorAttribute;
-						if(pa.DisplayName != string.Empty)
+						if(pa.DisplayName != null && pa.DisplayName != string.Empty)
 							processors.Add(new ContentProcessorInfo(type, pa.DisplayName));
 						else
-							processors.Add(new ContentProcessorInfo(type, type.ToString()));
+							processors.Add(new ContentProcessorInfo(type, type.Name));
 					}
 				}
 			}
-			Console.WriteLine(importers.Count);
-			Console.WriteLine(processors.Count);
+			Console.WriteLine("Importers found: " + importers.Count);
+			Console.WriteLine("Processors found: " + processors.Count);
 		}
 		
 		#endregion Private Methods
@@ -146,16 +155,11 @@ namespace MonoDevelop.Xna
 			get  { return "Content"; }
 		}
 		
-		public override void Save (IProgressMonitor monitor)
+		protected override void OnSave (IProgressMonitor monitor)
 		{
-			base.Save (monitor);
+			base.OnSave (monitor);
 		}
-		
-		protected override BuildResult DoBuild (IProgressMonitor monitor, string itemConfiguration)
-        {		
-            return base.DoBuild(monitor, itemConfiguration); 
-        }
-		
+
 		protected override void OnEndLoad ()
 		{
 			
@@ -165,7 +169,7 @@ namespace MonoDevelop.Xna
 		protected override void OnReferenceAddedToProject (ProjectReferenceEventArgs e)
 		{
 			findPipelineEntries(e.ProjectReference);
-			base.OnReferenceAddedToProject (e);
+			base.OnReferenceAddedToProject(e);
 		}
 
         #endregion DotNetProject Overrides

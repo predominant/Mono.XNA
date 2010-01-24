@@ -62,13 +62,13 @@ namespace Microsoft.Xna.Framework.Tests
 			Vector2 expected = new Vector2(-299970,-179950);
 			
 			Vector2.Reflect(ref v1, ref v2, out result);
-			Assert.AreEqual(expected, result, "#1");
+			Assert.IsTrue(TestHelper.ApproximatelyEquals(expected, result), "#1");
 			
 			v1 = new Vector2(0.5f, 0.5f);
 			v2 = new Vector2(0.0f, 1.0f);
 			result = Vector2.Reflect(v1, v2);
 			expected = new Vector2(0.5f, -0.5f);
-			Assert.AreEqual(expected, result, "#2");
+			Assert.IsTrue(TestHelper.ApproximatelyEquals(expected, result), "#2");
 
 			v1 = new Vector2(1.1f, -0.77f);
 			v2 = new Vector2(0.33f, -2.04f);
