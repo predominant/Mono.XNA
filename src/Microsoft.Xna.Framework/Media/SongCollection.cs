@@ -7,36 +7,32 @@ namespace Microsoft.Xna.Framework.Media
 {
     public sealed class SongCollection : IEnumerable<Song>, IEnumerable, IDisposable
     {
-        internal SongCollection()
+        List<Song> songs;
+
+        internal SongCollection(List<Song> songlist)
         {
+            songs = songlist;
         }
 
         public void Dispose()
         {
-            this.Dispose(true);
-            GC.SuppressFinalize(this);
-        }
-
-        private void Dispose(bool disposing)
-        {
-            throw new NotImplementedException();
         }
 
         public IEnumerator<Song> GetEnumerator()
         {
-            throw new NotImplementedException();
+            return songs.GetEnumerator();
         }
 
         IEnumerator IEnumerable.GetEnumerator()
         {
-            throw new NotImplementedException();
+            return songs.GetEnumerator();
         }
 
         public Song this[int index]
         {
             get
             {
-                throw new NotImplementedException();
+                return songs[index];
             }
         }
 
@@ -44,7 +40,7 @@ namespace Microsoft.Xna.Framework.Media
         {
             get
             {
-                throw new NotImplementedException();
+                return songs.Count;
             }
         }
     }

@@ -9,28 +9,40 @@ namespace Microsoft.Xna.Framework.Media
     {
         private string name;
         private int hashcode;
+        MediaSource mediaSource;
+        internal object handle;
 
-        private Album()
-        { 
+
+        internal Album(string name, MediaSource mediasource, object Handle)
+        {
+            this.name = name;
+            mediaSource = mediasource;
+            handle = Handle;
         }
 
         public void Dispose()
         {
-            this.Dispose(true);
-            GC.SuppressFinalize(this);
         }
 
-        private void Dispose(bool disposing)
-        {
-        }
         public bool Equals(Album other)
         {
-            throw new NotImplementedException();
+            bool equal = object.ReferenceEquals(this, other);
+            if (equal && other != null)
+            {
+                mediaSource.Album_IsEqual(this.handle, other.handle, ref equal);
+            }
+            return equal;
         }
 
         public override bool Equals(object obj)
         {
-            throw new NotImplementedException();
+            bool equal = object.ReferenceEquals(this, obj);
+            if (equal)
+            {
+                Album other = obj as Album;
+                mediaSource.Album_IsEqual(this.handle, other.handle, ref equal);
+            }
+            return equal;
         }
 
         public static bool operator ==(Album first, Album second)

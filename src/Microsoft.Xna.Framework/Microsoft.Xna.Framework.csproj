@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="3.5">
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
@@ -54,6 +54,7 @@
     <DefineConstants>DOTNET; DEBUG</DefineConstants>
     <WarningLevel>4</WarningLevel>
     <PlatformTarget>x86</PlatformTarget>
+    <DelaySign>false</DelaySign>
     <AssemblyOriginatorKeyFile>Microsoft.Xna.snk</AssemblyOriginatorKeyFile>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release_Dotnet|AnyCPU' ">
@@ -62,6 +63,7 @@
     <OutputPath>..\..\bin\Release_Dotnet</OutputPath>
     <DefineConstants>DOTNET</DefineConstants>
     <WarningLevel>4</WarningLevel>
+    <DelaySign>false</DelaySign>
     <AssemblyOriginatorKeyFile>Microsoft.Xna.snk</AssemblyOriginatorKeyFile>
     <PlatformTarget>x86</PlatformTarget>
   </PropertyGroup>
@@ -71,6 +73,7 @@
     <OutputPath>..\..\bin\Test_Dotnet</OutputPath>
     <DefineConstants>DOTNET; NUNITTESTS</DefineConstants>
     <WarningLevel>4</WarningLevel>
+    <DelaySign>false</DelaySign>
     <AssemblyOriginatorKeyFile>Microsoft.Xna.snk</AssemblyOriginatorKeyFile>
     <PlatformTarget>x86</PlatformTarget>
   </PropertyGroup>
@@ -126,6 +129,7 @@
     <Compile Include="Media\ArtistCollection.cs" />
     <Compile Include="Media\Genre.cs" />
     <Compile Include="Media\GenreCollection.cs" />
+    <Compile Include="Media\IMediaLibrary.cs" />
     <Compile Include="Media\MediaLibrary.cs" />
     <Compile Include="Media\MediaPlayer.cs" />
     <Compile Include="Media\MediaQueue.cs" />
@@ -141,6 +145,7 @@
     <Compile Include="Media\Video.cs" />
     <Compile Include="Media\VideoPlayer.cs" />
     <Compile Include="Media\VisualizationData.cs" />
+    <Compile Include="Media\WMPBackend\WMPMediaLibrary.cs" />
     <Compile Include="Net\AvailableNetworkSession.cs" />
     <Compile Include="Net\AvailableNetworkSessionCollection.cs" />
     <Compile Include="Net\Enums.cs" />
@@ -360,6 +365,10 @@
     <Compile Include="Graphics\Sprite.cs" />
   </ItemGroup>
   <ItemGroup>
+    <Reference Include="Interop.WMPLib, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\lib\Interop.WMPLib.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Configuration" />
     <Reference Include="System.Data" />
