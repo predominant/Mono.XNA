@@ -28,6 +28,8 @@ SOFTWARE.
 #endregion License
 
 using System;
+using System.Collections.Generic;
+using System.IO;
 
 namespace Microsoft.Xna.Framework.Content.Pipeline
 {
@@ -36,10 +38,13 @@ namespace Microsoft.Xna.Framework.Content.Pipeline
 	public abstract class ContentBuildLogger
 	{	
 
+		private Stack<String> fileStack;
+		
 #region Constructor
 		
 		protected ContentBuildLogger()
 		{
+			this.fileStack = new Stack<String>();
 		}
 		
 #endregion
@@ -59,12 +64,12 @@ namespace Microsoft.Xna.Framework.Content.Pipeline
 		
 		public void PushFile(string filename)
 		{
-			throw new NotImplementedException();
+			fileStack.Push(filename);
 		}
 		
 		public void PopFile()
 		{
-			throw new NotImplementedException();
+			fileStack.Pop();
 		}
 		
 		public abstract void LogImportantMessage(string message, Object[] messageArgs);
@@ -79,10 +84,36 @@ namespace Microsoft.Xna.Framework.Content.Pipeline
 		
 		protected string GetCurrentFilename(ContentIdentity contentIdentity)
 		{
-			throw new NotImplementedException();
+			if ((contentIdentity != null) && !string.IsNullOrEmpty(contentIdentity.SourceFilename))
+			{
+				return GetFilename(contentIdentity.SourceFilename, loggerRootDirectory);
+			}
+			if (this.fileStack.Count > 0)
+			{
+				return GetFilename(fileStack.Peek(), loggerRootDirectory);
+			}
+			return null;
 		}
 
 #endregion
-		
+
+#region Private Methods
+
+				private static string GetFilename(string filename, string RootDir)
+				{
+					string fullPath = RootDir;
+					if (string.IsNullOrEmpty(fullPath))
+					{
+						fullPath = Path.GetFullPath("./");
+					}
+					if (filename.StartsWith(fullPath, StringComparison.OrdinalIgnoreCase))
+					{
+						return filename.Substring(fullPath.Length);
+					}
+					return filename;
+				}
+				
+#endregion
+				
 	}
 }

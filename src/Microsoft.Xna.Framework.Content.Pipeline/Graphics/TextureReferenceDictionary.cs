@@ -30,13 +30,11 @@ SOFTWARE.
 using System;
 
 namespace Microsoft.Xna.Framework.Content.Pipeline.Graphics
-{	
-	
-	public sealed class TextureReferenceDictionary : NamedValueDictionary<ExternalReference<TextureContent>>
-	{
-		
-		public TextureReferenceDictionary()
-		{
-		}
-	}
+{
+
+    [ContentSerializerCollectionItemName("Texture")]
+    public sealed class TextureReferenceDictionary : NamedValueDictionary<ExternalReference<TextureContent>>
+    {
+    }
+
 }

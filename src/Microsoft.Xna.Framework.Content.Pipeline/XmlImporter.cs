@@ -32,7 +32,7 @@ using System;
 namespace Microsoft.Xna.Framework.Content.Pipeline
 {
 	
-	[ContentImporter(".xml")]
+	//[ContentImporter(".xml")]
 	public class XmlImporter : ContentImporter<object>
 	{
 		

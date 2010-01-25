@@ -37,29 +37,56 @@ namespace Microsoft.Xna.Framework.Content.Pipeline.Graphics
 	
 	
 	public sealed class VertexContent
-	{
-		
-#region Properties
+    {
+        #region Constructors
 
-		public VertexChannelCollection Channels 
-		{ 
-			get { throw new NotImplementedException(); }
-		}
-		
-		public VertexChannel<int> PositionIndices 
-		{ 
-			get { throw new NotImplementedException(); }
-		}
-		
-		public IndirectPositionCollection Positions 
-		{ 
-			get { throw new NotImplementedException(); }
-		}
-		
-		public int VertexCount 
-		{ 
-			get { throw new NotImplementedException(); } 
-		}
+        internal VertexContent(GeometryContent parent)
+        {
+            this.positionIndices = new VertexChannel<int>("PositionIndices");
+            this.positions = new IndirectPositionCollection(parent, this.positionIndices);
+            this.channels = new VertexChannelCollection(this);
+        }
+        #endregion
+
+        #region Properties
+
+        private VertexChannelCollection channels;
+        [ContentSerializer(Optional = true)]
+        public VertexChannelCollection Channels
+        {
+            get
+            {
+                return this.channels;
+            }
+        }
+
+        private VertexChannel<int> positionIndices;
+        [ContentSerializerIgnore]
+        public VertexChannel<int> PositionIndices
+        {
+            get
+            {
+                return this.positionIndices;
+            }
+        }
+
+        private IndirectPositionCollection positions;
+        [ContentSerializerIgnore]
+        public IndirectPositionCollection Positions
+        {
+            get
+            {
+                return this.positions;
+            }
+        }
+
+        public int VertexCount
+        {
+            get
+            {
+                return this.positionIndices.Count;
+            }
+        }
 		
 #endregion
 		

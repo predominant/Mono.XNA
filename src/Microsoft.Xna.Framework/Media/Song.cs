@@ -7,19 +7,24 @@ namespace Microsoft.Xna.Framework.Media
     public sealed class Song : IEquatable<Song>, IDisposable
     {
         string name;
-        int hashcode;
+        int hashcode = -1;
+        TimeSpan duration;
+        int rating;
+        int tracknumber;
+        object handle;
+        MediaSource mediaSource;
 
-        internal Song()
+        internal Song(string Name,TimeSpan Duration, int Rating,int Tracknumber, object Handle, MediaSource source)
         {
+            name = Name;
+            duration = Duration;
+            rating = Rating;
+            tracknumber = Tracknumber;
+            handle = Handle;
+            mediaSource = source;
         }
 
         public void Dispose()
-        {
-            this.Dispose(true);
-            GC.SuppressFinalize(this);
-        }
-
-        private void Dispose(bool disposing)
         {
         }
 
@@ -42,7 +47,6 @@ namespace Microsoft.Xna.Framework.Media
         {
             return !(first == second);
         }
-
 
         public override string ToString()
         {
@@ -85,11 +89,9 @@ namespace Microsoft.Xna.Framework.Media
         {
             get
             {
-                throw new System.NotImplementedException();
+                return duration;
             }
         }
-
-
 
         public Genre Genre
         {
@@ -103,7 +105,7 @@ namespace Microsoft.Xna.Framework.Media
         {
             get
             {
-                throw new System.NotImplementedException();
+                return mediaSource.getSong_IsProtected(handle);
             }
         }
 
@@ -119,17 +121,15 @@ namespace Microsoft.Xna.Framework.Media
         {
             get
             {
-                throw new System.NotImplementedException();
+                return mediaSource.getSong_PlayCount(handle);
             }
         }
-
-
 
         public int Rating
         {
             get
             {
-                throw new System.NotImplementedException();
+                return rating;
             }
         }
 
@@ -137,7 +137,7 @@ namespace Microsoft.Xna.Framework.Media
         {
             get
             {
-                throw new System.NotImplementedException();
+                return tracknumber;
             }
         } 
 

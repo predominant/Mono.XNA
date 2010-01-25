@@ -39,7 +39,7 @@ namespace Microsoft.Xna.Framework.Content.Pipeline.Graphics
 
 		#region Constructor
 		
-		public MipmapChainCollection()
+		internal MipmapChainCollection()
 		{
 		}
 

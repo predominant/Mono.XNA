@@ -47,24 +47,38 @@ namespace Microsoft.Xna.Framework.Content.Pipeline.Graphics
 
 #region Public Fields
 
-		public const string CompiledEffectKey = "CompiledEffectKey";
-		public const string EffectKey = "EffectKey";
+		public const string CompiledEffectKey = "CompiledEffect";
+		public const string EffectKey = "Effect";
 		
 #endregion
 		
 #region Properties
 
-		public ExternalReference<CompiledEffect> CompiledEffect 
-		{ 
-			get; 
-			set; 
-		}
-		
-		public ExternalReference<EffectContent> Effect 
-		{ 
-			get; 
-			set; 
-		}
+        [ContentSerializerIgnore]
+        public ExternalReference<CompiledEffect> CompiledEffect
+        {
+            get
+            {
+                return base.GetReferenceTypeProperty<ExternalReference<CompiledEffect>>("CompiledEffect");
+            }
+            set
+            {
+                base.SetProperty<ExternalReference<CompiledEffect>>("CompiledEffect", value);
+            }
+        }
+
+        [ContentSerializerIgnore]
+        public ExternalReference<EffectContent> Effect
+        {
+            get
+            {
+                return base.GetReferenceTypeProperty<ExternalReference<EffectContent>>("Effect");
+            }
+            set
+            {
+                base.SetProperty<ExternalReference<EffectContent>>("Effect", value);
+            }
+        }
 		
 #endregion
 		

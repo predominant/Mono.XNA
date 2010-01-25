@@ -29,62 +29,112 @@ SOFTWARE.
 
 using System;
 using System.Collections.ObjectModel;
+using System.Collections.Generic;
 
 namespace Microsoft.Xna.Framework.Content.Pipeline
 {
-	
-	
+
+    [Serializable]
 	public sealed class ProcessorParameter
 	{
 
 #region Constructor
-		
-		public ProcessorParameter()
-		{
-		
-		}
+
+        internal ProcessorParameter(string propertyName, Type propertyType)
+        {
+            if (string.IsNullOrEmpty(propertyName))
+            {
+                throw new ArgumentNullException("propertyName");
+            }
+            if (propertyType == null)
+            {
+                throw new ArgumentNullException("propertyType");
+            }
+            this.propertyName = propertyName;
+            this.propertyType = propertyType.AssemblyQualifiedName;
+            if (propertyType.IsEnum)
+            {
+                this.possibleEnumValues = new List<string>(Enum.GetNames(propertyType)).AsReadOnly();
+            }
+        }
 		
 #endregion
 		
 #region Properties
 
-		public Object DefaultValue 
-		{ 
-			get { throw new NotImplementedException(); } 
-			set { throw new NotImplementedException(); }
-		}
-		
-		public string Description 
-		{ 
-			get { throw new NotImplementedException(); }
-			set { throw new NotImplementedException(); }
-		}
+        private object defaultValue;
+        public object DefaultValue
+        {
+            get
+            {
+                return defaultValue;
+            }
+            internal set
+            {
+                defaultValue = value;
+            }
+        }
 
-		public string DisplayName 
-		{ 
-			get { throw new NotImplementedException(); }
-			set { throw new NotImplementedException(); }
-		}
-		
-		public bool IsEnum 
-		{ 
-			get { throw new NotImplementedException(); }
-		}
+        private string description;
+        public string Description
+        {
+            get
+            {
+                return description;
+            }
+            internal set
+            {
+                description = value;
+            }
+        }
 
-		public ReadOnlyCollection<string> PossibleEnumValues 
-		{ 
-			get { throw new NotImplementedException(); }
-		}
-		
-		public string PropertyName
-		{ 
-			get { throw new NotImplementedException(); }
-		}
+        private string displayName;
+        public string DisplayName
+        {
+            get
+            {
+                return displayName;
+            }
+            internal set
+            {
+                displayName = value;
+            }
+        }
 
-		public string PropertyType 
-		{ 
-			get { throw new NotImplementedException(); }
-		}
+        public bool IsEnum
+        {
+            get
+            {
+                return (possibleEnumValues != null);
+            }
+        }
+
+        private ReadOnlyCollection<string> possibleEnumValues;
+        public ReadOnlyCollection<string> PossibleEnumValues
+        {
+            get
+            {
+                return this.possibleEnumValues;
+            }
+        }
+
+        private string propertyName;
+        public string PropertyName
+        {
+            get
+            {
+                return this.propertyName;
+            }
+        }
+
+        private string propertyType;
+        public string PropertyType
+        {
+            get
+            {
+                return this.propertyType;
+            }
+        }
 		
 #endregion
 		

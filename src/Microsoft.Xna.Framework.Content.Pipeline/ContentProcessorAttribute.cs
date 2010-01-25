@@ -32,7 +32,7 @@ using System;
 namespace Microsoft.Xna.Framework.Content.Pipeline
 {
 	
-	
+	[Serializable, AttributeUsage(AttributeTargets.Class)]
 	public class ContentProcessorAttribute : Attribute
 	{
 		#region Private Fields

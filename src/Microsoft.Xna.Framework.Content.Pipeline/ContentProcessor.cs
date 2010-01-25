@@ -38,7 +38,7 @@ namespace Microsoft.Xna.Framework.Content.Pipeline
 		
 #region Constructor		
 		
-		public ContentProcessor()
+		protected ContentProcessor()
 		{
 		}
 		
@@ -53,16 +53,19 @@ namespace Microsoft.Xna.Framework.Content.Pipeline
 #region Explicit IContentProcessor Implementation
 		
 		Type IContentProcessor.InputType {
-			get { throw new NotImplementedException(); }
+			get { return typeof(TInput); }
 		}
 
 		Type IContentProcessor.OutputType {
-			get { throw new NotImplementedException(); }
+			get { return typeof(TOutput); }
 		}
 
 		object IContentProcessor.Process (object input, ContentProcessorContext context)
 		{
-			throw new NotImplementedException();
+			if (input == null) throw new ArgumentNullException("input");
+			if (!(input is TInput)) throw new ArgumentException("Wrong content processor input type");
+			TInput local = (TInput) input;
+			return Process(local, context);
 		}
 		
 #endregion

@@ -43,29 +43,30 @@ namespace Microsoft.Xna.Framework.Content.Pipeline
 		{
 		}
 		
-		public InvalidContentException(string message)
+		public InvalidContentException(string message) :base(message)
 		{
 			
 		}
 		
-		public InvalidContentException(string message, ContentIdentity contentIdentity)
+		public InvalidContentException(string message, ContentIdentity contentIdentity) :base(message)
+		{
+			this.contentIdentity = contentIdentity;
+		}
+		
+		public InvalidContentException(string message, ContentIdentity contentIdentity, Exception innerException) :base(message, innerException)
+		{
+			this.contentIdentity = contentIdentity;
+		}
+		
+		public InvalidContentException(string message, Exception innerException) :base(message, innerException)
 		{
 			
 		}
 		
-		public InvalidContentException(string message, ContentIdentity contentIdentity, Exception innerException)
+		protected InvalidContentException(SerializationInfo serializationInfo, StreamingContext streamingContext) : base(serializationInfo, streamingContext)
 		{
-			
-		}
-		
-		public InvalidContentException(string message, Exception innerException)
-		{
-			
-		}
-		
-		protected InvalidContentException(SerializationInfo serializationInfo, StreamingContext streamingContext)
-		{
-			
+			if (serializationInfo == null) throw new ArgumentNullException("serializationInfo");
+			contentIdentity = (ContentIdentity) serializationInfo.GetValue("ContentIdentity", typeof(ContentIdentity));
 		}
 
 #endregion

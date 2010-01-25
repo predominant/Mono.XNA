@@ -46,6 +46,7 @@ namespace Microsoft.Xna.Framework.Content.Pipeline.Graphics
 		
 #region Properties
 
+        [ContentSerializer(Optional = true)]
 		public GeometryContentCollection Geometry 
 		{ 
 			get { throw new NotImplementedException(); }

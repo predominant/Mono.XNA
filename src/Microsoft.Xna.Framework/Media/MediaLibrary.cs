@@ -34,26 +34,20 @@ namespace Microsoft.Xna.Framework.Media
 
         public void Dispose()
         {
-            this.Dispose(true);
-            GC.SuppressFinalize(this);
         }
 
-        private void Dispose(bool disposing)
-        {
-            throw new NotImplementedException();
-        }
         public AlbumCollection Albums
         {
             get
             {
-                throw new NotImplementedException();
+                return mediaSource.GetAlbums();
             }
         }
         public ArtistCollection Artists
         {
             get
             {
-                throw new NotImplementedException();
+                return mediaSource.GetArtists();
             }
         }
 
@@ -61,7 +55,7 @@ namespace Microsoft.Xna.Framework.Media
         {
             get
             {
-                throw new NotImplementedException();
+                return mediaSource.GetGenres();
             }
         }
 
@@ -77,7 +71,7 @@ namespace Microsoft.Xna.Framework.Media
         {
             get
             {
-                throw new NotImplementedException();
+                return mediaSource.GetPictures();
             }
         }
 
@@ -85,7 +79,7 @@ namespace Microsoft.Xna.Framework.Media
         {
             get
             {
-                throw new NotImplementedException();
+                return mediaSource.GetPlaylists();
             }
         }
 
@@ -93,7 +87,7 @@ namespace Microsoft.Xna.Framework.Media
         {
             get
             {
-                throw new NotImplementedException();
+                return mediaSource.GetRootPictureAlbum();
             }
         }
 
@@ -101,7 +95,7 @@ namespace Microsoft.Xna.Framework.Media
         {
             get
             {
-                throw new NotImplementedException();
+               return mediaSource.GetSongs();
             }
         }
     }

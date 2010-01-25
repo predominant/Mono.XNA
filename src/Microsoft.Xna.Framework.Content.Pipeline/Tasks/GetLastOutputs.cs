@@ -28,47 +28,128 @@ SOFTWARE.
 #endregion License
 
 using System;
+using System.IO;
+using System.Xml.XPath;
+using System.Xml;
+using System.Collections.Generic;
 using Microsoft.Build.Utilities;
 using Microsoft.Build.Framework;
 
 namespace Microsoft.Xna.Framework.Content.Pipeline.Tasks
 {
-	
-	
-	public class GetLastOutputs : Task
-	{
-		
-		#region Constructor
-		
-		public GetLastOutputs()
-		{
-		}
-		
-		#endregion
-		
-		#region Properties
-		
-		[Required]
-		public string IntermediateDirectory { 
-			get { throw new NotImplementedException(); }
-			set { throw new NotImplementedException(); }
-		}
-		
-		[Output]
-		public ITaskItem[] OutputContentFiles { 
-			get { throw new NotImplementedException(); }
-		}
-		
-		#endregion
-		
-		#region Public Methods
-		
-		public override bool Execute ()
-		{
-			throw new NotImplementedException();
-		}
-		
-		#endregion
-		
-	}
+
+
+    public class GetLastOutputs : Task
+    {
+
+        #region Constructor
+
+        public GetLastOutputs()
+        {
+        }
+
+        #endregion
+
+        #region Properties
+
+        private string intermediateDirectory;
+        [Required]
+        public string IntermediateDirectory
+        {
+            get
+            {
+                return intermediateDirectory;
+            }
+            set
+            {
+                intermediateDirectory = value;
+            }
+        }
+
+        private ITaskItem[] outputContentFiles;
+        [Output]
+        public ITaskItem[] OutputContentFiles
+        {
+            get
+            {
+                return outputContentFiles;
+            }
+        }
+
+        #endregion
+
+        #region Public Methods
+
+        public override bool Execute()
+        {
+            if (string.IsNullOrEmpty(IntermediateDirectory))
+            {
+                base.Log.LogError("IntermediateDirectory is null or empty");
+            }
+            string path = null;
+            try
+            {
+                path = Path.Combine(IntermediateDirectory, "ContentPipeline.xml");
+            }
+            catch (ArgumentException)
+            {
+                base.Log.LogError("IntermediateDirectory invalid");
+            }
+
+            if (base.Log.HasLoggedErrors)
+            {
+                return false;
+            }
+
+            List<ITaskItem> list = new List<ITaskItem>();
+            if (File.Exists(path))
+            {
+                XPathNavigator navigator = null;
+                try
+                {
+                    navigator = new XPathDocument(path).CreateNavigator();
+                    if (BuildWasSuccessful(navigator))
+                    {
+                        XPathNodeIterator outputiterator = navigator.Select("/XnaContent/Asset/Item[not(contains(Options,'IntermediateFile'))]/Output");
+                        XPathNodeIterator extraiterator = navigator.Select("/XnaContent/Asset/Item[not(contains(Options,'IntermediateFile'))]/Extra");
+                        while (outputiterator.MoveNext())
+                        {
+                            list.Add(new TaskItem(outputiterator.Current.Value));
+                        }
+                        while (extraiterator.MoveNext())
+                        {
+                            list.Add(new TaskItem(extraiterator.Current.Value));
+                        }
+                    }
+                }
+                catch (XmlException)
+                {
+                }
+            }
+            this.outputContentFiles = list.ToArray();
+            return !base.Log.HasLoggedErrors;
+        }
+
+        static bool BuildWasSuccessful(System.Xml.XPath.XPathNavigator navigator)
+        {
+            bool valueAsBoolean = false;
+            XPathNodeIterator iterator = navigator.Select("XnaContent/Asset/BuildSuccessful");
+            iterator.MoveNext();
+            try
+            {
+                valueAsBoolean = iterator.Current.ValueAsBoolean;
+            }
+            catch (FormatException)
+            {
+            }
+            catch (InvalidCastException)
+            {
+            }
+            return valueAsBoolean;
+        }
+
+
+        #endregion
+
+    }
 }

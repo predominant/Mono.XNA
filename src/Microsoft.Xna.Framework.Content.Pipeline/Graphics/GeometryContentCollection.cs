@@ -31,17 +31,17 @@ using System;
 
 namespace Microsoft.Xna.Framework.Content.Pipeline.Graphics
 {
-	
-	
+
+    [ContentSerializerCollectionItemName("Batch")]
 	public sealed class GeometryContentCollection : ChildCollection<MeshContent, GeometryContent>
 	{
 		
 #region Constructor
-		
-		public GeometryContentCollection()
-			: base (null)
-		{
-		}
+
+        internal GeometryContentCollection(MeshContent parent)
+            : base(parent)
+        {
+        }
 
 #endregion
 		

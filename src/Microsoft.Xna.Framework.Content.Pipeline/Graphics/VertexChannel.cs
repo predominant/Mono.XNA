@@ -37,7 +37,16 @@ namespace Microsoft.Xna.Framework.Content.Pipeline.Graphics
 	
 	public abstract class VertexChannel : IList, ICollection, IEnumerable
 	{
-
+#region Constructors
+        internal VertexChannel(string name)
+        {
+            if (string.IsNullOrEmpty(name))
+            {
+                throw new ArgumentNullException("name");
+            }
+            this.name = name;
+        }
+#endregion
 #region Properties
 		
 		public Object this[int index] 
@@ -51,11 +60,14 @@ namespace Microsoft.Xna.Framework.Content.Pipeline.Graphics
 			get { throw new NotImplementedException(); }
 		}
 
+        [ContentSerializerIgnore]
 		public abstract Type ElementType
 		{ 
 			get;
 		}
 
+        private string name;
+        [ContentSerializerIgnore]
 		public string Name 
 		{ 
 			get { throw new NotImplementedException(); }

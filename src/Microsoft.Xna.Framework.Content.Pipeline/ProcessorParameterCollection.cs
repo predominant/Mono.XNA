@@ -29,6 +29,7 @@ SOFTWARE.
 
 using System;
 using System.Collections.ObjectModel;
+using System.Collections.Generic;
 
 namespace Microsoft.Xna.Framework.Content.Pipeline
 {
@@ -37,10 +38,9 @@ namespace Microsoft.Xna.Framework.Content.Pipeline
 	[Serializable]
 	public sealed class ProcessorParameterCollection : ReadOnlyCollection<ProcessorParameter>
 	{
-		
-		public ProcessorParameterCollection()
-			: base (null)
-		{
-		}
+        internal ProcessorParameterCollection(IEnumerable<ProcessorParameter> parameters)
+            : base(new List<ProcessorParameter>(parameters))
+        {
+        }
 	}
 }

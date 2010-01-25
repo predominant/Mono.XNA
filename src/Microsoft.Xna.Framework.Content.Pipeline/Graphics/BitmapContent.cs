@@ -36,7 +36,10 @@ namespace Microsoft.Xna.Framework.Content.Pipeline.Graphics
 	public abstract class BitmapContent : ContentItem
 	{
 		#region Fields
-		
+        
+        private int height;
+        private int width;
+
 		#endregion
 
 		#region Constructors
@@ -54,17 +57,39 @@ namespace Microsoft.Xna.Framework.Content.Pipeline.Graphics
 		
 		#region Properties
 
-		public int Height 
-		{ 
-			get; 
-			set; 
-		}
-		
-		public int Width 
-		{ 
-			get; 
-			set; 
-		}
+        [ContentSerializer]
+        public int Height
+        {
+            get
+            {
+                return this.height;
+            }
+            private set
+            {
+                if (value <= 0)
+                {
+                    throw new ArgumentOutOfRangeException("value");
+                }
+                this.height = value;
+            }
+        }
+
+        [ContentSerializer]
+        public int Width
+        {
+            get
+            {
+                return this.width;
+            }
+            private set
+            {
+                if (value <= 0)
+                {
+                    throw new ArgumentOutOfRangeException("value");
+                }
+                this.width = value;
+            }
+        }
 		
 		#endregion
 		

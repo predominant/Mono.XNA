@@ -25,6 +25,7 @@ SOFTWARE.
 
 using System.Reflection;
 using System.Runtime.CompilerServices;
+using System.Runtime.InteropServices;
 
 // General Information about an assembly is controlled through the following 
 // set of attributes. Change these attribute values to modify the information
@@ -38,7 +39,7 @@ using System.Runtime.CompilerServices;
 [assembly: AssemblyConfiguration("Release")]
 #endif
 [assembly: AssemblyCompany("The Mono.Xna Team")]
-[assembly: AssemblyCopyright("Copyright 2006 - 2007 The Mono.Xna Team")]
+[assembly: AssemblyCopyright("Copyright 2006 - 2010 The Mono.Xna Team")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 
@@ -58,5 +59,11 @@ using System.Runtime.CompilerServices;
 //      Build Number
 //      Revision
 //
-[assembly: AssemblyVersion("0.1.0.*")]
-[assembly: AssemblyFileVersion("0.1.0.*")]
+[assembly: AssemblyVersion("3.1.0.0")]
+[assembly: AssemblyFileVersion("3.1.10527.0")]
+[assembly: GuidAttribute("d8fc7d8b-6798-479a-9ad2-67a1fb0757ff")]
+
+#if MONO
+[assembly: AssemblyDelaySign(true)]
+[assembly: AssemblyKeyFile("../xna.pub")]
+#endif

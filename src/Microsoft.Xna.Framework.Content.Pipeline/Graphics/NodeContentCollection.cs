@@ -37,11 +37,11 @@ namespace Microsoft.Xna.Framework.Content.Pipeline.Graphics
 	{
 
 #region Constructor
-		
-		public NodeContentCollection()
-			: base (null)
-		{
-		}
+
+        internal NodeContentCollection(NodeContent parent)
+            : base(parent)
+        {
+        }
 		
 #endregion 
 		

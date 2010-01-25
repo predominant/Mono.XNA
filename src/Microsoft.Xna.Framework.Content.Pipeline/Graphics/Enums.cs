@@ -31,11 +31,13 @@ using System;
 
 namespace Microsoft.Xna.Framework.Content.Pipeline.Graphics
 {
-	
-	public enum FontDescriptionStyle
-	{
-		Bold,
-		Italic, 
-		Regular
-	}
+
+    [Flags]
+    public enum FontDescriptionStyle
+    {
+        Regular,
+        Bold,
+        Italic
+    }
+
 }

@@ -32,49 +32,84 @@ using System.Collections.ObjectModel;
 
 namespace Microsoft.Xna.Framework.Content.Pipeline.Audio
 {
-	
-	
-	public sealed class AudioFormat
-	{
-		
-#region Properties
 
-		public int AverageBytesPerSecond 
-		{ 
-			get { throw new NotImplementedException(); } 
-		}
-		
-		public int BitsPerSample 
-		{ 
-			get { throw new NotImplementedException(); }
-		}
-		
-		public int BlockAlign 
-		{ 
-			get { throw new NotImplementedException(); }
-		}
 
-		public int ChannelCount 
-		{ 
-			get { throw new NotImplementedException(); }
-		}
-		
-		public int Format 
-		{ 
-			get { throw new NotImplementedException(); }
-		}
-		
-		public ReadOnlyCollection<byte> NativeWaveFormat 
-		{ 
-			get { throw new NotImplementedException(); }
-		}
-		
-		public int SampleRate 
-		{ 
-			get { throw new NotImplementedException(); }
-		}
-		
-#endregion
-		
-	}
+    public sealed class AudioFormat
+    {
+        #region Private Fields
+        private int avgBytesPerSec;
+        private int bitsPerSample;
+        private int blockAlign;
+        private int channels;
+        private ReadOnlyCollection<byte> formatBufferCollection;
+        private int formatTag;
+        private byte[] rawFormatBuffer;
+        private int sampleRate;
+        #endregion
+
+        #region Constructors
+        internal AudioFormat()
+        {
+
+        }
+        #endregion
+
+        #region Properties
+        public int AverageBytesPerSecond
+        {
+            get
+            {
+                return this.avgBytesPerSec;
+            }
+        }
+
+        public int BitsPerSample
+        {
+            get
+            {
+                return this.bitsPerSample;
+            }
+        }
+
+        public int BlockAlign
+        {
+            get
+            {
+                return this.blockAlign;
+            }
+        }
+
+        public int ChannelCount
+        {
+            get
+            {
+                return this.channels;
+            }
+        }
+
+        public int Format
+        {
+            get
+            {
+                return this.formatTag;
+            }
+        }
+
+        public ReadOnlyCollection<byte> NativeWaveFormat
+        {
+            get
+            {
+                return this.formatBufferCollection;
+            }
+        }
+
+        public int SampleRate
+        {
+            get
+            {
+                return this.sampleRate;
+            }
+        }
+        #endregion
+    }
 }

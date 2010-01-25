@@ -39,6 +39,7 @@ namespace Microsoft.Xna.Framework.Content.Pipeline
 		#region Properties
 		
 		private ContentIdentity identity;
+        [ContentSerializer(Optional = true)]
 		public ContentIdentity Identity 
 		{ 
 			get { return identity; }
@@ -46,11 +47,20 @@ namespace Microsoft.Xna.Framework.Content.Pipeline
 		}
 		
 		private OpaqueDataDictionary opaqueData;
+        [ContentSerializer(Optional = true)]
 		public OpaqueDataDictionary OpaqueData 
 		{ 
 			get { return opaqueData; }
 		}
-		
+
+        private string name;
+        [ContentSerializer(Optional = true)]
+        public string Name
+        {
+            get { return name; }
+            set { this.name = value; }
+        }
+
 		#endregion
 		
 		#region Constructor

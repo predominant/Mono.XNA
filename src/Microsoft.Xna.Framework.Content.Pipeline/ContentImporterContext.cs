@@ -35,12 +35,12 @@ namespace Microsoft.Xna.Framework.Content.Pipeline
 	
 	public sealed class ContentImporterContext
 	{
-		
+
 #region Constructor
-		
-		public ContentImporterContext()
-		{
-		}
+
+        internal ContentImporterContext()
+        {
+        }
 		
 #endregion
 		
@@ -70,7 +70,7 @@ namespace Microsoft.Xna.Framework.Content.Pipeline
 
 		public void AddDependency(string filename)
 		{
-			throw new NotImplementedException();
+            throw new NotImplementedException();
 		}
 		
 #endregion

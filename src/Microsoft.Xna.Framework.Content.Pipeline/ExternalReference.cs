@@ -28,6 +28,7 @@ SOFTWARE.
 #endregion License
 
 using System;
+using System.IO;
 
 namespace Microsoft.Xna.Framework.Content.Pipeline
 {
@@ -44,12 +45,18 @@ namespace Microsoft.Xna.Framework.Content.Pipeline
 		
 		public ExternalReference(string filename)
 		{
-			this.filename = filename;
+			if (filename != null) this.filename = Path.GetFullPath(filename);
 		}
 		
 		public ExternalReference(string filename, ContentIdentity relativeToContent)
 		{
-			this.filename = filename;
+			if (filename != null)
+			{
+				if (filename.Length == 0) throw new ArgumentNullException("filename");
+				if (relativeToContent == null) throw new ArgumentNullException("relativeToContent");
+				if (string.IsNullOrEmpty(relativeToContent.SourceFilename)) throw new ArgumentNullException("relativeToContent.SourceFilename");
+				this.filename = Path.GetFullPath(Path.Combine(Path.GetDirectoryName(relativeToContent.SourceFilename), filename));
+			}
 		}
 		
 #endregion 
@@ -60,7 +67,14 @@ namespace Microsoft.Xna.Framework.Content.Pipeline
 		public string Filename 
 		{ 
 			get { return filename; }
-			set { filename = value; }
+			set {
+				if (value != null)
+				{
+					string fullPath = Path.GetFullPath(value);
+					if (!fullPath.Equals(value.Replace(Path.AltDirectorySeparatorChar, Path.DirectorySeparatorChar), StringComparison.OrdinalIgnoreCase)) throw new ArgumentException("Filename not absolute");					
+				}
+				this.filename = value;
+				}
 		}
 		
 #endregion

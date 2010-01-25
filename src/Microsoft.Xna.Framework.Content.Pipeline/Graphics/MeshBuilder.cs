@@ -38,7 +38,7 @@ namespace Microsoft.Xna.Framework.Content.Pipeline.Graphics
 
 #region Constructor
 		
-		public MeshBuilder()
+		private MeshBuilder()
 		{
 		}
 

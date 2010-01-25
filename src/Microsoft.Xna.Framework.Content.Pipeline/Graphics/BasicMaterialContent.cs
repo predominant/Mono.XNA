@@ -48,54 +48,61 @@ namespace Microsoft.Xna.Framework.Content.Pipeline.Graphics
 		
 #region Public Fields
 
-		public const string AlphaKey = "AlphaKey";
-		public const string DiffuseColorKey = "DiffuseColorKey";
-		public const string EmissiveColorKey = "EmissiveColorKey";
-		public const string SpecularColorKey = "SpecularColorKey";
-		public const string SpecularPowerKey = "SpecularPowerKey";
-		public const string TextureKey = "TextureKey";
-		public const string VertexColorEnabledKey = "VertexColorEnabledKey";
+		public const string AlphaKey = "Alpha";
+		public const string DiffuseColorKey = "DiffuseColor";
+		public const string EmissiveColorKey = "EmissiveColor";
+		public const string SpecularColorKey = "SpecularColor";
+		public const string SpecularPowerKey = "SpecularPower";
+		public const string TextureKey = "Texture";
+		public const string VertexColorEnabledKey = "VertexColorEnabled";
 
 #endregion
 		
 #region Properties
-
+        
+        [ContentSerializerIgnore]
 		public Nullable<float> Alpha 
 		{ 
 			get { return OpaqueData[AlphaKey] as Nullable<float>; }
 			set { OpaqueData[AlphaKey] = value; } 
 		}
-		
+
+        [ContentSerializerIgnore]
 		public Nullable<Vector3> DiffuseColor 
 		{ 
 			get { return OpaqueData[DiffuseColorKey] as Nullable<Vector3>; } 
 			set { OpaqueData[DiffuseColorKey] = value; }
 		}
-		
+
+        [ContentSerializerIgnore]
 		public Nullable<Vector3> EmissiveColor 
 		{ 
 			get { return OpaqueData[EmissiveColorKey] as Nullable<Vector3>; } 
 			set { OpaqueData[EmissiveColorKey] = value; }
 		}
-		
+
+        [ContentSerializerIgnore]
 		public Nullable<Vector3> SpecularColor 
 		{ 
 			get { return OpaqueData[SpecularColorKey] as Nullable<Vector3>; } 
 			set { OpaqueData[SpecularColorKey] = value; }
 		}
-		
+
+        [ContentSerializerIgnore]
 		public Nullable<float> SpecularPower 
 		{ 
 			get { return OpaqueData[SpecularPowerKey] as Nullable<float>; } 
 			set { OpaqueData[SpecularPowerKey] = value; }
 		}
-		
+
+        [ContentSerializerIgnore]
 		public ExternalReference<TextureContent> Texture
 		{ 
 			get { return Textures[TextureKey] as ExternalReference<TextureContent>; } 
 			set { Textures[TextureKey] = value; }
 		}
-		
+
+        [ContentSerializerIgnore]
 		public Nullable<bool> VertexColorEnabled 
 		{ 
 			get { return OpaqueData[VertexColorEnabledKey] as Nullable<bool>; } 

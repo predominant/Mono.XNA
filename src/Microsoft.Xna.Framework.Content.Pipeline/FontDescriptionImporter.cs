@@ -28,12 +28,15 @@ SOFTWARE.
 #endregion License
 
 using System;
+using System.Xml;
+using System.IO;
 using Microsoft.Xna.Framework.Content.Pipeline.Graphics;
+using Microsoft.Xna.Framework.Content.Pipeline.Serialization.Intermediate;
 
 namespace Microsoft.Xna.Framework.Content.Pipeline
 {
 	
-	[ContentImporter(".spritefont")]
+	[ContentImporter(".spritefont", DefaultProcessor="FontDescriptionProcessor")]
 	public class FontDescriptionImporter : ContentImporter<FontDescription>
 	{
 
@@ -49,7 +52,13 @@ namespace Microsoft.Xna.Framework.Content.Pipeline
 		
 		public override FontDescription Import(string filename, ContentImporterContext context)
 		{
-			return null;
+			FontDescription description = null;
+			using (XmlReader reader = XmlReader.Create(filename))
+			{
+				description  = IntermediateSerializer.Deserialize<FontDescription>(reader, filename);
+			}
+			description.Identity = new ContentIdentity(new FileInfo(filename).FullName, "FontDescriptionImporter");
+			return description;
 		}
 		
 #endregion

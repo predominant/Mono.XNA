@@ -32,8 +32,8 @@ using System.Collections.Generic;
 
 namespace Microsoft.Xna.Framework.Content.Pipeline
 {
-	
-	
+
+    [Serializable, AttributeUsage(AttributeTargets.Class)]
 	public class ContentImporterAttribute : Attribute
 	{
 		#region Private Fields
@@ -41,22 +41,37 @@ namespace Microsoft.Xna.Framework.Content.Pipeline
 		private bool cacheImportedData;
 		private string defaultProcessor;
 		private string displayName;
-		private List<string> fileExtensions;		
+		private IEnumerable<string> fileExtensions;		
 		
 		#endregion Private Fields
 		
 		#region Constructors
-		
-		public ContentImporterAttribute (string fileExtension)
-		{
-			this.fileExtensions = new List<string>();
-			this.fileExtensions.Add(fileExtension);
-		}
-		
-		public ContentImporterAttribute (string[] fileExtensions)
-		{		
-			this.fileExtensions = new List<string>(fileExtensions); 
-		}
+
+        public ContentImporterAttribute(string fileExtension)
+            : this(new string[] { fileExtension })
+        {
+        }
+
+        public ContentImporterAttribute(params string[] fileExtensions)
+        {
+            if (fileExtensions == null)
+            {
+                throw new ArgumentNullException("fileExtensions");
+            }
+
+            foreach (string str in fileExtensions)
+            {
+                if (string.IsNullOrEmpty(str))
+                {
+                    throw new ArgumentNullException("extension");
+                }
+                if (!str.StartsWith("."))
+                {
+                    //throw new ArgumentException("Bad file extension", str));
+                }
+            }
+            this.fileExtensions = Array.AsReadOnly<string>(fileExtensions);
+        }
 		
 		#endregion Constructor
 		

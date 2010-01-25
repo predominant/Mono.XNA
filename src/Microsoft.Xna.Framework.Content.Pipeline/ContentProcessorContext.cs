@@ -39,7 +39,7 @@ namespace Microsoft.Xna.Framework.Content.Pipeline
 
 #region Constructor
 		
-		public ContentProcessorContext()
+		internal ContentProcessorContext()
 		{
 		}
 		
@@ -93,14 +93,44 @@ namespace Microsoft.Xna.Framework.Content.Pipeline
 		
 #region Public Methods
 
+        public TOutput BuildAndLoadAsset<TInput, TOutput>(ExternalReference<TInput> sourceAsset, string processorName)
+        {
+            return BuildAndLoadAsset<TInput, TOutput>(sourceAsset, processorName, null, null);
+        }
+
+        public TOutput BuildAndLoadAsset<TInput, TOutput>(ExternalReference<TInput> sourceAsset, string processorName, OpaqueDataDictionary processorParameters, string importerName)
+        {
+            throw new NotImplementedException(); 
+        }
+
+        public ExternalReference<TOutput> BuildAsset<TInput, TOutput>(ExternalReference<TInput> sourceAsset, string processorName)
+        {
+            return BuildAsset<TInput, TOutput>(sourceAsset, processorName, null, null, null);
+        }
+
+        public ExternalReference<TOutput> BuildAsset<TInput, TOutput>(ExternalReference<TInput> sourceAsset, string processorName, OpaqueDataDictionary processorParameters, string importerName, string assetName)
+        {
+            throw new NotImplementedException();
+        }
+
+        public TOutput Convert<TInput, TOutput>(TInput input, string processorName)
+        {
+            return Convert<TInput, TOutput>(input, processorName, new OpaqueDataDictionary());
+        }
+
+        public TOutput Convert<TInput, TOutput>(TInput input, string processorName, OpaqueDataDictionary processorParameters)
+        {
+            throw new NotImplementedException();
+        }
+
 		public void AddDependency(string filename)
 		{
-			
+            throw new NotImplementedException();
 		}
 		
 		public void AddOutputFile(string filename)
 		{
-			
+            throw new NotImplementedException();
 		}
 		
 #endregion

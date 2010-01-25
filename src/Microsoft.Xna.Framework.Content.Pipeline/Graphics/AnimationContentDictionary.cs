@@ -31,8 +31,8 @@ using System;
 
 namespace Microsoft.Xna.Framework.Content.Pipeline.Graphics
 {
-	
-	
+
+    [ContentSerializerCollectionItemName("Animation")]
 	public sealed class AnimationContentDictionary : NamedValueDictionary<AnimationContent>
 	{
 

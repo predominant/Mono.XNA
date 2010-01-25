@@ -36,9 +36,8 @@ namespace Microsoft.Xna.Framework.Content.Pipeline
 		
 #region Constructor
 		
-		public ContentImporter()
+		protected ContentImporter()
 		{
-			throw new NotImplementedException();
 		}
 		
 #endregion
@@ -55,7 +54,7 @@ namespace Microsoft.Xna.Framework.Content.Pipeline
 
 		object IContentImporter.Import (string filename, ContentImporterContext context)
 		{
-			throw new NotImplementedException();
+			return Import(filename, context);
 		}
 		
 #endregion

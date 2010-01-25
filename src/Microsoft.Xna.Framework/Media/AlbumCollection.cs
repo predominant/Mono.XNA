@@ -7,7 +7,7 @@ namespace Microsoft.Xna.Framework.Media
 {
     public sealed class AlbumCollection : IEnumerable<Album>, IEnumerable, IDisposable
     {
-        private AlbumCollection()
+        internal AlbumCollection(List<Album> albumlist)
         {
         }
 

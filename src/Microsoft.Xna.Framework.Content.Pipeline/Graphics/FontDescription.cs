@@ -36,16 +36,28 @@ namespace Microsoft.Xna.Framework.Content.Pipeline.Graphics
 	{
 
 #region Constructors
-		
-		public FontDescription(string fontName, float size, float spacing)
-		{
-			
-		}
 
-		public FontDescription(string fontName, float size, float spacing, FontDescriptionStyle fontStyle)
-		{
-			
-		}
+        public FontDescription(string fontName, float size, float spacing)
+            : this(fontName, size, spacing, FontDescriptionStyle.Regular)
+        {
+        }
+
+        public FontDescription(string fontName, float size, float spacing, FontDescriptionStyle fontStyle)
+        {
+            this.FontName = fontName;
+            this.Size = size;
+            this.Style = fontStyle;
+            this.Spacing = spacing;
+        }
+
+        public FontDescription(string fontName, float size, float spacing, FontDescriptionStyle fontStyle, bool useKerning)
+        {
+            this.FontName = fontName;
+            this.Size = size;
+            this.Style = fontStyle;
+            this.Spacing = spacing;
+            this.UseKerning = useKerning;
+        }
 		
 #endregion 
 		
@@ -57,7 +69,21 @@ namespace Microsoft.Xna.Framework.Content.Pipeline.Graphics
 		{ 
 			get { return characters; }
 		}
-		
+
+        private bool useKerning;
+        [ContentSerializer(Optional = true)]
+        public bool UseKerning
+        {
+            get
+            {
+                return this.useKerning;
+            }
+            set
+            {
+                this.useKerning = value;
+            }
+        }
+
 		private string fontName;		
 		[ContentSerializer]
 		public string FontName 
@@ -65,7 +91,21 @@ namespace Microsoft.Xna.Framework.Content.Pipeline.Graphics
 			get { return fontName; }
 			set { fontName = value; }
 		}
-		
+
+        private char? defaultCharacter;
+        [ContentSerializer(Optional = true)]
+        public char? DefaultCharacter
+        {
+            get
+            {
+                return defaultCharacter;
+            }
+            set
+            {
+                defaultCharacter = value;
+            }
+        }
+
 		private float size;
 		public float Size 
 		{ 
@@ -74,6 +114,7 @@ namespace Microsoft.Xna.Framework.Content.Pipeline.Graphics
 		}
 
 		private float spacing;
+        [ContentSerializer(Optional = true)]
 		public float Spacing 
 		{ 
 			get { return spacing; }

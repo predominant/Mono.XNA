@@ -6,16 +6,22 @@ namespace Microsoft.Xna.Framework.Media
 {
     public sealed class MediaSource
     {
-        private MediaSourceType mediaSourceType;
-        private string name;
+        private IMediaLibrary library;
 
-        internal MediaSource()
+        internal MediaSource(IMediaLibrary backend)
         {
+            library = backend;
+            library.mediasource = this;
         }
 
         public static IList<MediaSource> GetAvailableMediaSources()
         {
-            return new MediaSource[] { new MediaSource() };
+            return new MediaSource[]
+            {
+//#if WMP_MEDIALIBRARY_BACKEND
+                new MediaSource( new WMPMediaLibrary()) 
+//#endif
+            };
         }
 
 
@@ -28,7 +34,7 @@ namespace Microsoft.Xna.Framework.Media
         {
             get
             {
-                return this.mediaSourceType;
+                return library.mediaSourceType;
             }
         }
 
@@ -36,9 +42,58 @@ namespace Microsoft.Xna.Framework.Media
         {
             get
             {
-                return this.name;
+                return library.Name;
             }
         }
 
+        internal SongCollection GetSongs()
+        {
+            return library.GetSongs();
+        }
+
+        internal int getSong_PlayCount(object handle)
+        {
+            return library.getSong_PlayCount(handle);
+        }
+
+        internal bool getSong_IsProtected(object handle)
+        {
+            return library.getSong_IsProtected(handle);
+        }
+
+        internal AlbumCollection GetAlbums()
+        {
+            return library.GetAlbums();
+        }
+
+        internal PictureAlbum GetRootPictureAlbum()
+        {
+            return library.GetRootPictureAlbum();
+        }
+
+        internal ArtistCollection GetArtists()
+        {
+            return library.GetArtists();
+        }
+
+        internal GenreCollection GetGenres()
+        {
+            return library.GetGenres();
+        }
+
+        internal PictureCollection GetPictures()
+        {
+            return library.GetPictures();
+        }
+
+        internal PlaylistCollection GetPlaylists()
+        {
+            return library.GetPlaylists();
+        }
+
+        internal bool Album_IsEqual(object first, object second, ref bool equal)
+        {
+            return library.Album_IsEqual(first, second, ref equal);
+        }
     }
 }

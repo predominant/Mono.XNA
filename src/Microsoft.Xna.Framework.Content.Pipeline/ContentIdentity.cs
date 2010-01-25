@@ -65,6 +65,7 @@ namespace Microsoft.Xna.Framework.Content.Pipeline
 #region Properties
 		
 		private string sourceFileName;
+        [ContentSerializer(Optional = true)]
 		public string SourceFilename 
 		{ 
 			get { return sourceFileName; } 
@@ -72,6 +73,7 @@ namespace Microsoft.Xna.Framework.Content.Pipeline
 		}
 
 		private string sourceTool;
+        [ContentSerializer(Optional = true)]
 		public string SourceTool 
 		{ 
 			get { return sourceTool; }
@@ -79,6 +81,7 @@ namespace Microsoft.Xna.Framework.Content.Pipeline
 		}
 		
 		private string fragmentIdentifier;
+        [ContentSerializer(Optional = true)]
 		public string FragmentIdentifier 
 		{ 
 			get { return fragmentIdentifier; }

@@ -34,41 +34,65 @@ namespace Microsoft.Xna.Framework.Content.Pipeline.Graphics
 	
 	
 	public class GeometryContent : ContentItem
-	{
-		
-#region Constructor
-		
-		public GeometryContent()
-		{
-		}
+    {
 
-#endregion
-		
-#region Properties
+    #region Private Fields
+    private IndexCollection indices = new IndexCollection();
+    private MaterialContent material;
+    private MeshContent parent;
+    private VertexContent vertices;
+    #endregion
 
-		public MaterialContent Material 
-		{ 
-			get { throw new NotImplementedException(); }
-			set { throw new NotImplementedException(); }
-		}
-		
-		public MeshContent Parent 
-		{ 
-			get { throw new NotImplementedException(); }
-			set { throw new NotImplementedException(); }
-		}
-		
-		public VertexContent Vertices 
-		{ 
-			get { throw new NotImplementedException(); }
-		}
-		
-		public IndexCollection Indices 
-		{ 
-			get { throw new NotImplementedException(); }
-		}
-	
-#endregion
-		
-	}
+    #region Constructor
+    public GeometryContent()
+    {
+        this.vertices = new VertexContent(this);
+    }
+    #endregion
+
+    #region Properties
+    public IndexCollection Indices
+    {
+        get
+        {
+            return this.indices;
+        }
+    }
+
+    [ContentSerializer(Optional=true, SharedResource=true)]
+    public MaterialContent Material
+    {
+        get
+        {
+            return this.material;
+        }
+        set
+        {
+            this.material = value;
+        }
+    }
+
+    [ContentSerializerIgnore]
+    public MeshContent Parent
+    {
+        get
+        {
+            return this.parent;
+        }
+        internal set
+        {
+            this.parent = value;
+        }
+    }
+
+    public VertexContent Vertices
+    {
+        get
+        {
+            return this.vertices;
+        }
+    }
+    #endregion
+
+    }
 }

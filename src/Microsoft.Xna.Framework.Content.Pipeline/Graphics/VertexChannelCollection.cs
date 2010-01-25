@@ -37,7 +37,17 @@ namespace Microsoft.Xna.Framework.Content.Pipeline.Graphics
 	
 	public sealed class VertexChannelCollection : IList<VertexChannel>, ICollection<VertexChannel>, IEnumerable<VertexChannel>, IEnumerable
 	{
-		
+        private List<VertexChannel> channels;
+        private VertexContent parent;
+ 
+
+#region Constructors
+        internal VertexChannelCollection(VertexContent parent)
+        {
+            this.channels = new List<VertexChannel>();
+            this.parent = parent;
+        }
+#endregion
 #region Properties
 		
 		public VertexChannel this[int index] 

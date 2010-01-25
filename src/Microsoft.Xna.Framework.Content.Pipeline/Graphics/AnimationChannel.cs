@@ -34,7 +34,7 @@ using System.Collections.Generic;
 namespace Microsoft.Xna.Framework.Content.Pipeline.Graphics
 {
 	
-	
+	[ContentSerializerCollectionItemName("Keyframe")]
 	public sealed class AnimationChannel : ICollection<AnimationKeyframe>, IEnumerable<AnimationKeyframe>, IEnumerable
 	{
 

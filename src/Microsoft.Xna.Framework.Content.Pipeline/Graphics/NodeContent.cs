@@ -31,49 +31,78 @@ using System;
 
 namespace Microsoft.Xna.Framework.Content.Pipeline.Graphics
 {
-	
-	
-	public class NodeContent : ContentItem
-	{
 
-#region Constructor
-		
-		public NodeContent()
-		{
-		}
 
-#endregion
-		
-#region Properties
+    public class NodeContent : ContentItem
+    {
+        #region Private Fields
+        private AnimationContentDictionary animations = new AnimationContentDictionary();
+        private NodeContentCollection children;
+        private NodeContent parent;
+        private Matrix transform = Matrix.Identity;
+        #endregion
 
-		public Matrix AbsoluteTransform 
-		{ 
-			get { throw new NotImplementedException(); }
-		}
-		
-		public AnimationContentDictionary Animations 
-		{ 
-			get { throw new NotImplementedException(); }
-		}
-		
-		public NodeContentCollection Children 
-		{ 
-			get { throw new NotImplementedException(); }
-		}
-		
-		public NodeContent Parent 
-		{ 
-			get { throw new NotImplementedException(); }
-			set { throw new NotImplementedException(); }
-		}
-		
-		public Matrix Transform 
-		{ 
-			get { throw new NotImplementedException(); }
-			set { throw new NotImplementedException(); }
-		}
-		
-#endregion
-		
-	}
+        #region Constructors
+        public NodeContent()
+        {
+            this.children = new NodeContentCollection(this);
+        }
+        #endregion
+        #region Properties
+        public Matrix AbsoluteTransform
+        {
+            get
+            {
+                if (this.parent == null)
+                {
+                    return this.transform;
+                }
+                return (this.transform * this.parent.AbsoluteTransform);
+            }
+        }
+
+        [ContentSerializer(Optional = true)]
+        public AnimationContentDictionary Animations
+        {
+            get
+            {
+                return this.animations;
+            }
+        }
+
+        [ContentSerializer(Optional = true, CollectionItemName = "Child")]
+        public NodeContentCollection Children
+        {
+            get
+            {
+                return this.children;
+            }
+        }
+
+        [ContentSerializerIgnore]
+        public NodeContent Parent
+        {
+            get
+            {
+                return this.parent;
+            }
+            internal set
+            {
+                this.parent = value;
+            }
+        }
+
+        public Matrix Transform
+        {
+            get
+            {
+                return this.transform;
+            }
+            set
+            {
+                this.transform = value;
+            }
+        }
+        #endregion
+    }
 }

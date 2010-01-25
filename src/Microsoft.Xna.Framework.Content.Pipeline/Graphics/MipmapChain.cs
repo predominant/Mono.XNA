@@ -32,8 +32,8 @@ using System.Collections.ObjectModel;
 
 namespace Microsoft.Xna.Framework.Content.Pipeline.Graphics
 {
-	
-	
+
+    [ContentSerializerCollectionItemName("Mipmap")]
 	public sealed class MipmapChain : Collection<BitmapContent>
 	{
 

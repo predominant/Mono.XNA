@@ -36,11 +36,17 @@ namespace Microsoft.Xna.Framework.Content.Pipeline.Graphics
 	
 	
 	public sealed class VertexChannel<T> : VertexChannel, IList<T>, ICollection<T>, IEnumerable<T>, IEnumerable
-	{
-		
+    {
+#region Constructors
+        internal VertexChannel(string name)
+            : base(name)
+        {
+            //this.internalData = new List<T>();
+        }
+#endregion
 #region Properties
-		
-		public new T this [int index] 
+
+        public new T this [int index] 
 		{ 
 			get { throw new NotImplementedException(); }
 			set { throw new NotImplementedException(); }

@@ -31,22 +31,22 @@ using System;
 
 namespace Microsoft.Xna.Framework.Content.Pipeline.Audio
 {
-	
-	
-	public enum AudioFileType
-	{
-		Mp3,
-		Wav,
-		Wma
-	}
-	
-	public enum ConversionFormat
-	{
-		Adpcm,
-		Pcm,
-		WindowsMedia,
-		Xma
-	}
+
+
+    public enum AudioFileType
+    {
+        Wav,
+        Mp3,
+        Wma
+    }
+
+    public enum ConversionFormat
+    {
+        Pcm,
+        Adpcm,
+        WindowsMedia,
+        Xma
+    }
 	
 	public enum ConversionQuality
 	{

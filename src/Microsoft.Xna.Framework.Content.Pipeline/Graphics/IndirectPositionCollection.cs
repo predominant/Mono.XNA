@@ -39,11 +39,16 @@ namespace Microsoft.Xna.Framework.Content.Pipeline.Graphics
 	public sealed class IndirectPositionCollection : IList<Vector3>, ICollection<Vector3>, IEnumerable<Vector3>, IEnumerable
 	{
 
+        private GeometryContent geometry;
+        private VertexChannel<int> positionIndices;
+
 #region Constructor
-		
-		public IndirectPositionCollection()
-		{
-		}
+
+        internal IndirectPositionCollection(GeometryContent geometry, VertexChannel<int> positionIndices)
+        {
+            this.geometry = geometry;
+            this.positionIndices = positionIndices;
+        }
 
 #endregion
 		

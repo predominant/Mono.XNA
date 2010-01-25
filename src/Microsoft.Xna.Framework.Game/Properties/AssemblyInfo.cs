@@ -46,7 +46,7 @@ using System.IO;
 [assembly: AssemblyConfiguration("Release")]
 #endif
 [assembly: AssemblyCompany("The Mono.Xna Team")]
-[assembly: AssemblyCopyright("Copyright 2006 - 2007 The Mono.Xna Team")]
+[assembly: AssemblyCopyright("Copyright 2006 - 2010 The Mono.Xna Team")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 
@@ -66,5 +66,10 @@ using System.IO;
 //      Build Number
 //      Revision
 //
-[assembly: AssemblyVersion("0.1.0.*")]
-[assembly: AssemblyFileVersion("0.1.0.*")]
+[assembly: AssemblyVersion("3.1.0.0")]
+[assembly: AssemblyFileVersion("3.1.10527.0")]
+
+#if MONO
+[assembly: AssemblyDelaySign(true)]
+[assembly: AssemblyKeyFile("../xna.pub")]
+#endif

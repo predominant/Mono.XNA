@@ -45,7 +45,8 @@ namespace Microsoft.Xna.Framework.Content.Pipeline.Graphics
 #endregion
 		
 #region Properties
-
+        
+        [ContentSerializer(Optional = true)]
 		public TextureReferenceDictionary Textures 
 		{ 
 			get { throw new NotImplementedException(); }

@@ -36,36 +36,55 @@ namespace Microsoft.Xna.Framework.Content.Pipeline.Graphics
 	
 	public sealed class AnimationKeyframe : IComparable<AnimationKeyframe>
 	{
-		
+
+        [ContentSerializer(ElementName = "Time")]
+        private TimeSpan time;
+
+        [ContentSerializer(ElementName = "Transform")]
+        private Matrix transform;
+
 #region Constructor
-		
-		public AnimationKeyframe(TimeSpan time, Matrix transform)
-		{
-		}
+
+        public AnimationKeyframe(TimeSpan time, Matrix transform)
+        {
+            this.time = time;
+            this.transform = transform;
+        }
 
 #endregion
 		
 #region Properties
 
-		public TimeSpan Time 
-		{ 
-			get { throw new NotImplementedException(); }
-		}
-		
-		public Matrix Transform 
-		{ 
-			get; 
-			set; 
-		}
+        [ContentSerializerIgnore]
+        public TimeSpan Time
+        {
+            get
+            {
+                return time;
+            }
+        }
+
+        [ContentSerializerIgnore]
+        public Matrix Transform
+        {
+            get
+            {
+                return transform;
+            }
+            set
+            {
+                transform = value;
+            }
+        }
 		
 #endregion
 		
 #region Public Methods
 
-		public int CompareTo(AnimationKeyframe other)
-		{
-			throw new NotImplementedException();
-		}
+        public int CompareTo(AnimationKeyframe other)
+        {
+            return this.time.CompareTo(other.time);
+        }
 		
 #endregion
 		

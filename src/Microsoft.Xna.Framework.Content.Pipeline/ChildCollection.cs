@@ -36,14 +36,19 @@ namespace Microsoft.Xna.Framework.Content.Pipeline
 	/// <summary>
 	/// An abstract class providing a collection of child objects. 
 	/// </summary>	
-	public abstract class ChildCollection<TParent, TChild> : Collection<TChild>
+    public abstract class ChildCollection<TParent, TChild> : Collection<TChild>
+        where TParent : class
+        where TChild : class
 	{	
 
+		private TParent parentNode;
+		
 #region Constructor
 		
 		protected ChildCollection(TParent parent)
 		{
-			throw new NotImplementedException();
+			if (parent == null) throw new ArgumentNullException("parent");
+			this.parentNode = parent;
 		}
 		
 #endregion
@@ -52,22 +57,40 @@ namespace Microsoft.Xna.Framework.Content.Pipeline
 		
 		protected override void InsertItem(int index, TChild item)
 		{
-			throw new NotImplementedException();
+			if (item == null) throw new ArgumentNullException("item");
+			if (GetParent(item) != null) throw new InvalidOperationException("Child already has Parent");
+			base.InsertItem(index, item);
+			SetParent(item, parentNode);
 		}
 		
 		protected override void SetItem (int index, TChild item)
 		{
-			throw new NotImplementedException();
+			if (item == null) throw new ArgumentNullException("item");
+			TChild child = base[index];
+			if (!object.ReferenceEquals(child,item))
+			{
+				if (GetParent(item) != null) throw new InvalidOperationException("Child already has Parent");
+				base.SetItem(index, item);
+				SetParent(child, default(TParent));
+				SetParent(item, parentNode);
+			}
 		}
 		
 		protected override void ClearItems()
 		{
-			throw new NotImplementedException();
+			foreach (TChild child in this)
+			{
+				TParent parent = default(TParent);
+				SetParent(child,parent);
+			}
+			base.ClearItems();
 		}
 		
 		protected override void RemoveItem(int index)
 		{
-			throw new NotImplementedException();
+			TChild child = base[index];
+			base.RemoveItem(index);
+			SetParent(child, default(TParent));
 		}
 
 		protected abstract TParent GetParent(TChild child);

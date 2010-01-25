@@ -39,20 +39,20 @@ namespace Microsoft.Xna.Framework.Content.Pipeline.Graphics
 		
 		#region Fields
 		
-		protected T[][] pixelData;
+		private T[][] pixelData;
 		
 		#endregion
 		
 		#region Constructor
-		
-		public PixelBitmapContent()
-		{
-		}
-		
-		public PixelBitmapContent(int width, int height)
-		{
-			
-		}
+
+        protected PixelBitmapContent()
+        {
+        }
+
+        public PixelBitmapContent(int width, int height)
+            : base(width, height)
+        {
+        }
 
 		#endregion
 		

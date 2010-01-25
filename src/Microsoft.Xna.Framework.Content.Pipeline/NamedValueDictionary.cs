@@ -34,143 +34,115 @@ using System.Collections.Generic;
 namespace Microsoft.Xna.Framework.Content.Pipeline
 {
 	
-	/// <summary>
-    /// Base class for dictionaries that map string identifiers to data values
-	/// </summary>
-	/// <typeparam name="T">the type of data value</typeparam>
+	
 	public class NamedValueDictionary<T> : IDictionary<string, T>, ICollection<KeyValuePair<string, T>>, IEnumerable<KeyValuePair<string, T>>, IEnumerable
 	{
-		#region Private Fields
-		
+
 		private Dictionary<string, T> dictionary;
 		
-		#endregion Private Fields
+#region Constructors
 		
-		#region Constructors
-
-        /// <summary>Initializes an instance of NamedValueDictionary.</summary>
-        public NamedValueDictionary()
+		public NamedValueDictionary()
 		{
 			dictionary = new Dictionary<string,T>();
 		}
 
-		#endregion Constructors
+#endregion
 		
-		#region Properties
-
-        /// <summary>Gets or sets the specified item.</summary>
-        public T this[string key] {
+#region Properties
+		
+		public T this[string key]
+		{
 			get { return dictionary[key]; }
-			set { dictionary[key] = value; }
+			set { SetItem(key,value); }
 		}
-
-        /// <summary>Gets the number of items in the dictionary.</summary>
-        public int Count { 
+		
+		public int Count 
+		{ 
 			get { return dictionary.Count; }
 		}
 
-        /// <summary>Gets all keys contained in the dictionary.</summary>
-        public ICollection<string> Keys { 
+		public ICollection<string> Keys 
+		{ 
 			get { return dictionary.Keys; }
 		}
 
-        /// <summary>Gets all values contained in the dictionary.</summary>
-        public ICollection<T> Values { 
-			get { return dictionary.Values; }
+		public ICollection<T> Values 
+		{ 
+			get { return (ICollection<T>)dictionary.Values; }
 		}
 
-		protected internal virtual Type DefaultSerializerType { 
+		protected internal virtual Type DefaultSerializerType 
+		{ 
 			get { return typeof(T); }
 		}
 		
-		#endregion Properties
+#endregion
 		
-		#region Public Methods
+#region Public Methods
 
-        /// <summary>Adds the specified key and value to the dictionary.</summary>
-        /// <param name="key">Identity of the key of the new data pair.</param>
-        /// <param name="value">The value of the new data pair.</param>
-        public void Add(string key, T value)
+		public void Add(string key, T value)
 		{
-            AddItem(key, value);
-        }
-
-        /// <summary>Removes all keys and values from the dictionary.</summary>
-        public void Clear()
+			AddItem(key,value);
+		}
+		
+		public void Clear()
 		{
-            ClearItems();
+			ClearItems();
+		}
+		
+		public bool ContainsKey(string key)
+		{
+			return dictionary.ContainsKey(key);
+		}
+		
+		public IEnumerator<KeyValuePair<string, T>> GetEnumerator()
+		{
+			return (IEnumerator<KeyValuePair<string, T>>) dictionary.GetEnumerator();
 		}
 
-        /// <summary>Determines whether the specified key is present in the dictionary.</summary>
-        /// <param name="key">A key to look for</param>
-        public bool ContainsKey(string key)
+		public bool Remove(string key)
 		{
-            return dictionary.ContainsKey(key);
+			return RemoveItem(key);
 		}
-
-        /// <summary>Gets an enumerator that iterates through items in a dictionary.</summary>
-        public IEnumerator<KeyValuePair<string, T>> GetEnumerator()
-		{
-            return (IEnumerator<KeyValuePair<string, T>>)dictionary.GetEnumerator();
-        }
-
-        /// <summary>Removes the specified key and value from the dictionary.</summary>
-        /// <param name="key">A key to be removed.</param>
-        public bool Remove(string key)
-		{
-            return RemoveItem(key);
-        }
 		
 		public bool TryGetValue(string key, out T value)
 		{
-            return dictionary.TryGetValue(key, out value);
+			return dictionary.TryGetValue(key,out value);
         }
-		
-		#endregion Public Methods
-		
-		#region Protected Methods
-		
-		protected virtual void AddItem(string key, T value)
-		{
-            if (string.IsNullOrEmpty(key))
-                return; // mey be throw an exception here
+#endregion
 
-            dictionary.Add(key, value);
+#region Protected Methods
+
+        protected virtual void AddItem(string key, T value)
+		{
+			if (String.IsNullOrEmpty(key)) throw new ArgumentNullException("key");
+			if (value == null) throw new ArgumentNullException("value");
+			dictionary.Add(key, value);
 		}
 		
-        /// <summary>
-        /// Removes all elements from the dictionary
-        /// </summary>
 		protected virtual void ClearItems()
 		{
-            dictionary.Clear();
+			dictionary.Clear();
 		}
 
 		protected virtual bool RemoveItem(string key)
 		{
-            if (string.IsNullOrEmpty(key))
-                return false;
-
-            return dictionary.Remove(key);
-        }
+			if (String.IsNullOrEmpty(key)) throw new ArgumentNullException("key");
+			return dictionary.Remove(key);
+		}
 		
 		protected virtual void SetItem(string key, T value)
 		{
-            if (string.IsNullOrEmpty(key))
-            {
-                throw new ArgumentNullException("key");
-            }
-            if (value == null)
-            {
-                throw new ArgumentNullException("value");
-            }
-            
-            dictionary[key] = value;
+			if (String.IsNullOrEmpty(key)) throw new ArgumentNullException("key");
+			if (value == null) throw new ArgumentNullException("value");
+			dictionary[key] = value;
 		}
 		
-		#endregion Protected Methods
+#endregion
 		
-		#region ICollection Explicit		
+#region ICollection Explicit
+		
 		
 		bool ICollection<KeyValuePair<string, T>>.IsReadOnly
 		{ 
@@ -179,37 +151,40 @@ namespace Microsoft.Xna.Framework.Content.Pipeline
 		
 		void ICollection<KeyValuePair<string,T>>.Add(KeyValuePair<string, T> item)
 		{
-            AddItem(item.Key, item.Value);
+			AddItem(item.Key, item.Value);
 		}
 		
 		bool ICollection<KeyValuePair<string,T>>.Contains(KeyValuePair<string, T> item)
 		{
-            return dictionary.ContainsKey(item.Key);
+            return ((ICollection<KeyValuePair<string, T>>)this.dictionary).Contains(item);
 		}
 		
 		void ICollection<KeyValuePair<string,T>>.CopyTo(KeyValuePair<string, T>[] array, int arrayIndex)
 		{
-            (dictionary as ICollection<KeyValuePair<string,T>>).CopyTo(array, arrayIndex);
+            ((ICollection<KeyValuePair<string, T>>)this.dictionary).CopyTo(array, arrayIndex);
 		}
 		
 		bool ICollection<KeyValuePair<System.String,T>>.Remove(KeyValuePair<string, T> item)
 		{
-            if (!(dictionary as ICollection<KeyValuePair<string, T>>).Contains(item))
+            if (((ICollection<KeyValuePair<string, T>>)this.dictionary).Contains(item))
+            {
                 return false;
+            }
+            return this.RemoveItem(item.Key);
+		}
+		
+#endregion
+		
 
-            return RemoveItem(item.Key);
-        }
 		
-		#endregion ICollection Explicit
-		
-		#region IEnumerator Unused
+#region IEnumerator Unused
 		
 		IEnumerator IEnumerable.GetEnumerator()
 		{
-            return dictionary.GetEnumerator();
+			throw new NotImplementedException();
 		}		
 		
-		#endregion IEnumerator Unused
+#endregion
 		
 	}
 }

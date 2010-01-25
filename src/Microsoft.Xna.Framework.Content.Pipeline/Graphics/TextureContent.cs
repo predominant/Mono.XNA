@@ -52,7 +52,8 @@ namespace Microsoft.Xna.Framework.Content.Pipeline.Graphics
 		#endregion
 		
 		#region Properties
-
+        
+        [ContentSerializerIgnore]
 		public MipmapChainCollection Faces { 
 			get { throw new NotImplementedException(); }
 		}
