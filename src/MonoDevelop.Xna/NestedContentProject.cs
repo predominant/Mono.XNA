@@ -95,8 +95,8 @@ namespace MonoDevelop.Xna
 				if (project==null)
 				{
 					Project = (ContentProject)ContentProject.LoadProject(parent.BaseDirectory.Combine(include), new SimpleProgressMonitor());
- 					parent.ParentFolder.AddItem(project);
-					parent.ParentFolder.Save(new SimpleProgressMonitor());
+ 					//parent.ParentFolder.AddItem(project);
+					//parent.ParentFolder.Save(new SimpleProgressMonitor());
  				}	
 				return project; 
 			}

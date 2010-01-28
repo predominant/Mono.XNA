@@ -37,10 +37,30 @@ namespace MonoDevelop.Xna
 	[Serializable]
 	public class NestedContentProjectCollection : ProjectItemCollection<NestedContentProject>
 	{
+		#region Private Fields
 		
-		public NestedContentProjectCollection()
+		private XnaProject parent;
+		
+		#endregion Private Fields
+
+		#region Constructors
+		
+		public NestedContentProjectCollection(XnaProject parent)
 		{
+			this.parent = parent;
 		}
+		
+		#endregion Constructors
+		
+		#region ProjectItemCollection Overrides
+		
+		public void Add (NestedContentProject item)
+		{
+			parent.AddContentProject(item.Project);
+			base.Add(item);
+		}
+
+		#endregion ProjectItemCollection Overrides
 		
 	}
 }

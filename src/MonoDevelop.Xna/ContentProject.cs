@@ -73,7 +73,7 @@ namespace MonoDevelop.Xna
 		public ContentProject (string languageName)
 			: base (languageName)
 		{
-			Visible = false;
+			//Visible = false;
 			importers = new List<ContentImporterInfo>();
 			processors = new List<ContentProcessorInfo>();
 		}
@@ -81,7 +81,7 @@ namespace MonoDevelop.Xna
 		public ContentProject (string language, ProjectCreateInformation info, XmlElement projectOptions)
 			: base (language, info, projectOptions)
 		{
-			Visible = false;
+			//Visible = false;
 			importers = new List<ContentImporterInfo>();
 			processors = new List<ContentProcessorInfo>();
 		}

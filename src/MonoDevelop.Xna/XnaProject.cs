@@ -48,7 +48,7 @@ namespace MonoDevelop.Xna
 		[ItemProperty("XnaFrameworkVersion")]
 		protected string xnaFrameworkVersion = "v2.0";
 		
-		#endregion
+		#endregion Fields
 		
 		#region Properties
 		
@@ -64,35 +64,37 @@ namespace MonoDevelop.Xna
 			get { return nestedContentProjects; }	
 		}
 		
-		#endregion
+		#endregion Properties
 
         #region Constructors
 		
-		private void construct()
-		{
-			nestedContentProjects = new NestedContentProjectCollection();			
-			Items.Bind(nestedContentProjects);
-		}
-
 		public XnaProject ()
-		{
-			construct();
-		}
+			: this ("C#") {}
 		
 		public XnaProject (string languageName)
 			: base (languageName)
 		{
-			construct();
+			nestedContentProjects = new NestedContentProjectCollection(this);			
+			Items.Bind(nestedContentProjects);
 		}
 		
 		public XnaProject (string languageName, ProjectCreateInformation info, XmlElement projectOptions)
 			: base (languageName, info, projectOptions)
 		{
-			construct();			
+			nestedContentProjects = new NestedContentProjectCollection(this);			
+			Items.Bind(nestedContentProjects);		
 		}
 
-        #endregion
+        #endregion Constructors
 
+		#region Public Methods
+		
+		public void AddContentProject (ContentProject contentProject)
+		{
+			RegisterInternalChild(contentProject);	
+		}
+		
+		#endregion Public Methods
 
         #region DotNetProject Overrides
 		
@@ -123,7 +125,6 @@ namespace MonoDevelop.Xna
 		
 		protected override void OnEndLoad ()
 		{
-			// This makes the nested content projects able to load when needed
 			foreach(NestedContentProject nestedProject in nestedContentProjects)
 				nestedProject.Parent = this;
 		}
@@ -138,7 +139,7 @@ namespace MonoDevelop.Xna
 			base.OnConfigurationRemoved (args);
 		}
 
-        #endregion
+        #endregion DotNetProject Overrides
 		
     }
 

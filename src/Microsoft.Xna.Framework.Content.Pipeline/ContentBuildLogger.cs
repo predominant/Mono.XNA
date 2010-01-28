@@ -40,16 +40,16 @@ namespace Microsoft.Xna.Framework.Content.Pipeline
 
 		private Stack<String> fileStack;
 		
-#region Constructor
+		#region Constructor
 		
 		protected ContentBuildLogger()
 		{
 			this.fileStack = new Stack<String>();
 		}
 		
-#endregion
+		#endregion Constructor
 		
-#region Properties
+		#region Properties
 		
 		private string loggerRootDirectory;
 		public string LoggerRootDirectory
@@ -58,9 +58,9 @@ namespace Microsoft.Xna.Framework.Content.Pipeline
 			set { loggerRootDirectory = value; }
 		}
 		
-#endregion
+		#endregion Properties
 		
-#region Public Methods
+		#region Public Methods
 		
 		public void PushFile(string filename)
 		{
@@ -78,9 +78,9 @@ namespace Microsoft.Xna.Framework.Content.Pipeline
 		
 		public abstract void LogWarning(string helpLink, ContentIdentity contentIdentity, string message, Object[] messageArgs);
 		
-#endregion
+		#endregion Public Methods
 
-#region Protected Methods
+		#region Protected Methods
 		
 		protected string GetCurrentFilename(ContentIdentity contentIdentity)
 		{
@@ -95,25 +95,25 @@ namespace Microsoft.Xna.Framework.Content.Pipeline
 			return null;
 		}
 
-#endregion
+		#endregion Protected Methods
 
-#region Private Methods
+		#region Private Methods
 
-				private static string GetFilename(string filename, string RootDir)
-				{
-					string fullPath = RootDir;
-					if (string.IsNullOrEmpty(fullPath))
-					{
-						fullPath = Path.GetFullPath("./");
-					}
-					if (filename.StartsWith(fullPath, StringComparison.OrdinalIgnoreCase))
-					{
-						return filename.Substring(fullPath.Length);
-					}
-					return filename;
-				}
+		private static string GetFilename(string filename, string RootDir)
+		{
+			string fullPath = RootDir;
+			if (string.IsNullOrEmpty(fullPath))
+			{
+				fullPath = Path.GetFullPath("./");
+			}
+			if (filename.StartsWith(fullPath, StringComparison.OrdinalIgnoreCase))
+			{
+				return filename.Substring(fullPath.Length);
+			}
+			return filename;
+		}
 				
-#endregion
+		#endregion Private Methods
 				
 	}
 }
