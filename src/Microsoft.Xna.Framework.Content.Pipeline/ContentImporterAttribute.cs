@@ -55,20 +55,14 @@ namespace Microsoft.Xna.Framework.Content.Pipeline
         public ContentImporterAttribute(params string[] fileExtensions)
         {
             if (fileExtensions == null)
-            {
                 throw new ArgumentNullException("fileExtensions");
-            }
-
+            
             foreach (string str in fileExtensions)
             {
                 if (string.IsNullOrEmpty(str))
-                {
                     throw new ArgumentNullException("extension");
-                }
                 if (!str.StartsWith("."))
-                {
-                    //throw new ArgumentException("Bad file extension", str));
-                }
+                    throw new ArgumentException("Bad file extension", str);
             }
             this.fileExtensions = Array.AsReadOnly<string>(fileExtensions);
         }

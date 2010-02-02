@@ -28,6 +28,7 @@ SOFTWARE.
 #endregion License
 
 using System;
+using System.Collections.Generic;
 
 namespace Microsoft.Xna.Framework.Content.Pipeline
 {
@@ -35,45 +36,48 @@ namespace Microsoft.Xna.Framework.Content.Pipeline
 	
 	public sealed class ContentImporterContext
 	{
+		#region Private Fields
+		
+		private string intermediateDirectory; 
+		private string outputDirectory;
+		private ContentBuildLogger logger;
+		private List<string> dependencies;
+		
+		#endregion Private Fields 		
 
-#region Constructor
+		#region Constructor
 
         internal ContentImporterContext()
         {
+			dependencies = new List<string>();
         }
 		
-#endregion
+		#endregion Constructor
 		
-#region Properties
-
-		private string intermediateDirectory; 
-		public string IntermediateDirectory 
-		{ 
+		#region Properties
+		
+		public string IntermediateDirectory { 
 			get { return intermediateDirectory; } 
-		}
+		}		
 		
-		private string outputDirectory;
-		public string OutputDirectory 
-		{ 
+		public string OutputDirectory { 
 			get { return outputDirectory; }
-		}
+		}		
 		
-		private ContentBuildLogger logger;
-		public ContentBuildLogger Logger 
-		{ 
+		public ContentBuildLogger Logger { 
 			get { return logger; }
 		}
 		
-#endregion
-
-#region Public Methods
+		#endregion Properties
+	
+		#region Public Methods
 
 		public void AddDependency(string filename)
 		{
-            throw new NotImplementedException();
+            dependencies.Add(filename);
 		}
 		
-#endregion
+		#endregion Public Methods
 		
 	}
 }
