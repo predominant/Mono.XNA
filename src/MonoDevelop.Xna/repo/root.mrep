@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Repository xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <Addin>
+    <Url>MonoDevelop.Xna_0.1.mpack</Url>
+    <Addin>
+      <Id>Xna</Id>
+      <Namespace>MonoDevelop</Namespace>
+      <Name>XNA Project Support</Name>
+      <Version>0.1</Version>
+      <BaseVersion />
+      <Author>Lars Magnusson</Author>
+      <Copyright>MIT</Copyright>
+      <Url>http://code.google.com/p/monoxna/</Url>
+      <Description>Support for Microsoft XNA projects</Description>
+      <Category>Game Development</Category>
+      <Dependencies>
+        <AddinDependency>
+          <AddinId>Core</AddinId>
+          <Version>2.2</Version>
+        </AddinDependency>
+        <AddinDependency>
+          <AddinId>Core.Gui</AddinId>
+          <Version>2.2</Version>
+        </AddinDependency>
+        <AddinDependency>
+          <AddinId>Projects</AddinId>
+          <Version>2.2</Version>
+        </AddinDependency>
+        <AddinDependency>
+          <AddinId>Projects.Gui</AddinId>
+          <Version>2.2</Version>
+        </AddinDependency>
+        <AddinDependency>
+          <AddinId>Ide</AddinId>
+          <Version>2.2</Version>
+        </AddinDependency>
+        <AddinDependency>
+          <AddinId>DesignerSupport</AddinId>
+          <Version>2.2</Version>
+        </AddinDependency>
+      </Dependencies>
+      <OptionalDependencies />
+    </Addin>
+  </Addin>
+</Repository>
