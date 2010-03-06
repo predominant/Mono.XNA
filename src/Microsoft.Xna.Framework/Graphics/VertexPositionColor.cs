@@ -58,7 +58,8 @@ namespace Microsoft.Xna.Framework.Graphics
         #region Constructors
         public VertexPositionColor(Vector3 position, Color color)
         {
-            throw new NotImplementedException();
+            Position = position;
+            Color = color;
         }
         #endregion Constructors
 

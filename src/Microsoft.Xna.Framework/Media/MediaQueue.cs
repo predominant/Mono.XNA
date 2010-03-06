@@ -45,5 +45,10 @@ namespace Microsoft.Xna.Framework.Media
             }
         }
 
+        internal void Play(Song song)
+        {
+            song.MediaSource.Mediaqueue_Play_Song(song.Handle);
+        }
+
     }
 }

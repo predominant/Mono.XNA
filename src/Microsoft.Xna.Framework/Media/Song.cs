@@ -14,6 +14,22 @@ namespace Microsoft.Xna.Framework.Media
         object handle;
         MediaSource mediaSource;
 
+        internal MediaSource MediaSource
+        {
+            get 
+            {
+                return mediaSource;
+            }
+        }
+
+        internal object Handle
+        {
+            get
+            {
+                return handle;
+            }
+        }
+
         internal Song(string Name,TimeSpan Duration, int Rating,int Tracknumber, object Handle, MediaSource source)
         {
             name = Name;

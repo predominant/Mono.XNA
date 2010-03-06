@@ -29,24 +29,32 @@ SOFTWARE.
 using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Collections;
 
 namespace Microsoft.Xna.Framework.Graphics
 {
     public sealed class EffectAnnotationCollection : IEnumerable<EffectAnnotation>
     {
+        internal EffectAnnotationCollection()
+        {
+        }
+
         public int Count { get { throw new NotImplementedException(); } }
 
         public EffectAnnotation this[int index] { get { throw new NotImplementedException(); } }
 
         public EffectAnnotation this[string name] { get { throw new NotImplementedException(); } }
 
-        public IEnumerator<EffectAnnotation> GetEnumerator() { throw new NotImplementedException(); }
-
-        #region IEnumerable Members
-
-        System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator()
+        public IEnumerator<EffectAnnotation> GetEnumerator()
         {
             throw new NotImplementedException();
+        }
+
+        #region IEnumerable Member
+
+        IEnumerator IEnumerable.GetEnumerator()
+        {
+            return GetEnumerator();
         }
 
         #endregion

@@ -102,6 +102,34 @@ namespace Microsoft.Xna.Framework.Graphics
             _packedValue = InitializeFromArgb(a, r, g, b);
         }
 
+        public Color(float r, float g, float b)
+        {
+            byte byteR = (byte)(Math.Round(r * 255));
+            byte byteG = (byte)(Math.Round(g * 255));
+            byte byteB = (byte)(Math.Round(b * 255));
+            _packedValue = InitializeFromArgb(255, byteR, byteG, byteB);
+        }
+
+        public Color(float r, float g, float b, float a)
+        {
+            byte byteR = (byte)(Math.Round(r * 255));
+            byte byteG = (byte)(Math.Round(g * 255));
+            byte byteB = (byte)(Math.Round(b * 255));
+            byte byteA = (byte)(Math.Round(a * 255));
+            _packedValue = InitializeFromArgb(byteA, byteR, byteG, byteB);
+        }
+
+        public Color(Color rgb, byte a)
+        {
+            _packedValue = InitializeFromArgb(a, rgb.R, rgb.G, rgb.B);
+        }
+
+        public Color(Color rgb, float a)
+        {
+            byte byteA = (byte)(Math.Round(a * 255));
+            _packedValue = InitializeFromArgb(byteA, rgb.R, rgb.G, rgb.B);
+        }
+
         internal Color(uint packedValue)
         {
             _packedValue = packedValue;
@@ -203,6 +231,7 @@ namespace Microsoft.Xna.Framework.Graphics
         public byte A
         {
             get { return (byte)((_packedValue >> 24 & 0xff)); }
+            set { _packedValue = InitializeFromArgb(value, R, G, B); }
         }
 
         /// <summary>
@@ -215,6 +244,7 @@ namespace Microsoft.Xna.Framework.Graphics
         public byte R
         {
             get { return (byte)((_packedValue >> 16 & 0xff)); }
+            set { _packedValue = InitializeFromArgb(A, value, G, B); }
         }
 
         /// <summary>
@@ -227,6 +257,7 @@ namespace Microsoft.Xna.Framework.Graphics
         public byte G
         {
             get { return (byte)((_packedValue >> 8 & 0xff)); }
+            set { _packedValue = InitializeFromArgb(A, R, value, B); }
         }
 
         /// <summary>
@@ -239,6 +270,7 @@ namespace Microsoft.Xna.Framework.Graphics
         public byte B
         {
             get { return (byte)(_packedValue & 0xff); }
+            set { _packedValue = InitializeFromArgb(A, R, G, value); }
         }
 
         /// <summary>
@@ -1041,6 +1073,15 @@ namespace Microsoft.Xna.Framework.Graphics
         }
 
         #endregion IPackedVector<uint> Members
+
+        public static Color Lerp(Color value1, Color value2, float amount)
+        {
+            return new Color(
+                (byte)(Math.Round(MathHelper.Lerp(value1.R, value2.R, amount))),
+                (byte)(Math.Round(MathHelper.Lerp(value1.G, value2.G, amount))),
+                (byte)(Math.Round(MathHelper.Lerp(value1.B, value2.B, amount))),
+                (byte)(Math.Round(MathHelper.Lerp(value1.A, value2.A, amount))));
+        }
 
         #region IEquatable<Color> Members
 

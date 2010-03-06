@@ -33,6 +33,8 @@ namespace Microsoft.Xna.Framework.Media
         int getSong_PlayCount(object handle);
         bool getSong_IsProtected(object handle);
 
+        void Mediaqueue_Play_Song(object handle);
+
         bool Album_IsEqual(object first, object second, ref bool equal);
     }
 }

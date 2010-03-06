@@ -149,6 +149,11 @@ namespace Microsoft.Xna.Framework.Media
             throw new NotImplementedException();
         }
 
+        public void Mediaqueue_Play_Song(object handle)
+        {
+            throw new NotImplementedException();
+        }
+
         public bool Album_IsEqual(object first, object second, ref bool equal)
         {
             throw new NotImplementedException();

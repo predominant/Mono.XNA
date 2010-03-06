@@ -34,9 +34,9 @@ namespace Microsoft.Xna.Framework.Graphics
 {
     public sealed class EffectAnnotation
     {
-        public static bool operator !=(EffectAnnotation left, EffectAnnotation right) { throw new NotImplementedException(); }
-
-        public static bool operator ==(EffectAnnotation left, EffectAnnotation right) { throw new NotImplementedException(); }
+        internal EffectAnnotation()
+        {
+        }
 
         public int ColumnCount { get { throw new NotImplementedException(); } }
 
@@ -49,10 +49,6 @@ namespace Microsoft.Xna.Framework.Graphics
         public int RowCount { get { throw new NotImplementedException(); } }
 
         public string Semantic { get { throw new NotImplementedException(); } }
-
-        public override bool Equals(object obj) { throw new NotImplementedException(); }
-
-        public override int GetHashCode() { throw new NotImplementedException(); }
 
         public bool GetValueBoolean() { throw new NotImplementedException(); }
 

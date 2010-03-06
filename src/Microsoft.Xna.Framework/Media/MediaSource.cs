@@ -91,6 +91,11 @@ namespace Microsoft.Xna.Framework.Media
             return library.GetPlaylists();
         }
 
+        internal void Mediaqueue_Play_Song(object handle)
+        {
+            library.Mediaqueue_Play_Song(handle);
+        }
+
         internal bool Album_IsEqual(object first, object second, ref bool equal)
         {
             return library.Album_IsEqual(first, second, ref equal);

@@ -110,8 +110,6 @@ namespace Microsoft.Xna.Framework.Graphics
             throw new NotImplementedException(); 
         }
 
-        public static bool operator !=(Effect left, Effect right) { throw new NotImplementedException(); }
-        public static bool operator ==(Effect left, Effect right) { throw new NotImplementedException(); }
         public string Creator { get { throw new NotImplementedException(); } }
         public EffectTechnique CurrentTechnique { get { throw new NotImplementedException(); } set { throw new NotImplementedException(); } }
         public EffectPool EffectPool { get { throw new NotImplementedException(); } }
@@ -134,9 +132,7 @@ namespace Microsoft.Xna.Framework.Graphics
                 return TechniqueCollection;
             } 
         }
-        public event EventHandler Disposing;
-        public event EventHandler Lost;
-        public event EventHandler Reset;
+
         public void Begin() { throw new NotImplementedException(); }
         public void Begin(SaveStateMode saveStateMode) { throw new NotImplementedException(); }
         
@@ -155,11 +151,7 @@ namespace Microsoft.Xna.Framework.Graphics
         public void Dispose() { throw new NotImplementedException(); }
         protected virtual void Dispose(bool disposing) { throw new NotImplementedException(); }
         public void End() { throw new NotImplementedException(); }
-        public override bool Equals(object obj) { throw new NotImplementedException(); }
-        public override int GetHashCode() { throw new NotImplementedException(); }
-        protected void raise_Disposing(object sender, EventArgs e) { throw new NotImplementedException(); }
-        protected void raise_Lost(object sender, EventArgs e) { throw new NotImplementedException(); }
-        protected void raise_Reset(object sender, EventArgs e) { throw new NotImplementedException(); }
+
         public override string ToString() { throw new NotImplementedException(); }
     }
 }

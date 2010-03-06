@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="3.5">
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
@@ -123,6 +123,7 @@
     <Compile Include="GamerServices\SignedInGamerCollection.cs" />
     <Compile Include="GamerServices\SignedOutEventArgs.cs" />
     <Compile Include="Graphics\DynamicIndexBuffer.cs" />
+    <Compile Include="Graphics\DynamicVertexBuffer.cs" />
     <Compile Include="Graphics\TextureUsage.cs" />
     <Compile Include="MathHelper.cs" />
     <Compile Include="Matrix.cs" />
@@ -283,6 +284,7 @@
     <Compile Include="Graphics\RenderTarget.cs" />
     <Compile Include="Graphics\RenderTarget2D.cs" />
     <Compile Include="Graphics\RenderTargetCube.cs" />
+    <Compile Include="Graphics\ResolveTexture2D.cs" />
     <Compile Include="Graphics\ResourceCreatedEventArgs.cs" />
     <Compile Include="Graphics\ResourceDestroyedEventArgs.cs" />
     <Compile Include="Graphics\SamplerState.cs" />

@@ -9,6 +9,8 @@ namespace Microsoft.Xna.Framework.Media
         public static event EventHandler ActiveSongChanged;
         public static event EventHandler MediaStateChanged;
 
+        private static MediaQueue queue = new MediaQueue();
+
         public static void GetVisualizationData(VisualizationData visualizationData)
         {
             throw new NotImplementedException();
@@ -28,7 +30,7 @@ namespace Microsoft.Xna.Framework.Media
 
         public static void Play(Song song)
         {
-            throw new NotImplementedException();
+            queue.Play(song);
         }
 
         public static void Resume()
@@ -133,7 +135,7 @@ namespace Microsoft.Xna.Framework.Media
         {
             get
             {
-                throw new NotImplementedException();
+                return queue;
             }
         }
 

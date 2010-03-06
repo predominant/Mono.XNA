@@ -29,14 +29,30 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 using System.Runtime.InteropServices;
+using System.Runtime.Serialization;
 
 namespace Microsoft.Xna.Framework.Graphics
 {
-	public class CompilationFailedException : ExternalException
-	{
-		public CompilationFailedException() { throw new NotImplementedException(); }
-		public CompilationFailedException(string message) { throw new NotImplementedException(); }
-		public CompilationFailedException(string message, Exception inner) { throw new NotImplementedException(); }
+    [Serializable]
+    public sealed class CompilationFailedException : ExternalException
+    {
+        public CompilationFailedException()
+        {
+        }
 
-	}
+        public CompilationFailedException(string message)
+            : base(message)
+        {
+        }
+
+        private CompilationFailedException(SerializationInfo info, StreamingContext context)
+            : base(info, context)
+        {
+        }
+
+        public CompilationFailedException(string message, Exception inner)
+            : base(message, inner)
+        {
+        }
+    }
 }
