@@ -355,6 +355,11 @@ namespace Microsoft.Xna.Framework.Graphics
 			raise_DeviceReset(this, EventArgs.Empty);
         }
 
+        public void ResolveBackBuffer(ResolveTexture2D resolveTarget)
+        {
+            throw new NotImplementedException();
+        }
+
         public void ResolveBackBuffer(Texture2D resolveTarget)
         {
             throw new NotImplementedException();
