@@ -75,7 +75,6 @@ namespace MonoDevelop.Xna
 			contentInfo.ProjectBasePath = info.ProjectBasePath.Combine("Content");
 			contentInfo.ProjectName = "Content";
 			
-			//ContentProject contentProject = new ContentProject(language, contentInfo, projectOptions);
 			ContentProject contentProject = (ContentProject)Services.ProjectService.CreateProject("ContentProject", contentInfo, projectOptions);
 			FilePath includePath = FilePath.Empty.Combine("Content").Combine(contentProject.FileName);
 			NestedContentProject nestedContent = new NestedContentProject(project, contentProject, includePath);

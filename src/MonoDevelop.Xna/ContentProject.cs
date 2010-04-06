@@ -32,6 +32,7 @@ using System;
 using System.Xml;
 using System.Collections;
 using System.Collections.Generic;
+using MonoDevelop.Ide;
 using MonoDevelop.Ide.Gui;
 using MonoDevelop.Core;
 using MonoDevelop.Core.Serialization;
