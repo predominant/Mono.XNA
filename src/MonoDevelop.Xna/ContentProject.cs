@@ -60,11 +60,11 @@ namespace MonoDevelop.Xna
 		#region Properties
 		
 		public IEnumerable<ContentImporterInfo> Importers {
-			get { return importers.ToArray(); }
+			get { return importers; }
 		}
 		
 		public IEnumerable<ContentProcessorInfo> Processors {
-			get { return processors.ToArray(); }	
+			get { return processors; }	
 		}
 		
 		#endregion Properties
@@ -74,7 +74,6 @@ namespace MonoDevelop.Xna
 		public ContentProject (string languageName)
 			: base (languageName)
 		{
-			//Visible = false;
 			importers = new List<ContentImporterInfo>();
 			processors = new List<ContentProcessorInfo>();
 		}
@@ -82,7 +81,6 @@ namespace MonoDevelop.Xna
 		public ContentProject (string language, ProjectCreateInformation info, XmlElement projectOptions)
 			: base (language, info, projectOptions)
 		{
-			//Visible = false;
 			importers = new List<ContentImporterInfo>();
 			processors = new List<ContentProcessorInfo>();
 		}
@@ -95,7 +93,7 @@ namespace MonoDevelop.Xna
 		{
 			List<string> ret = new List<string>();
 			foreach (ContentImporterInfo info in importers)
-				ret.Add(info.DisplayName);
+				ret.Add(info.Name);
 			return ret;
 		}
 		
@@ -103,8 +101,30 @@ namespace MonoDevelop.Xna
 		{
 			List<string> ret = new List<string>();
 			foreach (ContentProcessorInfo info in processors)
-				ret.Add(info.DisplayName);
+				ret.Add(info.Name);
 			return ret;
+		}
+		
+		public bool IsImporterNameValid(string name)
+		{
+			foreach (ContentImporterInfo info in importers)
+			{
+				if (info.Name == name)
+					return true;
+			}
+			
+			return false;
+		}
+		
+		public bool IsProcessorNameValid(string name)
+		{
+			foreach (ContentProcessorInfo info in processors)
+			{
+				if (info.Name == name)
+					return true;
+			}
+			
+			return false;	
 		}
 		
 		#endregion Public Methods
@@ -116,11 +136,7 @@ namespace MonoDevelop.Xna
 		/// </summary>
 		private void findPipelineEntries (ProjectReference reference)
 		{
-			string[] filenames = reference.GetReferencedFileNames(IdeApp.Workspace.ActiveConfiguration);
-			if (filenames.Length == 0)
-				return;
-			
-			Assembly assembly = Assembly.LoadFrom(filenames[0]);			
+			Assembly assembly = Assembly.LoadFrom(reference.StoredReference);			
 			foreach (Type type in assembly.GetTypes())
 			{
 				foreach (object attribute in type.GetCustomAttributes(true))

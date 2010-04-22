@@ -509,7 +509,7 @@ namespace Microsoft.Xna.Framework
 
         static int UpdatableComparison(IUpdateable x, IUpdateable y)
         {
-            return x.UpdateOrder - y.UpdateOrder;
+            return x.UpdateOrder.CompareTo(y.UpdateOrder);
         }
 
         #endregion Updatable Methods

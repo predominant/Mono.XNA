@@ -30,7 +30,6 @@ SOFTWARE.
 
 using System;
 using MonoDevelop.Projects;
-//using MonoDevelop.Core.Gui;
 using MonoDevelop.Ide.Gui;
 using MonoDevelop.Ide.Gui.Components;
 using MonoDevelop.Ide.Gui.Pads.ProjectPad;

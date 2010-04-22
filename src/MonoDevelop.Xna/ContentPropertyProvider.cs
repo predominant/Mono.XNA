@@ -204,11 +204,7 @@ namespace MonoDevelop.Xna
 						ContentProject project = wrapper.file.Project as ContentProject;
 						if (project != null)
 						{
-							foreach (string name in project.GetImporterNames())
-							{
-								if (name == str)
-									return true;
-							}
+							return project.IsImporterNameValid(str);
 						}
 					}
 					return false;
@@ -249,11 +245,7 @@ namespace MonoDevelop.Xna
 						ContentProject project = wrapper.file.Project as ContentProject;
 						if (project != null)
 						{
-							foreach (string name in project.GetProcessorNames())
-							{
-								if (name == str)
-									return true;
-							}
+							return project.IsProcessorNameValid(str);
 						}
 					}
 					return false;

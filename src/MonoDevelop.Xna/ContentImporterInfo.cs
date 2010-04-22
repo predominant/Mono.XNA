@@ -11,7 +11,7 @@ namespace MonoDevelop.Xna
 		#region Private Fields
 		
 		private Type type;
-		private string displayName;
+		private string name;
 		private IEnumerable<string> fileExtensions;	
 		private bool cacheImportedData;
 		private string defaultProcessor;
@@ -20,10 +20,10 @@ namespace MonoDevelop.Xna
 
 		#region Constructor
 		
-		public ContentImporterInfo (Type type, string displayName, IEnumerable<string> fileExtensions, string defaultProcessor, bool cacheImportedData)
+		public ContentImporterInfo (Type type, string name, IEnumerable<string> fileExtensions, string defaultProcessor, bool cacheImportedData)
 		{
 			this.type = type;
-			this.displayName = displayName;
+			this.name = name;
 			this.fileExtensions = new List<string>(fileExtensions);
 			this.defaultProcessor = defaultProcessor;
 			this.cacheImportedData = cacheImportedData;
@@ -37,8 +37,8 @@ namespace MonoDevelop.Xna
 			get { return type; }	
 		}
 		
-		public virtual string DisplayName { 
-			get { return displayName; }
+		public virtual string Name { 
+			get { return name; }
 		}
 		
 		public IEnumerable<string> FileExtensions { 
