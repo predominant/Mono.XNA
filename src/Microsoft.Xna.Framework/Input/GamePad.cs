@@ -72,34 +72,42 @@ namespace Microsoft.Xna.Framework.Input
 
     public static class GamePad
     {
-        #region Button Constants
+        #region Constants
 
-        const int A = 2;
-        const int B = 3;
-        const int X = 1;
-        const int Y = 4;
-        const int Back = 9;
-        const int Start = 10;
-        const int LeftShoulder = 5;
-        const int RightShoulder = 6;
-        const int LeftStick = 11;
-        const int RightStick = 12;
-        const int LeftTrigger = 7;
-        const int RightTrigger = 8;
+        private const int A = 2;
+        private const int B = 3;
+        private const int X = 1;
+        private const int Y = 4;
+        private const int Back = 9;
+        private const int Start = 10;
+        private const int LeftShoulder = 5;
+        private const int RightShoulder = 6;
+        private const int LeftStick = 11;
+        private const int RightStick = 12;
+        private const int LeftTrigger = 7;
+        private const int RightTrigger = 8;
 
         // For the circular axis dead zone, this value is the maximum distance for x² + y², when x = y = 1 | -1
-        const float MaxDistance = 1.4142135623730951f;
-        const int MaxSticks = 4;
-        #endregion Button Constants
-
-
-        #region Constructors
-
-        private const float JOYSTICK_ADJUSTMENT = 32768;
+        private const float MaxDistance = 1.4142135623730951f;
+        private const int MaxSticks = 4;
+		
+		private const float JOYSTICK_ADJUSTMENT = 32768;
         private const float JOYSTICK_SCALE = 65535;
-        static IntPtr[] _sticks;
-        static GamePadState[] _state;
-        static int s_numJoysticks;
+		
+		private const float DEADZONE = 0.2f;
+        private const double EPSILON = 1 / 100000;
+		
+        #endregion Constants
+
+		#region Fields
+		
+		private static IntPtr[] _sticks;
+        private static GamePadState[] _state;
+        private static int s_numJoysticks;
+		
+		#endregion Fields
+
+        #region Constructors        
 
         static GamePad()
         {
@@ -227,17 +235,21 @@ namespace Microsoft.Xna.Framework.Input
                 _state[number].triggers.right = (int)Sdl.SDL_JoystickGetButton(j, RightTrigger) * 1.0f;
             }
 			else
-			{
-				throw new InvalidOperationException(); 
-			}
+				_state[number].isConnected = false;
 			
             return _state[number];
         }
 
-        const float DEADZONE = 0.2f;
-        const double EPSILON = 1 / 100000;
+        public static bool SetVibration(PlayerIndex playerIndex, float leftMotor, float rightMotor)
+        {
+            throw new NotImplementedException();
+        }
 
-        /// <summary>
+        #endregion Public Methods
+		
+		#region Private Methods
+		
+		/// <summary>
         /// As per http://blogs.msdn.com/shawnhar/archive/2007/03/28/gamepads-suck.aspx
         /// <paramref name="x"/> and <paramref name="y"/> are assumed to be between -1.0 and 1.0
         /// </summary>
@@ -264,12 +276,7 @@ namespace Microsoft.Xna.Framework.Input
             return (0.5f - p)*2.0f;
         }
 
-        public static bool SetVibration(PlayerIndex playerIndex, float leftMotor, float rightMotor)
-        {
-            throw new NotImplementedException();
-        }
-
-        #endregion Public Methods
+        #endregion Private Methods
         
     }
 }
