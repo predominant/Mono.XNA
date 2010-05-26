@@ -408,27 +408,57 @@ namespace Microsoft.Xna.Framework
 
         public static Matrix CreateFromQuaternion(Quaternion quaternion)
         {
-            throw new NotImplementedException();
+            Matrix ret;
+            CreateFromQuaternion(ref quaternion, out ret);
+            return ret;
         }
 
 
         public static void CreateFromQuaternion(ref Quaternion quaternion, out Matrix result)
         {
-            throw new NotImplementedException();
+            result = Matrix.Identity;
+			
+			result.M11 = 1 - 2 * (quaternion.Y * quaternion.Y + quaternion.Z * quaternion.Z);
+			result.M12 = 2 * (quaternion.X * quaternion.Y + quaternion.W * quaternion.Z);
+            result.M13 = 2 * (quaternion.X * quaternion.Z - quaternion.W * quaternion.Y);
+            result.M21 = 2 * (quaternion.X * quaternion.Y - quaternion.W * quaternion.Z);
+            result.M22 = 1 - 2 * (quaternion.X * quaternion.X + quaternion.Z * quaternion.Z);
+            result.M23 = 2 * (quaternion.Y * quaternion.Z + quaternion.W * quaternion.X);
+			result.M31 = 2 * (quaternion.X * quaternion.Z + quaternion.W * quaternion.Y);
+            result.M32 = 2 * (quaternion.Y * quaternion.Z - quaternion.W * quaternion.X);
+            result.M33 = 1 - 2 * (quaternion.X * quaternion.X + quaternion.Y * quaternion.Y);
         }
 
 
         public static Matrix CreateLookAt(Vector3 cameraPosition, Vector3 cameraTarget, Vector3 cameraUpVector)
         {
-            throw new NotImplementedException();
+            Matrix ret;
+            CreateLookAt(ref cameraPosition, ref cameraTarget, ref cameraUpVector, out ret);
+            return ret;
         }
 
 
         public static void CreateLookAt(ref Vector3 cameraPosition, ref Vector3 cameraTarget, ref Vector3 cameraUpVector, out Matrix result)
         {
-            throw new NotImplementedException();
-        }
-
+			// http://msdn.microsoft.com/en-us/library/bb205343(v=VS.85).aspx
+			
+			Vector3 vz = Vector3.Normalize(cameraPosition - cameraTarget);
+			Vector3 vx = Vector3.Normalize(Vector3.Cross(cameraUpVector, vz));
+			Vector3 vy = Vector3.Cross(vz, vx);
+			result = Matrix.Identity;
+			result.M11 = vx.X;
+			result.M12 = vy.X;
+			result.M13 = vz.X;
+			result.M21 = vx.Y;
+			result.M22 = vy.Y;
+			result.M23 = vz.Y;
+			result.M31 = vx.Z;
+			result.M32 = vy.Z;
+			result.M33 = vz.Z;
+			result.M41 = -Vector3.Dot(vx, cameraPosition);
+			result.M42 = -Vector3.Dot(vy, cameraPosition);
+			result.M43 = -Vector3.Dot(vz, cameraPosition);
+		}
 
         public static Matrix CreateOrthographic(float width, float height, float zNearPlane, float zFarPlane)
         {
@@ -467,15 +497,41 @@ namespace Microsoft.Xna.Framework
         }
 
 
-        public static Matrix CreatePerspectiveFieldOfView(float fieldOfView, float aspectRatio, float zNearPlane, float zFarPlane)
+        public static Matrix CreatePerspectiveFieldOfView(float fieldOfView, float aspectRatio, float nearPlaneDistance, float farPlaneDistance)
         {
-            throw new NotImplementedException();
+            Matrix ret;
+            CreatePerspectiveFieldOfView(fieldOfView, aspectRatio, nearPlaneDistance, farPlaneDistance, out ret);
+            return ret;
         }
 
 
         public static void CreatePerspectiveFieldOfView(float fieldOfView, float aspectRatio, float nearPlaneDistance, float farPlaneDistance, out Matrix result)
         {
-            throw new NotImplementedException();
+			// http://msdn.microsoft.com/en-us/library/bb205351(v=VS.85).aspx
+			// http://msdn.microsoft.com/en-us/library/bb195665.aspx
+
+			result = new Matrix(0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0);
+			
+			if (fieldOfView < 0 || fieldOfView > 3.14159262f)
+				throw new ArgumentOutOfRangeException("fieldOfView", "fieldOfView takes a value between 0 and Pi (180 degrees) in radians.");
+
+			if (nearPlaneDistance <= 0.0f)
+				throw new ArgumentOutOfRangeException("nearPlaneDistance", "You should specify positive value for nearPlaneDistance.");
+
+			if (farPlaneDistance <= 0.0f)
+				throw new ArgumentOutOfRangeException("farPlaneDistance", "You should specify positive value for farPlaneDistance.");
+			
+			if (farPlaneDistance <= nearPlaneDistance)
+				throw new ArgumentOutOfRangeException("nearPlaneDistance", "Near plane distance is larger than Far plane distance. Near plane distance must be smaller than Far plane distance.");
+
+			float yscale = (float)1 / (float)Math.Tan(fieldOfView / 2);
+			float xscale = yscale / aspectRatio;
+
+			result.M11 = xscale;
+			result.M22 = yscale;
+			result.M33 = farPlaneDistance / (nearPlaneDistance - farPlaneDistance);
+			result.M34 = -1;
+			result.M43 = nearPlaneDistance * farPlaneDistance / (nearPlaneDistance - farPlaneDistance);
         }
 
 
