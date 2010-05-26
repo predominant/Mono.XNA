@@ -73,6 +73,132 @@ namespace Microsoft.Xna.Framework.Tests
 			Assert.AreEqual(TestHelper.Approximate(result), TestHelper.Approximate(m1), "#4");			
 		}
 		
+		[Test]
+		public void CreateFromQuaternion()
+		{
+			Quaternion qu1 = new Quaternion(1.0f, 0.5f, 0.0f, -1.0f);
+            Matrix mx1 = new Matrix();
+            mx1 = Matrix.CreateFromQuaternion(qu1);
+			Matrix res1 = new Matrix(0.5f, 1f, 1f, 0f,
+			                         1f, -1f,-2f, 0f,
+			                         -1f, 2f, -1.5f, 0f,
+			                         0f, 0f, 0f, 1f);
+
+			Quaternion qu2 = new Quaternion (0.0f, -1.0f, 1.0f, 0.0f);
+            Matrix mx2 = new Matrix();
+            Matrix.CreateFromQuaternion (ref qu2, out mx2);
+			Matrix res2 = new Matrix(-3f, 0f, 0f, 0f,
+			                         0f, -1f, -2f, 0f,
+			                         0f, -2f, -1f, 0f,
+			                         0f, 0f, 0f, 1f);
+			
+			Assert.AreEqual(TestHelper.Approximate(res1), TestHelper.Approximate(mx1), "#1");
+			Assert.AreEqual(TestHelper.Approximate(res2), TestHelper.Approximate(mx2), "#2");
+		}
+		
+		[Test]
+		public void CreateLookAt()
+		{
+            Vector3 v01 = new Vector3(0.0f, 0.0f, 0.0f);
+            Vector3 v02 = new Vector3(1.0f, 1.0f, 0.0f);
+            Vector3 v03 = new Vector3(0.0f, -1.0f, 1.0f);
+            Matrix mx1 = new Matrix();
+            mx1 = Matrix.CreateLookAt(v01, v02, v03);
+			Matrix res1 = new Matrix(0.5773503f, 0.4082483f, -0.7071068f, 0f,
+			                         -0.5773503f, -0.4082483f, -0.7071068f, 0f,
+			                         -0.5773503f, 0.8164966f, 0f, 0f,
+			                         0f, 0f, 0f, 1f);
+
+            Vector3 v04 = new Vector3(1.0f, 0.0f, 1.0f);
+            Vector3 v05 = new Vector3(-0.5f, -0.5f, 0.0f);
+            Vector3 v06 = new Vector3(-1.0f, 1.0f, 1.0f);
+            Matrix mx2 = new Matrix();
+            Matrix.CreateLookAt(ref v04, ref v05, ref v06, out mx2);
+			Matrix res2 = new Matrix(0.1543033f, -0.5773502f, 0.8017837f, 0f,
+			                         0.7715167f, 0.5773502f, 0.2672612f, 0f,
+			                         -0.6172134f, 0.5773502f, 0.5345225f, 0f,
+			                         0.46291f, 0f, -1.336306f, 1f);
+			
+			Assert.AreEqual(TestHelper.Approximate(res1), TestHelper.Approximate(mx1), "#1");
+			Assert.AreEqual(TestHelper.Approximate(res2), TestHelper.Approximate(mx2), "#2");
+		}
+		
+		[Test]
+		public void CreatePerspectiveFieldOfView()
+		{	
+            Matrix mx1 = new Matrix();
+            mx1 = Matrix.CreatePerspectiveFieldOfView(2.0f, 1.2f, 0.5f, 5.0f);
+			Matrix res1 = new Matrix(0.5350772f, 0f, 0f, 0f,
+			                         0f, 0.6420926f, 0f, 0f,
+			                         0f, 0f, -1.111111f, -1f,
+			                         0f, 0f, -0.5555556f, 0f);
+
+            Matrix mx2 = new Matrix();
+            Matrix.CreatePerspectiveFieldOfView(0.5f, 1.0f, 0.5f, 1.0f, out mx2);
+			Matrix res2 = new Matrix(3.916317f, 0f, 0f, 0f,
+			                         0f, 3.916317f, 0f, 0f,
+			                         0f, 0f, -2f, -1f,
+			                         0f, 0f, -1f, 0f);
+			
+			Assert.AreEqual(TestHelper.Approximate(res1), TestHelper.Approximate(mx1), "#1");
+			Assert.AreEqual(TestHelper.Approximate(res2), TestHelper.Approximate(mx2), "#2");
+		}
+		
+		[Test,ExpectedException(typeof(ArgumentOutOfRangeException), ExpectedMessage="fieldOfView takes a value between 0 and Pi (180 degrees) in radians.", Handler="fieldOfView", MatchType=MessageMatch.Contains)]
+		public void CreatePerspectiveFieldOfViewFieldOfViewException1()
+		{
+			Matrix mx1 = new Matrix();
+			mx1 = Matrix.CreatePerspectiveFieldOfView(-0.1f, 1.2f, 0.5f, 5.0f);
+		}
+
+		[Test,ExpectedException(typeof(ArgumentOutOfRangeException), ExpectedMessage="fieldOfView takes a value between 0 and Pi (180 degrees) in radians.", Handler="fieldOfView", MatchType=MessageMatch.Contains)]
+		public void CreatePerspectiveFieldOfViewFieldOfViewException2()
+		{
+			Matrix mx1 = new Matrix();
+			mx1 = Matrix.CreatePerspectiveFieldOfView(3.14159263f, 1.2f, 0.5f, 5.0f);
+		}
+
+		public void fieldOfView(Exception ex)
+		{
+			Assert.AreEqual("fieldOfView", ((ArgumentOutOfRangeException)ex).ParamName);
+		}
+
+		[Test,ExpectedException(typeof(ArgumentOutOfRangeException), ExpectedMessage="You should specify positive value for nearPlaneDistance.", Handler="nearPlaneDistance", MatchType=MessageMatch.Contains)]
+		public void CreatePerspectiveFieldOfViewNearPlaneException()
+		{
+			Matrix mx1 = new Matrix();
+			mx1 = Matrix.CreatePerspectiveFieldOfView(3.14159262f, 1.2f, -0.5f, 5.0f);
+		}
+		
+		public void nearPlaneDistance(Exception ex)
+		{
+			Assert.AreEqual("nearPlaneDistance", ((ArgumentOutOfRangeException)ex).ParamName);
+		}
+		
+		[Test,ExpectedException(typeof(ArgumentOutOfRangeException), ExpectedMessage="You should specify positive value for farPlaneDistance.", Handler="farPlaneDistance", MatchType=MessageMatch.Contains)]
+		public void CreatePerspectiveFieldOfViewFarPlaneException()
+		{
+			Matrix mx1 = new Matrix();
+			mx1 = Matrix.CreatePerspectiveFieldOfView(3.14159262f, 1.2f, 0.5f, -5.0f);
+		}
+		
+		public void farPlaneDistance(Exception ex)
+		{
+			Assert.AreEqual("farPlaneDistance", ((ArgumentOutOfRangeException)ex).ParamName);
+		}
+
+		[Test,ExpectedException(typeof(ArgumentOutOfRangeException), ExpectedMessage="Near plane distance is larger than Far plane distance. Near plane distance must be smaller than Far plane distance.", Handler="nearfarPlaneDistance", MatchType=MessageMatch.Contains)]
+		public void CreatePerspectiveFieldOfViewNearFarPlaneException()
+		{
+			Matrix mx1 = new Matrix();
+			mx1 = Matrix.CreatePerspectiveFieldOfView(3.14159262f, 1.2f, 2.5f, 1.0f);
+		}
+		
+		public void nearfarPlaneDistance(Exception ex)
+		{
+			Assert.AreEqual("nearPlaneDistance", ((ArgumentOutOfRangeException)ex).ParamName);
+		}
+		
 		#endregion Static methods
 		
         #region Instance methods
