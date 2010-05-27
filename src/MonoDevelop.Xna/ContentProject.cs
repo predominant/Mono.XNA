@@ -170,17 +170,6 @@ namespace MonoDevelop.Xna
 			get  { return "Content"; }
 		}
 		
-		protected override void OnSave (IProgressMonitor monitor)
-		{
-			base.OnSave (monitor);
-		}
-
-		protected override void OnEndLoad ()
-		{
-			
-			base.OnEndLoad ();
-		}
-
 		protected override void OnReferenceAddedToProject (ProjectReferenceEventArgs e)
 		{
 			findPipelineEntries(e.ProjectReference);

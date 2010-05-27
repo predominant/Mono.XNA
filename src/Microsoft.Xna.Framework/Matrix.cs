@@ -766,12 +766,13 @@ namespace Microsoft.Xna.Framework
 
         public static void Invert(ref Matrix matrix, out Matrix result)
         {			
-			///
+			//
 			// Use Laplace expansion theorem to calculate the inverse of a 4x4 matrix
 			// 
 			// 1. Calculate the 2x2 determinants needed and the 4x4 determinant based on the 2x2 determinants 
-			// 3. Create the adjugate matrix, which satisfies: A * adj(A) = det(A) * I
-			// 4. Divide adjugate matrix with the determinant to find the inverse
+			// 2. Create the adjugate matrix, which satisfies: A * adj(A) = det(A) * I
+			// 3. Divide adjugate matrix with the determinant to find the inverse
+			
 			float det1 = matrix.M11 * matrix.M22 - matrix.M12 * matrix.M21;
 			float det2 = matrix.M11 * matrix.M23 - matrix.M13 * matrix.M21;
 			float det3 = matrix.M11 * matrix.M24 - matrix.M14 * matrix.M21;

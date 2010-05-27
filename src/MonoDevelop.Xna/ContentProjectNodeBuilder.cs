@@ -41,7 +41,7 @@ namespace MonoDevelop.Xna
 	public class ContentProjectNodeBuilder : ProjectNodeBuilder
 	{
 		
-		#region TypeNodeBuilder Overrides
+		#region ProjectNodeBuilder Overrides
 		
 		public override Type NodeDataType {
 			get { return typeof(ContentProject); }
@@ -49,11 +49,6 @@ namespace MonoDevelop.Xna
 		
 		public override Type CommandHandlerType {
 			get { return typeof(ContentProjectNodeCommandHandler); }
-		}
-		
-		protected override void Initialize()
-		{
-			base.Initialize ();
 		}
 		
 		public override void BuildNode(ITreeBuilder treeBuilder, object dataObject, ref string label, ref Gdk.Pixbuf icon, ref Gdk.Pixbuf closedIcon)
@@ -69,7 +64,7 @@ namespace MonoDevelop.Xna
 			return true;
 		}
 		
-		#endregion
+		#endregion ProjectNodeBuilder Overrides
 		
 	}
 }

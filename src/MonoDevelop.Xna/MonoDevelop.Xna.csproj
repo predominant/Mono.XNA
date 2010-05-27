@@ -85,7 +85,9 @@
     <Reference Include="System" />
     <Reference Include="System.Xml" />
     <Reference Include="Microsoft.Build.Framework" />
-    <Reference Include="gdk-sharp, Version=2.12.0.0, Culture=neutral, PublicKeyToken=35e10195dab3c99f" />
+    <Reference Include="gdk-sharp, Version=2.12.0.0, Culture=neutral, PublicKeyToken=35e10195dab3c99f">
+      <Package>gtk-sharp-2.0</Package>
+    </Reference>
     <Reference Include="MonoDevelop.Core, Version=2.4.0.0, Culture=neutral">
       <Package>monodevelop</Package>
     </Reference>
@@ -101,5 +103,16 @@
       <Project>{2B43FFD0-D80F-4D49-9CF7-2B2A2E674C49}</Project>
       <Name>Microsoft.Xna.Framework.Content.Pipeline</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Targets\" />
+    <Folder Include="Targets\v3.1\" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Targets\Microsoft.Xna.GameStudio.targets" />
+    <None Include="Targets\Microsoft.Xna.GameStudio.ContentPipelineExtensions.targets" />
+    <None Include="Targets\v3.1\Microsoft.Xna.GameStudio.Mono.targets" />
+    <None Include="Targets\v3.1\Microsoft.Xna.GameStudio.NestedContent.targets" />
+    <None Include="Targets\v3.1\Microsoft.Xna.GameStudio.ContentPipeline.targets" />
   </ItemGroup>
 </Project>

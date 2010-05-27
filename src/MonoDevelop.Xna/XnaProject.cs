@@ -46,7 +46,7 @@ namespace MonoDevelop.Xna
 		#region Fields
 		
 		[ItemProperty("XnaFrameworkVersion")]
-		protected string xnaFrameworkVersion = "v2.0";
+		protected string xnaFrameworkVersion = "v3.1";
 		
 		#endregion Fields
 		
@@ -74,27 +74,22 @@ namespace MonoDevelop.Xna
 		public XnaProject (string languageName)
 			: base (languageName)
 		{
-			nestedContentProjects = new NestedContentProjectCollection(this);			
+			nestedContentProjects = new NestedContentProjectCollection();			
 			Items.Bind(nestedContentProjects);
 		}
 		
 		public XnaProject (string languageName, ProjectCreateInformation info, XmlElement projectOptions)
 			: base (languageName, info, projectOptions)
 		{
-			nestedContentProjects = new NestedContentProjectCollection(this);			
+			nestedContentProjects = new NestedContentProjectCollection();			
 			Items.Bind(nestedContentProjects);		
 		}
 
         #endregion Constructors
 
-		#region Public Methods
+		#region Methods
 		
-		public void AddContentProject (ContentProject contentProject)
-		{
-			RegisterInternalChild(contentProject);	
-		}
-		
-		#endregion Public Methods
+		#endregion Methods
 
         #region DotNetProject Overrides
 		
@@ -123,23 +118,20 @@ namespace MonoDevelop.Xna
 			base.Save (monitor);
 		}
 		
-		protected override void OnEndLoad ()
+		
+		protected override void OnItemAdded (object obj)
 		{
-			foreach(NestedContentProject nestedProject in nestedContentProjects)
-				nestedProject.Parent = this;
+			if (obj is NestedContentProject)
+			{
+				NestedContentProject contentProject = obj as NestedContentProject;
+				contentProject.Project = (ContentProject)ContentProject.LoadProject(BaseDirectory.Combine(contentProject.Include), new SimpleProgressMonitor());
+				RegisterInternalChild(contentProject.Project);	
+			}
+			base.OnItemAdded (obj);
 		}
 		
-		protected override void OnConfigurationAdded (ConfigurationEventArgs args)
-		{
-			base.OnConfigurationAdded (args);
-		}
 		
-		protected override void OnConfigurationRemoved (ConfigurationEventArgs args)
-		{
-			base.OnConfigurationRemoved (args);
-		}
-
-        #endregion DotNetProject Overrides
+		#endregion DotNetProject Overrides
 		
     }
 

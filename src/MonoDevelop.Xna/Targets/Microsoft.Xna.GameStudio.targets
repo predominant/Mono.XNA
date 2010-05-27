@@ -1,0 +1,16 @@
+<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+	
+	<PropertyGroup>
+		<XnaTargetsPath>$(MSBuildExtensionsPath)\Microsoft\XNA Game Studio\$(XnaFrameworkVersion)\Microsoft.Xna.GameStudio.$(XnaPlatform).targets</XnaTargetsPath>
+	</PropertyGroup>
+
+	<PropertyGroup>
+		<DependOnTargetsFile Condition="!Exists('$(XnaTargetsPath)')">TargetsFileNotFound;$(DependOnTargetsFile)</DependOnTargetsFile>
+	</PropertyGroup>
+	<Target Name="TargetsFileNotFound">
+		<Error Text="The required targets file for the specified XNA platform and version cannot be found (XnaPlatform = '$(XnaPlatform)', XnaFrameworkVersion = '$(XnaFrameworkVersion)')." />
+	</Target>
+
+	<Import Condition="Exists('$(XnaTargetsPath)')" Project="$(XnaTargetsPath)" />
+
+</Project>

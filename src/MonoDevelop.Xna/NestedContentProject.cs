@@ -33,7 +33,6 @@ using System.IO;
 using MonoDevelop.Projects;
 using MonoDevelop.Projects.Formats.MSBuild;
 using MonoDevelop.Core.Serialization;
-using MonoDevelop.Core.ProgressMonitoring;
 
 
 namespace MonoDevelop.Xna
@@ -78,24 +77,11 @@ namespace MonoDevelop.Xna
 		}
 		
 		/// <value>
-		/// The parent XNA project
-		/// </value>
-		private XnaProject parent;
-		public XnaProject Parent {
-			get { return parent; }
-			set { parent = value; }
-		}
-		
-		/// <value>
 		/// A reference to the content project itself
 		/// </value>
 		private ContentProject project;
 		public ContentProject Project {
-		 	get { 
-				if (project==null)
-					Project = (ContentProject)ContentProject.LoadProject(parent.BaseDirectory.Combine(include), new SimpleProgressMonitor());
-				return project; 
-			}
+		 	get { return project; }
 			set { 
 				project = value; 
 				projectId = project.ItemId;
@@ -107,19 +93,17 @@ namespace MonoDevelop.Xna
 		#region Constructors
 		
 		public NestedContentProject()
-		{
+		{			
 			visible = false;
 			include = "";
 			project = null;
-			parent = null;
 		}
 		
-		public NestedContentProject(XnaProject parent, ContentProject project, string include)
+		public NestedContentProject(ContentProject project, string include)
 		{
 			this.visible = false;
 			this.include = include;
 			this.Project = project;	
-			this.parent = parent;
 		}
 		
 		#endregion
