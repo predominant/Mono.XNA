@@ -30,6 +30,11 @@ namespace Microsoft.Xna.Framework.Tests
 		{
 			return Approximate(value, 1);	
 		}
+
+		public static Vector3 Approximate(Vector3 value)
+		{
+			return new Vector3(Approximate(value.X), Approximate(value.Y), Approximate(value.Z));	
+		}
 		
 		public static Vector4 Approximate(Vector4 value)
 		{
@@ -47,6 +52,11 @@ namespace Microsoft.Xna.Framework.Tests
 			                  Approximate(value.M21), Approximate(value.M22), Approximate(value.M23), Approximate(value.M24),
 			                  Approximate(value.M31), Approximate(value.M32), Approximate(value.M33), Approximate(value.M34),
 			                  Approximate(value.M41), Approximate(value.M42), Approximate(value.M43), Approximate(value.M44));	
+		}
+		
+		public static Plane Approximate(Plane value)
+		{
+			return new Plane(Approximate(value.Normal), Approximate(value.D));
 		}
 		
         /// <summary>

@@ -59,6 +59,26 @@ namespace Microsoft.Xna.Framework.Tests
 			Assert.IsTrue(p.Equals(new Plane(new Vector3(1f, 2f, 3f), 4f)), "#2");			
         }
 
+		[Test]
+		public void NormalizeTest()
+		{
+			Plane p1 = Plane.Normalize(new Plane(2.2f, 3.3f, -1.1f, -2.2f));
+			Plane r1 = new Plane(0.5345225f,  0.8017837f, -0.2672612f, -0.5345225f);
+			
+			Plane plane = new Plane(-1.33f, 0f, 2.25f, 1.77f);
+			Plane p2 = new Plane();
+			Plane.Normalize(ref plane, out p2);
+			Plane r2 = new Plane(-0.5088582f, 0f, 0.8608503f, 0.6772023f);
+			
+			Plane p3 = new Plane(0.5f, 1f, 2.25f, 3.3334f);
+			Plane r3 = new Plane(0.1990075f, 0.3980149f, 0.8955336f, 1.326743f);
+			p3.Normalize();
+			
+			Assert.AreEqual(TestHelper.Approximate(r1), TestHelper.Approximate(p1), "#1");
+			Assert.AreEqual(TestHelper.Approximate(r2), TestHelper.Approximate(p2), "#2");
+			Assert.AreEqual(TestHelper.Approximate(r3), TestHelper.Approximate(p3), "#3");
+		}
+		
 		//do not need it all intersect test ever done in other class
 		//[Test]
 		//public void IntersectsTest()
