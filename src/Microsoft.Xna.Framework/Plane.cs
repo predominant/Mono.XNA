@@ -130,17 +130,27 @@ namespace Microsoft.Xna.Framework
 
         public void Normalize()
         {
-            throw new NotImplementedException();
+			float factor;
+			Vector3 normal = Normal;
+			Normal = Vector3.Normalize(Normal);
+			factor = Normal.X / normal.X;
+			D = D * factor;
+			
         }
 
         public static Plane Normalize(Plane value)
         {
-            throw new NotImplementedException();
+			Plane ret;
+			Normalize(ref value, out ret);
+			return ret;
         }
 
         public static void Normalize(ref Plane value, out Plane result)
         {
-            throw new NotImplementedException();
+			float factor;
+			result.Normal = Vector3.Normalize(value.Normal);
+			factor = result.Normal.X / value.Normal.X;
+			result.D = value.D * factor;
         }
 
         public static bool operator !=(Plane plane1, Plane plane2)
