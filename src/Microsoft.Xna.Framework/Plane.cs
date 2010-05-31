@@ -133,9 +133,9 @@ namespace Microsoft.Xna.Framework
 			float factor;
 			Vector3 normal = Normal;
 			Normal = Vector3.Normalize(Normal);
-			factor = Normal.X / normal.X;
+			factor = (float)Math.Sqrt(Normal.X * Normal.X + Normal.Y * Normal.Y + Normal.Z * Normal.Z) / 
+					(float)Math.Sqrt(normal.X * normal.X + normal.Y * normal.Y + normal.Z * normal.Z);
 			D = D * factor;
-			
         }
 
         public static Plane Normalize(Plane value)
@@ -149,7 +149,8 @@ namespace Microsoft.Xna.Framework
         {
 			float factor;
 			result.Normal = Vector3.Normalize(value.Normal);
-			factor = result.Normal.X / value.Normal.X;
+			factor = (float)Math.Sqrt(result.Normal.X * result.Normal.X + result.Normal.Y * result.Normal.Y + result.Normal.Z * result.Normal.Z) / 
+					(float)Math.Sqrt(value.Normal.X * value.Normal.X + value.Normal.Y * value.Normal.Y + value.Normal.Z * value.Normal.Z);
 			result.D = value.D * factor;
         }
 
