@@ -74,6 +74,76 @@ namespace Microsoft.Xna.Framework.Tests
 		}
 		
 		[Test]
+		public void CreateReflection()
+		{
+			Plane p1 = new Plane(1.0f, 1.0f, 0.75f, -2.0f);
+			Matrix m1 = Matrix.CreateReflection(p1);
+			Matrix r1 = new Matrix(0.2195122f, -0.7804878f, -0.5853659f, 0f,
+     			-0.7804878f, 0.2195122f, -0.5853659f, 0f,
+           		-0.5853659f, -0.5853659f, 0.5609756f, 0f,
+            	1.560976f, 1.560976f, 1.170732f, 1f);
+			
+			Plane p2 = new Plane(-0.6667f, 1.225f, -2.3334f, 5.0f);
+			Matrix m2 = new Matrix();
+			Matrix.CreateReflection(ref p2, out m2);
+			Matrix r2 = new Matrix(0.8797032f, 0.2210343f, -0.4210298f, 0f,
+            	0.2210343f, 0.5938697f, 0.7736036f, 0f,
+            	-0.4210298f, 0.7736036f, -0.4735728f, 0f,
+            	0.9021809f, -1.657675f, 3.157566f, 1f);
+
+			Assert.AreEqual(TestHelper.Approximate(r1), TestHelper.Approximate(m1), "#1");
+			Assert.AreEqual(TestHelper.Approximate(r2), TestHelper.Approximate(m2), "#2");
+		}
+		
+		[Test]
+		public void CreateShadow()
+		{
+			Vector3 v1 = new Vector3(1.5f, 1.0f, 0.5f);
+			Plane p1 = new Plane(1.0f, 5.0f, 2.5f, 1.0f);
+			Matrix m1 = Matrix.CreateShadow(v1, p1);
+			Matrix r1 = new Matrix(1.100564f, -0.1760902f, -0.08804509f, 0f,
+			-1.320676f, 0.484248f, -0.4402255f, 0f,
+			-0.6603382f, -0.4402255f, 1.144586f, 0f,
+			-0.2641353f, -0.1760902f, -0.08804509f, 1.364699f);
+			
+			Vector3 v2 = new Vector3(0.5f, 1.25f, 2.75f);
+			Plane p2 = new Plane(2.0f, 1.75f, 2.75f, 4.75f);
+			Matrix m2 = new Matrix();
+			Matrix.CreateShadow(ref v2, ref p2, out m2);
+			Matrix r2 = new Matrix(2.54951f, -0.6537205f, -1.438185f, 0f,
+			-0.2288022f, 2.238993f, -1.258412f, 0f,
+			-0.3595463f, -0.8988657f, 0.8334937f, 0f,
+			-0.6210345f, -1.552586f, -3.41569f, 2.810998f);
+
+			Assert.AreEqual(TestHelper.Approximate(r1), TestHelper.Approximate(m1), "#1");
+			Assert.AreEqual(TestHelper.Approximate(r2), TestHelper.Approximate(m2), "#2");
+		}
+		
+		[Test]
+		public void CreateShadow2()
+		{			
+			Vector3 v1 = new Vector3(10.0f, 10.0f, 10.0f);
+			Plane p1 = new Plane(1.0f, 5.0f, 2.5f, 1.0f);
+			Matrix m1 = Matrix.CreateShadow(v1, p1);
+			Matrix r1 = new Matrix(13.20676f, -1.760902f, -1.760902f, 0f,
+            -8.804509f, 6.163157f, -8.804509f, 0f,
+            -4.402255f, -4.402255f, 10.56541f, 0f,
+            -1.760902f, -1.760902f, -1.760902f, 14.96767f);
+			
+			Vector3 v2 = new Vector3(-10f, -10f, -10f);
+			Plane p2 = new Plane(2.0f, 1.75f, 2.75f, 4.75f);
+			Matrix m2 = new Matrix();
+			Matrix.CreateShadow(ref v2, ref p2, out m2);
+			Matrix r2 = new Matrix(-11.76697f, 5.229764f, 5.229764f, 0f,
+            4.576044f, -12.42069f, 4.576044f, 0f,
+            7.190926f, 7.190926f, -9.805807f, 0f,
+            12.42069f, 12.42069f, 12.42069f, -16.99673f);
+
+			Assert.AreEqual(TestHelper.Approximate(r1), TestHelper.Approximate(m1), "#1");
+			Assert.AreEqual(TestHelper.Approximate(r2), TestHelper.Approximate(m2), "#2");
+		}
+		
+		[Test]
 		public void CreateFromQuaternion()
 		{
 			Quaternion qu1 = new Quaternion(1.0f, 0.5f, 0.0f, -1.0f);
@@ -197,6 +267,73 @@ namespace Microsoft.Xna.Framework.Tests
 		public void nearfarPlaneDistance(Exception ex)
 		{
 			Assert.AreEqual("nearPlaneDistance", ((ArgumentOutOfRangeException)ex).ParamName);
+		}
+		
+		[Test]
+		public void Transform()
+		{
+			Quaternion q1 = new Quaternion(5.0f, 3.75f, -5.0f, 2.5f);
+			Matrix m1 = new Matrix(1.0f, 2.0f, 3.0f, 4.0f,
+				0.5f, -1.0f, -1.0f, 3.75f,
+				3.0f, 3.0f, 1.0f, 2.0f,
+				4.25f, -3.0f, 1.25f, 1f);
+			Matrix r1 = Matrix.Transform(m1, q1);
+			Matrix e1 = new Matrix(-45.875f, -373f, -325.125f, 4f,
+				-69.8125f, 167.75f, 55.25f, 3.75f,
+				-75.125f, -322f, -320.875f, 2f,
+				-554.3438f, 272f, -351.0938f, 1f);
+			
+			Matrix r2;
+			Quaternion q2 = new Quaternion(1.0f, 1.0f, 0f, 4.25f);
+			Matrix m2 = new Matrix(3.5f, 2.5f, 3.75f, 2.75f,
+				1.0f, 1.0f, 2.0f, 4.25f,
+				-1.0f, -1.0f, 2.0f, 3.75f,
+				1.0f, 4.75f, 5.0f, 1f);
+			Matrix.Transform(ref m2, ref q2, out r2);
+			Matrix e2 = new Matrix(33.375f, -27.375f, -19.75f, 2.75f,
+				18f, -16f, -6f, 4.25f,
+				16f, -18f, -6f, 3.75f,
+				51f, -45.25f, 16.875f, 1f);
+
+			Assert.AreEqual(TestHelper.Approximate(e1), TestHelper.Approximate(r1), "#1");
+			Assert.AreEqual(TestHelper.Approximate(e2), TestHelper.Approximate(r2), "#2");
+		}
+		
+		[Test]
+		public void Decompose()
+		{
+			Matrix m01 = new Matrix(1f, 1f, 1f, 1f, -0.5f, 2.25f, 3.5f, 2f, 1f, -0.5f, -2f, 3.75f, 0, 3.5f, 2f, 1f);
+			Vector3 s01 = new Vector3();
+			Vector3 t01 = new Vector3();
+			Quaternion q01 = new Quaternion();
+			bool d01 = m01.Decompose(out s01, out q01, out t01);
+			Vector3 s02 = new Vector3(1.732051f, -4.190763f, 2.291288f);
+			Vector3 t02 = new Vector3(0f, 3.5f, 2f);
+			Quaternion q02 = new Quaternion(0f, 0f, 0f, 1f);
+			bool d02 = false;
+
+			Matrix tmp01 = Matrix.CreateFromQuaternion(new Quaternion(3f, 0, 0, -4f));
+			Matrix tmp02 = Matrix.CreateTranslation(5.25f, 3.336f, -2.95f);
+			Matrix tmp03 = Matrix.CreateScale(2.5f);
+			Matrix m11 = Matrix.Multiply(tmp01, tmp02);
+			m11 = Matrix.Multiply(m11, tmp03);
+			Vector3 s11 = new Vector3();
+			Vector3 t11 = new Vector3();
+			Quaternion q11 = new Quaternion();
+			bool d11 = m11.Decompose(out s11, out q11, out t11);
+			Vector3 s12 = new Vector3(2.5f, 73.52721f, 73.52721f);
+			Vector3 t12 = new Vector3(13.125f, 8.34f, -7.375f);
+			Quaternion q12 = new Quaternion(0.8882616f, 0f,0f, -0.4593379f);
+			bool d12 = true;
+
+			Assert.AreEqual(TestHelper.Approximate(s02), TestHelper.Approximate(s01), "#1");
+			Assert.AreEqual(TestHelper.Approximate(t02), TestHelper.Approximate(t01), "#2");
+			Assert.AreEqual(TestHelper.Approximate(q02), TestHelper.Approximate(q01), "#3");
+			Assert.AreEqual(d02, d01, "#4");
+			Assert.AreEqual(TestHelper.Approximate(s12), TestHelper.Approximate(s11), "#5");
+			Assert.AreEqual(TestHelper.Approximate(t12), TestHelper.Approximate(t11), "#6");
+			Assert.AreEqual(TestHelper.Approximate(q12), TestHelper.Approximate(q11), "#7");
+			Assert.AreEqual(d12, d11, "#8");						
 		}
 		
 		#endregion Static methods

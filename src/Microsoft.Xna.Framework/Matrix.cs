@@ -240,22 +240,67 @@ namespace Microsoft.Xna.Framework
 
         public static Matrix CreateShadow(Vector3 lightDirection, Plane plane)
         {
-            throw new NotImplementedException();
+			Matrix ret;
+			CreateShadow(ref lightDirection, ref plane, out ret);
+			return ret;
         }
 
         public static void CreateShadow(ref Vector3 lightDirection, ref Plane plane, out Matrix result)
         {
-            throw new NotImplementedException();
+			// Formula:
+			// http://msdn.microsoft.com/en-us/library/bb205364(v=VS.85).aspx
+			
+			Plane p = Plane.Normalize(plane);
+			float d = Vector3.Dot(p.Normal, lightDirection);
+			
+			result.M11 = -1 * p.Normal.X * lightDirection.X + d;
+			result.M12 = -1 * p.Normal.X * lightDirection.Y;
+			result.M13 = -1 * p.Normal.X * lightDirection.Z;
+			result.M14 = 0;
+			result.M21 = -1 * p.Normal.Y * lightDirection.X;
+			result.M22 = -1 * p.Normal.Y * lightDirection.Y + d;
+			result.M23 = -1 * p.Normal.Y * lightDirection.Z;
+			result.M24 = 0;
+			result.M31 = -1 * p.Normal.Z * lightDirection.X;
+			result.M32 = -1 * p.Normal.Z * lightDirection.Y;
+			result.M33 = -1 * p.Normal.Z * lightDirection.Z + d;
+			result.M34 = 0;
+			result.M41 = -1 * p.D * lightDirection.X;
+			result.M42 = -1 * p.D * lightDirection.Y;
+			result.M43 = -1 * p.D * lightDirection.Z;
+			result.M44 = d;
         }
 
         public static void CreateReflection(ref Plane value, out Matrix result)
         {
-            throw new NotImplementedException();
+			// Formula:
+			// http://msdn.microsoft.com/en-us/library/bb205356(v=VS.85).aspx
+
+			Plane p = Plane.Normalize(value);
+			
+			result.M11 = -2 * p.Normal.X * p.Normal.X + 1;
+			result.M12 = -2 * p.Normal.X * p.Normal.Y;
+			result.M13 = -2 * p.Normal.X * p.Normal.Z;
+			result.M14 = 0;
+			result.M21 = -2 * p.Normal.Y * p.Normal.X;
+			result.M22 = -2 * p.Normal.Y * p.Normal.Y + 1;
+			result.M23 = -2 * p.Normal.Y * p.Normal.Z;
+			result.M24 = 0;
+			result.M31 = -2 * p.Normal.Z * p.Normal.X;
+			result.M32 = -2 * p.Normal.Z * p.Normal.Y;
+			result.M33 = -2 * p.Normal.Z * p.Normal.Z + 1;
+			result.M34 = 0;
+			result.M41 = -2 * p.D * p.Normal.X;
+			result.M42 = -2 * p.D * p.Normal.Y;
+			result.M43 = -2 * p.D * p.Normal.Z;
+			result.M44 = 1;
         }
 
         public static Matrix CreateReflection(Plane value)
         {
-            throw new NotImplementedException();
+			Matrix ret;
+			CreateReflection(ref value, out ret);
+			return ret;
         }
 
         public static Matrix CreateFromYawPitchRoll(float yaw, float pitch, float roll)
@@ -276,17 +321,60 @@ namespace Microsoft.Xna.Framework
 
         public static void Transform(ref Matrix value, ref Quaternion rotation, out Matrix result)
         {
-            throw new NotImplementedException();
+			Matrix matrix = CreateFromQuaternion(rotation);
+			Matrix.Multiply(ref value, ref matrix, out result);
         }
 
         public static Matrix Transform(Matrix value, Quaternion rotation)
         {
-            throw new NotImplementedException();
+			Matrix ret;
+			Transform(ref value, ref rotation, out ret);
+			return ret;
         }
 
         public bool Decompose(out Vector3 scale, out Quaternion rotation, out Vector3 translation)
         {
-            throw new NotImplementedException();
+			bool decomp = false;
+			translation.X = this.M41;
+			translation.Y = this.M42;
+			translation.Z = this.M43;
+			float xs, ys, zs;
+			
+			if (Math.Sign(M11 * M12 * M13 * M14) < 0)
+				xs = -1f;
+			else
+				xs = 1f;
+			
+			if (Math.Sign(M21 * M22 * M23 * M24) < 0)
+				ys = -1f;
+			else
+				ys = 1f;
+			
+			if (Math.Sign(M31 * M32 * M33 * M34) < 0)
+				zs = -1f;
+			else
+				zs = 1f;
+			
+			scale.X = xs * (float)Math.Sqrt(this.M11 * this.M11 + this.M12 * this.M12 + this.M13 * this.M13);
+			scale.Y = ys * (float)Math.Sqrt(this.M21 * this.M21 + this.M22 * this.M22 + this.M23 * this.M23);
+			scale.Z = zs * (float)Math.Sqrt(this.M31 * this.M31 + this.M32 * this.M32 + this.M33 * this.M33);
+			
+			Matrix m1 = new Matrix(this.M11/scale.X, M12/scale.X, M13/scale.X, 0,
+				this.M21/scale.Y, M22/scale.Y, M23/scale.Y, 0,
+				this.M31/scale.Z, M32/scale.Z, M33/scale.Z, 0,
+				0, 0, 0, 1);
+			
+			if (Matrix.Transpose(m1) == Matrix.Invert(m1))
+			{
+				rotation = Quaternion.CreateFromRotationMatrix(m1);
+				decomp = true;
+			}
+			else
+			{
+				rotation = new Quaternion(0f, 0f, 0f, 1f);
+			}
+
+			return decomp;
         }
 
 		/// <summary>
@@ -1122,5 +1210,6 @@ namespace Microsoft.Xna.Framework
         }       
 		
         #endregion
+
     }
 }
