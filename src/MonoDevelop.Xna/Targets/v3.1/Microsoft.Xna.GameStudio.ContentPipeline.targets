@@ -1,1 +1,56 @@
+<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+	
+	<UsingTask TaskName="BuildContent" AssemblyName="Microsoft.Xna.Framework.Content.Pipeline, Version=3.1.0.0, Culture=neutral, PublicKeyToken=6d5c3888ef60e27d"/>
+	<UsingTask TaskName="BuildXact" AssemblyName="Microsoft.Xna.Framework.Content.Pipeline, Version=3.1.0.0, Culture=neutral, PublicKeyToken=6d5c3888ef60e27d"/>
+	<UsingTask TaskName="CleanContent" AssemblyName="Microsoft.Xna.Framework.Content.Pipeline, Version=3.1.0.0, Culture=neutral, PublicKeyToken=6d5c3888ef60e27d"/>
+	<UsingTask TaskName="GetLastOutputs" AssemblyName="Microsoft.Xna.Framework.Content.Pipeline, Version=3.1.0.0, Culture=neutral, PublicKeyToken=6d5c3888ef60e27d"/>
 
+	<Target Name="BuildContentLists" Condition="'$(BuildingProject)'=='true' or '$(BuildXnaContent)' == 'true'">
+		<CreateItem Include="@(Compile)" Condition="'%(Compile.Importer)' != 'XactImporter'"> 
+			<Output ItemName="XNAContent" TaskParameter="Include"/>
+		</CreateItem>
+		<CreateItem Include="@(Compile)" Condition="'%(Compile.Importer)' == 'XactImporter'">
+			<Output ItemName="XACTContent" TaskParameter="Include"/>
+		</CreateItem>
+	</Target>
+
+	<PropertyGroup>
+		<ContentCompileDependencies>BuildContentLists</ContentCompileDependencies>
+	</PropertyGroup>
+
+	<Target Name="ContentCompile" DependsOnTargets="ContentCompileDependencies" Condition="'$(BuildingProject)'=='true' or '$(BuildXnaContent)' == 'true'">
+    	<BuildContent 
+			BuildConfiguration="$(Configuration)" 
+			IntermediateDirectory="$(ProjectDir)$(IntermediateOutputPath)" 
+			OutputDirectory="$(ParentOutputDir)$(ContentRootDirectory)"
+			PipelineAssemblies="@(ReferencePath)" 
+			PipelineAssemblyDependencies="@(ReferenceDependencyPaths)" 
+			RebuildAll="$(XNARebuildContent)" 
+			RootDirectory="$(ProjectDir)"
+			LoggerRootDirectory="$(ParentProjectDir)" 
+			SourceAssets="@(XNAContent)" 
+			TargetPlatform="$(XNAContentPipelineTargetPlatform)"
+			CompressContent="$(XNACompressContent)">
+			<Output ItemName="XNAIntermediateContentFiles" TaskParameter="IntermediateFiles"/>
+			<Output ItemName="XNAOutputContentFiles" TaskParameter="OutputContentFiles"/>
+			<Output ItemName="XNARebuiltContentFiles" TaskParameter="RebuiltContentFiles"/>
+    	</BuildContent>
+		<BuildXact
+			BuildConfiguration="$(Configuration)"
+			IntermediateDirectory="$(ProjectDir)$(IntermediateOutputPath)"
+			OutputDirectory="$(ParentOutputDir)$(ContentRootDirectory)"
+			RebuildAll="$(XNARebuildContent)"
+			RootDirectory="$(ProjectDir)"
+			LoggerRootDirectory="$(ParentProjectDir)"
+			TargetPlatform="$(XNAContentPipelineTargetPlatform)"
+			XactProjects="@(XACTContent)"
+			XnaFrameworkVersion="$(XnaFrameworkVersion)">
+			<Output ItemName="XNAIntermediateXactFiles" TaskParameter="IntermediateFiles"/>
+			<Output ItemName="XNAIntermediateContentFiles" TaskParameter="IntermediateFiles"/>
+			<Output ItemName="XNAOutputContentFiles" TaskParameter="OutputXactFiles"/>
+			<Output ItemName="XNARebuiltContentFiles" TaskParameter="RebuiltXactFiles"/>
+			<Output ItemName="BuiltXactFiles" TaskParameter="OutputXactFiles"/>
+			<Output ItemName="RebuiltXactFiles" TaskParameter="RebuiltXactFiles"/>
+		</BuildXact>
+	</Target>
+</Project>

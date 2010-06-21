@@ -34,5 +34,6 @@ using System;
 public enum XnaPlatformType
 {
 	Windows, 
-	Xbox360
+	Xbox360, 
+	Mono
 }

@@ -69,7 +69,6 @@ namespace MonoDevelop.Xna
 			XnaProject project = new XnaProject(language, info, projectOptions);
 			
 			ProjectCreateInformation contentInfo = new ProjectCreateInformation();
-			contentInfo.DefaultPlatform = info.DefaultPlatform;
 			contentInfo.SolutionName = info.SolutionName;
 			contentInfo.SolutionPath = info.SolutionPath;
 			contentInfo.ProjectBasePath = info.ProjectBasePath.Combine("Content");

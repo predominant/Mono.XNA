@@ -1,1 +1,42 @@
+<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
 
+	<PropertyGroup>
+		<CoreBuildDependsOn>BuildNestedProjects;$(CoreBuildDependsOn)</CoreBuildDependsOn>
+	</PropertyGroup>
+
+	<Target Name="SplitNestedProjectsByExistence" Condition="'@(NestedContentProject)'!=''">
+		<CreateItem Include="@(NestedContentProject)" Condition="Exists('%(Identity)')">
+			<Output TaskParameter="Include" ItemName="ExistingNestedProject"/>
+		</CreateItem>
+		<CreateItem Include="@(NestedContentProject)" Condition="!Exists('%(Identity)')">
+			<Output TaskParameter="Include" ItemName="NonexistingNestedProject"/>
+		</CreateItem>
+	</Target>
+
+	<Target Name="SetParentOutputDir">
+		<CreateProperty Value="$(TargetDir)">
+			<Output TaskParameter="Value" PropertyName="ParentOutputDir"/>
+		</CreateProperty>
+		<CreateProperty Value="$(MSBuildProjectDirectory)\$(IntermediateOutputPath)">
+			<Output TaskParameter="Value" PropertyName="ParentIntermediateDir"/>
+		</CreateProperty>
+	</Target>
+
+	<PropertyGroup>
+		<BuildNestedProjectsDependencies>
+			SplitNestedProjectsByExistence;
+			SetParentOutputDir
+		</BuildNestedProjectsDependencies>
+	</PropertyGroup>
+
+	<Target Name="BuildNestedProjects" DependsOnTargets="$(BuildNestedProjectsDependencies)">
+		<MSBuild 
+			Projects="@(ExistingNestedProject)" 
+			BuildInParallel="true" 
+			Targets="$(NestedProjectBuildTargets)" 
+			Properties="Configuration=$(Configuration); Platform=$(Platform); XnaPlatform=$(XnaContentPlatform); ParentOutputDir=$(ParentOutputDir); ParentIntermediateDir=$(ParentIntermediateDir); ParentProjectDir=$(ProjectDir)">
+			<Output TaskParameter="TargetOutputs" ItemName="BuiltContentFiles" />
+		</MSBuild>
+	</Target>
+
+</Project>

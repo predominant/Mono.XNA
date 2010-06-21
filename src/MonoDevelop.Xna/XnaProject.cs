@@ -124,8 +124,13 @@ namespace MonoDevelop.Xna
 			if (obj is NestedContentProject)
 			{
 				NestedContentProject contentProject = obj as NestedContentProject;
-				contentProject.Project = (ContentProject)ContentProject.LoadProject(BaseDirectory.Combine(contentProject.Include), new SimpleProgressMonitor());
-				RegisterInternalChild(contentProject.Project);	
+				
+				FilePath contentProjectPath = BaseDirectory.Combine(contentProject.Include);
+				if (File.Exists(contentProjectPath))
+				{
+					contentProject.Project = (ContentProject)ContentProject.LoadProject(contentProjectPath, new SimpleProgressMonitor());
+					RegisterInternalChild(contentProject.Project);	
+				}
 			}
 			base.OnItemAdded (obj);
 		}
