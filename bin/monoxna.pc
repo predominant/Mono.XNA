@@ -1,0 +1,6 @@
+libdir=/usr/lib/mono/monoxna/
+
+Name: MonoXNA
+Description: Mono implementation of Microsoft XNA
+Version: 0.0.1
+Libs: -r:${libdir}/Microsoft.Xna.Framework.dll -r:${libdir}/Microsoft.Xna.Framework.Content.Pipeline.dll

@@ -36,7 +36,7 @@ namespace Microsoft.Xna.Framework.Content.Pipeline.Graphics
 	public abstract class DxtBitmapContent : BitmapContent
 	{
 
-#region Constructor
+		#region Constructors
 		
 		protected DxtBitmapContent(int blockSize)
 		{
@@ -48,9 +48,9 @@ namespace Microsoft.Xna.Framework.Content.Pipeline.Graphics
 			
 		}
 			
-#endregion
+		#endregion Constructors
 			
-#region Public Methods
+		#region BitmapContent Overrides
 
 		public override byte[] GetPixelData()
 		{
@@ -62,10 +62,6 @@ namespace Microsoft.Xna.Framework.Content.Pipeline.Graphics
 			throw new NotImplementedException();
 		}
 		
-#endregion
-		
-#region Protected Methods
-
 		protected override bool TryCopyFrom(BitmapContent sourceBitmap, Rectangle sourceRegion, Rectangle destinationRegion)
 		{
 			throw new NotImplementedException();
@@ -76,7 +72,7 @@ namespace Microsoft.Xna.Framework.Content.Pipeline.Graphics
 			throw new NotImplementedException();
 		}
 		
-#endregion
-			
+		#endregion BitmapContent Overrides
+		
 	}
 }

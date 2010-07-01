@@ -28,6 +28,8 @@ SOFTWARE.
 #endregion License
 
 using System;
+using System.Collections.Generic;
+using System.Reflection;
 using Microsoft.Build.Framework;
 using Microsoft.Build.Utilities;
 
@@ -59,6 +61,9 @@ namespace Microsoft.Xna.Framework.Content.Pipeline.Tasks
 		private ITaskItem[] pipelineAssemblyDependencies;
 		private ITaskItem[] rebuiltContentFiles;
 		private ITaskItem[] sourceAssets;
+		private List<string> dependencies;
+		private Dictionary<string, IContentImporter> cachedImporters;
+		private Dictionary<string, IContentProcessor> cachedProcessors;
 		
 		#endregion Private Fields
 		
@@ -143,18 +148,93 @@ namespace Microsoft.Xna.Framework.Content.Pipeline.Tasks
 		
         public BuildContent()
         {
+			dependencies = new List<string>();
+			cachedImporters = new Dictionary<string, IContentImporter>();
+			cachedProcessors = new Dictionary<string, IContentProcessor>();
         }
 		
 		#endregion Constructor
+		
+		#region Methods
+		
+		internal void AddDependency (string filename)
+		{
+			dependencies.Add(filename);
+		}
+		
+		IContentImporter getImporterInstance (string importerName)
+		{
+			foreach (ITaskItem assemblyItem in PipelineAssemblies)
+			{
+				try
+				{
+					Assembly assembly = Assembly.Load(assemblyItem.GetMetadata("Filename"));
+					foreach (Type type in assembly.GetTypes())
+					{
+						if (type.Name == importerName && type.GetInterface("IContentImporter") != null)
+							return (IContentImporter)Activator.CreateInstance(type, new object[] {});
+					}
+				}
+				catch (Exception e)
+				{
+					Log.LogWarning(e.Message);
+				}
+			}
+			return null;
+		}
+		
+		IContentProcessor getProcessorInstance (string processorName)
+		{
+			foreach (ITaskItem assemblyItem in PipelineAssemblies)
+			{
+				try
+				{
+					Assembly assembly = Assembly.Load(assemblyItem.GetMetadata("Filename"));
+					foreach (Type type in assembly.GetTypes())
+					{
+						if (type.Name == processorName && type.GetInterface("IContentProcessor") != null)
+							return (IContentProcessor)Activator.CreateInstance(type, new object[] {});
+					}
+				}
+				catch (Exception e)
+				{
+					Log.LogWarning(e.Message);
+				}
+			}
+			return null;
+		}
+		
+		#endregion Methods
 		
 		#region Task Overrides
 		
 		public override bool Execute()
 		{
-			foreach (ITaskItem sourceAsset in sourceAssets)
+			Log.LogMessage("Building content:");
+			
+			XBuildLogger logger = new XBuildLogger(this.Log);
+			
+			foreach (ITaskItem sourceItem in SourceAssets)
 			{
+				Log.LogMessage("Building " + sourceItem.GetMetadata("Name"));
 				
+				string importerName = sourceItem.GetMetadata("Importer");
+				string processorName = sourceItem.GetMetadata("Processor");
+				
+				IContentImporter importer = getImporterInstance(importerName);
+				if (importer == null)
+					Log.LogError("Could not find the importer (" + importerName + ")");
+				
+				IContentProcessor processor = getProcessorInstance(processorName);
+				if (importer == null)
+					Log.LogError("Could not find the processor (" + processorName + ")");
+				
+				ContentImporterContext importerContext = new ContentImporterContext(this, IntermediateDirectory, OutputDirectory, logger);
+				ContentProcessorContext processorContext = new ContentProcessorContext();
+				
+				processor.Process(importer.Import(sourceItem.GetMetadata("Include"), importerContext), processorContext);
 			}
+				
 			return true;
 		}
 		

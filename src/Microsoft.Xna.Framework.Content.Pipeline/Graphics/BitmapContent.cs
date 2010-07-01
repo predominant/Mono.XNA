@@ -50,50 +50,35 @@ namespace Microsoft.Xna.Framework.Content.Pipeline.Graphics
 		
 		protected BitmapContent(int width, int height)
 		{
-			
+			this.width = width;
+			this.height = height;
 		}
 
-		#endregion
+		#endregion Constructors
 		
 		#region Properties
 
-        [ContentSerializer]
-        public int Height
-        {
-            get
-            {
-                return this.height;
-            }
-            private set
-            {
+        public int Height {
+            get { return this.height; }
+            private set {
                 if (value <= 0)
-                {
                     throw new ArgumentOutOfRangeException("value");
-                }
                 this.height = value;
             }
         }
 
-        [ContentSerializer]
-        public int Width
-        {
-            get
-            {
-                return this.width;
-            }
-            private set
-            {
+        public int Width {
+            get { return this.width; }
+            private set {
                 if (value <= 0)
-                {
                     throw new ArgumentOutOfRangeException("value");
-                }
                 this.width = value;
             }
         }
 		
-		#endregion
+		#endregion Properties
 		
-		#region Public Methods
+		#region Methods
 
 		public static void Copy(BitmapContent sourceBitmap, BitmapContent destinationBitmap)
 		{
@@ -105,31 +90,27 @@ namespace Microsoft.Xna.Framework.Content.Pipeline.Graphics
 			throw new NotImplementedException();
 		}
 		
+		protected static void ValidateCopyArguments(BitmapContent sourceBitmap, Rectangle sourceRegion, BitmapContent destinationBitmap, Rectangle destinationRegion)
+		{
+			throw new NotImplementedException();
+		}
+
+		public override string ToString()
+		{
+			throw new NotImplementedException();
+		}
+		
 		public abstract byte[] GetPixelData();
 		
 		public abstract void SetPixelData(byte[] sourceData);
 		
 		public abstract bool TryGetFormat(out SurfaceFormat format);
 		
-		public override string ToString()
-		{
-			throw new NotImplementedException();
-		}
-		
-		#endregion
-		
-		#region Protected Methods
-		
-		protected static void ValidateCopyArguments(BitmapContent sourceBitmap, Rectangle sourceRegion, BitmapContent destinationBitmap, Rectangle destinationRegion)
-		{
-			throw new NotImplementedException();
-		}
-
 		protected abstract bool TryCopyFrom(BitmapContent sourceBitmap, Rectangle sourceRegion, Rectangle destinationRegion);
 		
 		protected abstract bool TryCopyTo(BitmapContent destinationBitmap, Rectangle sourceRegion, Rectangle destinationRegion);
 		
-		#endregion				
+		#endregion Methods			
 		
 	}
 }

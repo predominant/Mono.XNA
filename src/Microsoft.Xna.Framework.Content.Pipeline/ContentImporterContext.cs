@@ -29,6 +29,7 @@ SOFTWARE.
 
 using System;
 using System.Collections.Generic;
+using Microsoft.Xna.Framework.Content.Pipeline.Tasks;
 
 namespace Microsoft.Xna.Framework.Content.Pipeline
 {
@@ -41,15 +42,18 @@ namespace Microsoft.Xna.Framework.Content.Pipeline
 		private string intermediateDirectory; 
 		private string outputDirectory;
 		private ContentBuildLogger logger;
-		private List<string> dependencies;
+		private BuildContent buildTask;
 		
 		#endregion Private Fields 		
 
 		#region Constructor
 
-        internal ContentImporterContext()
+        internal ContentImporterContext(BuildContent buildTask, string intermediateDirectory, string outputDirectory, ContentBuildLogger logger)
         {
-			dependencies = new List<string>();
+			this.buildTask = buildTask;
+			this.intermediateDirectory = intermediateDirectory;
+			this.outputDirectory = outputDirectory;
+			this.logger = logger;
         }
 		
 		#endregion Constructor
@@ -74,7 +78,7 @@ namespace Microsoft.Xna.Framework.Content.Pipeline
 
 		public void AddDependency(string filename)
 		{
-            dependencies.Add(filename);
+            buildTask.AddDependency(filename);
 		}
 		
 		#endregion Public Methods

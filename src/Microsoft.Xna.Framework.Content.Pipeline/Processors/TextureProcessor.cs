@@ -42,6 +42,7 @@ namespace Microsoft.Xna.Framework.Content.Pipeline.Processors
 		
 		public TextureProcessor()
 		{
+			
 		}
 
 #endregion

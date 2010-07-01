@@ -88,7 +88,7 @@
   </ItemGroup>
   <ItemGroup>
     <Reference Include="Tao.DevIl, Version=1.6.8.3, Culture=neutral, PublicKeyToken=7ec4053013524957">
-      <Package>tao-devil-1.6</Package>
+      <Package>tao-devil</Package>
     </Reference>
   </ItemGroup>
   <ItemGroup>

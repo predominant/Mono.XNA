@@ -28,6 +28,7 @@ SOFTWARE.
 #endregion License
 
 using System;
+using System.Runtime.InteropServices;
 using Microsoft.Xna.Framework.Graphics;
 
 namespace Microsoft.Xna.Framework.Content.Pipeline.Graphics
@@ -36,31 +37,88 @@ namespace Microsoft.Xna.Framework.Content.Pipeline.Graphics
 	
 	public class PixelBitmapContent<T> : BitmapContent where T : struct, IEquatable<T>
 	{
-		
 		#region Fields
 		
+		private static int pixelSize;
 		private T[][] pixelData;
 		
-		#endregion
+		#endregion Fields
 		
-		#region Constructor
-
-        protected PixelBitmapContent()
-        {
-        }
+		#region Properties
+		
+		private static int PixelSize {
+			get { 
+				if (pixelSize == 0)
+					pixelSize = Marshal.SizeOf(typeof(T));
+				return pixelSize;
+			}
+		}
+		
+		#endregion Properties
+		
+		#region Constructors
+		
+		static PixelBitmapContent()
+		{
+			pixelSize = 0;	
+		}
 
         public PixelBitmapContent(int width, int height)
             : base(width, height)
         {
+			pixelData = new T[height][];
+			for (int y = 0; y < height; y++)
+				pixelData[y] = new T[width];
         }
 
-		#endregion
+		protected PixelBitmapContent() {}
+
+        #endregion Constructors
+		
+		#region Methods
+	
+		public T GetPixel(int x, int y)
+		{
+			return pixelData[y][x];
+		}
+		
+		public T[] GetRow(int y)
+		{
+			return pixelData[y];
+		}
+		
+		public void ReplaceColor(T originalColor, T newColor)
+		{
+			for (int y = 0; y < Height; y++)
+			{
+				for (int x = 0; x < Width; x++)
+				{
+					T color = pixelData[y][x];
+					if (color.Equals(originalColor))
+						pixelData[y][x] = newColor;
+				}
+			}
+		}
+		
+		public void SetPixel(int x, int y, T value)
+		{
+			pixelData[y][x] = value;
+		}
+		
+		#endregion Methods
 		
 		#region BitmapContent Overrides
 		
 		public override byte[] GetPixelData()
 		{
-			throw new NotImplementedException();
+			byte[] ret = new byte[Width * Height * PixelSize];
+			int numBytesInRow = Width * PixelSize;
+			
+			// This won't work
+			for (int y = 0; y < Height; y++)
+				Buffer.BlockCopy(pixelData[y], 0, ret, y * numBytesInRow, numBytesInRow);
+			
+			return ret;
 		}
 		
 		public override void SetPixelData(byte[] sourceData)
@@ -88,31 +146,9 @@ namespace Microsoft.Xna.Framework.Content.Pipeline.Graphics
 			throw new NotImplementedException();
 		}
 		
-		#endregion
+		#endregion BitmapContent Overrides
 		
-		#region Public Methods
-	
-		public T GetPixel(int x, int y)
-		{
-			throw new NotImplementedException();
-		}
 		
-		public T[] GetRow(int y)
-		{
-			throw new NotImplementedException();
-		}
-		
-		public void ReplaceColor(T originalColor, T newColor)
-		{
-			throw new NotImplementedException();
-		}
-		
-		public void SetPixel(int x, int y, T value)
-		{
-			throw new NotImplementedException();
-		}
-		
-		#endregion
 		
 		
 		

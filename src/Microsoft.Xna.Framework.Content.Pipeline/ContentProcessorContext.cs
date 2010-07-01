@@ -36,62 +36,66 @@ namespace Microsoft.Xna.Framework.Content.Pipeline
 	
 	public sealed class ContentProcessorContext
 	{
-
-#region Constructor
+		#region Fields
+		
+		private string buildConfiguration;
+		private string intermediateDirectory;
+		private string outputDirectory;
+		private string outputFilename;
+		private ContentBuildLogger logger;
+		private OpaqueDataDictionary parameters;
+		private TargetPlatform targetPlatform;
+		
+		#endregion Fields
+		
+		#region Constructor
 		
 		internal ContentProcessorContext()
 		{
 		}
 		
-#endregion
+		#endregion Constructor
 		
-#region Properties
+		#region Properties
 
-		private string buildConfiguration;
 		public string BuildConfiguration 
 		{ 
 			get { return buildConfiguration; }
 		}
 		
-		private string intermediateDirectory;
 		public string IntermediateDirectory 
 		{ 
 			get { return intermediateDirectory; }
 		}
 		
-		private string outputDirectory;
 		public string OutputDirectory 
 		{ 
 			get { return outputDirectory; }
 		}
 
-		private string outputFilename;
 		public string OutputFilename 
 		{ 
 			get { return outputFilename; }
 		}
 
-		private ContentBuildLogger logger;
 		public ContentBuildLogger Logger 
 		{ 
 			get { return logger; }
 		}
 
-		private OpaqueDataDictionary parameters;
 		public OpaqueDataDictionary Parameters 
 		{ 
 			get { return parameters; }
 		}
 
-		private TargetPlatform targetPlatform;
 		public TargetPlatform TargetPlatform 
 		{ 
 			get { return targetPlatform; }
 		}
 		
-#endregion
+		#endregion Properties
 		
-#region Public Methods
+		#region Methods
 
         public TOutput BuildAndLoadAsset<TInput, TOutput>(ExternalReference<TInput> sourceAsset, string processorName)
         {
@@ -133,7 +137,7 @@ namespace Microsoft.Xna.Framework.Content.Pipeline
             throw new NotImplementedException();
 		}
 		
-#endregion
+		#endregion Methods
 		
 	}
 }

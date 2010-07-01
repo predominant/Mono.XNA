@@ -53,7 +53,6 @@ namespace Microsoft.Xna.Framework.Content.Pipeline.Graphics
 		
 		#region Properties
         
-        [ContentSerializerIgnore]
 		public MipmapChainCollection Faces { 
 			get { throw new NotImplementedException(); }
 		}

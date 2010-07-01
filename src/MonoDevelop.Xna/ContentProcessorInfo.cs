@@ -9,16 +9,16 @@ namespace MonoDevelop.Xna
 	{
 		#region Private Fields
 		
-		private Type type;
 		private string name;
+		private string displayName;
 		
 		#endregion Private Fields
 		
 		#region Constructor
 
-		public ContentProcessorInfo (Type type, string name)
+		public ContentProcessorInfo (string name, string displayName)
 		{
-			this.type = type;
+			this.name = name;
 			this.name = name;
 		}
 		
@@ -26,12 +26,12 @@ namespace MonoDevelop.Xna
 		
 		#region Properties
 		
-		public Type Type {
-			get { return type; }	
-		}
-		
 		public virtual string Name { 
 			get { return name; }
+		}
+
+		public virtual string DisplayName { 
+			get { return displayName; }
 		}
 		
 		#endregion Properties

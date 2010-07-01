@@ -34,30 +34,30 @@ namespace Microsoft.Xna.Framework.Content.Pipeline
 	public abstract class ContentImporter<T> : IContentImporter
 	{	
 		
-#region Constructor
+		#region Constructor
 		
 		protected ContentImporter()
 		{
 		}
 		
-#endregion
+		#endregion Constructor
 		
-#region Public Methods
+		#region Methods
 		
 		public abstract T Import (string filename, ContentImporterContext context);
 
 		
 		
-#endregion
+		#endregion Methods
 		
-#region Explicit IContentImporter
+		#region Explicit IContentImporter
 
 		object IContentImporter.Import (string filename, ContentImporterContext context)
 		{
 			return Import(filename, context);
 		}
 		
-#endregion
+		#endregion Explicit IContentImporter
 		
 	}
 }

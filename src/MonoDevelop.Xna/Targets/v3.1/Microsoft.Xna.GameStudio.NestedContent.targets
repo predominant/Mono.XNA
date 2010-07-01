@@ -23,18 +23,19 @@
 	</Target>
 
 	<PropertyGroup>
-		<BuildNestedProjectsDependencies>
+		<BuildNestedProjectsDependsOn>
+			PrepareForBuild;
 			SplitNestedProjectsByExistence;
 			SetParentOutputDir
-		</BuildNestedProjectsDependencies>
+		</BuildNestedProjectsDependsOn>
 	</PropertyGroup>
 
-	<Target Name="BuildNestedProjects" DependsOnTargets="$(BuildNestedProjectsDependencies)">
+	<Target Name="BuildNestedProjects" DependsOnTargets="$(BuildNestedProjectsDependsOn)">
 		<MSBuild 
 			Projects="@(ExistingNestedProject)" 
 			BuildInParallel="true" 
 			Targets="$(NestedProjectBuildTargets)" 
-			Properties="Configuration=$(Configuration); Platform=$(Platform); XnaPlatform=$(XnaContentPlatform); ParentOutputDir=$(ParentOutputDir); ParentIntermediateDir=$(ParentIntermediateDir); ParentProjectDir=$(ProjectDir)">
+			Properties="Configuration=$(Configuration); Platform=$(Platform); ParentOutputDir=$(ParentOutputDir); ParentIntermediateDir=$(ParentIntermediateDir); ParentProjectDir=$(ProjectDir)">
 			<Output TaskParameter="TargetOutputs" ItemName="BuiltContentFiles" />
 		</MSBuild>
 	</Target>

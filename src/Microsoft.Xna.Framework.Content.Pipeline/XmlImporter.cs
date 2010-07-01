@@ -28,6 +28,8 @@ SOFTWARE.
 #endregion License
 
 using System;
+using System.Xml;
+using Microsoft.Xna.Framework.Content.Pipeline.Serialization.Intermediate;
 
 namespace Microsoft.Xna.Framework.Content.Pipeline
 {
@@ -48,7 +50,8 @@ namespace Microsoft.Xna.Framework.Content.Pipeline
 		
 		public override object Import(string filename, ContentImporterContext context)
 		{
-			throw new NotImplementedException();
+			XmlReader reader = XmlReader.Create(filename);
+			return IntermediateSerializer.Deserialize<object>(reader, filename);
 		}
 		
 		#endregion Public Methods

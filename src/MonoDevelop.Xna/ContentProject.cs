@@ -50,7 +50,7 @@ namespace MonoDevelop.Xna
 		#region Fields
 		
 		[ItemProperty("XnaFrameworkVersion")]
-		private string xnaFrameworkVersion = "v2.0";
+		private static string xnaFrameworkVersion = "v3.1";
 		
 		private List<ContentImporterInfo> importers;
 		private List<ContentProcessorInfo> processors;
@@ -58,6 +58,13 @@ namespace MonoDevelop.Xna
 		#endregion Fields
 		
 		#region Properties
+		
+		[ItemProperty("XnaPlatform")]
+		protected XnaPlatformType xnaPlatform;
+		public XnaPlatformType XnaPlatform {
+			get { return xnaPlatform; }
+			set { xnaPlatform = value; }
+		}
 		
 		public IEnumerable<ContentImporterInfo> Importers {
 			get { return importers; }
@@ -89,53 +96,18 @@ namespace MonoDevelop.Xna
 		
 		#region Public Methods
 		
-		public ICollection GetImporterNames()
-		{
-			List<string> ret = new List<string>();
-			foreach (ContentImporterInfo info in importers)
-				ret.Add(info.Name);
-			return ret;
-		}
 		
-		public ICollection GetProcessorNames()
-		{
-			List<string> ret = new List<string>();
-			foreach (ContentProcessorInfo info in processors)
-				ret.Add(info.Name);
-			return ret;
-		}
 		
-		public bool IsImporterNameValid(string name)
-		{
-			foreach (ContentImporterInfo info in importers)
-			{
-				if (info.Name == name)
-					return true;
-			}
-			
-			return false;
-		}
 		
-		public bool IsProcessorNameValid(string name)
-		{
-			foreach (ContentProcessorInfo info in processors)
-			{
-				if (info.Name == name)
-					return true;
-			}
-			
-			return false;	
-		}
 		
 		#endregion Public Methods
 		
 		#region Private Methods
 		
-		/// <summary>
-		/// Search through the assembly and find content importers and processors.
-		/// </summary>
 		private void findPipelineEntries (ProjectReference reference)
 		{
+			// Search through the assembly and find content importers and processors.
+			
 			Assembly assembly = Assembly.LoadFrom(reference.StoredReference);			
 			foreach (Type type in assembly.GetTypes())
 			{
@@ -145,17 +117,17 @@ namespace MonoDevelop.Xna
 					{
 						ContentImporterAttribute ia = attribute as ContentImporterAttribute;
 						if (ia.DisplayName != null && ia.DisplayName != string.Empty)
-							importers.Add(new ContentImporterInfo(type, ia.DisplayName, ia.FileExtensions, ia.DefaultProcessor, ia.CacheImportedData));
+							importers.Add(new ContentImporterInfo(type.Name, ia.DisplayName, ia.FileExtensions, ia.DefaultProcessor, ia.CacheImportedData));
 						else
-							importers.Add(new ContentImporterInfo(type, type.Name, ia.FileExtensions, ia.DefaultProcessor, ia.CacheImportedData));
+							importers.Add(new ContentImporterInfo(type.Name, type.Name, ia.FileExtensions, ia.DefaultProcessor, ia.CacheImportedData));
 					}
 					else if (attribute is ContentProcessorAttribute)
 					{
 						ContentProcessorAttribute pa = attribute as ContentProcessorAttribute;
 						if(pa.DisplayName != null && pa.DisplayName != string.Empty)
-							processors.Add(new ContentProcessorInfo(type, pa.DisplayName));
+							processors.Add(new ContentProcessorInfo(type.Name, pa.DisplayName));
 						else
-							processors.Add(new ContentProcessorInfo(type, type.Name));
+							processors.Add(new ContentProcessorInfo(type.Name, type.Name));
 					}
 				}
 			}

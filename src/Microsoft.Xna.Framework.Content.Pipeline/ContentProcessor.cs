@@ -36,21 +36,21 @@ namespace Microsoft.Xna.Framework.Content.Pipeline
 	public abstract class ContentProcessor<TInput,TOutput> : IContentProcessor
 	{
 		
-#region Constructor		
+		#region Constructor		
 		
 		protected ContentProcessor()
 		{
 		}
 		
-#endregion
+		#endregion Constructor
 		
-#region Public Methods
+		#region Methods
 		
 		public abstract TOutput Process (TInput input, ContentProcessorContext context);
 		
-#endregion
+		#endregion Methods
 		
-#region Explicit IContentProcessor Implementation
+		#region Explicit IContentProcessor Implementation
 		
 		Type IContentProcessor.InputType {
 			get { return typeof(TInput); }
@@ -62,13 +62,15 @@ namespace Microsoft.Xna.Framework.Content.Pipeline
 
 		object IContentProcessor.Process (object input, ContentProcessorContext context)
 		{
-			if (input == null) throw new ArgumentNullException("input");
-			if (!(input is TInput)) throw new ArgumentException("Wrong content processor input type");
-			TInput local = (TInput) input;
-			return Process(local, context);
+			if (input == null) 
+				throw new ArgumentNullException("input");
+			if (!(input is TInput)) 
+				throw new ArgumentException("Wrong content processor input type");
+			
+			return Process((TInput)input, context);
 		}
 		
-#endregion
+		#endregion Explicit IContentProcessor Implementation
 		
 	}
 }

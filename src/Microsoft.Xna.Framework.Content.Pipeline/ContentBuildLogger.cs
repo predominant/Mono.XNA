@@ -37,8 +37,12 @@ namespace Microsoft.Xna.Framework.Content.Pipeline
 	
 	public abstract class ContentBuildLogger
 	{	
-
+		#region Fields
+		
 		private Stack<String> fileStack;
+		private string loggerRootDirectory;
+		
+		#endregion Fields
 		
 		#region Constructor
 		
@@ -51,9 +55,7 @@ namespace Microsoft.Xna.Framework.Content.Pipeline
 		
 		#region Properties
 		
-		private string loggerRootDirectory;
-		public string LoggerRootDirectory
-		{
+		public string LoggerRootDirectory {
 			get { return loggerRootDirectory; }
 			set { loggerRootDirectory = value; }
 		}

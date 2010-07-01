@@ -45,7 +45,7 @@ namespace Microsoft.Xna.Framework.Content.Pipeline.Graphics
 		
 		public MipmapChain(BitmapContent bitmap)
 		{
-			
+			Add(bitmap);
 		}
 
 		#endregion Constructors
@@ -54,12 +54,12 @@ namespace Microsoft.Xna.Framework.Content.Pipeline.Graphics
 		
 		public static implicit operator MipmapChain(BitmapContent bitmap)
 		{
-			throw new NotImplementedException();
+			return new MipmapChain(bitmap);
 		}		
 		
 		#endregion Operators
 		
-		#region Protected Methods
+		#region Methods
 
 		protected override void InsertItem(int index, BitmapContent item)
 		{
@@ -71,7 +71,7 @@ namespace Microsoft.Xna.Framework.Content.Pipeline.Graphics
 			throw new NotImplementedException();
 		}
 		
-		#endregion Protected Methods
+		#endregion Methods
 		
 	}
 }

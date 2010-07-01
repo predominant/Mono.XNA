@@ -28,6 +28,8 @@ SOFTWARE.
 #endregion License
 
 using System;
+using System.Collections;
+using System.Collections.Generic;
 using System.ComponentModel;
 using System.Globalization;
 using MonoDevelop.Core;
@@ -60,14 +62,14 @@ namespace MonoDevelop.Xna
 
 		public object CreateProvider (object o)
 		{
-			return new ContentFileWrapper ((ProjectFile)o);
+			return new ContentFileDescriptor ((ProjectFile)o);
 		}		
 		
 		#endregion IPropertyProvider Implementation
 		
-		#region Nested ContentFileWrapper Class
+		#region Nested ContentFileDescriptor Class
 		
-		public class ContentFileWrapper: CustomDescriptor
+		public class ContentFileDescriptor : CustomDescriptor
 		{
 			#region Private Fields
 			
@@ -81,7 +83,7 @@ namespace MonoDevelop.Xna
 			
 			#region Constructor
 			
-			public ContentFileWrapper (ProjectFile file)
+			public ContentFileDescriptor (ProjectFile file)
 			{
 				this.file = file;
 			}
@@ -140,17 +142,7 @@ namespace MonoDevelop.Xna
 				
 				public override bool CanConvertFrom (ITypeDescriptorContext context, Type sourceType)
 				{
-					return sourceType == typeof(string);	
-				}
-				
-				public override object ConvertFrom (ITypeDescriptorContext context, CultureInfo culture, object value)
-				{
-					return value as string;
-				}
-
-				public override object ConvertTo (ITypeDescriptorContext context, CultureInfo culture, object value, Type destinationType)
-				{
-					return value as string;
+					return sourceType == typeof(string);
 				}
 				
 				public override bool GetStandardValuesSupported (ITypeDescriptorContext context)
@@ -160,13 +152,12 @@ namespace MonoDevelop.Xna
 				
 				public override bool GetStandardValuesExclusive (ITypeDescriptorContext context)
 				{
-					ContentFileWrapper wrapper = context != null ? context.Instance as ContentFileWrapper : null;
-					if (wrapper != null && wrapper.file != null)
-					{
-						ContentProject project = wrapper.file.Project as ContentProject;
-						return project != null;
-					}
-					return false;
+					ContentFileDescriptor descriptor = context != null ? context.Instance as ContentFileDescriptor : null;
+					if (descriptor == null || descriptor.file == null)
+						return false;
+					
+					ContentProject project = descriptor.file.Project as ContentProject;
+					return project != null;
 				}
 				
 				#endregion TypeConverter Overrides
@@ -179,35 +170,92 @@ namespace MonoDevelop.Xna
 			[MonoDevelop.Components.PropertyGrid.PropertyEditors.StandardValuesSeparator("--")]
 			class ImporterStringsConverter : ContentStringsConverter
 			{
+				#region Methods
+				
+				#endregion Methods
+				
 				#region TypeConverter Overrides
 				
 				public override StandardValuesCollection GetStandardValues (ITypeDescriptorContext context)
 				{
-					ContentFileWrapper wrapper = context != null ? context.Instance as ContentFileWrapper : null;
-					if (wrapper != null && wrapper.file != null)
-					{
-						ContentProject project = wrapper.file.Project as ContentProject;
-						if (project != null)
-							return new StandardValuesCollection(project.GetImporterNames());
-					}
-					return new StandardValuesCollection(null);
+					ContentFileDescriptor descriptor = context != null ? context.Instance as ContentFileDescriptor : null;
+					if (descriptor == null || descriptor.file == null)
+						return new StandardValuesCollection(null);
+					
+					ContentProject project = descriptor.file.Project as ContentProject;
+					if (project == null)
+						return new StandardValuesCollection(null);
+					
+					List<string> ret = new List<string>();
+					foreach (ContentImporterInfo info in project.Importers)
+						ret.Add(info.Name);
+					
+					return new StandardValuesCollection(ret);
 				}
 				
 				public override bool IsValid (ITypeDescriptorContext context, object value)
 				{
-					if (!(value is string))
-						return false;
 					string str = value as string;
-					ContentFileWrapper wrapper = context != null ? context.Instance as ContentFileWrapper : null;
-					if (wrapper != null && wrapper.file != null)
+					if (str == null)
+						return false;	
+					
+					ContentFileDescriptor descriptor = context != null ? context.Instance as ContentFileDescriptor : null;
+					if (descriptor == null || descriptor.file == null)
+						return false;
+					
+					ContentProject project = descriptor.file.Project as ContentProject;
+					if (project == null)
+						return false;
+					
+					foreach (ContentImporterInfo info in project.Importers)
 					{
-						ContentProject project = wrapper.file.Project as ContentProject;
-						if (project != null)
-						{
-							return project.IsImporterNameValid(str);
-						}
+						if (info.Name == str || info.DisplayName == str)
+							return true;
 					}
+					
 					return false;
+				}
+				
+				public override object ConvertFrom (ITypeDescriptorContext context, CultureInfo culture, object value)
+				{
+					string str = value as string;
+				
+					/*ContentFileDescriptor descriptor = context != null ? context.Instance as ContentFileDescriptor : null;
+					if (descriptor == null || descriptor.file == null)
+						return str;
+					
+					ContentProject project = descriptor.file.Project as ContentProject;
+					if (project == null)
+						return str;
+					
+					foreach (ContentImporterInfo info in project.Importers)
+					{
+						if (str == info.Name)
+							return info.DisplayName;
+					}*/
+					
+					return str;
+				}
+
+				public override object ConvertTo (ITypeDescriptorContext context, CultureInfo culture, object value, Type destinationType)
+				{
+					string str = value as string;
+					
+					/*ContentFileDescriptor descriptor = context != null ? context.Instance as ContentFileDescriptor : null;
+					if (descriptor == null || descriptor.file == null)
+						return str;
+					
+					ContentProject project = descriptor.file.Project as ContentProject;
+					if (project == null)
+						return str;
+					
+					foreach (ContentImporterInfo info in project.Importers)
+					{
+						if (str == info.DisplayName)
+							return info.Name;
+					}*/
+					
+					return str;
 				}
 				
 				#endregion TypeConverter Overrides
@@ -220,35 +268,92 @@ namespace MonoDevelop.Xna
 			[MonoDevelop.Components.PropertyGrid.PropertyEditors.StandardValuesSeparator("--")]
 			class ProcessorStringsConverter : ContentStringsConverter
 			{
+				#region Methods
+				
+				#endregion Methods
+				
 				#region TypeConverter Overrides
 				
 				public override StandardValuesCollection GetStandardValues (ITypeDescriptorContext context)
 				{
-					ContentFileWrapper wrapper = context != null ? context.Instance as ContentFileWrapper : null;
-					if (wrapper != null && wrapper.file != null)
-					{
-						ContentProject project = wrapper.file.Project as ContentProject;
-						if (project != null)
-							return new StandardValuesCollection(project.GetProcessorNames());
-					}
-					return new StandardValuesCollection(null);
+					ContentFileDescriptor descriptor = context != null ? context.Instance as ContentFileDescriptor : null;
+					if (descriptor == null || descriptor.file == null)
+						return new StandardValuesCollection(null);
+						
+					ContentProject project = descriptor.file.Project as ContentProject;
+					if (project == null)
+						return new StandardValuesCollection(null);
+							
+					List<string> ret = new List<string>();
+					foreach (ContentProcessorInfo info in project.Processors)
+						ret.Add(info.Name);
+							
+					return new StandardValuesCollection(ret);
 				}
 				
 				public override bool IsValid (ITypeDescriptorContext context, object value)
 				{
-					if (!(value is string))
-						return false;
 					string str = value as string;
-					ContentFileWrapper wrapper = context != null ? context.Instance as ContentFileWrapper : null;
-					if (wrapper != null && wrapper.file != null)
+					if (str == null)
+						return false;	
+					
+					ContentFileDescriptor descriptor = context != null ? context.Instance as ContentFileDescriptor : null;
+					if (descriptor == null || descriptor.file == null)
+						return false;
+					
+					ContentProject project = descriptor.file.Project as ContentProject;
+					if (project == null)
+						return false;
+					
+					foreach (ContentProcessorInfo info in project.Processors)
 					{
-						ContentProject project = wrapper.file.Project as ContentProject;
-						if (project != null)
-						{
-							return project.IsProcessorNameValid(str);
-						}
+						if (info.Name == str || info.DisplayName == str)
+							return true;
 					}
+					
 					return false;
+				}
+				
+				public override object ConvertFrom (ITypeDescriptorContext context, CultureInfo culture, object value)
+				{
+					string str = value as string;
+					
+					/*ContentFileDescriptor descriptor = context != null ? context.Instance as ContentFileDescriptor : null;
+					if (descriptor == null || descriptor.file == null)
+						return str;
+					
+					ContentProject project = descriptor.file.Project as ContentProject;
+					if (project == null)
+						return str;
+					
+					foreach (ContentProcessorInfo info in project.Processors)
+					{
+						if (str == info.Name)
+							return info.DisplayName;
+					}*/
+					
+					return str;
+				}
+
+				public override object ConvertTo (ITypeDescriptorContext context, CultureInfo culture, object value, Type destinationType)
+				{
+					string str = value as string;
+					
+					/*ContentFileDescriptor descriptor = context != null ? context.Instance as ContentFileDescriptor : null;
+					if (descriptor == null || descriptor.file == null)
+						return str;
+					
+					ContentProject project = descriptor.file.Project as ContentProject;
+					if (project == null)
+						return str;
+					
+					foreach (ContentProcessorInfo info in project.Processors)
+					{
+						if (str == info.DisplayName)
+							return info.Name;
+					}*/
+					
+					return str;
 				}
 				
 				#endregion TypeConverter Overrides
@@ -258,6 +363,6 @@ namespace MonoDevelop.Xna
 			
 		}
 		
-		#endregion Nested ContentFileWrapper Class		
+		#endregion Nested ContentFileDescriptor Class		
 	}
 }

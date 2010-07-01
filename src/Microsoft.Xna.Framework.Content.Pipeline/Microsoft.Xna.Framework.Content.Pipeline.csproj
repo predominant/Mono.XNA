@@ -176,7 +176,6 @@
     <Compile Include="Serialization\Compiler\ContentTypeWriterAttribute.cs" />
     <Compile Include="Serialization\Compiler\ContentWriter.cs" />
     <Compile Include="Serialization\Intermediate\ContentTypeSerializer.cs" />
-    <Compile Include="Serialization\Intermediate\ContentTypeSerializer_.cs" />
     <Compile Include="Serialization\Intermediate\ContentTypeSerializerAttribute.cs" />
     <Compile Include="Serialization\Intermediate\IntermediateReader.cs" />
     <Compile Include="Serialization\Intermediate\IntermediateSerializer.cs" />
@@ -185,6 +184,8 @@
     <Compile Include="Tasks\BuildXact.cs" />
     <Compile Include="Tasks\CleanContent.cs" />
     <Compile Include="Tasks\GetLastOutputs.cs" />
+    <Compile Include="XBuildLogger.cs" />
+    <Compile Include="Serialization\Intermediate\DefaultContentTypeSerializer.cs" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="System" />
