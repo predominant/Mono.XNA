@@ -53,7 +53,7 @@ namespace Microsoft.Xna.Framework.Content.Pipeline.Serialization.Intermediate
 
         protected internal override Object Deserialize(IntermediateReader input, ContentSerializerAttribute format, Object existingInstance)
         {
-            throw new NotImplementedException();
+            return Deserialize(input, format, (T)existingInstance);
         }
         
         protected internal abstract T Deserialize(IntermediateReader input, ContentSerializerAttribute format, T existingInstance);
@@ -92,17 +92,25 @@ namespace Microsoft.Xna.Framework.Content.Pipeline.Serialization.Intermediate
     
     public abstract class ContentTypeSerializer
     {
-        protected internal delegate void ChildCallback(ContentTypeSerializer typeSerializer, Object value);
-
+		#region Fields
+		
+		private IntermediateSerializer serializer;
+		private Type targetType;
+		private string xmlTypeName;
+		
+		#endregion Fields
+		
 		#region Constructor
         
         protected ContentTypeSerializer(Type targetType)
         {
+			this.targetType = targetType;
         }
         
         protected ContentTypeSerializer(Type targetType, string xmlTypeName)
         {
-            
+            this.targetType = targetType;
+			this.xmlTypeName = xmlTypeName;
         }
 
 		#endregion Constructor
@@ -111,17 +119,17 @@ namespace Microsoft.Xna.Framework.Content.Pipeline.Serialization.Intermediate
 
         public virtual bool CanDeserializeIntoExistingObject 
         { 
-            get { throw new NotImplementedException(); }
+            get { return true; }
         }
         
         public Type TargetType 
         { 
-            get { throw new NotImplementedException(); }
+            get { return targetType; }
         }
 
         public string XmlTypeName 
         { 
-            get { throw new NotImplementedException(); }
+            get { return xmlTypeName; }
         }
         
 		#endregion Properties
@@ -130,24 +138,30 @@ namespace Microsoft.Xna.Framework.Content.Pipeline.Serialization.Intermediate
 
         public virtual bool ObjectIsEmpty(Object value)
         {
-            throw new NotImplementedException();
+            return true;
+		}
+        
+        protected internal virtual void Initialize(IntermediateSerializer serializer)
+        {
+            this.serializer = serializer;
+        }
+		
+		protected internal virtual void ScanChildren(IntermediateSerializer serializer, ChildCallback callback, Object value)
+        {
+            serializer.GetTypeSerializer(value.GetType());
         }
         
         protected internal abstract Object Deserialize(IntermediateReader input, ContentSerializerAttribute format, Object existingInstance);
         
-        protected internal virtual void Initialize(IntermediateSerializer serializer)
-        {
-            throw new NotImplementedException();
-        }
-        
-        protected internal virtual void ScanChildren(IntermediateSerializer serializer, ChildCallback callback, Object value)
-        {
-            throw new NotImplementedException();
-        }
-        
         protected internal abstract void Serialize(IntermediateWriter output, Object value, ContentSerializerAttribute format);
         
 		#endregion Methods
+		
+		#region Delegates
+		
+        protected internal delegate void ChildCallback(ContentTypeSerializer typeSerializer, Object value);
+				
+		#endregion Delegates
         
     }
 }
