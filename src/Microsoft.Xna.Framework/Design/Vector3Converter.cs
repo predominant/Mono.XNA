@@ -36,7 +36,7 @@ namespace Microsoft.Xna.Framework.Design
     {
         public Vector3Converter()
         {
-            throw new NotImplementedException();
+            
         }
 
         public override object ConvertFrom(ITypeDescriptorContext context, CultureInfo culture, object value)

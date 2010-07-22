@@ -51,21 +51,14 @@ namespace Microsoft.Xna.Framework.Content.Pipeline.Serialization.Intermediate
         
 		#region Methods
 
-        protected internal override Object Deserialize(IntermediateReader input, ContentSerializerAttribute format, Object existingInstance)
-        {
-            return Deserialize(input, format, (T)existingInstance);
-        }
-        
-        protected internal abstract T Deserialize(IntermediateReader input, ContentSerializerAttribute format, T existingInstance);
-        
         public override bool ObjectIsEmpty(Object value)
         {
-            throw new NotImplementedException();
+            return ObjectIsEmpty((T)value);
         }
         
         public virtual bool ObjectIsEmpty(T value)
         {
-            throw new NotImplementedException();
+            return base.ObjectIsEmpty(value);
         }
         
         protected internal override void ScanChildren(IntermediateSerializer serializer, ChildCallback callback, Object value)
@@ -85,7 +78,14 @@ namespace Microsoft.Xna.Framework.Content.Pipeline.Serialization.Intermediate
         
         protected internal abstract void Serialize(IntermediateWriter output, T value, ContentSerializerAttribute format);
         
-		#endregion Methods
+		protected internal override Object Deserialize(IntermediateReader input, ContentSerializerAttribute format, Object existingInstance)
+        {
+            return Deserialize(input, format, (T)existingInstance);
+        }
+        
+        protected internal abstract T Deserialize(IntermediateReader input, ContentSerializerAttribute format, T existingInstance);
+        
+        #endregion Methods
         
     }
     
@@ -94,7 +94,6 @@ namespace Microsoft.Xna.Framework.Content.Pipeline.Serialization.Intermediate
     {
 		#region Fields
 		
-		private IntermediateSerializer serializer;
 		private Type targetType;
 		private string xmlTypeName;
 		
@@ -117,18 +116,15 @@ namespace Microsoft.Xna.Framework.Content.Pipeline.Serialization.Intermediate
         
 		#region Properties
 
-        public virtual bool CanDeserializeIntoExistingObject 
-        { 
+        public virtual bool CanDeserializeIntoExistingObject { 
             get { return true; }
         }
         
-        public Type TargetType 
-        { 
+        public Type TargetType { 
             get { return targetType; }
         }
 
-        public string XmlTypeName 
-        { 
+        public string XmlTypeName { 
             get { return xmlTypeName; }
         }
         
@@ -138,17 +134,20 @@ namespace Microsoft.Xna.Framework.Content.Pipeline.Serialization.Intermediate
 
         public virtual bool ObjectIsEmpty(Object value)
         {
-            return true;
+			if (value.GetType().IsValueType)
+				return false;
+			
+            return value == null;
 		}
         
         protected internal virtual void Initialize(IntermediateSerializer serializer)
         {
-            this.serializer = serializer;
+			
         }
 		
 		protected internal virtual void ScanChildren(IntermediateSerializer serializer, ChildCallback callback, Object value)
         {
-            serializer.GetTypeSerializer(value.GetType());
+            
         }
         
         protected internal abstract Object Deserialize(IntermediateReader input, ContentSerializerAttribute format, Object existingInstance);
