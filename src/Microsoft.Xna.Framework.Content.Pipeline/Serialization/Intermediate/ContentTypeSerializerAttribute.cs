@@ -36,13 +36,13 @@ namespace Microsoft.Xna.Framework.Content.Pipeline.Serialization.Intermediate
     public sealed class ContentTypeSerializerAttribute : Attribute
     {
 
-#region Constructor
+		#region Constructor
         
         public ContentTypeSerializerAttribute()
         {
         }
 
-#endregion
+		#endregion Constructor
         
     }
 }

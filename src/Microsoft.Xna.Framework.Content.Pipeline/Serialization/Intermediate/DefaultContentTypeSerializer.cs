@@ -15,6 +15,11 @@ namespace Microsoft.Xna.Framework.Content.Pipeline.Serialization.Intermediate
 		
 		#region ContentTypeSerializer Overrides
 		
+		protected internal override void ScanChildren (IntermediateSerializer serializer, ChildCallback callback, object value)
+		{
+			base.ScanChildren (serializer, callback, value);
+		}
+		
 		protected internal override object Deserialize (IntermediateReader input, ContentSerializerAttribute format, object existingInstance)
 		{
 			throw new System.NotImplementedException();

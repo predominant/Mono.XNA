@@ -123,4 +123,7 @@
       <Name>Microsoft.Xna.Framework.Game</Name>
     </ProjectReference>
   </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Microsoft.Xna.Framework.Content.Pipeline\" />
+  </ItemGroup>
 </Project>

@@ -37,15 +37,15 @@ namespace Microsoft.Xna.Framework.Content.Pipeline.Serialization.Intermediate
     public sealed class IntermediateReader
     {
 
-#region Constructor
+		#region Constructor
         
         public IntermediateReader()
         {
         }
 
-#endregion
+		#endregion Constructor
         
-#region Properties
+		#region Properties
 
         public IntermediateSerializer Serializer 
         { 
@@ -57,9 +57,9 @@ namespace Microsoft.Xna.Framework.Content.Pipeline.Serialization.Intermediate
             get { throw new NotImplementedException(); }
         }
         
-#endregion
+		#endregion Properties
         
-#region Public Methods
+		#region Methods
 
         public bool MoveToElement(string elementName)
         {
@@ -121,7 +121,7 @@ namespace Microsoft.Xna.Framework.Content.Pipeline.Serialization.Intermediate
             throw new NotImplementedException();
         }
         
-#endregion
+		#endregion Methods
         
     }
 }

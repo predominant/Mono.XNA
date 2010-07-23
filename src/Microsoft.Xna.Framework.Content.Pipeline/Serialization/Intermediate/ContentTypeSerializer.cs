@@ -63,17 +63,17 @@ namespace Microsoft.Xna.Framework.Content.Pipeline.Serialization.Intermediate
         
         protected internal override void ScanChildren(IntermediateSerializer serializer, ChildCallback callback, Object value)
         {
-            throw new NotImplementedException();
+            ScanChildren(serializer, callback, (T)value);
         }
         
         protected internal virtual void ScanChildren(IntermediateSerializer serializer, ChildCallback callback, T value)
         {
-            throw new NotImplementedException();
+            base.ScanChildren(serializer, callback, value);
         }
         
         protected internal override void Serialize(IntermediateWriter output, Object value, ContentSerializerAttribute format)
         {
-            throw new NotImplementedException();
+            Serialize(output, (T)value, format);
         }
         
         protected internal abstract void Serialize(IntermediateWriter output, T value, ContentSerializerAttribute format);
@@ -147,7 +147,7 @@ namespace Microsoft.Xna.Framework.Content.Pipeline.Serialization.Intermediate
 		
 		protected internal virtual void ScanChildren(IntermediateSerializer serializer, ChildCallback callback, Object value)
         {
-            
+            Type valueType = value.GetType();
         }
         
         protected internal abstract Object Deserialize(IntermediateReader input, ContentSerializerAttribute format, Object existingInstance);

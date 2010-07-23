@@ -45,60 +45,64 @@ namespace Microsoft.Xna.Framework.Content
         #endregion
 
 
-        #region Public Constructors
+        #region Constructor
 
         public ContentSerializerAttribute()
         {
-            //empty
+			allowNull = true;
+			collectionItemName = "Item";
+            elementName = "Asset";
+			flattenContent = false;
+			hasCollectionItemName = false;
+			optional = false;
+			sharedResource = false;
         }
 
-        #endregion Public Constructors
+        #endregion Constructor
 
+        #region Properties
 
-        #region Public Properties
-
-        public bool AllowNull
-        {
+        public bool AllowNull {
             get { return this.allowNull; }
             set { this.allowNull = value; }
         }
 
-        public string CollectionItemName
-        {
+        public string CollectionItemName {
             get { return this.collectionItemName; }
-            set { this.collectionItemName = value; }
+            set { 
+				this.collectionItemName = value; 
+				hasCollectionItemName = true;
+			}
         }
 
-        public string ElementName
-        {
+        public string ElementName {
             get { return this.elementName; }
             set { this.elementName = value; }
         }
 
-        public bool FlattenContent
-        {
+        public bool FlattenContent {
             get { return this.flattenContent; }
             set { this.flattenContent = value; }
         }
 
-        public bool HasCollectionItemName
-        {
+        public bool HasCollectionItemName {
             get { return this.hasCollectionItemName; }
         }
 
-        public bool Optional
-        {
+        public bool Optional {
             get { return this.optional; }
             set { this.optional = value; }
         }
 
-        public bool SharedResource
-        {
+        public bool SharedResource {
             get { return this.sharedResource; }
             set { this.sharedResource = value; }
         }
 
-
+        #endregion Properties
+		
+		#region Methods
+		
         public ContentSerializerAttribute Clone()
         {
             ContentSerializerAttribute clone = new ContentSerializerAttribute();
@@ -111,7 +115,8 @@ namespace Microsoft.Xna.Framework.Content
             clone.sharedResource = this.sharedResource;
             return clone;
         }
+		
+		#endregion Methods
 
-        #endregion Public Properties
     }
 }

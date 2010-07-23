@@ -36,30 +36,36 @@ namespace Microsoft.Xna.Framework.Content.Pipeline.Serialization.Intermediate
     
     public sealed class IntermediateWriter
     {
+		#region Fields
+		
+		private IntermediateSerializer serializer;
+		private XmlWriter xml;
+		
+		#endregion Fields
 
-#region Constructor
+		#region Constructor
         
-        public IntermediateWriter()
+        internal IntermediateWriter(IntermediateSerializer serializer, XmlWriter xml)
         {
         }
 
-#endregion
+		#endregion Constructor
         
-#region Properties
+		#region Properties
 
         public IntermediateSerializer Serializer 
         { 
-            get { throw new NotImplementedException(); }
+            get { return serializer; }
         }
         
         public XmlWriter Xml 
         { 
-            get { throw new NotImplementedException(); }
+            get { return xml; }
         }
         
-#endregion
+		#endregion Properties
         
-#region Public Methods
+		#region Methods
 
         public void WriteExternalReference<T>(ExternalReference<T> value)
         {
@@ -68,12 +74,15 @@ namespace Microsoft.Xna.Framework.Content.Pipeline.Serialization.Intermediate
         
         public void WriteObject<T>(T value, ContentSerializerAttribute format)
         {
-            throw new NotImplementedException();
+            WriteObject(value, format, Serializer.GetTypeSerializer(typeof(T)));
         }
         
         public void WriteObject<T>(T value, ContentSerializerAttribute format, ContentTypeSerializer typeSerializer)
         {
-            throw new NotImplementedException();
+            Xml.WriteStartElement(format.ElementName);
+			Xml.WriteAttributeString("Type", typeSerializer.XmlTypeName);
+			typeSerializer.Serialize(this, value, format);
+			Xml.WriteEndElement();
         }
         
         public void WriteRawObject<T>(T value, ContentSerializerAttribute format)
@@ -96,7 +105,7 @@ namespace Microsoft.Xna.Framework.Content.Pipeline.Serialization.Intermediate
             throw new NotImplementedException();
         }
         
-#endregion
+		#endregion Methods
         
     }
 }

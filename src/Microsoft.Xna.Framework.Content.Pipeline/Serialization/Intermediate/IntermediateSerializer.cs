@@ -29,6 +29,7 @@ SOFTWARE.
 
 using System;
 using System.Xml;
+using System.Collections.Generic;
 
 namespace Microsoft.Xna.Framework.Content.Pipeline.Serialization.Intermediate
 {
@@ -36,16 +37,26 @@ namespace Microsoft.Xna.Framework.Content.Pipeline.Serialization.Intermediate
     
     public sealed class IntermediateSerializer
     {
+		#region Fields
+		
+		private static Dictionary<Type, ContentTypeSerializer> serializers;
+		
+		#endregion Fields
+		
+		#region Constructor        
         
-#region Constructor        
-        
+		static IntermediateSerializer()
+		{
+			serializers = new Dictionary<Type, ContentTypeSerializer>();	
+		}
+		
         public IntermediateSerializer()
         {
         }
 
-#endregion
+		#endregion Constructor
         
-#region Public Methods
+		#region Public Methods
         
         public static T Deserialize<T>(XmlReader input, string referenceRelocationPath)
         {
@@ -59,10 +70,11 @@ namespace Microsoft.Xna.Framework.Content.Pipeline.Serialization.Intermediate
         
         public ContentTypeSerializer GetTypeSerializer(Type type)
         {
-            throw new NotImplementedException();
+            if (serializers.ContainsKey(type))
+				return serializers[type];
         }
-        
-#endregion        
+		
+		#endregion Public Methods       
         
     }
 }
