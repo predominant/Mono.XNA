@@ -29,72 +29,96 @@ using System;
 using System.ComponentModel;
 using System.ComponentModel.Design.Serialization;
 using System.Globalization;
+using System.Text;
 
 namespace Microsoft.Xna.Framework.Design
 {
     public class MathTypeConverter : ExpandableObjectConverter
     {
+		#region Fields
+		
         protected PropertyDescriptorCollection propertyDescriptions;
         protected bool supportStringConvert;
        
+		#endregion Fields
+		
+		#region Constructor
 
         public MathTypeConverter()
         {
-           this.supportStringConvert = true;
+           supportStringConvert = true;
         }
+		
+		#endregion Constructor
+		
+		#region Methods
+		
+		internal static string ConvertValuesToString (ITypeDescriptorContext context, CultureInfo culture, float[] values)
+		{
+			StringBuilder ret = new StringBuilder();
+			string delimiter = culture.TextInfo.ListSeparator + " ";
+			
+			TypeConverter converter = TypeDescriptor.GetConverter(typeof(float));
+			for (int i = 0; i < values.Length; i++)
+			{
+				ret.Append(converter.ConvertTo(context, culture, values[i], typeof(string)));
+				if (i < values.Length - 1)
+					ret.Append(delimiter);
+			}
+			return ret.ToString();
+		}
+		
+		internal static float[] ConvertStringToValues (ITypeDescriptorContext context, CultureInfo culture, string valuesString)
+		{
+			string[] delimiters = new string[] { culture.TextInfo.ListSeparator + " " };
+			string[] valueStrings = valuesString.Split(delimiters, StringSplitOptions.None);
+			float[] values = new float[valuesString.Length];
+			
+			TypeConverter converter = TypeDescriptor.GetConverter(typeof(float));
+			for (int i = 0; i < values.Length; i++)
+				values[i] = (float)converter.ConvertFrom(context, culture, valueStrings[i]);
+			
+			return values;
+		}
+		
+		#endregion Methods
+		
+		#region ExpandableObjectConverter Overrides
 
-        public override bool CanConvertFrom(ITypeDescriptorContext context, Type sourceType)
+        public override bool CanConvertFrom (ITypeDescriptorContext context, Type sourceType)
         {
-           return this.supportStringConvert && (sourceType == typeof(String)) || base.CanConvertFrom(context,sourceType);
+			if (sourceType == typeof(string) && supportStringConvert)
+				return true;
+			
+			return base.CanConvertFrom(context,sourceType);
         }
 
-        public override bool CanConvertTo(ITypeDescriptorContext context, Type destinationType)
+        public override bool CanConvertTo (ITypeDescriptorContext context, Type destinationType)
         {
-            return (destinationType == typeof(InstanceDescriptor) || base.CanConvertTo(context,destinationType));
+            if (destinationType == typeof(string) && supportStringConvert)
+				return true;
+			else if (destinationType == typeof(InstanceDescriptor))
+			    return true;
+			
+			return base.CanConvertTo(context, destinationType);
         }
 
-        public override bool GetCreateInstanceSupported(ITypeDescriptorContext context)
+        public override bool GetCreateInstanceSupported (ITypeDescriptorContext context)
         {
             return true;
         }
 
-        public override PropertyDescriptorCollection GetProperties(ITypeDescriptorContext context, object value, Attribute[] attributes)
+        public override PropertyDescriptorCollection GetProperties (ITypeDescriptorContext context, object value, Attribute[] attributes)
         {
            return this.propertyDescriptions;
         }
 
-        public override bool GetPropertiesSupported(ITypeDescriptorContext context)
+        public override bool GetPropertiesSupported (ITypeDescriptorContext context)
         {
            return true;
         }
 		
-		internal static T[] ConvertToT<T>(ITypeDescriptorContext context, CultureInfo culture, object value, int Count, string messageParam)
-		{
-			if (!(value is String))return null;
-			
-			string val = ((string)value).Trim();
-			
-			if (val.Length == 0) return null;
-			if (culture == null) culture = CultureInfo.CurrentCulture;
-	
-			char sep = culture.TextInfo.ListSeparator[0];
-			string[] valArray = val.Split(new char[] { sep });
-			TypeConverter converter = TypeDescriptor.GetConverter(typeof (T));
-			T[] TArray = new T[valArray.Length];
-			
-			for (int i = 0; i < TArray.Length; i++)
-			{
-				try{
-					TArray[i] = (T) converter.ConvertFromString(context,culture,valArray[i]);
-				}
-				catch(Exception ex) {
-					throw new ArgumentException("Invalid string format",ex);
-				}
-			}
-			
-			if (TArray.Length != Count) throw new ArgumentException("Invalid string format");
-
-			return TArray;
-		}
+		#endregion ExpandableObjectConverter Overrides
+		
     }
 }

@@ -34,24 +34,46 @@ namespace Microsoft.Xna.Framework.Design
 {
     public class Vector3Converter : MathTypeConverter
     {
+		#region Constructor
+		
         public Vector3Converter()
         {
             
         }
+		
+		#endregion Constructor
+		
+		#region MathTypeConverter Overrides
 
         public override object ConvertFrom(ITypeDescriptorContext context, CultureInfo culture, object value)
         {
-            throw new NotImplementedException();
+            if (value.GetType() == typeof(string) && supportStringConvert)
+			{
+				float[] values = MathTypeConverter.ConvertStringToValues(context, culture, (string)value);
+				return new Vector3(values[0], values[1], values[2]);
+			}
+			return base.ConvertFrom(context, culture, value);
         }
 
         public override object ConvertTo(ITypeDescriptorContext context, CultureInfo culture, object value, Type destinationType)
         {
-            throw new NotImplementedException();
+			if (value.GetType() != typeof(Vector3))
+				throw new NotSupportedException("The value is not of proper type");
+			
+			Vector3 vector = (Vector3)value; 
+            if (destinationType == typeof(string) && supportStringConvert)
+			{
+				float[] values = new float[] { vector.X, vector.Y, vector.Z };						
+				return MathTypeConverter.ConvertValuesToString(context, culture, values);
+			}
+			return base.ConvertTo(context, culture, value, destinationType);
         }
 
         public override object CreateInstance(ITypeDescriptorContext context, IDictionary propertyValues)
         {
             throw new NotImplementedException();
         }
+		
+		#endregion MathTypeConverter Overrides
     }
 }

@@ -34,30 +34,34 @@ namespace Microsoft.Xna.Framework.Design
 {
     public class QuaternionConverter : MathTypeConverter
     {
-
+		
+		#region Constructor
+		
         public QuaternionConverter()
         {
             Type type = typeof(Quaternion);
 			base.propertyDescriptions = new PropertyDescriptorCollection(new PropertyDescriptor[] { new FieldDescriptor(type.GetField("X")), new FieldDescriptor(type.GetField("Y")), new FieldDescriptor(type.GetField("Z")), new FieldDescriptor(type.GetField("W")) } ).Sort(new string[] { "X", "Y", "Z", "W" });
         }
+		
+		#endregion Constructor
+		
+		#region MathTypeConverter Overrides
 
-        public override object ConvertFrom(ITypeDescriptorContext context, CultureInfo culture, object value)
+        public override object ConvertFrom (ITypeDescriptorContext context, CultureInfo culture, object value)
         {
-            float[] values = MathTypeConverter.ConvertToT<float>(context,culture,value,4, "X, Y, Z, W");
-        if (values != null){
-				return new Quaternion(values[0],values[1],values[2],values[3]);
-			}
-			return base.ConvertFrom(context,culture,value);
+			return base.ConvertFrom(context, culture, value);
 		}
 
-        public override object ConvertTo(ITypeDescriptorContext context, CultureInfo culture, object value, Type destinationType)
+        public override object ConvertTo (ITypeDescriptorContext context, CultureInfo culture, object value, Type destinationType)
         {
-            throw new NotImplementedException();
+            return base.ConvertTo(context, culture, value, destinationType);
         }
 
-        public override object CreateInstance(ITypeDescriptorContext context, IDictionary propertyValues)
+        public override object CreateInstance (ITypeDescriptorContext context, IDictionary propertyValues)
         {
             throw new NotImplementedException();
         }
+		
+		#endregion MathTypeConverter Overrides
     }
 }

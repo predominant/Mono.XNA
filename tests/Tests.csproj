@@ -112,6 +112,7 @@
     <Compile Include="Microsoft.Xna.Framework.Game\GraphicsDeviceManagerTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Microsoft.Xna.Framework\Graphics\VertexBufferTests.cs" />
+    <Compile Include="Microsoft.Xna.Framework\Design\Vector3ConverterTests.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\src\Microsoft.Xna.Framework\Microsoft.Xna.Framework.csproj">
@@ -125,5 +126,6 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Microsoft.Xna.Framework.Content.Pipeline\" />
+    <Folder Include="Microsoft.Xna.Framework\Design\" />
   </ItemGroup>
 </Project>
