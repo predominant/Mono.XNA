@@ -550,26 +550,60 @@ namespace Microsoft.Xna.Framework
 
         public static Matrix CreateOrthographic(float width, float height, float zNearPlane, float zFarPlane)
         {
-            throw new NotImplementedException();
+			Matrix ret;
+			CreateOrthographic(width, height, zNearPlane, zFarPlane, out ret);
+			return ret;
         }
 
 
         public static void CreateOrthographic(float width, float height, float zNearPlane, float zFarPlane, out Matrix result)
         {
-            throw new NotImplementedException();
+			result.M11 = 2 / width;
+			result.M12 = 0;
+			result.M13 = 0;
+			result.M14 = 0;
+			result.M21 = 0;
+			result.M22 = 2 / height;
+			result.M23 = 0;
+			result.M24 = 0;
+			result.M31 = 0;
+			result.M32 = 0;
+			result.M33 = 1 / (zNearPlane - zFarPlane);
+			result.M34 = 0;
+			result.M41 = 0;
+			result.M42 = 0;
+			result.M43 = zNearPlane / (zNearPlane - zFarPlane);
+			result.M44 = 1;
         }
 
 
         public static Matrix CreateOrthographicOffCenter(float left, float right, float bottom, float top, float zNearPlane, float zFarPlane)
         {
-            throw new NotImplementedException();
+			Matrix ret;
+			CreateOrthographicOffCenter(left, right, bottom, top, zNearPlane, zFarPlane, out ret);
+			return ret;
         }
 
         
         public static void CreateOrthographicOffCenter(float left, float right, float bottom, float top,
             float zNearPlane, float zFarPlane, out Matrix result)
         {
-            throw new NotImplementedException();
+			result.M11 = 2 / (right - left);
+			result.M12 = 0;
+			result.M13 = 0;
+			result.M14 = 0;
+			result.M21 = 0;
+			result.M22 = 2 / (top - bottom);
+			result.M23 = 0;
+			result.M24 = 0;
+			result.M31 = 0;
+			result.M32 = 0;
+			result.M33 = 1 / (zNearPlane - zFarPlane);
+			result.M34 = 0;
+			result.M41 = (left + right) / (left - right);
+			result.M42 = (bottom + top) / (bottom - top);
+			result.M43 = zNearPlane / (zNearPlane - zFarPlane);
+			result.M44 = 1;
         }
 
 

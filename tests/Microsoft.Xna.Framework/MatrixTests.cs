@@ -194,6 +194,48 @@ namespace Microsoft.Xna.Framework.Tests
 		}
 		
 		[Test]
+		public void CreateOrthographic()
+		{
+			Matrix mx1 = Matrix.CreateOrthographic(800.0f, 400.0f, 8.0f, 10.0f);
+			Matrix res1 = new Matrix(0.0025f, 0f, 0f, 0f,
+			                         0f, 0.005f, 0f, 0f,
+			                         0f, 0f, -0.5f, 0f,
+			                         0f, 0f, -4.0f, 1.0f);
+			
+			Matrix mx2 = new Matrix(-1.0f, -1.0f, -1.0f, -1.0f,
+			                        -1.0f, -1.0f, -1.0f, -1.0f,
+			                        -1.0f, -1.0f, -1.0f, -1.0f,
+			                        -1.0f, -1.0f, -1.0f, -1.0f);
+			Matrix.CreateOrthographic(800.0f, 400.0f, 8.0f, 10.0f, out mx2);
+			Matrix res2 = res1;
+			
+			//Console.WriteLine(mx1.M33.ToString("f"));
+			//Console.WriteLine(res1.M33.ToString("f"));
+			Assert.AreEqual(TestHelper.Approximate(res1), TestHelper.Approximate(mx1), "#1");
+			Assert.AreEqual(TestHelper.Approximate(res2), TestHelper.Approximate(mx2), "#2");
+		}
+		
+		[Test]
+		public void CreateOrthographicOffCenter()
+		{
+			Matrix mx1 = Matrix.CreateOrthographicOffCenter(200.0f, 100.0f, 1000.0f, 500.0f, 8.0f, 10.0f);
+			Matrix res1 = new Matrix(-0.02f, 0f, 0f, 0f,
+			                         0f, -0.004f, 0f, 0f,
+			                         0f, 0f, -0.5f, 0f,
+			                         3f, 3f, -4.0f, 1.0f);
+			
+			Matrix mx2 = new Matrix(-1.0f, -1.0f, -1.0f, -1.0f,
+			                        -1.0f, -1.0f, -1.0f, -1.0f,
+			                        -1.0f, -1.0f, -1.0f, -1.0f,
+			                        -1.0f, -1.0f, -1.0f, -1.0f);
+			Matrix.CreateOrthographicOffCenter(200.0f, 100.0f, 1000.0f, 500.0f, 8.0f, 10.0f, out mx2);
+			Matrix res2 = res1;
+			
+			Assert.AreEqual(TestHelper.Approximate(res1), TestHelper.Approximate(mx1), "#1");
+			Assert.AreEqual(TestHelper.Approximate(res2), TestHelper.Approximate(mx2), "#2");
+		}
+		
+		[Test]
 		public void CreatePerspectiveFieldOfView()
 		{	
             Matrix mx1 = new Matrix();

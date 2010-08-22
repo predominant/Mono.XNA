@@ -71,7 +71,7 @@ namespace Tests
 			
 		}
 		
-		#region NUnit Public Methods Tests
+		#endregion NUnit Public Methods Tests
 	}
 }
 
