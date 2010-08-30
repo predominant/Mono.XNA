@@ -54,13 +54,13 @@ namespace Tests
 		#region NUnit Public Methods Tests
 		
 		[Test]
-		public void CreateTo()
+		public void ConvertTo()
 		{
 			
 		}
 		
 		[Test]
-		public void CreateFrom()
+		public void ConvertFrom()
 		{
 			
 		}

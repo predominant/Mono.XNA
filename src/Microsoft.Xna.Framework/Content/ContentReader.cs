@@ -156,7 +156,11 @@ namespace Microsoft.Xna.Framework.Content
                     case 3:
                         flag = false; //Not compressed Stream
                         break;
-
+					
+					case 4:
+						flag = false;
+						break;
+						
                     case 0x8003:
                         flag = true; //Compressed Stream
                         break;

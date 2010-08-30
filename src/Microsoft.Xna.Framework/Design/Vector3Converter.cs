@@ -28,7 +28,9 @@ SOFTWARE.
 using System;
 using System.Collections;
 using System.ComponentModel;
+using System.ComponentModel.Design.Serialization;
 using System.Globalization;
+using System.Reflection;
 
 namespace Microsoft.Xna.Framework.Design
 {
@@ -38,7 +40,10 @@ namespace Microsoft.Xna.Framework.Design
 		
         public Vector3Converter()
         {
-            
+			Type type = typeof(Vector3);
+            base.propertyDescriptions = new PropertyDescriptorCollection(new PropertyDescriptor[] { 
+				new FieldDescriptor(type.GetField("X")), new FieldDescriptor(type.GetField("Y")), new FieldDescriptor(type.GetField("Z")) 
+			});
         }
 		
 		#endregion Constructor
@@ -57,15 +62,19 @@ namespace Microsoft.Xna.Framework.Design
 
         public override object ConvertTo(ITypeDescriptorContext context, CultureInfo culture, object value, Type destinationType)
         {
-			if (value.GetType() != typeof(Vector3))
-				throw new NotSupportedException("The value is not of proper type");
-			
 			Vector3 vector = (Vector3)value; 
             if (destinationType == typeof(string) && supportStringConvert)
 			{
 				float[] values = new float[] { vector.X, vector.Y, vector.Z };						
 				return MathTypeConverter.ConvertValuesToString(context, culture, values);
 			}
+			else if (destinationType == typeof(InstanceDescriptor))
+			{
+				MemberInfo constructorInfo = typeof(Vector3).GetConstructor(new Type[] { typeof(float), typeof(float), typeof(float) });
+				object[] parameters = new object[] { vector.X, vector.Y, vector.Z };
+				return new InstanceDescriptor(constructorInfo, parameters);	
+			}
+			
 			return base.ConvertTo(context, culture, value, destinationType);
         }
 

@@ -235,15 +235,10 @@ namespace Microsoft.Xna.Framework
 			TimeSpan updateTime = TimeSpan.FromMilliseconds(Sdl.SDL_GetTicks() - gameTime.TotalRealTime.TotalMilliseconds);
 			if (isFixedTimeStep)
 			{
-				if (updateTime > TargetElapsedTime)
-					gameTime.IsRunningSlowly = true;
-				else 
-					gameTime.IsRunningSlowly = false;
-				
 				while (updateTime < TargetElapsedTime)
 				{
 #warning To low resolution with ms (10^-3)
-					//Thread.Sleep(1); 
+					Thread.Sleep(TargetElapsedTime.Milliseconds - updateTime.Milliseconds); 
 					updateTime = TimeSpan.FromMilliseconds(Sdl.SDL_GetTicks() - gameTime.TotalRealTime.TotalMilliseconds);
 				}
 				
@@ -261,11 +256,17 @@ namespace Microsoft.Xna.Framework
 			
 			Update(gameTime);
 			
-			if (BeginDraw())
-            {
-                Draw(gameTime);
-                EndDraw();
-            }
+			updateTime = TimeSpan.FromMilliseconds(Sdl.SDL_GetTicks() - gameTime.TotalRealTime.TotalMilliseconds);
+			if (isFixedTimeStep && updateTime > TargetElapsedTime)
+				gameTime.IsRunningSlowly = true;
+			else
+				gameTime.IsRunningSlowly = false;
+			
+			if (!BeginDraw())
+				return;
+            
+			Draw(gameTime);
+            EndDraw();
         }
 
         #endregion Public methods
@@ -307,7 +308,9 @@ namespace Microsoft.Xna.Framework
 
         protected virtual bool BeginDraw()
         {
-            return graphicsManager.BeginDraw();
+			if (isFixedTimeStep && gameTime.IsRunningSlowly)
+				return false;
+			return graphicsManager.BeginDraw();
         }
 
         protected virtual void EndDraw()

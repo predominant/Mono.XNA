@@ -147,6 +147,8 @@ namespace Microsoft.Xna.Framework.Content.Pipeline.Serialization.Intermediate
 		
 		protected internal virtual void ScanChildren(IntermediateSerializer serializer, ChildCallback callback, Object value)
         {
+			if (value == null)
+				return;
             Type valueType = value.GetType();
         }
         

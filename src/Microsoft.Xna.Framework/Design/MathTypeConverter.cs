@@ -89,6 +89,8 @@ namespace Microsoft.Xna.Framework.Design
         {
 			if (sourceType == typeof(string) && supportStringConvert)
 				return true;
+			else if (sourceType == typeof(InstanceDescriptor))
+				return true;
 			
 			return base.CanConvertFrom(context,sourceType);
         }

@@ -72,6 +72,8 @@ namespace Microsoft.Xna.Framework.Content.Pipeline.Serialization.Intermediate
         {
             if (serializers.ContainsKey(type))
 				return serializers[type];
+			
+			return null;
         }
 		
 		#endregion Public Methods       

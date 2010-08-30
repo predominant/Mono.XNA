@@ -36,7 +36,7 @@ namespace Microsoft.Xna.Framework.Design
     {
         public MatrixConverter()
         {
-            throw new NotImplementedException();
+            supportStringConvert = false;
         }
 
         public override object ConvertTo(ITypeDescriptorContext context, CultureInfo culture, object value, Type destinationType)
