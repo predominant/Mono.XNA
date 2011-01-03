@@ -36,22 +36,22 @@ namespace Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler
 	public sealed class ContentCompiler
 	{
 
-#region Constructor
+		#region Constructor
 		
 		public ContentCompiler()
 		{
 		}
 
-#endregion
+		#endregion
 		
-#region Public Methods
+		#region Public Methods
 
 		public ContentTypeWriter GetTypeWriter(Type type)
 		{
 			throw new NotImplementedException();
 		}
 		
-#endregion
+		#endregion
 		
 	}
 }

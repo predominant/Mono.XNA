@@ -4,10 +4,10 @@ using NUnit.Framework;
 namespace Tests
 {
 	[TestFixture()]
-	public class TestIntermediateWriter
+	public class TestIntermediateSerializer
 	{
 		[Test()]
-		public void TestCase ()
+		public void TestCase()
 		{
 		}
 	}

@@ -59,7 +59,7 @@ namespace Microsoft.Xna.Framework
         GameServiceContainer services;
         bool disposed;
 
-        GameTime gameTime;
+        GameTime gameUpdateTime;
         TimeSpan inactiveSleepTime;
         TimeSpan targetElapsedTime;
         
@@ -153,7 +153,7 @@ namespace Microsoft.Xna.Framework
 
             content = new ContentManager(services);
 			
-            gameTime = new GameTime(TimeSpan.Zero, TimeSpan.Zero, TimeSpan.Zero, TimeSpan.Zero);
+            gameUpdateTime = new GameTime(TimeSpan.Zero, TimeSpan.Zero, TimeSpan.Zero, TimeSpan.Zero);
 
             inactiveSleepTime = TimeSpan.FromTicks(0);
 			targetElapsedTime = TimeSpan.FromTicks(DefaultTargetElapsedTicks);
@@ -232,40 +232,40 @@ namespace Microsoft.Xna.Framework
 
         public void Tick()
         {
-			TimeSpan updateTime = TimeSpan.FromMilliseconds(Sdl.SDL_GetTicks() - gameTime.TotalRealTime.TotalMilliseconds);
+			TimeSpan elapsedUpdateTime = TimeSpan.FromMilliseconds(Sdl.SDL_GetTicks() - gameUpdateTime.TotalRealTime.TotalMilliseconds);
 			if (isFixedTimeStep)
 			{
-				while (updateTime < TargetElapsedTime)
+				while (elapsedUpdateTime < TargetElapsedTime)
 				{
 #warning To low resolution with ms (10^-3)
-					Thread.Sleep(TargetElapsedTime.Milliseconds - updateTime.Milliseconds); 
-					updateTime = TimeSpan.FromMilliseconds(Sdl.SDL_GetTicks() - gameTime.TotalRealTime.TotalMilliseconds);
+					Thread.Sleep(TargetElapsedTime.Milliseconds - elapsedUpdateTime.Milliseconds); 
+					elapsedUpdateTime = TimeSpan.FromMilliseconds(Sdl.SDL_GetTicks() - gameUpdateTime.TotalRealTime.TotalMilliseconds);
 				}
 				
-				gameTime.ElapsedGameTime = TargetElapsedTime;
-				gameTime.TotalGameTime = gameTime.TotalGameTime.Add(TargetElapsedTime);
+				gameUpdateTime.ElapsedGameTime = TargetElapsedTime;
+				gameUpdateTime.TotalGameTime = gameUpdateTime.TotalGameTime.Add(TargetElapsedTime);
 			}
 			else
 			{
-				gameTime.ElapsedGameTime = updateTime;
-				gameTime.TotalGameTime = gameTime.TotalGameTime.Add(updateTime);
+				gameUpdateTime.ElapsedGameTime = elapsedUpdateTime;
+				gameUpdateTime.TotalGameTime = gameUpdateTime.TotalGameTime.Add(elapsedUpdateTime);
 			}
 			
-			gameTime.ElapsedRealTime = updateTime;
-			gameTime.TotalRealTime = gameTime.TotalRealTime.Add(updateTime);
+			gameUpdateTime.ElapsedRealTime = elapsedUpdateTime;
+			gameUpdateTime.TotalRealTime = gameUpdateTime.TotalRealTime.Add(elapsedUpdateTime);
 			
-			Update(gameTime);
+			Update(gameUpdateTime);
 			
-			updateTime = TimeSpan.FromMilliseconds(Sdl.SDL_GetTicks() - gameTime.TotalRealTime.TotalMilliseconds);
-			if (isFixedTimeStep && updateTime > TargetElapsedTime)
-				gameTime.IsRunningSlowly = true;
+			elapsedUpdateTime = TimeSpan.FromMilliseconds(Sdl.SDL_GetTicks() - gameUpdateTime.TotalRealTime.TotalMilliseconds);
+			if (isFixedTimeStep && elapsedUpdateTime > TargetElapsedTime)
+				gameUpdateTime.IsRunningSlowly = true;
 			else
-				gameTime.IsRunningSlowly = false;
+				gameUpdateTime.IsRunningSlowly = false;
 			
 			if (!BeginDraw())
 				return;
             
-			Draw(gameTime);
+			Draw(gameUpdateTime);
             EndDraw();
         }
 
@@ -308,7 +308,7 @@ namespace Microsoft.Xna.Framework
 
         protected virtual bool BeginDraw()
         {
-			if (isFixedTimeStep && gameTime.IsRunningSlowly)
+			if (isFixedTimeStep && gameUpdateTime.IsRunningSlowly)
 				return false;
 			return graphicsManager.BeginDraw();
         }
