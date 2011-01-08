@@ -26,30 +26,37 @@ SOFTWARE.
 #endregion License
 
 using System;
+using Tao.OpenGl;
 
 namespace Microsoft.Xna.Framework.Graphics
 {
     public abstract class RenderTarget : IDisposable
     {
-		#region Protected Fields
+		#region Fields
 		
-		protected GraphicsDevice graphicsDevice;
+		protected internal GraphicsDevice graphicsDevice;
+		protected internal SurfaceFormat format;
+		protected internal int width;
+		protected internal int height;
+		protected internal int multiSampleQuality;
+		protected internal MultiSampleType multiSampleType;
+		protected internal RenderTargetUsage renderTargetUsage;
+		protected internal int numLevels;
 		
-		#endregion Protected Fields
 		
-		#region Private Fields
-		
+		private bool isContentLost;
 		private bool isDisposed;
 		private string name;
 		private object tag;
 		
-		#endregion Private Fields
+		internal int renderBufferIdentifier;
+		
+		#endregion Fields
 		
 		#region Constructor/Destructor
 		
         internal RenderTarget()
         {
-            throw new NotImplementedException();
         }
 
         ~RenderTarget()
@@ -59,50 +66,45 @@ namespace Microsoft.Xna.Framework.Graphics
 		
 		#endregion
 		
-		#region Operators
-
-        public static bool operator !=(RenderTarget left, RenderTarget right)
-        {
-            throw new NotImplementedException();
-        }
-
-        public static bool operator ==(RenderTarget left, RenderTarget right)
-        {
-            throw new NotImplementedException();
-        }
-		
-		#endregion Operators
-		
 		#region Properties
 
         public SurfaceFormat Format {
-            get { throw new NotImplementedException(); }
+            get { return format; }
         }
 
         public GraphicsDevice GraphicsDevice {
             get { return graphicsDevice; }
         }
-
-        public int Height {
-            get { throw new NotImplementedException(); }
+		
+		public int Height {
+            get { return height; }
         }
+		
+		public bool IsContentLost {
+			get { return isContentLost; }
+		}
 
         public bool IsDisposed {
             get { return isDisposed; }
         }
 
         public int MultiSampleQuality {
-            get { throw new NotImplementedException(); }
+            get { return multiSampleQuality; }
         }
 
         public MultiSampleType MultiSampleType {
-            get { throw new NotImplementedException(); }
+            get { return multiSampleType; }
         }
 
         public string Name {
             get { return name; }
             set { name = value; }
         }
+		
+		public RenderTargetUsage RenderTargetUsage
+		{
+			get { return renderTargetUsage; }	
+		}
 
         public object Tag {
             get { return tag; }
@@ -110,7 +112,7 @@ namespace Microsoft.Xna.Framework.Graphics
         }
 
         public int Width {
-            get { throw new NotImplementedException(); }
+            get { return width; }
         }
 		
 		#endregion Properties
@@ -133,12 +135,12 @@ namespace Microsoft.Xna.Framework.Graphics
 		
 		#region Protected Methods
 
-        protected virtual void Dispose(bool disposing)
+        protected virtual void Dispose(bool disposeManaged)
         {
             if(isDisposed)
 				return;
 			
-            isDisposed = true;
+			isDisposed = true;
         }
 		
 		protected virtual void raise_ContentLost(Object sender, EventArgs e)

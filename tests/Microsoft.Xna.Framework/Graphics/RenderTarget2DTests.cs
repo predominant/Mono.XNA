@@ -4,10 +4,9 @@ using NUnit.Framework;
 namespace Tests
 {
 	[TestFixture()]
-	public class TestIntermediateSerializer
+	public class RenderTarget2DTests
 	{
-		[Test()]
-		public void TestCase()
+		public RenderTarget2DTests ()
 		{
 		}
 	}

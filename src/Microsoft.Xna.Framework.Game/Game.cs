@@ -205,6 +205,8 @@ namespace Microsoft.Xna.Framework
 			inRun = true;
 			BeginRun();
 			
+			gameHost.Initialize();
+			
 			graphicsManager = (IGraphicsDeviceManager)Services.GetService(typeof (IGraphicsDeviceManager));
             if (graphicsManager != null)
                 graphicsManager.CreateDevice();			
@@ -216,9 +218,7 @@ namespace Microsoft.Xna.Framework
                 graphicsService.DeviceResetting += DeviceResetting;
                 graphicsService.DeviceReset += DeviceReset;
                 graphicsService.DeviceDisposing += DeviceDisposing;*/
-            }   
-			
-			gameHost.Initialize();
+            }   			
 			
 			Initialize();
 			            

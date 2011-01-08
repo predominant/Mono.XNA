@@ -4,7 +4,7 @@ using NUnit.Framework;
 namespace Tests
 {
 	[TestFixture()]
-	public class TestContentTypeSerializer
+	public class ContentTypeSerializerTests
 	{
 		[Test()]
 		public void TestCase()

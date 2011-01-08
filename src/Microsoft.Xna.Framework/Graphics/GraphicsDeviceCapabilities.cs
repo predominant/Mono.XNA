@@ -31,9 +31,21 @@ namespace Microsoft.Xna.Framework.Graphics
 {
     public sealed partial class GraphicsDeviceCapabilities : IDisposable
     {
+		#region Fields
+		
+		internal int maxSimultaneousRenderTargets;
+		
+		#endregion Fields
+		
+		#region Constructor
+		
         ~GraphicsDeviceCapabilities()
         {
         }
+		
+		#endregion Constructor
+		
+		#region Properties
 
         public static bool operator !=(GraphicsDeviceCapabilities left, GraphicsDeviceCapabilities right)
         {
@@ -142,10 +154,7 @@ namespace Microsoft.Xna.Framework.Graphics
 
         public ShaderProfile MaxPixelShaderProfile
         {
-            get 
-            {
-                return ShaderProfile.Unknown;
-            }
+            get { return ShaderProfile.Unknown; }
         }
 
         public float MaxPointSize
@@ -156,6 +165,11 @@ namespace Microsoft.Xna.Framework.Graphics
         public int MaxPrimitiveCount
         {
             get { throw new NotImplementedException(); }
+        }
+
+        public int MaxSimultaneousRenderTargets
+        {
+            get { return maxSimultaneousRenderTargets; }
         }
 
         public int MaxSimultaneousTextures
@@ -332,6 +346,10 @@ namespace Microsoft.Xna.Framework.Graphics
         {
             get { throw new NotImplementedException(); }
         }
+		
+		#endregion Properties
+		
+		#region Methods
 
         public void Dispose()
         {
@@ -357,5 +375,7 @@ namespace Microsoft.Xna.Framework.Graphics
         {
             throw new NotImplementedException();
         }
+		
+		#endregion Methods
     }
 }

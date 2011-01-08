@@ -42,7 +42,7 @@ namespace Microsoft.Xna.Framework
 			EndScreenDeviceChange("", clientWidth, clientHeight);			
 		}
 		
-		#endregion
+		#endregion Internal Methods
 		
 		#region GameWindow Overrides
 		
@@ -91,19 +91,28 @@ namespace Microsoft.Xna.Framework
 				flags |= Sdl.SDL_FULLSCREEN;
 			
 			int bitsPerPixel = 0;
-			PresentationParameters parameters = game.GraphicsDevice.PresentationParameters;
-			if (parameters.BackBufferFormat == SurfaceFormat.Color || 
-			    parameters.BackBufferFormat == SurfaceFormat.Bgr32 ||
-			    parameters.BackBufferFormat == SurfaceFormat.Rgba32)
-				bitsPerPixel = 32;
+			SurfaceFormat format;
+			if (game.GraphicsDevice == null)
+			{
+				// TODO This cast should be tested against MS XNA
+				GraphicsDeviceManager graphicsManager = (GraphicsDeviceManager)game.Services.GetService(typeof (IGraphicsDeviceManager));
+				format = graphicsManager.PreferredBackBufferFormat;
+			}
+			else 
+				format = game.GraphicsDevice.PresentationParameters.BackBufferFormat;
 			
-			IntPtr sdlSurfacePtr = Sdl.SDL_SetVideoMode(clientWidth, clientHeight, 32, flags);
+			if (format == SurfaceFormat.Color || format == SurfaceFormat.Bgr32 || format == SurfaceFormat.Rgba32)
+				bitsPerPixel = 32;
+			// TODO add support for other surface formats
+			
+			IntPtr sdlSurfacePtr = Sdl.SDL_SetVideoMode(clientWidth, clientHeight, bitsPerPixel, flags);
 			if (sdlSurfacePtr != IntPtr.Zero)
 				sdlSurface = (Sdl.SDL_Surface)Marshal.PtrToStructure(sdlSurfacePtr, typeof(Sdl.SDL_Surface));
 			
 #warning SDL 1.2 doesn't support getting the window position, only the dimensions
 			clientBounds.Width = clientWidth;
 			clientBounds.Height = clientHeight;
+			
 			OnClientSizeChanged();
 			
 			inTransition = false;

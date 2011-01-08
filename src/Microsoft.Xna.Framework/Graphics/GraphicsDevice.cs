@@ -51,7 +51,11 @@ namespace Microsoft.Xna.Framework.Graphics
         private TextureCollection textures;
 		private Color clearColor;
 		private Viewport viewport;
-        
+		
+		private RenderTarget[] renderTargets;
+		private int frameBufferIdentifier;
+		private int numActiveRenderTargets;
+		
         #endregion Private Fields
 		
 		#region Public Properties
@@ -78,9 +82,7 @@ namespace Microsoft.Xna.Framework.Graphics
         }
 
         public GraphicsDeviceCapabilities GraphicsDeviceCapabilities {
-            get {
-                return graphicsDeviceCapabilities;
-            }
+            get { return graphicsDeviceCapabilities; }
         }
 
         public GraphicsDeviceStatus GraphicsDeviceStatus {
@@ -165,7 +167,7 @@ namespace Microsoft.Xna.Framework.Graphics
             }
         }
 		
-		#endregion Properties
+		#endregion Public Properties
 		
 		#region Events
 
@@ -183,20 +185,39 @@ namespace Microsoft.Xna.Framework.Graphics
 		
 		#endregion Events
 		
-        #region Constructors
+        #region Operators
+
+        public static bool operator !=(GraphicsDevice left, GraphicsDevice right)
+        {
+            return !Equals(left, right);
+        }
+
+        public static bool operator ==(GraphicsDevice left, GraphicsDevice right)
+        {
+            return Equals(left, right);
+        }
+		
+		#endregion Operators       
+
+		#region Constructors
 
         public GraphicsDevice(GraphicsAdapter adapter, DeviceType deviceType, IntPtr renderWindowHandle, PresentationParameters presentationParameters)
         {
 			if (adapter == null || presentationParameters == null) 
 				throw new ArgumentNullException("adapter or presentationParameters is null.");
-            this.graphicsDeviceCapabilities = new GraphicsDeviceCapabilities();
+            
+			graphicsDeviceCapabilities = adapter.GetCapabilities(deviceType);
+			numActiveRenderTargets = 0;
+			renderTargets = new RenderTarget[graphicsDeviceCapabilities.MaxSimultaneousRenderTargets];
+			initGL();
+			
 			this.adapter = adapter;
 			this.deviceType = deviceType;
             this.renderWindowHandle = renderWindowHandle;
 			PresentationParameters = presentationParameters; // set through property to ensure OpenGL propagation
             
 			this.textures = new TextureCollection();
-			this.clearColor = Color.Black;					
+			this.clearColor = Color.Black;			
         }
 
         ~GraphicsDevice()
@@ -273,11 +294,6 @@ namespace Microsoft.Xna.Framework.Graphics
             throw new NotImplementedException();
         }
 
-        //public override bool Equals(object obj)
-        //{
-        //    throw new NotImplementedException();
-        //}
-
         public void EvictManagedResources()
         {
             throw new NotImplementedException();
@@ -287,11 +303,6 @@ namespace Microsoft.Xna.Framework.Graphics
         {
             throw new NotImplementedException();
         }
-
-        //public override int GetHashCode()
-        //{
-        //    throw new NotImplementedException();
-        //}
 
         public bool[] GetPixelShaderBooleanConstant(int startRegister, int constantCount)
         {
@@ -355,26 +366,6 @@ namespace Microsoft.Xna.Framework.Graphics
 			raise_DeviceReset(this, EventArgs.Empty);
         }
 
-        public void ResolveBackBuffer(ResolveTexture2D resolveTarget)
-        {
-            throw new NotImplementedException();
-        }
-
-        public void ResolveBackBuffer(Texture2D resolveTarget)
-        {
-            throw new NotImplementedException();
-        }
-
-        public void ResolveBackBuffer(Texture2D resolveTarget, int backBufferIndex)
-        {
-            throw new NotImplementedException();
-        }
-
-        public void ResolveRenderTarget(int index)
-        {
-            throw new NotImplementedException();
-        }
-
         public void SetGammaRamp(bool calibrate, GammaRamp ramp)
         {
             throw new NotImplementedException();
@@ -417,7 +408,44 @@ namespace Microsoft.Xna.Framework.Graphics
 
         public void SetRenderTarget(int renderTargetIndex, RenderTarget2D renderTarget)
         {
-            throw new NotImplementedException();
+            if (renderTargetIndex < 0 || renderTargetIndex >= renderTargets.Length)
+				throw new ArgumentOutOfRangeException("The specified index must be within the supported range.");
+			
+			Gl.glBindFramebufferEXT(Gl.GL_FRAMEBUFFER_EXT, frameBufferIdentifier);
+			
+			if (renderTarget == null)
+			{
+				// Detach the texture and depth buffer
+				Gl.glFramebufferTexture2DEXT(Gl.GL_FRAMEBUFFER_EXT, getColorAttachment(renderTargetIndex), 
+				                             Gl.GL_TEXTURE_2D, 0, 0);
+				Gl.glFramebufferRenderbufferEXT(Gl.GL_FRAMEBUFFER_EXT, Gl.GL_DEPTH_ATTACHMENT_EXT,
+				                                Gl.GL_RENDERBUFFER_EXT, 0);
+				
+				renderTargets[renderTargetIndex] = null;
+				
+				// Deactivate the frame buffer when no more targets are connected.
+				if (--numActiveRenderTargets == 0)
+					Gl.glBindFramebufferEXT(Gl.GL_FRAMEBUFFER_EXT, 0);
+				
+				return;
+			}
+			
+			if (renderTarget.IsDisposed)
+				throw new ObjectDisposedException("SetRenderTarget is called after the render target has been disposed.");
+			
+			// Connect texture and depth buffer
+			Gl.glFramebufferTexture2DEXT(Gl.GL_FRAMEBUFFER_EXT, getColorAttachment(renderTargetIndex), Gl.GL_TEXTURE_2D, 
+				                             renderTarget.GetTexture().textureId, 0);
+			Gl.glFramebufferRenderbufferEXT(Gl.GL_FRAMEBUFFER_EXT, Gl.GL_DEPTH_ATTACHMENT_EXT, 
+			                                Gl.GL_RENDERBUFFER_EXT, renderTarget.renderBufferIdentifier);
+			
+			numActiveRenderTargets++;
+			
+			int status = Gl.glCheckFramebufferStatusEXT(Gl.GL_FRAMEBUFFER_EXT);
+			if (status != Gl.GL_FRAMEBUFFER_COMPLETE_EXT)
+				throw new Exception("This should not occur.");
+			
+			// Leave framebuffer active
         }
 
         public void SetRenderTarget(int renderTargetIndex, RenderTargetCube renderTarget, CubeMapFace faceType)
@@ -465,7 +493,7 @@ namespace Microsoft.Xna.Framework.Graphics
             throw new NotImplementedException();
         }
 		
-		#endregion
+		#endregion Public Methods
 		
 		#region Protected Methods
 
@@ -477,6 +505,7 @@ namespace Microsoft.Xna.Framework.Graphics
                     textures.Dispose();
                 
 				// Dispose Unmanaged resources
+				finishGL();
 
                 isDisposed = true;
             }
@@ -520,21 +549,17 @@ namespace Microsoft.Xna.Framework.Graphics
 		
 		#endregion Protected Methods
 
-		#region Operators
-
-        public static bool operator !=(GraphicsDevice left, GraphicsDevice right)
-        {
-            return !Equals(left, right);
-        }
-
-        public static bool operator ==(GraphicsDevice left, GraphicsDevice right)
-        {
-            return Equals(left, right);
-        }
-		
-		#endregion Operators       
-
 		#region Private Methods
+		
+		private void initGL()
+		{
+			Gl.glGenFramebuffersEXT(1, out frameBufferIdentifier);
+		}
+		
+		private void finishGL()
+		{
+			Gl.glDeleteFramebuffersEXT(1, ref frameBufferIdentifier);
+		}
 		
 		private void setPresentationParameters()
 		{
@@ -543,7 +568,7 @@ namespace Microsoft.Xna.Framework.Graphics
 			this.viewport.Width = presentationParameters.BackBufferWidth;
 			this.viewport.Height = presentationParameters.BackBufferHeight;
             
-			// Setup the SDL's OpenGL interface based on the attributes specified
+			// Setup the SDL's OpenGL interface based on the attributes specified TODO
 			
 			if (presentationParameters.BackBufferFormat == SurfaceFormat.Color || 
 			    presentationParameters.BackBufferFormat == SurfaceFormat.Bgr32 ||
@@ -568,7 +593,46 @@ namespace Microsoft.Xna.Framework.Graphics
 			//Sdl.SDL_GL_SetAttribute(Sdl.SDL_GL_SWAP_CONTROL, 0);
 		}
 		
-		#endregion
+		private int getColorAttachment(int index)
+		{
+			if (index < 0 || index > GraphicsDeviceCapabilities.MaxSimultaneousRenderTargets)
+				throw new NotSupportedException("The index is out of range.");
+			
+			if (index == 0)
+				return Gl.GL_COLOR_ATTACHMENT0_EXT;
+			else if (index == 1)
+				return Gl.GL_COLOR_ATTACHMENT1_EXT;
+			else if (index == 2)
+				return Gl.GL_COLOR_ATTACHMENT2_EXT;
+			else if (index == 3)
+				return Gl.GL_COLOR_ATTACHMENT3_EXT;
+			else if (index == 4)
+				return Gl.GL_COLOR_ATTACHMENT4_EXT;
+			else if (index == 5)
+				return Gl.GL_COLOR_ATTACHMENT5_EXT;
+			else if (index == 6)
+				return Gl.GL_COLOR_ATTACHMENT6_EXT;
+			else if (index == 7)
+				return Gl.GL_COLOR_ATTACHMENT7_EXT;
+			else if (index == 8)
+				return Gl.GL_COLOR_ATTACHMENT8_EXT;
+			else if (index == 9)
+				return Gl.GL_COLOR_ATTACHMENT9_EXT;
+			else if (index == 10)
+				return Gl.GL_COLOR_ATTACHMENT10_EXT;
+			else if (index == 11)
+				return Gl.GL_COLOR_ATTACHMENT11_EXT;
+			else if (index == 12)
+				return Gl.GL_COLOR_ATTACHMENT12_EXT;
+			else if (index == 13)
+				return Gl.GL_COLOR_ATTACHMENT13_EXT;
+			else if (index == 14)
+				return Gl.GL_COLOR_ATTACHMENT14_EXT;
+			else 
+				return Gl.GL_COLOR_ATTACHMENT15_EXT;
+		}
+		
+		#endregion Private Methods
 		
     }
 }

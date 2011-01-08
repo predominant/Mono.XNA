@@ -338,6 +338,12 @@ namespace Microsoft.Xna.Framework.Graphics
         RenderTarget = 8
     }
 
+	public enum RenderTargetUsage
+	{
+		DiscardContents,
+		PlatformContents,
+		PreserveContents
+	}
 
     public enum GraphicsDeviceStatus
     {

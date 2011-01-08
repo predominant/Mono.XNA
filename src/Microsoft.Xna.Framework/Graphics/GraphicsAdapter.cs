@@ -29,6 +29,7 @@ using System;
 using System.Collections.ObjectModel;
 using System.Runtime.InteropServices;
 using Tao.Sdl;
+using Tao.OpenGl;
 
 namespace Microsoft.Xna.Framework.Graphics
 {
@@ -39,8 +40,9 @@ namespace Microsoft.Xna.Framework.Graphics
 		private static ReadOnlyCollection<GraphicsAdapter> adapters;        
 		private bool disposed;
         private DisplayMode currentDisplayMode;
+		private GraphicsDeviceCapabilities hardwareCapabilities;
 
-        #endregion
+        #endregion Fields
 		
 		#region Properties        
 		
@@ -52,6 +54,8 @@ namespace Microsoft.Xna.Framework.Graphics
             get {
                 if (adapters == null)
                 	adapters = new ReadOnlyCollection<GraphicsAdapter>(new GraphicsAdapter[] { new GraphicsAdapter () });
+				
+				
 				
                 return adapters;
             }
@@ -109,7 +113,7 @@ namespace Microsoft.Xna.Framework.Graphics
             get { throw new NotImplementedException(); }
         }
 		
-		#endregion
+		#endregion Properties
 		
 		#region Constructor / Destructor
 		
@@ -118,6 +122,9 @@ namespace Microsoft.Xna.Framework.Graphics
 			IntPtr infoPtr = Sdl.SDL_GetVideoInfo ();
 			Sdl.SDL_VideoInfo info = (Sdl.SDL_VideoInfo) Marshal.PtrToStructure (infoPtr, typeof (Sdl.SDL_VideoInfo));
             currentDisplayMode = new DisplayMode(info.current_w, info.current_h, -1, SurfaceFormat.Bgr32);
+			
+			hardwareCapabilities = new GraphicsDeviceCapabilities();
+			findGLCapabilities();
         }
 		
         ~GraphicsAdapter ()
@@ -125,9 +132,23 @@ namespace Microsoft.Xna.Framework.Graphics
             Dispose();
         }
 		
-		#endregion 
+		#endregion Properties
 		
-		#region Public Methods
+		#region Operators
+		
+		public static bool operator == (GraphicsAdapter left, GraphicsAdapter right)
+		{
+			return left.Equals (right);
+		}
+		
+		public static bool operator != (GraphicsAdapter left, GraphicsAdapter right)
+		{
+			return !left.Equals (right);
+		}
+		
+		#endregion Operators
+        
+		#region Methods
 		
 		public bool CheckDepthStencilMatch(DeviceType deviceType, SurfaceFormat adapterFormat, SurfaceFormat renderTargetFormat,
             DepthFormat depthStencilFormat)
@@ -171,30 +192,24 @@ namespace Microsoft.Xna.Framework.Graphics
 
         public GraphicsDeviceCapabilities GetCapabilities(DeviceType deviceType)
         {
-            throw new NotImplementedException();
+            if (deviceType != DeviceType.Hardware)
+				throw new DeviceNotSupportedException("Only hardware supported.");
+			
+			return hardwareCapabilities;
         }
 
         public bool IsDeviceTypeAvailable(DeviceType deviceType)
         {
             throw new NotImplementedException();
-        }		
+        }	
 		
-		#endregion
-		
-		#region Operators
-		
-		public static bool operator == (GraphicsAdapter left, GraphicsAdapter right)
+		private void findGLCapabilities()
 		{
-			return left.Equals (right);
+			Gl.glGetIntegerv(Gl.GL_MAX_COLOR_ATTACHMENTS_EXT, out hardwareCapabilities.maxSimultaneousRenderTargets);
 		}
 		
-		public static bool operator != (GraphicsAdapter left, GraphicsAdapter right)
-		{
-			return !left.Equals (right);
-		}
+		#endregion Methods
 		
-		#endregion
-        
 		#region IDisposable Implementation
 		
 		public void Dispose()
@@ -202,7 +217,7 @@ namespace Microsoft.Xna.Framework.Graphics
             GC.SuppressFinalize(this);
         }	
 		
-		#endregion
+		#endregion IDisposable Implementation
 		
 		#region Object Overrides
 		
@@ -224,7 +239,7 @@ namespace Microsoft.Xna.Framework.Graphics
             throw new NotImplementedException();
         }
 		
-		#endregion
+		#endregion Object Overrides
 		
     }
 }

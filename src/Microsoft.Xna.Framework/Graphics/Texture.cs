@@ -73,15 +73,11 @@ namespace Microsoft.Xna.Framework.Graphics
                 int depth = Il.ilGetInteger(Il.IL_IMAGE_DEPTH);
                 int size = Il.ilGetInteger(Il.IL_IMAGE_SIZE_OF_DATA);
                 Texture2D tex = new Texture2D(graphicsDevice, creationParameters.Width, creationParameters.Height, creationParameters.Depth, TextureUsage.None, SurfaceFormat.Rgb32);
-                int[] texture = new int[1];
-                Gl.glGenTextures(1,texture);
-                tex.textureId = texture[0];
+                
                 Gl.glBindTexture(Gl.GL_TEXTURE_2D, tex.textureId);
                 Gl.glTexImage2D(Gl.GL_TEXTURE_2D, 0, Il.ilGetInteger(Il.IL_IMAGE_BYTES_PER_PIXEL), creationParameters.Width, creationParameters.Height, 0, Gl.GL_RGBA, Gl.GL_UNSIGNED_BYTE, Il.ilGetData());
-                Gl.glTexParameteri(Gl.GL_TEXTURE_2D, Gl.GL_TEXTURE_MIN_FILTER, Gl.GL_LINEAR);
-                Gl.glTexParameteri(Gl.GL_TEXTURE_2D, Gl.GL_TEXTURE_MAG_FILTER, Gl.GL_LINEAR);
+                
                 Il.ilBindImage(0);
-                //Il.ilDeleteImage(0);
                 return tex;
             }
             else if (texinfo.ResourceType == ResourceType.Texture3D) { throw new NotImplementedException(); }
@@ -118,7 +114,7 @@ namespace Microsoft.Xna.Framework.Graphics
             }
             TextureInformation TexInfo = new TextureInformation();
             TexInfo.Depth = Il.ilGetInteger(Il.IL_IMAGE_DEPTH);
-            TexInfo.Format = SurfaceFormat.Color; //TODO: Find out how to detect and set properly.
+            TexInfo.Format = SurfaceFormat.Color; //TODO: Set properly.
             TexInfo.Height = Il.ilGetInteger(Il.IL_IMAGE_HEIGHT);
             TexInfo.imageFormat = ILimageformat2XNAimageformat(Il.ilGetInteger(Il.IL_IMAGE_FORMAT));
             TexInfo.resourcetype = ResourceType.Texture2D; //TODO: Find out how to detect and set properly.

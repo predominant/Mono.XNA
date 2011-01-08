@@ -50,9 +50,13 @@ namespace Microsoft.Xna.Framework
 		
 		public void Initialize()
 		{		
-			window.Create("", game.GraphicsDevice.PresentationParameters.BackBufferWidth, 
-				game.GraphicsDevice.PresentationParameters.BackBufferHeight,
-			    game.GraphicsDevice.PresentationParameters.IsFullScreen);
+			// TODO This must be tested against MS XNA. The reason for the cast is that we
+			// need to get a hold of the proper window dimensions. Alternately this could be
+			// read from the graphics device after it has been created.
+			GraphicsDeviceManager graphicsManager = (GraphicsDeviceManager)game.Services.GetService(typeof (IGraphicsDeviceManager));
+				
+			window.Create("", graphicsManager.PreferredBackBufferWidth, graphicsManager.PreferredBackBufferHeight,
+			    graphicsManager.IsFullScreen);
 			
 			Sdl.SDL_ShowCursor(game.IsMouseVisible ? Sdl.SDL_ENABLE : Sdl.SDL_DISABLE);
 		}
