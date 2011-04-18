@@ -4,7 +4,7 @@ using System.Text;
 using System.IO;
 using System.Reflection;
 
-namespace Microsoft.Xna.Framework.Tests
+namespace Tests
 {
     public static class ResourceReader
     {

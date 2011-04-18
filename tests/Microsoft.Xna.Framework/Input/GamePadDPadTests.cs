@@ -6,7 +6,7 @@ using Microsoft.Xna.Framework.Input;
 using NUnit.Framework;
 using SdlDotNet.Input;
 
-namespace Microsoft.Xna.Framework.Microsoft.Xna.Framework.Input
+namespace Tests.Microsoft.Xna.Framework.Input
 {
     [TestFixture]
     public class GamePadDPadTests

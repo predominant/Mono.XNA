@@ -64,7 +64,6 @@
     <None Include="TestClock.cs" />
     <None Include="TestGame.cs" />
     <None Include="TestGameWindow.cs" />
-    <Compile Include="TestGraphicsDeviceManager.cs" />
     <Compile Include="TestHelper.cs" />
     <Compile Include="Microsoft.Xna.Framework\BoundingBoxTests.cs" />
     <Compile Include="Microsoft.Xna.Framework\BoundingFrustumTests.cs" />
@@ -101,23 +100,25 @@
     <Compile Include="Microsoft.Xna.Framework\Input\GamePadTests.cs" />
     <Compile Include="Microsoft.Xna.Framework\Input\GamePadThumbSticksTests.cs" />
     <Compile Include="Microsoft.Xna.Framework\Storage\StorageTest.cs" />
-    <Compile Include="Microsoft.Xna.Framework.Game\DrawableGameComponentTests.cs" />
-    <None Include="Microsoft.Xna.Framework.Game\GameClockTests.cs" />
-    <None Include="Microsoft.Xna.Framework.Game\GameComponentCollectionEventArgsTests.cs" />
-    <None Include="Microsoft.Xna.Framework.Game\GameComponentCollectionTests.cs" />
-    <Compile Include="Microsoft.Xna.Framework.Game\GameComponentTests.cs" />
-    <None Include="Microsoft.Xna.Framework.Game\GameServiceContainerTests.cs" />
-    <None Include="Microsoft.Xna.Framework.Game\GameTests.cs" />
-    <Compile Include="Microsoft.Xna.Framework.Game\GameTimeTests.cs" />
-    <Compile Include="Microsoft.Xna.Framework.Game\GameWindowTests.cs" />
-    <None Include="Microsoft.Xna.Framework.Game\GraphicsDeviceInformationTests.cs" />
-    <Compile Include="Microsoft.Xna.Framework.Game\GraphicsDeviceManagerTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Microsoft.Xna.Framework\Graphics\VertexBufferTests.cs" />
     <Compile Include="Microsoft.Xna.Framework\Design\Vector3ConverterTests.cs" />
     <Compile Include="Microsoft.Xna.Framework.Content.Pipeline\Serialization\Intermediate\IntermediateSerializerTests.cs" />
     <Compile Include="Microsoft.Xna.Framework.Content.Pipeline\Serialization\Intermediate\ContentTypeSerializerTests.cs" />
     <Compile Include="Microsoft.Xna.Framework\Graphics\RenderTarget2DTests.cs" />
+    <Compile Include="Microsoft.Xna.Framework\Graphics\GraphicsDeviceTests.cs" />
+    <Compile Include="Microsoft.Xna.Framework\DrawableGameComponentTests.cs" />
+    <None Include="Microsoft.Xna.Framework\GameClockTests.cs" />
+    <None Include="Microsoft.Xna.Framework\GameComponentCollectionEventArgsTests.cs" />
+    <None Include="Microsoft.Xna.Framework\GameComponentCollectionTests.cs" />
+    <Compile Include="Microsoft.Xna.Framework\GameComponentTests.cs" />
+    <None Include="Microsoft.Xna.Framework\GameServiceContainerTests.cs" />
+    <None Include="Microsoft.Xna.Framework\GameTests.cs" />
+    <Compile Include="Microsoft.Xna.Framework\GameTimeTests.cs" />
+    <Compile Include="Microsoft.Xna.Framework\GameWindowTests.cs" />
+    <None Include="Microsoft.Xna.Framework\GraphicsDeviceInformationTests.cs" />
+    <Compile Include="Microsoft.Xna.Framework\GraphicsDeviceManagerTests.cs" />
+    <Compile Include="Microsoft.Xna.Framework\TestGraphicsDeviceManager.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\src\Microsoft.Xna.Framework\Microsoft.Xna.Framework.csproj">
@@ -134,5 +135,17 @@
     <Folder Include="Microsoft.Xna.Framework\Design\" />
     <Folder Include="Microsoft.Xna.Framework.Content.Pipeline\Serialization\" />
     <Folder Include="Microsoft.Xna.Framework.Content.Pipeline\Serialization\Intermediate\" />
+    <Folder Include="Microsoft.Xna.Framework.Game\" />
+    <Folder Include="Microsoft.Xna.Framework.Game\" />
+    <Folder Include="Microsoft.Xna.Framework.Game\" />
+    <Folder Include="Microsoft.Xna.Framework.Game\" />
+    <Folder Include="Microsoft.Xna.Framework.Game\" />
+    <Folder Include="Microsoft.Xna.Framework.Game\" />
+    <Folder Include="Microsoft.Xna.Framework.Game\" />
+    <Folder Include="Microsoft.Xna.Framework.Game\" />
+    <Folder Include="Microsoft.Xna.Framework.Game\" />
+    <Folder Include="Microsoft.Xna.Framework.Game\" />
+    <Folder Include="Microsoft.Xna.Framework.Game\" />
+    <Folder Include="Microsoft.Xna.Framework.Game\" />
   </ItemGroup>
 </Project>

@@ -8,7 +8,7 @@ using Microsoft.Xna.Framework.Test;
 #endif
 #endregion Mono.Xna specific
 
-namespace Microsoft.Xna.Framework.Tests
+namespace Tests
 {
     public class TestGame : Game
     {

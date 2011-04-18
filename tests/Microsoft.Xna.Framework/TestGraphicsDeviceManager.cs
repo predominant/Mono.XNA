@@ -1,6 +1,7 @@
 using System.Collections.Generic;
+using Microsoft.Xna.Framework;
 
-namespace Microsoft.Xna.Framework.Tests
+namespace Tests.Microsoft.Xna.Framework
 {
     public class TestGraphicsDeviceManager : GraphicsDeviceManager
     {

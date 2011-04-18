@@ -37,7 +37,7 @@ using System.Reflection;
 using System.IO;
 using Microsoft.Xna.Framework.Tests;
 
-namespace Microsoft.Xna.Framework.Content.Tests
+namespace Tests.Microsoft.Xna.Framework.Content
 {
     [TestFixture]
     public class ContentManagerTests

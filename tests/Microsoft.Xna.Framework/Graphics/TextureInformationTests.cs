@@ -35,7 +35,7 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using NUnit.Framework;
 
-namespace Microsoft.Xna.Framework.Graphics.Tests
+namespace Tests.Microsoft.Xna.Framework.Graphics
 {
     [TestFixture]
     public class TextureInformationTests

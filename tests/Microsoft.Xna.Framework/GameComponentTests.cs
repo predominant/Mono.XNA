@@ -33,20 +33,20 @@ using System.Text;
 using NUnit.Framework;
 using Microsoft.Xna.Framework;
 
-namespace Microsoft.Xna.Framework.Tests
+namespace Tests.Microsoft.Xna.Framework
 {
-
+    
     [TestFixture]
-    public class DrawableGameComponentTests
+    public class GameComponentTests
     {
-        DrawableGameComponent component;
+        GameComponent gameComponent;
 
         #region Setup
 
         [SetUp]
         public void Setup()
         {
-            component = new DrawableGameComponent(new Game());
+            gameComponent = new GameComponent(new Game());
         }
 
         #endregion
@@ -56,14 +56,14 @@ namespace Microsoft.Xna.Framework.Tests
         [Test]
         public void Constructors()
         {
-            Assert.IsNotNull(component);
+            Assert.IsNotNull(gameComponent);
         }
 
         #endregion
 
         #region Public Fields Tests
         #endregion
-
+        
         #region Protected Fields Tests
         #endregion
 
@@ -75,8 +75,9 @@ namespace Microsoft.Xna.Framework.Tests
         [Test]
         public void DefaultEnabledIsTrueTest()
         {
-            Assert.IsTrue(component.Enabled);
+            Assert.IsTrue(gameComponent.Enabled);
         }
+
 
         /// <summary>
         /// Ensure default value for UpdateOrder is 0
@@ -84,25 +85,7 @@ namespace Microsoft.Xna.Framework.Tests
         [Test]
         public void DefaultUpdateOrderIsZeroTest()
         {
-            Assert.AreEqual(0, component.UpdateOrder);
-        }        
-
-        /// <summary>
-        /// Ensure default value for DrawOrder is 0
-        /// </summary>
-        [Test]
-        public void DefaultDrawOrderIsZeroTest()
-        {
-            Assert.AreEqual(0, component.DrawOrder);
-        }        
-        
-        /// <summary>
-        /// Ensure default value for Visible is true
-        /// </summary>
-        [Test]
-        public void DefaultVisibleIsTrueTest()
-        {
-            Assert.IsTrue(component.Visible);
+            Assert.AreEqual(0, gameComponent.UpdateOrder);
         }
 
         #endregion
@@ -113,9 +96,9 @@ namespace Microsoft.Xna.Framework.Tests
         public void EnableChangedFiredTest()
         {
             bool fired = false;
-            component.Enabled = false;
-            component.EnabledChanged += delegate { fired = true; };
-            component.Enabled = true;
+            gameComponent.Enabled = false;
+            gameComponent.EnabledChanged += delegate { fired = true; };
+            gameComponent.Enabled = true;
             Assert.IsTrue(fired);
         }
 
@@ -123,36 +106,17 @@ namespace Microsoft.Xna.Framework.Tests
         public void EnableChangedDoesNotFireWhenValueIsntChangedTest()
         {
             bool fired = false;
-            component.EnabledChanged += delegate { fired = true; };
-            component.Enabled = component.Enabled;
+            gameComponent.EnabledChanged += delegate { fired = true; };
+            gameComponent.Enabled = gameComponent.Enabled;
             Assert.IsFalse(fired, "EnabledChanged should not have fired");
-        }
-
-        [Test]
-        public void VisibleChangedFiredTest()
-        {
-            bool fired = false;
-            component.Visible = false;
-            component.VisibleChanged += delegate { fired = true; };
-            component.Visible = true;
-            Assert.IsTrue(fired);
-        }
-
-        [Test]
-        public void VisibleChangedDoesNotFireWhenValueIsntChangedTest()
-        {
-            bool fired = false;
-            component.VisibleChanged += delegate { fired = true; };
-            component.Visible = component.Visible;
-            Assert.IsFalse(fired, "VisibleChanged should not have fired");
         }
 
         [Test]
         public void UpdateOrderChangedFiredTest()
         {
             bool fired = false;
-            component.UpdateOrderChanged += delegate { fired = true; };
-            component.UpdateOrder = 100;
+            gameComponent.UpdateOrderChanged += delegate { fired = true; };
+            gameComponent.UpdateOrder = 100;
             Assert.IsTrue(fired);
         }
 
@@ -160,28 +124,9 @@ namespace Microsoft.Xna.Framework.Tests
         public void UpdateOrderChangedDoesNotFireWhenValueIsntChangedTest()
         {
             bool fired = false;
-            component.UpdateOrder = 10;
-            component.UpdateOrderChanged += delegate { fired = true; };
-            component.UpdateOrder = 10;
-            Assert.IsFalse(fired, "UpdateOrderChanged should not have fired");
-        }
-
-        [Test]
-        public void DrawOrderChangedFiredTest()
-        {
-            bool fired = false;
-            component.DrawOrderChanged += delegate { fired = true; };
-            component.DrawOrder = 100;
-            Assert.IsTrue(fired);
-        }
-
-        [Test]
-        public void DrawOrderChangedDoesNotFireWhenValueIsntChangedTest()
-        {
-            bool fired = false;
-            component.DrawOrder = 10;
-            component.DrawOrderChanged += delegate { fired = true; };
-            component.DrawOrder = 10;
+            gameComponent.UpdateOrder = 10;           
+            gameComponent.UpdateOrderChanged += delegate { fired = true; };
+            gameComponent.UpdateOrder = 10;
             Assert.IsFalse(fired, "UpdateOrderChanged should not have fired");
         }
 
@@ -189,8 +134,8 @@ namespace Microsoft.Xna.Framework.Tests
         public void DisposedEventRaisedTest()
         {
             bool fired = false;
-            component.Disposed += delegate { fired = true; };
-            component.Dispose();
+            gameComponent.Disposed += delegate { fired = true; };
+            gameComponent.Dispose();
             Assert.IsTrue(fired);
         }
 

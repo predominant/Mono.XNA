@@ -2,10 +2,10 @@
 /*
 MIT License
 Copyright © 2006-2007 The Mono.Xna Team
-http://www.taoframework.com
+
 All rights reserved.
 
-Authors: Olivier Dufour (duff)
+Authors: Isaac Llopis (neozack@gmail.com)
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
@@ -30,54 +30,48 @@ SOFTWARE.
 using System;
 using System.Collections.Generic;
 using System.Text;
-
 using NUnit.Framework;
-using Microsoft.Xna.Framework.Graphics;
-using Microsoft.Xna.Framework.Tests;
-using System.Threading;
+using Microsoft.Xna.Framework;
 
-namespace Tests.Microsoft.Xna.Framework.Graphics
+namespace Tests.Microsoft.Xna.Framework
 {
+    
     [TestFixture]
-    public class VertexStreamCollectionTest
+    public class GameComponentCollectionEventArgsTests
     {
-        private VertexStreamCollection vsc;// = new VertexStreamCollection();
+        #region Setup
+        #endregion
 
-        TestGame game;
-        Thread gameThread;
-
-        [TestFixtureSetUp]
-        public void TestFixtureSetup()
-        {
-            this.game = new TestGame();
-            this.gameThread = new Thread(new ThreadStart(game.Run));
-            this.gameThread.Start();
-
-            // I need to give the game enough time to initialise before letting the tests continue
-            System.Threading.Thread.Sleep(200);
-        }
-
-        [TestFixtureTearDown]
-        public void TestFixtureTeardown()
-        {
-            game.Exit();
-            gameThread.Join(500);
-        }
-
-        [SetUp]
-        public void SetUp()
-        {
-            vsc = game.GraphicsDeviceManager.GraphicsDevice.Vertices;
-        }
+        #region Public Constructors
 
         [Test]
-        public void Item()
+        public void Constructors()
         {
-            VertexStream vs = vsc[10];
-            VertexStream temp = vsc[30]; //here we made it increase size
-            VertexStream vs2 = vsc[10];//check if we get back the same obj
-            Assert.AreEqual(vs, vs2, "#1");			
+            GameComponentCollectionEventArgs args = new GameComponentCollectionEventArgs(null);
+            Assert.IsNotNull(args, "Failed to create type");
         }
 
+        #endregion
+
+        #region Public Fields Tests
+        #endregion
+        
+        #region Protected Fields Tests
+        #endregion
+
+        #region Public Properties Tests
+
+        [Test]
+        public void GameComponent()
+        {
+            MyComponent c = new MyComponent(new TestGame());
+            GameComponentCollectionEventArgs args = new GameComponentCollectionEventArgs(c);
+            Assert.AreSame(c, args.GameComponent);
+        }
+
+        #endregion
+        
+        
     }
+     
 }

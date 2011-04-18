@@ -33,33 +33,21 @@ using System.Text;
 using NUnit.Framework;
 using Microsoft.Xna.Framework;
 
-namespace Microsoft.Xna.Framework.Tests
+namespace Tests.Microsoft.Xna.Framework
 {
-    
+    /*
     [TestFixture]
-    public class GameServiceContainerTests
+    public class GameTimeTests
     {
-        GameServiceContainer services;
-        TestGame game;
-
         #region Setup
-
-        [SetUp]
-        public void Init()
-        {
-            game = new TestGame(true);
-            services = game.Services;
-        }
-
         #endregion
-
 
         #region Public Constructors
 
         [Test]
         public void Constructors()
         {
-            Assert.IsNotNull(services);
+            throw new NotImplementedException();
         }
 
         #endregion
@@ -71,6 +59,37 @@ namespace Microsoft.Xna.Framework.Tests
         #endregion
 
         #region Public Properties Tests
+
+        [Test]
+        public void ElapsedGameTime()
+        {
+            throw new NotImplementedException();
+        }
+
+        [Test]
+        public void ElapsedRealTime()
+        {
+            throw new NotImplementedException();
+        }
+
+        [Test]
+        public void IsRunningSlowly()
+        {
+            throw new NotImplementedException();
+        }
+
+        [Test]
+        public void TotalGameTime()
+        {
+            throw new NotImplementedException();
+        }
+
+        [Test]
+        public void TotalRealTime()
+        {
+            throw new NotImplementedException();
+        }
+
         #endregion
         
         #region Protected Properties Tests
@@ -79,48 +98,55 @@ namespace Microsoft.Xna.Framework.Tests
         #region Public Methods Tests
 
         [Test]
-        public void AddServiceAndGetServiceTest()
+        public void EqualsTest()
         {
-            string s = "Hello";
-            services.AddService(typeof(string), s);
-
-            string s2 = (string)services.GetService(typeof (string));
-            Assert.AreSame(s, s2, "Service was not correctly added");
+            throw new NotImplementedException();
         }
 
         [Test]
-        public void GetServiceThatDoesntExistTest()
+        public void GetHashCodeTest()
         {
-            string s = "Hello";
-            services.AddService(typeof(string), s);
-
-            IServiceProvider sp = (IServiceProvider)services.GetService(typeof (IServiceProvider));
-            Assert.IsNull(sp);
+            throw new NotImplementedException();
         }
 
         [Test]
-        public void RemoveService()
+        public void GetTypeTest()
         {
-            string s = "Hello";
-            services.AddService(typeof(string), s);
-
-            services.RemoveService(typeof(string));
-            string s2 = (string)services.GetService(typeof(string));
-            Assert.IsNull(s2);
+            throw new NotImplementedException();
         }
 
-        [ExpectedException(typeof(ArgumentException))]
         [Test]
-        public void AddDuplicateServiceService()
+        public void ReferenceEqualsTest()
         {
-            string s = "Hello";
-            services.AddService(typeof(string), s);
-
-            string s2 = "Hello Again";
-            services.AddService(typeof(string), s2);
+            throw new NotImplementedException();
         }
 
-        #endregion Public Methods Tests
+        [Test]
+        public void ToStringTest()
+        {
+            throw new NotImplementedException();
+        }
+
+        #endregion
+
+        #region Protected Methods Tests
+
+        [Test]
+        public void FinalizeTest()
+        {
+            throw new NotImplementedException();
+        }
+
+        [Test]
+        public void MemberWiseCloneTest()
+        {
+            throw new NotImplementedException();
+        }
+
+        #endregion
+
+        #region Other tests
+        #endregion 
     }
-     
+     */
 }

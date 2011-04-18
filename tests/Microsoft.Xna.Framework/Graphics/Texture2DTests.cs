@@ -38,7 +38,7 @@ using Microsoft.Xna.Framework.Content.Tests;
 using System.Threading;
 using System.IO;
 
-namespace Microsoft.Xna.Framework.Graphics.Tests
+namespace Tests.Microsoft.Xna.Framework.Graphics
 {
     [TestFixture]
     public class Texture2DTests

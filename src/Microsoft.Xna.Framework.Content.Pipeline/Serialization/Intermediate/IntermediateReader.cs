@@ -36,10 +36,14 @@ namespace Microsoft.Xna.Framework.Content.Pipeline.Serialization.Intermediate
     
     public sealed class IntermediateReader
     {
-
+		#region Fields
+		
+		
+		#endregion Fields
+		
 		#region Constructor
         
-        public IntermediateReader()
+        internal IntermediateReader(IntermediateSerializer serializer, XmlReader xml)
         {
         }
 

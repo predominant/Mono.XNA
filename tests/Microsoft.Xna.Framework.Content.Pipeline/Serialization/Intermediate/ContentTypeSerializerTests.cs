@@ -1,7 +1,7 @@
 using System;
 using NUnit.Framework;
 
-namespace Tests
+namespace Tests.Microsoft.Xna.Framework.Content.Pipeline.Serialization.Intermediate
 {
 	[TestFixture()]
 	public class ContentTypeSerializerTests

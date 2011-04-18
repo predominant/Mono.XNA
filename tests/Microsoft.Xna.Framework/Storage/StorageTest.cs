@@ -34,7 +34,7 @@ using Microsoft.Xna.Framework;
 using System.IO;
 using System.Text;
 
-namespace Microsoft.Xna.Framework.Storage.Tests
+namespace Tests.Microsoft.Xna.Framework.Storage
 {
 	[TestFixture]
 	public class StorageTest

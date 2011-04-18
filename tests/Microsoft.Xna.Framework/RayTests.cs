@@ -35,7 +35,7 @@ using Microsoft.Xna.Framework;
 using System.Threading;
 using System.Globalization;
 
-namespace Microsoft.Xna.Framework.Tests
+namespace Tests.Microsoft.Xna.Framework
 {
     [TestFixture]
     public class RayTests

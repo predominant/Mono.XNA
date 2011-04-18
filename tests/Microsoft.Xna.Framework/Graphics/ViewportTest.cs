@@ -34,9 +34,8 @@ using System.Text;
 using NUnit.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Tests;
 
-namespace Microsoft.Xna.Framework.Graphics.Tests
+namespace Tests.Microsoft.Xna.Framework.Graphics
 {
     [TestFixture]
     public class ViewportTest

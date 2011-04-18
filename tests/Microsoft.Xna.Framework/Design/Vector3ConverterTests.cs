@@ -5,7 +5,8 @@ Copyright © 2010 The MonoXNA Team
 
 All rights reserved.
 
-Authors: Lars Magnusson
+Authors: 
+ * Lars Magnusson
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
@@ -31,7 +32,7 @@ using System;
 using Microsoft.Xna.Framework.Design;
 using NUnit.Framework;
 
-namespace Tests
+namespace Tests.Microsoft.Xna.Framework.Design
 {
 	public class Vector3ConverterTests
 	{

@@ -32,7 +32,7 @@ using System.Collections.Generic;
 using Microsoft.Xna.Framework;
 using NUnit.Framework;
 
-namespace Microsoft.Xna.Framework.Tests
+namespace Tests.Microsoft.Xna.Framework
 {
     [TestFixture]
     public class BoundingBoxTests

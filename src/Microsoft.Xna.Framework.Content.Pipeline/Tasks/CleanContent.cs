@@ -37,6 +37,15 @@ namespace Microsoft.Xna.Framework.Content.Pipeline.Tasks
 	
 	public class CleanContent : Task
 	{
+		#region Fields
+		
+		private string buildConfiguration;
+		private string intermediateDirectory;
+		private string outputDirectory;
+		private string rootDirectory;
+		private string targetPlatform;
+		
+		#endregion Fields
 		
 		#region Constructor
 		
@@ -49,29 +58,29 @@ namespace Microsoft.Xna.Framework.Content.Pipeline.Tasks
 		#region Properties
 		
 		public string BuildConfiguration { 
-			get { throw new NotImplementedException(); }
-			set { throw new NotImplementedException(); }
+			get { return buildConfiguration; }
+			set { buildConfiguration = value; }
 		}
 		
 		public string IntermediateDirectory { 
-			get { throw new NotImplementedException(); }
-			set { throw new NotImplementedException(); }
+			get { return intermediateDirectory; }
+			set { IntermediateDirectory = value; }
 		}
 		
 		public string OutputDirectory { 
-			get { throw new NotImplementedException(); }
-			set { throw new NotImplementedException(); }
+			get { return outputDirectory; }
+			set { outputDirectory = value; }
 		}
 		
 		public string RootDirectory { 
-			get { throw new NotImplementedException(); }
-			set { throw new NotImplementedException(); }
+			get { return rootDirectory; }
+			set { rootDirectory = value; }
 		}
 		
 		[Required]
 		public string TargetPlatform { 
-			get { throw new NotImplementedException(); }
-			set { throw new NotImplementedException(); }
+			get { return targetPlatform; }
+			set { targetPlatform = value; }
 		}
 		
 		#endregion

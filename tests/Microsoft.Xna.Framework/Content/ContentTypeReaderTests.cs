@@ -3,8 +3,9 @@ using System.Collections.Generic;
 using System.Text;
 using NUnit.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using Microsoft.Xna.Framework.Content;
 
-namespace Microsoft.Xna.Framework.Content.Tests
+namespace Tests.Microsoft.Xna.Framework.Content
 {
     [TestFixture]
     public class ContentTypeReaderTests

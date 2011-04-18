@@ -33,12 +33,13 @@ using System.Text;
 using NUnit.Framework;
 using Microsoft.Xna.Framework;
 
-namespace Microsoft.Xna.Framework.Tests
+namespace Tests.Microsoft.Xna.Framework
 {
     /*
     [TestFixture]
-    public class GameTimeTests
+    public class GameWindowTests
     {
+        
         #region Setup
         #endregion
 
@@ -61,31 +62,31 @@ namespace Microsoft.Xna.Framework.Tests
         #region Public Properties Tests
 
         [Test]
-        public void ElapsedGameTime()
+        public void AllowUserResizing()
         {
             throw new NotImplementedException();
         }
 
         [Test]
-        public void ElapsedRealTime()
+        public void ClientBounds()
         {
             throw new NotImplementedException();
         }
 
         [Test]
-        public void IsRunningSlowly()
+        public void Handle()
         {
             throw new NotImplementedException();
         }
 
         [Test]
-        public void TotalGameTime()
+        public void ScreenDeviceName()
         {
             throw new NotImplementedException();
         }
 
         [Test]
-        public void TotalRealTime()
+        public void Title()
         {
             throw new NotImplementedException();
         }
@@ -96,6 +97,18 @@ namespace Microsoft.Xna.Framework.Tests
         #endregion
 
         #region Public Methods Tests
+
+        [Test]
+        public void BeginSceneDeviceChange()
+        {
+            throw new NotImplementedException();
+        }
+
+        [Test]
+        public void EndScreenDeviceChange()
+        {
+            throw new NotImplementedException();
+        }
 
         [Test]
         public void EqualsTest()
@@ -143,10 +156,46 @@ namespace Microsoft.Xna.Framework.Tests
             throw new NotImplementedException();
         }
 
+        [Test]
+        public void OnActivated()
+        {
+            throw new NotImplementedException();
+        }
+
+        [Test]
+        public void OnClientSizeChanged()
+        {
+            throw new NotImplementedException();
+        }
+
+        [Test]
+        public void OnDeactivated()
+        {
+            throw new NotImplementedException();
+        }
+
+        [Test]
+        public void OnPaint()
+        {
+            throw new NotImplementedException();
+        }
+
+        [Test]
+        public void OnScreenDeviceNameChanged()
+        {
+            throw new NotImplementedException();
+        }
+
+        [Test]
+        public void SetTitle()
+        {
+            throw new NotImplementedException();
+        }
+
         #endregion
 
         #region Other tests
-        #endregion 
+        #endregion
     }
      */
 }

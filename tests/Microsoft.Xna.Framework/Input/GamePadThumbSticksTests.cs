@@ -32,7 +32,7 @@ using NUnit.Framework;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Input;
 
-namespace Microsoft.Xna.Framework.Input.Tests
+namespace Tests.Microsoft.Xna.Framework.Input
 {
     [TestFixture]
     public class GamePadThumbSticksTests

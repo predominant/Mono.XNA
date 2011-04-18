@@ -2,7 +2,7 @@
 
 using System;
 
-namespace Microsoft.Xna.Framework.Tests
+namespace Tests
 {
     internal class TestClock : IGameClock
     {

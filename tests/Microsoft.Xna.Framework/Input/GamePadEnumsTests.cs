@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Text;
 using NUnit.Framework;
 
-namespace Microsoft.Xna.Framework.Input.Tests
+namespace Tests.Microsoft.Xna.Framework.Input
 {
     /// <summary>
     /// A series of tests to validate cross platform ENUMs are equal to Xna ENUMS, so we don't have to use logic

@@ -1,11 +1,11 @@
 using System;
 using System.Collections.Generic;
 using System.Text;
+using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using Microsoft.Xna.Framework.Tests;
 using NUnit.Framework;
 
-namespace Microsoft.Xna.Framework.Tests
+namespace Tests.Microsoft.Xna.Framework
 {
     [TestFixture]
     public class GraphicsDeviceManagerTests

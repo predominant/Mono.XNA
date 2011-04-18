@@ -35,7 +35,7 @@ using System;
 using System.Diagnostics;
 using NUnit.Framework;
 
-namespace Microsoft.Xna.Framework.Tests
+namespace Tests.Microsoft.Xna.Framework
 {
     [TestFixture]
     public class GameTests

@@ -34,7 +34,7 @@ using System.Globalization;
 using NUnit.Framework;
 using Microsoft.Xna.Framework;
 
-namespace Microsoft.Xna.Framework.Tests
+namespace Tests.Microsoft.Xna.Framework
 {
     /*
     [TestFixture]
