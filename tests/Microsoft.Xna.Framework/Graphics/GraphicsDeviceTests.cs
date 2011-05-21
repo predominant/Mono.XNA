@@ -9,7 +9,7 @@ namespace Tests.Microsoft.Xna.Framework.Graphics
 		[SetUp]
 		public void Setup()
 		{
-			TestGame game = new TestGame();
+			//TestGame game = new TestGame();
 			
 		}
 		

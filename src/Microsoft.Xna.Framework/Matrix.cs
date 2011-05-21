@@ -334,7 +334,6 @@ namespace Microsoft.Xna.Framework
 
         public bool Decompose(out Vector3 scale, out Quaternion rotation, out Vector3 translation)
         {
-			bool decomp = false;
 			translation.X = this.M41;
 			translation.Y = this.M42;
 			translation.Z = this.M43;
@@ -359,22 +358,19 @@ namespace Microsoft.Xna.Framework
 			scale.Y = ys * (float)Math.Sqrt(this.M21 * this.M21 + this.M22 * this.M22 + this.M23 * this.M23);
 			scale.Z = zs * (float)Math.Sqrt(this.M31 * this.M31 + this.M32 * this.M32 + this.M33 * this.M33);
 			
+			if (scale.X == 0.0 || scale.Y == 0.0 || scale.Z == 0.0)
+			{
+				rotation = Quaternion.Identity;
+				return false;
+			}
+
 			Matrix m1 = new Matrix(this.M11/scale.X, M12/scale.X, M13/scale.X, 0,
 				this.M21/scale.Y, M22/scale.Y, M23/scale.Y, 0,
 				this.M31/scale.Z, M32/scale.Z, M33/scale.Z, 0,
 				0, 0, 0, 1);
 			
-			if (Matrix.Transpose(m1) == Matrix.Invert(m1))
-			{
-				rotation = Quaternion.CreateFromRotationMatrix(m1);
-				decomp = true;
-			}
-			else
-			{
-				rotation = new Quaternion(0f, 0f, 0f, 1f);
-			}
-
-			return decomp;
+			rotation = Quaternion.CreateFromRotationMatrix(m1);
+			return true;
         }
 
 		/// <summary>

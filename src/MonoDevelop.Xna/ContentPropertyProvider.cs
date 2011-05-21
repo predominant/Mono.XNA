@@ -94,7 +94,7 @@ namespace MonoDevelop.Xna
 			
 			[LocalizedCategory("MonoXNA")]
 			[LocalizedDisplayName("Name")]
-			[LocalizedDescription("The name of the content.")]
+			[LocalizedDescription("The name of the game asset.")]
 			public string Name {
 				get {
 					object result = file.ExtendedProperties[nameKey];

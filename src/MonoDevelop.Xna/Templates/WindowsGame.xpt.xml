@@ -21,7 +21,6 @@
 		</Options>
 		
 		<Project name="${ProjectName}" directory="." type="XnaProject">
-			<!-- Is it possible to set the OutputType without using the Target attribute? -->
 			<Options Target="WinExe">
 			</Options>
 			<References>

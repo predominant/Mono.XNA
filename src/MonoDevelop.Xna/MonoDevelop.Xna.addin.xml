@@ -61,9 +61,9 @@
 	</Extension>
 	
 	<Extension path="/MonoDevelop/ProjectModel/ExtendedProperties">  
-		<ItemProperty class="MonoDevelop.Projects.ProjectFile" name="Name" type="System.String" />  
-		<ItemProperty class="MonoDevelop.Projects.ProjectFile" name="Importer" type="System.String" />
 		<ItemProperty class="MonoDevelop.Projects.ProjectFile" name="Processor" type="System.String" />  
+		<ItemProperty class="MonoDevelop.Projects.ProjectFile" name="Importer" type="System.String" />
+		<ItemProperty class="MonoDevelop.Projects.ProjectFile" name="Name" type="System.String" />  
 	</Extension>
 	
 </Addin>
