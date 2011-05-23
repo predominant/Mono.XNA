@@ -9,7 +9,7 @@
     <OutputType>Library</OutputType>
     <AssemblyName>Microsoft.Xna.Framework</AssemblyName>
     <RootNamespace>Microsoft.Xna.Framework</RootNamespace>
-    <TargetFrameworkVersion>v2.0</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
     <SignAssembly>true</SignAssembly>
     <DelaySign>true</DelaySign>
     <ReleaseVersion>3.1</ReleaseVersion>
@@ -89,9 +89,6 @@
     <Compile Include="BoundingBox.cs" />
     <Compile Include="BoundingFrustum.cs" />
     <Compile Include="BoundingSphere.cs" />
-    <Compile Include="Content\ContentReaders\Int32Reader.cs" />
-    <Compile Include="Content\ContentReaders\SongReader.cs" />
-    <Compile Include="Content\ContentReaders\SoundEffectReader.cs" />
     <Compile Include="Content\ContentSerializerRuntimeTypeAttribute.cs" />
     <Compile Include="Content\ContentSerializerTypeVersionAttribute.cs" />
     <Compile Include="Curve.cs" />
@@ -199,13 +196,6 @@
     <Compile Include="Content\ContentTypeReader.cs" />
     <Compile Include="Content\ContentTypeReaderManager.cs" />
     <Compile Include="Content\ResourceContentManager.cs" />
-    <Compile Include="Content\ContentReaders\BasicEffectReader.cs" />
-    <Compile Include="Content\ContentReaders\IndexBufferReader.cs" />
-    <Compile Include="Content\ContentReaders\ModelTypeReader.cs" />
-    <Compile Include="Content\ContentReaders\StringReader.cs" />
-    <Compile Include="Content\ContentReaders\Texture2DReader.cs" />
-    <Compile Include="Content\ContentReaders\VertexBufferReader.cs" />
-    <Compile Include="Content\ContentReaders\VertexDeclarationReader.cs" />
     <Compile Include="Design\BoundingBoxConverter.cs" />
     <Compile Include="Design\BoundingSphereConverter.cs" />
     <Compile Include="Design\MathTypeConverter.cs" />
@@ -358,17 +348,27 @@
     <Compile Include="Design\FieldDescriptor.cs" />
     <Compile Include="Input\GamePad.cs" />
     <Compile Include="Input\Mouse.cs" />
-    <Compile Include="Content\ContentReaders\ArrayReader.cs" />
-    <Compile Include="Content\ContentReaders\CharReader.cs" />
-    <Compile Include="Content\ContentReaders\EffectReader.cs" />
-    <Compile Include="Content\ContentReaders\ListReader.cs" />
-    <Compile Include="Content\ContentReaders\ObjectReader.cs" />
-    <Compile Include="Content\ContentReaders\RectangleReader.cs" />
-    <Compile Include="Content\ContentReaders\SpriteFontReader.cs" />
-    <Compile Include="Content\ContentReaders\Vector3Reader.cs" />
     <Compile Include="Graphics\SpriteFont.cs" />
     <Compile Include="Media\Enums.cs" />
     <Compile Include="Graphics\Sprite.cs" />
+    <Compile Include="Content\Readers\Int32Reader.cs" />
+    <Compile Include="Content\Readers\SongReader.cs" />
+    <Compile Include="Content\Readers\SoundEffectReader.cs" />
+    <Compile Include="Content\Readers\BasicEffectReader.cs" />
+    <Compile Include="Content\Readers\IndexBufferReader.cs" />
+    <Compile Include="Content\Readers\ModelTypeReader.cs" />
+    <Compile Include="Content\Readers\StringReader.cs" />
+    <Compile Include="Content\Readers\Texture2DReader.cs" />
+    <Compile Include="Content\Readers\VertexBufferReader.cs" />
+    <Compile Include="Content\Readers\VertexDeclarationReader.cs" />
+    <Compile Include="Content\Readers\ArrayReader.cs" />
+    <Compile Include="Content\Readers\CharReader.cs" />
+    <Compile Include="Content\Readers\EffectReader.cs" />
+    <Compile Include="Content\Readers\ListReader.cs" />
+    <Compile Include="Content\Readers\ObjectReader.cs" />
+    <Compile Include="Content\Readers\RectangleReader.cs" />
+    <Compile Include="Content\Readers\SpriteFontReader.cs" />
+    <Compile Include="Content\Readers\Vector3Reader.cs" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="System" />

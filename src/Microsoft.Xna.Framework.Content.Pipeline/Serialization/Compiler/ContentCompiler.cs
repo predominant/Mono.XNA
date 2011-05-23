@@ -1,11 +1,12 @@
 #region License
 /*
 MIT License
-Copyright © 2009 The Mono.Xna Team
+Copyright © 2011 The MonoXNA Team
 
 All rights reserved.
 
-Authors: Lars Magnusson (lavima@gmail.com)
+Authors: 
+ * Lars Magnusson <lavima@gmail.com>
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
@@ -28,6 +29,10 @@ SOFTWARE.
 #endregion License
 
 using System;
+using System.Linq;
+using System.Collections.Generic;
+using System.Reflection;
+using Microsoft.Build.Framework;
 
 namespace Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler
 {
@@ -35,20 +40,52 @@ namespace Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler
 	
 	public sealed class ContentCompiler
 	{
+		#region Fields
+		
+		private Dictionary<Type, ContentTypeWriter> typeWriters;
+		
+		#endregion Fields
 
 		#region Constructor
 		
-		public ContentCompiler()
+		internal ContentCompiler(ITaskItem[] pipelineAssembliesItems)
 		{
+			typeWriters = new Dictionary<Type, ContentTypeWriter>();
+			initializeTypeWriters(pipelineAssembliesItems);
 		}
 
-		#endregion
+		#endregion Constructor
 		
-		#region Public Methods
+		#region Methods
 
 		public ContentTypeWriter GetTypeWriter(Type type)
 		{
-			throw new NotImplementedException();
+			if (typeWriters.ContainsKey(type))
+				return typeWriters[type];
+			
+			return null;
+		}
+		
+		internal void AddTypeWriter(ContentTypeWriter typeWriter)
+		{
+			typeWriters.Add(typeWriter.TargetType, typeWriter);	
+		}
+		
+		private void initializeTypeWriters(ITaskItem[] pipelineAssembliesItems)
+		{
+			foreach (ITaskItem pipelineAssemblyItem in pipelineAssembliesItems)
+			{
+				Assembly pipelineAssembly = Assembly.Load(pipelineAssemblyItem.GetMetadata("OriginalItemSpec"));
+				IEnumerable<Type> writerTypes = from writerType in pipelineAssembly.GetTypes()
+					where writerType.IsDefined(typeof(ContentTypeWriterAttribute), false) 
+					select writerType;
+				
+				foreach (Type writerType in writerTypes)
+				{
+					ContentTypeWriter writer = (ContentTypeWriter)Activator.CreateInstance(writerType);
+					writer.RegisterAndInitialize(this);
+				}
+			}
 		}
 		
 		#endregion

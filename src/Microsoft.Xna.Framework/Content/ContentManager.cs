@@ -1,13 +1,14 @@
 #region License
 /*
 MIT License
-Copyright © 2006 The Mono.Xna Team
+Copyright © 2011 The MonoXNA Team
 
 All rights reserved.
 
 Authors:
  * Alan McGovern <alan.mcgovern@gmail.com>
  * Tim Pambor
+ * Lars Magnusson <lavima@gmail.com>
  
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
@@ -43,17 +44,16 @@ namespace Microsoft.Xna.Framework.Content
 
     public class ContentManager : IDisposable
     {
-        #region Private Members
+        #region Fields
 
         private Dictionary<string, object> assets;
         private bool disposed;
         private string rootDirectory;
         private IServiceProvider serviceProvider;
        
-        #endregion
+        #endregion Fields
 
-
-        #region Public Properties
+        #region Properties
 
         public IServiceProvider ServiceProvider {
             get { return this.serviceProvider; }
@@ -75,7 +75,7 @@ namespace Microsoft.Xna.Framework.Content
             }
         }
 
-        #endregion
+        #endregion Properties
 
         #region Public Constructors
 
@@ -97,7 +97,7 @@ namespace Microsoft.Xna.Framework.Content
             this.serviceProvider = serviceProvider;
         }
 
-        #endregion
+        #endregion Constructors
 
 		#region Destructor
 
@@ -106,10 +106,54 @@ namespace Microsoft.Xna.Framework.Content
             Dispose(false);
         }
 
-        #endregion
+        #endregion Destructor
 
 
-        #region Protected Methods
+        #region Methods
+
+        public void Dispose()
+        {
+            this.Dispose(true);
+            GC.SuppressFinalize(this);
+        }
+
+        public virtual T Load<T>(string assetName)
+        {
+            if (this.disposed)
+                throw new ObjectDisposedException(base.ToString());   // Prints out the full type information as the message
+
+            if (string.IsNullOrEmpty(assetName))
+                throw new ArgumentNullException("assetName");       // We can't load an asset if we don't know it's name
+
+            object cached;
+            if (this.assets.TryGetValue(assetName, out cached)) //Check if cached object is available
+            {
+                if (!(cached is T)) throw new ContentLoadException("Not an XNB file");
+                return (T)cached; //Return cached object.
+            }
+
+            T asset = this.ReadAsset<T>(assetName, null);
+            this.assets.Add(assetName, asset);
+            return asset;
+        }
+
+        public virtual void Unload()
+        {
+            if (this.disposed)
+                throw new ObjectDisposedException(this.GetType().ToString());
+
+            Dictionary<string, object>.Enumerator enumerator = assets.GetEnumerator();
+            while (enumerator.MoveNext())
+            {
+                IDisposable disposableObject = enumerator.Current.Value as IDisposable;
+                if (disposableObject != null)
+                    disposableObject.Dispose();
+            }
+            enumerator.Dispose();
+            this.assets.Clear();
+            this.disposed = true;
+        }
+
 
         protected virtual void Dispose(bool disposing)
         {
@@ -150,11 +194,6 @@ namespace Microsoft.Xna.Framework.Content
             return stream;
         }
 
-        #endregion Protected Methods
-
-
-        #region Public Methods
-
         internal static string CleanPath(string path)
         {
             int lastindex;
@@ -172,42 +211,14 @@ namespace Microsoft.Xna.Framework.Content
             return path;
         }
 
-        public void Dispose()
-        {
-            this.Dispose(true);
-            GC.SuppressFinalize(this);
-        }
-
-        public virtual T Load<T>(string assetName)
-        {
-            if (this.disposed)
-                throw new ObjectDisposedException(base.ToString());   // Prints out the full type information as the message
-
-            if (string.IsNullOrEmpty(assetName))
-                throw new ArgumentNullException("assetName");       // We can't load an asset if we don't know it's name
-
-            object cached;
-            if (this.assets.TryGetValue(assetName, out cached)) //Check if cached object is available
-            {
-                if (!(cached is T)) throw new ContentLoadException("Not an XNB file");
-                return (T)cached; //Return cached object.
-            }
-
-            T asset = this.ReadAsset<T>(assetName, null);
-            this.assets.Add(assetName, asset);
-            return asset;
-        }
-
         protected T ReadAsset<T>(string assetName, Action<IDisposable> recordDisposableObject)
         {
             if (this.disposed)
-            {
                 throw new ObjectDisposedException(base.ToString());
-            }
+			
             if (string.IsNullOrEmpty(assetName))
-            {
                 throw new ArgumentNullException("assetName");
-            }
+			
             using (Stream assetStream = this.OpenStream(assetName))
             {
                 using (ContentReader reader = new ContentReader(this, assetStream, assetName, recordDisposableObject))
@@ -216,28 +227,6 @@ namespace Microsoft.Xna.Framework.Content
                 }
             }
         }
-
-        public virtual void Unload()
-        {
-            if (this.disposed)
-                throw new ObjectDisposedException(this.GetType().ToString());
-
-            Dictionary<string, object>.Enumerator enumerator = assets.GetEnumerator();
-            while (enumerator.MoveNext())
-            {
-                IDisposable disposableObject = enumerator.Current.Value as IDisposable;
-                if (disposableObject != null)
-                    disposableObject.Dispose();
-            }
-            enumerator.Dispose();
-            this.assets.Clear();
-            this.disposed = true;
-        }
-
-        #endregion
-
-
-        #region Private Methods
 
         private Stream GetAssetStream(string assetName)
         {
@@ -260,7 +249,7 @@ namespace Microsoft.Xna.Framework.Content
 
             return stream;
         }
-
-        #endregion
+		
+        #endregion Methods
     }
 }

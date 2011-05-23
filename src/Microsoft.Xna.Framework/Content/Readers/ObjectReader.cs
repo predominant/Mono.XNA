@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace Microsoft.Xna.Framework.Content
+namespace Microsoft.Xna.Framework.Content.Readers
 {
     internal class ObjectReader : ContentTypeReader
     {

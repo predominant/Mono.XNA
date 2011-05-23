@@ -8,7 +8,7 @@
     <ProjectGuid>{2B43FFD0-D80F-4D49-9CF7-2B2A2E674C49}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AssemblyName>Microsoft.Xna.Framework.Content.Pipeline</AssemblyName>
-    <TargetFrameworkVersion>v2.0</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
     <SignAssembly>true</SignAssembly>
     <DelaySign>true</DelaySign>
     <ReleaseVersion>3.1</ReleaseVersion>
@@ -172,7 +172,6 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Serialization\Compiler\ContentCompiler.cs" />
     <Compile Include="Serialization\Compiler\ContentTypeWriter.cs" />
-    <Compile Include="Serialization\Compiler\ContentTypeWriter_.cs" />
     <Compile Include="Serialization\Compiler\ContentTypeWriterAttribute.cs" />
     <Compile Include="Serialization\Compiler\ContentWriter.cs" />
     <Compile Include="Serialization\Intermediate\ContentTypeSerializer.cs" />
@@ -186,6 +185,8 @@
     <Compile Include="Tasks\GetLastOutputs.cs" />
     <Compile Include="XBuildLogger.cs" />
     <Compile Include="Serialization\Intermediate\DefaultContentTypeSerializer.cs" />
+    <Compile Include="Serialization\Compiler\Writers\ArrayWriter.cs" />
+    <Compile Include="Serialization\Compiler\Writers\DefaultWriter.cs" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="System" />
@@ -193,6 +194,7 @@
     <Reference Include="Microsoft.Build.Framework" />
     <Reference Include="System.Data" />
     <Reference Include="System.Xml" />
+    <Reference Include="System.Core" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Microsoft.Xna.Framework\Microsoft.Xna.Framework.csproj">
@@ -202,5 +204,8 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="xna.pub" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Serialization\Compiler\Writers\" />
   </ItemGroup>
 </Project>

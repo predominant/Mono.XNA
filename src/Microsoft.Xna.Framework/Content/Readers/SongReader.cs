@@ -4,7 +4,7 @@ using System.Text;
 using System.IO;
 using Microsoft.Xna.Framework.Media;
 
-namespace Microsoft.Xna.Framework.Content
+namespace Microsoft.Xna.Framework.Content.Readers
 {
     internal class SongReader : ContentTypeReader<Song>
     {

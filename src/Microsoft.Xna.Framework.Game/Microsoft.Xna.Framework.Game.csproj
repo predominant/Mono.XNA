@@ -9,7 +9,7 @@
     <OutputType>Library</OutputType>
     <RootNamespace>Microsoft.Xna.Framework</RootNamespace>
     <AssemblyName>Microsoft.Xna.Framework.Game</AssemblyName>
-    <TargetFrameworkVersion>v2.0</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
     <DelaySign>true</DelaySign>
     <ReleaseVersion>3.1</ReleaseVersion>
     <SignAssembly>true</SignAssembly>

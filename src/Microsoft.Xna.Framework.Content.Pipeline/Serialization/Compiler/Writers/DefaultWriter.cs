@@ -1,11 +1,12 @@
 #region License
 /*
 MIT License
-Copyright © 2009 The Mono.Xna Team
+Copyright © 2011 The MonoXNA Team
 
 All rights reserved.
 
-Authors: Lars Magnusson (lavima@gmail.com)
+Authors: 
+ * Lars Magnusson <lavima@gmail.com>
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
@@ -28,34 +29,36 @@ SOFTWARE.
 #endregion License
 
 using System;
-using System.Xml;
-using Microsoft.Xna.Framework.Content.Pipeline.Serialization.Intermediate;
+using Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler;
 
 namespace Microsoft.Xna.Framework.Content.Pipeline
 {
-	
-	[ContentImporter(".xml")]
-	public class XmlImporter : ContentImporter<object>
+	internal class DefaultWriter : ContentTypeWriter
 	{
-		
 		#region Constructor
 		
-		public XmlImporter()
+		public DefaultWriter(Type targetType)
+			: base(targetType)
 		{
+			
 		}
 		
 		#endregion Constructor
 		
-		#region Public Methods
+		#region ContentTypeWriter Overrides
 		
-		public override object Import(string filename, ContentImporterContext context)
+		public override string GetRuntimeReader (TargetPlatform targetPlatform)
 		{
-			context.Logger.LogMessage("Importing Xml asset", null);
-			XmlReader reader = XmlReader.Create(filename);
-			return IntermediateSerializer.Deserialize<object>(reader, filename);
+			return "Microsoft.Xna.Framework.Content.Readers.ArrayReader, Microsoft.Xna.Framework"; //TODO
 		}
 		
-		#endregion Public Methods
 		
+		protected internal override void Write (ContentWriter output, object value)
+		{
+			
+		}
+		
+		#endregion ContentTypeWriter Overrides
 	}
 }
+

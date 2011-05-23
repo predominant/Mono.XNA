@@ -31,22 +31,29 @@ using System.Collections.Generic;
 using System.Text;
 using Microsoft.Xna.Framework.Graphics;
 
-namespace Microsoft.Xna.Framework.Content
+namespace Microsoft.Xna.Framework.Content.Readers
 {
-    class IndexBufferReader : ContentTypeReader<IndexBuffer>
+    class VertexDeclarationReader : ContentTypeReader<VertexDeclaration>
     {
-        public IndexBufferReader()
+        public VertexDeclarationReader()
         {
+            // Do nothing
         }
-
-        protected internal override IndexBuffer Read(ContentReader input, IndexBuffer existingInstance)
+        protected internal override VertexDeclaration Read(ContentReader input, VertexDeclaration existingInstance)
         {
-            bool flag = input.ReadBoolean();
-            int count = input.ReadInt32();
-            byte[] data = input.ReadBytes(count);
-            IndexBuffer buffer = new IndexBuffer(input.GraphicsDevice, count, BufferUsage.None, flag ? IndexElementSize.SixteenBits : IndexElementSize.ThirtyTwoBits);
-            buffer.SetData<byte>(data);
-            return buffer;
+            int size = input.ReadInt32();
+            VertexElement[] elements = new VertexElement[size];
+            for (int i = 0; i < size; i++)
+            {
+                short stream = input.ReadInt16();
+                short offset = input.ReadInt16();
+                VertexElementFormat elementFormat = (VertexElementFormat)input.ReadByte();
+                VertexElementMethod elementMethod = (VertexElementMethod)input.ReadByte();
+                VertexElementUsage elementUsage = (VertexElementUsage)input.ReadByte();
+                byte usageIndex = input.ReadByte();
+                elements[i] = new VertexElement(stream, offset, elementFormat, elementMethod, elementUsage, usageIndex);
+            }
+            return new VertexDeclaration(input.GraphicsDevice, elements);
         }
     }
 }

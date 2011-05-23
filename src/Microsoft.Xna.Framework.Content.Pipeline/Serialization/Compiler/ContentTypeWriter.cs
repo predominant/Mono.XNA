@@ -1,11 +1,12 @@
 #region License
 /*
 MIT License
-Copyright © 2009 The Mono.Xna Team
+Copyright © 2011 The MonoXNA Team
 
 All rights reserved.
 
-Authors: Lars Magnusson (lavima@gmail.com)
+Authors: 
+ * Lars Magnusson <lavima@gmail.com>
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
@@ -35,45 +36,51 @@ namespace Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler
 	
 	public abstract class ContentTypeWriter
 	{
-
-#region Constructor
+		#region Fields
 		
-		protected ContentTypeWriter()
+		private Type targetType;
+		private int typeVersion;
+		
+		#endregion Fields
+		
+		#region Constructor
+		
+		protected ContentTypeWriter(Type targetType)
 		{
+			this.targetType = targetType;
 		}
 		
-#endregion
+		#endregion Constructor
 		
-#region Properties
+		#region Properties
 
-		public Type TargetType 
-		{ 
-			get { throw new NotImplementedException(); }
+		public Type TargetType { 
+			get { return targetType; }
 		}
 		
-		public virtual int TypeVersion 
-		{ 
-			get { throw new NotImplementedException(); }
+		public virtual int TypeVersion { 
+			get { return typeVersion; }
 		}
 		
-#endregion
+		#endregion Properties
 
-#region Public Methods
+		#region Methods
 
 		public abstract string GetRuntimeReader(TargetPlatform targetPlatform);
 		
 		public virtual string GetRuntimeType(TargetPlatform targetPlatform)
 		{
-			throw new NotImplementedException();
+			return targetType.FullName;
 		}
 		
-#endregion
+		internal void RegisterAndInitialize(ContentCompiler compiler)
+		{
+			Initialize(compiler);	
+		}
 		
-#region Protected Methods
-
 		protected virtual void Initialize(ContentCompiler compiler)
 		{
-			throw new NotImplementedException();
+			compiler.AddTypeWriter(this);
 		}
 		
 		protected internal virtual bool ShouldCompressContent(TargetPlatform targetPlatform, Object value)
@@ -83,7 +90,32 @@ namespace Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler
 		
 		protected internal abstract void Write(ContentWriter output, Object value);
 		
-#endregion
+		#endregion Methods		
+	}
+	
+	public abstract class ContentTypeWriter<T> : ContentTypeWriter
+	{
+
+		#region Constructor
+		
+		protected ContentTypeWriter()
+			: base(typeof(T))
+		{
+		}
+
+		#endregion Constructor
+		
+		
+		#region Methods
+
+		protected internal override void Write(ContentWriter output, Object value)
+		{
+			Write(output, (T)value);
+		}
+		
+		protected internal abstract void Write(ContentWriter output, T value);
+		
+		#endregion Methods
 		
 	}
 }

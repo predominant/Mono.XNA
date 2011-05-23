@@ -31,7 +31,7 @@ using System.Collections.Generic;
 using System.Text;
 using Microsoft.Xna.Framework.Graphics;
 
-namespace Microsoft.Xna.Framework.Content
+namespace Microsoft.Xna.Framework.Content.Readers
 {
     class BasicEffectReader : ContentTypeReader<BasicEffect>
     {

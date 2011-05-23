@@ -1,9 +1,12 @@
 #region License
 /*
 MIT License
-Copyright © 2006 The Mono.Xna Team
+Copyright © 2011 The MonoXNA Team
 
 All rights reserved.
+
+Authors: 
+ * Lars Magnusson <lavima@gmail.com>
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
@@ -25,24 +28,30 @@ SOFTWARE.
 */
 #endregion License
 
-
 using System;
-using System.Collections.Generic;
-using System.Text;
-using Microsoft.Xna.Framework.Graphics;
+using Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler;
 
-namespace Microsoft.Xna.Framework.Content
+namespace Microsoft.Xna.Framework.Content.Pipeline
 {
-    class ModelReader : ContentTypeReader<Model>
-    {
-        public ModelReader()
-        {
-            // Do nothing
-        }
-
-        protected internal override Model Read(ContentReader input, Model existingInstance)
-        {
-           return Model.Read(input);
-        }
-    }
+	internal class ArrayWriter<T> : ContentTypeWriter<T[]>
+	{
+		#region ContentTypeWriter Overrides
+		
+		public override string GetRuntimeReader (TargetPlatform targetPlatform)
+		{
+			return "Microsoft.Xna.Framework.Content.Readers.ArrayReader[" + 
+				typeof(T).FullName + "], Microsoft.Xna.Framework"; //TODO add complete name
+		}
+		
+		
+		protected internal override void Write (ContentWriter output, T[] value)
+		{
+			output.Write(value.Length);
+			foreach (T val in value)
+				output.WriteObject(val);
+		}
+		
+		#endregion ContentTypeWriter Overrides
+	}
 }
+

@@ -1,9 +1,12 @@
 #region License
 /*
 MIT License
-Copyright © 2006 The Mono.Xna Team
+Copyright © 2011 The MonoXNA Team
 
 All rights reserved.
+
+Authors:
+ * Lars Magnusson <lavima@gmail.com>
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
@@ -28,15 +31,22 @@ SOFTWARE.
 using System;
 using System.Collections.Generic;
 using System.Reflection;
+using Microsoft.Xna.Framework.Content.Readers;
 
 namespace Microsoft.Xna.Framework.Content
 {
     public sealed class ContentTypeReaderManager
     {
+		#region Fields
+		
         private ContentReader contentReader;
         private static Dictionary<string, ContentTypeReader> nameToReader = new Dictionary<string, ContentTypeReader>();
         private static Dictionary<Type, ContentTypeReader> readerTypeToReader = new Dictionary<Type, ContentTypeReader>();
         private static Dictionary<Type, ContentTypeReader> targetTypeToReader = new Dictionary<Type, ContentTypeReader>();
+		
+		#endregion Fields
+		
+		#region Constructors
 
         static ContentTypeReaderManager()
         {
@@ -49,21 +59,10 @@ namespace Microsoft.Xna.Framework.Content
         {
             this.contentReader = contentReader;
         }
-
-        private static void AddTypeReader(string readerTypeName, ContentReader contentReader, ContentTypeReader reader)
-        {
-            Type targetType = reader.TargetType;
-            if (targetType != null)
-            {
-                if (targetTypeToReader.ContainsKey(targetType))
-                {
-                    throw new ContentLoadException("TypeReader duplicate");
-                }
-                targetTypeToReader.Add(targetType, reader);
-            }
-            readerTypeToReader.Add(reader.GetType(), reader);
-            nameToReader.Add(readerTypeName, reader);
-        }
+		
+		#endregion Constructors
+		
+		#region Methods
 
         public ContentTypeReader GetTypeReader(Type targetType)
         {
@@ -85,51 +84,6 @@ namespace Microsoft.Xna.Framework.Content
                 }
             }
             return reader;
-        }
-
-        private static ContentTypeReader GetTypeReader(string readerTypeName, ContentReader contentReader, ref List<ContentTypeReader> newTypeReaders)
-        {
-            lock (nameToReader)
-            {
-                ContentTypeReader reader;
-                if (!nameToReader.TryGetValue(readerTypeName, out reader) && InstantiateTypeReader(readerTypeName, contentReader, out reader))
-                {
-                    AddTypeReader(readerTypeName, contentReader, reader);
-                    if (newTypeReaders == null)
-                    {
-                        newTypeReaders = new List<ContentTypeReader>();
-                    }
-                    newTypeReaders.Add(reader);
-                }
-                return reader;
-            }
-        }
-
-        private static bool InstantiateTypeReader(string readerTypeName, ContentReader contentReader, out ContentTypeReader reader)
-        {
-            try
-            {
-                Type key = Type.GetType(readerTypeName);
-                if (key == null)
-                {
-                    throw new ContentLoadException("TypeReader not found");
-                }
-                if (readerTypeToReader.TryGetValue(key, out reader))
-                {
-                    nameToReader.Add(readerTypeName, reader);
-                    return false;
-                }
-                reader = (ContentTypeReader)Activator.CreateInstance(key);
-            }
-            catch (Exception exception)
-            {
-                if ((((exception is ArgumentException) || (exception is TargetInvocationException)) || ((exception is TypeLoadException) || (exception is NotSupportedException))) || ((exception is MemberAccessException) || (exception is InvalidCastException)))
-                {
-                    throw new ContentLoadException("TypeReader invalid");
-                }
-                throw;
-            }
-            return true;
         }
 
         internal static ContentTypeReader[] ReadTypeManifest(int typeCount, ContentReader contentReader)
@@ -170,6 +124,65 @@ namespace Microsoft.Xna.Framework.Content
             return readers;
         }
 
+        private static void AddTypeReader(string readerTypeName, ContentReader contentReader, ContentTypeReader reader)
+        {
+            Type targetType = reader.TargetType;
+            if (targetType != null)
+            {
+                if (targetTypeToReader.ContainsKey(targetType))
+                {
+                    throw new ContentLoadException("TypeReader duplicate");
+                }
+                targetTypeToReader.Add(targetType, reader);
+            }
+            readerTypeToReader.Add(reader.GetType(), reader);
+            nameToReader.Add(readerTypeName, reader);
+        }
+
+        private static ContentTypeReader GetTypeReader(string readerTypeName, ContentReader contentReader, ref List<ContentTypeReader> newTypeReaders)
+        {
+            lock (nameToReader)
+            {
+                ContentTypeReader reader;
+                if (!nameToReader.TryGetValue(readerTypeName, out reader) && InstantiateTypeReader(readerTypeName, contentReader, out reader))
+                {
+                    AddTypeReader(readerTypeName, contentReader, reader);
+                    
+					if (newTypeReaders == null)
+                        newTypeReaders = new List<ContentTypeReader>();
+                    newTypeReaders.Add(reader);
+                }
+                return reader;
+            }
+        }
+
+        private static bool InstantiateTypeReader(string readerTypeName, ContentReader contentReader, out ContentTypeReader reader)
+        {
+            try
+            {
+                Type key = Type.GetType(readerTypeName);
+                if (key == null)
+                {
+                    throw new ContentLoadException("TypeReader not found");
+                }
+                if (readerTypeToReader.TryGetValue(key, out reader))
+                {
+                    nameToReader.Add(readerTypeName, reader);
+                    return false;
+                }
+                reader = (ContentTypeReader)Activator.CreateInstance(key);
+            }
+            catch (Exception exception)
+            {
+                if ((((exception is ArgumentException) || (exception is TargetInvocationException)) || ((exception is TypeLoadException) || (exception is NotSupportedException))) || ((exception is MemberAccessException) || (exception is InvalidCastException)))
+                {
+                    throw new ContentLoadException("TypeReader invalid");
+                }
+                throw;
+            }
+            return true;
+        }
+
         private static void RollbackAddReader<T>(Dictionary<T, ContentTypeReader> dictionary, ContentTypeReader reader)
         {
             IEnumerator<KeyValuePair<T, ContentTypeReader>> enumerator = dictionary.GetEnumerator();
@@ -200,5 +213,7 @@ namespace Microsoft.Xna.Framework.Content
                 }
             }
         }
+		
+		#endregion Methods
     }
 }

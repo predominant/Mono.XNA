@@ -31,22 +31,18 @@ using System.Collections.Generic;
 using System.Text;
 using Microsoft.Xna.Framework.Graphics;
 
-namespace Microsoft.Xna.Framework.Content
+namespace Microsoft.Xna.Framework.Content.Readers
 {
-    class VertexBufferReader : ContentTypeReader<VertexBuffer>
+    class ModelReader : ContentTypeReader<Model>
     {
-        public VertexBufferReader()
+        public ModelReader()
         {
             // Do nothing
         }
 
-        protected internal override VertexBuffer Read(ContentReader input, VertexBuffer existingInstance)
+        protected internal override Model Read(ContentReader input, Model existingInstance)
         {
-            int count = input.ReadInt32();
-            byte[] data = input.ReadBytes(count);
-            VertexBuffer buffer = new VertexBuffer(input.GraphicsDevice, count, BufferUsage.None);
-            buffer.SetData<byte>(data);
-            return buffer;
+           return Model.Read(input);
         }
     }
 }

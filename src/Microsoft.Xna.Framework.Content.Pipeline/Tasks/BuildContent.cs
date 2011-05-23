@@ -214,6 +214,16 @@ namespace Microsoft.Xna.Framework.Content.Pipeline.Tasks
 			
 			XBuildLogger logger = new XBuildLogger(this.Log);
 			
+			foreach (ITaskItem assemblyItem in PipelineAssemblies)
+			{
+				Log.LogMessage("Pipeline Assembly:");
+				//foreach (string metadataName in assemblyItem.MetadataNames)
+				//	Log.LogMessage(metadataName + ": " + assemblyItem.GetMetadata(metadataName));
+				
+				Assembly pipelineAssembly = Assembly.Load(assemblyItem.GetMetadata("OriginalItemSpec"));
+				Log.LogMessage(pipelineAssembly.FullName);
+			}
+			
 			foreach (ITaskItem sourceItem in SourceAssets)
 			{
 				Log.LogMessage("Building " + sourceItem.GetMetadata("Name"));
@@ -228,6 +238,8 @@ namespace Microsoft.Xna.Framework.Content.Pipeline.Tasks
 				IContentProcessor processor = getProcessorInstance(processorName);
 				if (importer == null)
 					Log.LogError("Could not find the processor (" + processorName + ")");
+				
+				Log.LogMessage("Using " + importerName + " and " + processorName);
 				
 				ContentImporterContext importerContext = new ContentImporterContext(this, IntermediateDirectory, OutputDirectory, logger);
 				ContentProcessorContext processorContext = new ContentProcessorContext();

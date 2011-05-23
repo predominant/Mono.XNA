@@ -9,7 +9,7 @@
     <OutputType>Library</OutputType>
     <AssemblyName>Microsoft.Xna.Framework.Content.Pipeline.EffectImporter</AssemblyName>
     <RootNamespace>Microsoft.Xna.Framework.Content.Pipeline.EffectImporter</RootNamespace>
-    <TargetFrameworkVersion>v2.0</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
     <SignAssembly>true</SignAssembly>
     <DelaySign>true</DelaySign>
     <ReleaseVersion>3.1</ReleaseVersion>

@@ -29,18 +29,24 @@ SOFTWARE.
 using System;
 using System.Collections.Generic;
 using System.Text;
+using Microsoft.Xna.Framework.Graphics;
 
-namespace Microsoft.Xna.Framework.Content
+namespace Microsoft.Xna.Framework.Content.Readers
 {
-    internal class StringReader : ContentTypeReader<String>
+    class VertexBufferReader : ContentTypeReader<VertexBuffer>
     {
-        public StringReader()
+        public VertexBufferReader()
         {
+            // Do nothing
         }
 
-        protected internal override string Read(ContentReader input, string existingInstance)
+        protected internal override VertexBuffer Read(ContentReader input, VertexBuffer existingInstance)
         {
-            return input.ReadString();
+            int count = input.ReadInt32();
+            byte[] data = input.ReadBytes(count);
+            VertexBuffer buffer = new VertexBuffer(input.GraphicsDevice, count, BufferUsage.None);
+            buffer.SetData<byte>(data);
+            return buffer;
         }
     }
 }

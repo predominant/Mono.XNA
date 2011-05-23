@@ -1,9 +1,12 @@
 #region License
 /*
 MIT License
-Copyright © 2006 The Mono.Xna Team
+Copyright © 2011 The MonoXNA Team
 
 All rights reserved.
+
+Authors:
+ * Lars Magnusson <lavima@gmail.com>
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
@@ -35,156 +38,18 @@ namespace Microsoft.Xna.Framework.Content
 {
     public sealed class ContentReader : BinaryReader
     {
+		#region Fields
+		
         private ContentManager contentManager;
         private GraphicsDevice graphicsDevice;
         private string assetName;
         private ContentTypeReader[] typeReaders;
         private Action<IDisposable> recordDisposableObject;
         private List<Action<object>>[] ResourceFixups;
-
-        internal GraphicsDevice GraphicsDevice 
-        {
-            get
-            {
-                IGraphicsDeviceService service = (IGraphicsDeviceService)this.contentManager.ServiceProvider.GetService(typeof(IGraphicsDeviceService));
-                if (service == null)
-                {
-                    throw new ContentLoadException("No GraphicsDevice");
-                }
-                GraphicsDevice graphicsDevice = service.GraphicsDevice;
-                if (graphicsDevice == null)
-                {
-                    throw new ContentLoadException("No GraphicsDevice");
-                }
-                return graphicsDevice;
-            }
-
-        }
-
-        internal ContentReader(ContentManager manager, Stream stream, GraphicsDevice graphicsDevice)
-            : base(stream)
-        {
-            this.graphicsDevice = graphicsDevice;
-        }
-        internal ContentReader(ContentManager contentManager, Stream input, string assetName, Action<IDisposable> recordDisposableObject)
-            : base(PrepareStream(input, assetName))
-        {
-            this.contentManager = contentManager;
-            this.assetName = assetName;
-            this.recordDisposableObject = recordDisposableObject;
-        }
-
-        internal string PathToReference(string referenceName)
-        {
-            int length = this.assetName.LastIndexOfAny(new char[] { '\\', '/', Path.DirectorySeparatorChar });
-            string str = "";
-            if (length != -1)
-             {
-                str = this.assetName.Substring(0, length);
-             }
-            return ContentManager.CleanPath(Path.Combine(str, referenceName));
-        }
-
-        private int ReadHeader()
-        {
-            int Count = base.Read7BitEncodedInt();
-            this.typeReaders = ContentTypeReaderManager.ReadTypeManifest(Count, this);
-            int ResourceCount = base.Read7BitEncodedInt();
-            if (ResourceCount > 0)
-            {
-                this.ResourceFixups = new List<Action<object>>[ResourceCount];
-                for (int i = 0; i < ResourceCount; i++)
-                {
-                    this.ResourceFixups[i] = new List<Action<object>>();
-                }
-            }
-            return ResourceCount;
-        }
-
-        internal T ReadAsset<T>()
-        {
-            T local;
-            try
-            {
-                int ResourceCount = this.ReadHeader();
-                local = this.ReadObject<T>();
-                this.ReadSharedResources(ResourceCount);
-            }
-            catch (IOException exception)
-            {
-                throw new ContentLoadException("Bad XNB", exception);
-            }
-            return local;
-        }
-
-        private void ReadSharedResources(int ResourceCount)
-        {
-            if (ResourceCount > 0)
-            {
-                object[] Ressources = new object[ResourceCount];
-                for (int i = 0; i < ResourceCount; i++)
-                {
-                    Ressources[i] = this.ReadObject<object>();
-                }
-                for (int j = 0; j < ResourceCount; j++)
-                {
-                    foreach (Action<object> action in this.ResourceFixups[j])
-                    {
-                        action(Ressources[j]);
-                    }
-                }
-            }
-        }
-
-        private static Stream PrepareStream(Stream input, string assetName)
-        {
-            Stream stream;
-            try
-            {
-                bool flag; //Compressionflag
-                BinaryReader reader = new BinaryReader(input);
-                if (((reader.ReadByte() != 0x58) || (reader.ReadByte() != 0x4e)) || (reader.ReadByte() != 0x42)) //First three bytes have to be "XNB"
-                {
-                    throw new ContentLoadException("Bad XNB Magic");
-                }
-                if (reader.ReadByte() != 0x77) //Platform have to be "w" -> stands for windows
-                {
-                    throw new ContentLoadException("Bad XNB Platform");
-                }
-                switch (reader.ReadUInt16()) //Version
-                {
-                    case 3:
-                        flag = false; //Not compressed Stream
-                        break;
-					
-					case 4:
-						flag = false;
-						break;
-						
-                    case 0x8003:
-                        flag = true; //Compressed Stream
-                        break;
-
-                    default:
-                        throw new ContentLoadException("Bad XNB Version");
-                }
-                int num = reader.ReadInt32(); //Number of bytes
-                if (input.CanSeek && ((num - 10) > (input.Length - input.Position))) //Check if we can read the expected number of bytes
-                {
-                    throw new ContentLoadException("Bad XNB Size");
-                }
-                if (flag) //DecompressStream
-                {
-                    //TODO: Add support for compressed Content
-                }
-                stream = input;
-            }
-            catch (IOException exception)
-            {
-                throw new ContentLoadException("Bad XNB",exception);
-            }
-            return stream;
-        }
+		
+		#endregion Fields
+		
+		#region Properties
 
         public ContentManager ContentManager {
             get { return this.contentManager; }
@@ -194,14 +59,43 @@ namespace Microsoft.Xna.Framework.Content
             get { return this.assetName; }
         }
 
+        internal GraphicsDevice GraphicsDevice 
+        {
+            get {
+                IGraphicsDeviceService service = (IGraphicsDeviceService)this.contentManager.ServiceProvider.GetService(typeof(IGraphicsDeviceService));
+                if (service == null)
+                    throw new ContentLoadException("No GraphicsDevice");
+                GraphicsDevice graphicsDevice = service.GraphicsDevice;
+                if (graphicsDevice == null)
+                    throw new ContentLoadException("No GraphicsDevice");
+                return graphicsDevice;
+            }
+
+        }
+		
+		#endregion Properties
+		
+		#region Constructor
+		
+        internal ContentReader(ContentManager contentManager, Stream input, string assetName, Action<IDisposable> recordDisposableObject)
+            : base(PrepareStream(input, assetName))
+        {
+            this.contentManager = contentManager;
+            this.assetName = assetName;
+            this.recordDisposableObject = recordDisposableObject;
+        }
+		
+		#endregion Constructor
+		
+		#region Methods
+
         public T ReadExternalReference<T>()
         {
             string str = this.ReadString();
             if (string.IsNullOrEmpty(str))
-            {
                 return default(T);
-            }
-            string pathToReference = this.PathToReference(str);
+            
+			string pathToReference = this.PathToReference(str);
             return this.contentManager.Load<T>(pathToReference);
         }
 
@@ -248,17 +142,15 @@ namespace Microsoft.Xna.Framework.Content
         {
             int index = base.Read7BitEncodedInt();
             if (index == 0)
-            {
                 return default(T);
-            }
-            index--;
-            if (index >= this.typeReaders.Length)
-            {
+            
+			index--;
+            
+			if (index >= this.typeReaders.Length)
                 throw new Exception();
-            }
-            ContentTypeReader reader = this.typeReaders[index];
+            
+			ContentTypeReader reader = this.typeReaders[index];
             return this.ReadObject<T>(reader);
-
         }
 
         public T ReadObject<T>(ContentTypeReader typeReader)
@@ -353,5 +245,121 @@ namespace Microsoft.Xna.Framework.Content
             result.W = ReadSingle();
             return result;
         }
+		
+		internal string PathToReference(string referenceName)
+        {
+            int length = this.assetName.LastIndexOfAny(new char[] { '\\', '/', Path.DirectorySeparatorChar });
+            string str = "";
+            if (length != -1)
+             {
+                str = this.assetName.Substring(0, length);
+             }
+            return ContentManager.CleanPath(Path.Combine(str, referenceName));
+        }
+
+        internal T ReadAsset<T>()
+        {
+            T local;
+            try
+            {
+                int ResourceCount = this.ReadHeader();
+                local = this.ReadObject<T>();
+                this.ReadSharedResources(ResourceCount);
+            }
+            catch (IOException exception)
+            {
+                throw new ContentLoadException("Bad XNB", exception);
+            }
+            return local;
+        }
+
+        private int ReadHeader()
+        {
+            int Count = base.Read7BitEncodedInt();
+            this.typeReaders = ContentTypeReaderManager.ReadTypeManifest(Count, this);
+            int ResourceCount = base.Read7BitEncodedInt();
+            if (ResourceCount > 0)
+            {
+                this.ResourceFixups = new List<Action<object>>[ResourceCount];
+                for (int i = 0; i < ResourceCount; i++)
+                {
+                    this.ResourceFixups[i] = new List<Action<object>>();
+                }
+            }
+            return ResourceCount;
+        }
+
+        private void ReadSharedResources(int ResourceCount)
+        {
+            if (ResourceCount > 0)
+            {
+                object[] Ressources = new object[ResourceCount];
+                for (int i = 0; i < ResourceCount; i++)
+                {
+                    Ressources[i] = this.ReadObject<object>();
+                }
+                for (int j = 0; j < ResourceCount; j++)
+                {
+                    foreach (Action<object> action in this.ResourceFixups[j])
+                    {
+                        action(Ressources[j]);
+                    }
+                }
+            }
+        }
+
+        private static Stream PrepareStream(Stream input, string assetName)
+        {
+            Stream stream;
+            try
+            {
+                bool flag; //Compressionflag
+                BinaryReader reader = new BinaryReader(input);
+                if (((reader.ReadByte() != 0x58) || (reader.ReadByte() != 0x4e)) || (reader.ReadByte() != 0x42)) //First three bytes have to be "XNB"
+                {
+                    throw new ContentLoadException("Bad XNB Magic");
+                }
+                if (reader.ReadByte() != 0x77) //Platform have to be "w" -> stands for windows
+                {
+                    throw new ContentLoadException("Bad XNB Platform");
+                }
+                switch (reader.ReadUInt16()) //Version
+                {
+                    case 3:
+                        flag = false; //Not compressed Stream
+                        break;
+					
+					case 4:
+						flag = false;
+						break;
+						
+                    case 0x8003:
+                        flag = true; //Compressed Stream
+                        break;
+
+                    default:
+                        throw new ContentLoadException("Bad XNB Version");
+                }
+                int num = reader.ReadInt32(); //Number of bytes
+                if (input.CanSeek && ((num - 10) > (input.Length - input.Position))) //Check if we can read the expected number of bytes
+                {
+                    throw new ContentLoadException("Bad XNB Size");
+                }
+                if (flag) //DecompressStream
+                {
+                    //TODO: Add support for compressed Content
+                }
+                stream = input;
+            }
+            catch (IOException exception)
+            {
+                throw new ContentLoadException("Bad XNB",exception);
+            }
+            return stream;
+        }
+		
+		#endregion Methods
+
+        
     }
 }

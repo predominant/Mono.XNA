@@ -1,11 +1,9 @@
 #region License
 /*
 MIT License
-Copyright © 2009 The Mono.Xna Team
+Copyright © 2006 The Mono.Xna Team
 
 All rights reserved.
-
-Authors: Lars Magnusson (lavima@gmail.com)
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
@@ -27,34 +25,22 @@ SOFTWARE.
 */
 #endregion License
 
+
 using System;
+using System.Collections.Generic;
+using System.Text;
 
-namespace Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler
+namespace Microsoft.Xna.Framework.Content.Readers
 {
-	
-	
-	public abstract class ContentTypeWriter<T> : ContentTypeWriter
-	{
+    internal class StringReader : ContentTypeReader<String>
+    {
+        public StringReader()
+        {
+        }
 
-#region Constructor
-		
-		public ContentTypeWriter()
-		{
-		}
-
-#endregion
-		
-		
-#region Public Methods
-
-		protected internal override void Write(ContentWriter output, Object value)
-		{
-			
-		}
-		
-		protected internal abstract void Write(ContentWriter output, T value);
-		
-#endregion
-		
-	}
+        protected internal override string Read(ContentReader input, string existingInstance)
+        {
+            return input.ReadString();
+        }
+    }
 }

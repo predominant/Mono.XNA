@@ -1,11 +1,12 @@
 #region License
 /*
 MIT License
-Copyright © 2009 The Mono.Xna Team
+Copyright © 2011 The Mono.Xna Team
 
 All rights reserved.
 
-Authors: Lars Magnusson (lavima@gmail.com)
+Authors: 
+ * Lars Magnusson <lavima@gmail.com>
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
@@ -37,59 +38,90 @@ namespace Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler
     
     public sealed class ContentWriter : BinaryWriter
     {
+		#region Fields
+		
+		private TargetPlatform targetPlatform;
+		
+		#endregion Fields
+		
+		#region Constructor
         
-#region Constructor
-        
-        public ContentWriter()
+        internal ContentWriter(TargetPlatform targetPlatform, Stream stream)
+			: base(prepareStream(stream))
         {
+			this.targetPlatform = targetPlatform;
         }
 
-#endregion
+		#endregion Constructor
         
-#region Properties
+		#region Properties
 
         public TargetPlatform TargetPlatform 
         { 
-            get { throw new NotImplementedException(); }
+            get { return targetPlatform; }
         }
         
-#endregion
+		#endregion Properties
         
-#region Public Methods
+		#region Public Methods
 
         public void Write(Color value)
         {
-            throw new NotImplementedException();
+            Write(value.PackedValue);
         }
         
         public void Write(Matrix value)
         {
-            throw new NotImplementedException();
+            Write(value.M11);
+			Write(value.M12);
+			Write(value.M13);
+			Write(value.M14);
+			Write(value.M21);
+			Write(value.M22);
+			Write(value.M23);
+			Write(value.M24);
+			Write(value.M31);
+			Write(value.M32);
+			Write(value.M33);
+			Write(value.M34);
+			Write(value.M41);
+			Write(value.M42);
+			Write(value.M43);
+			Write(value.M44);
         }
         
         public void Write(Quaternion value)
         {
-            throw new NotImplementedException();
+            Write(value.X);
+			Write(value.Y);
+			Write(value.Z);
+			Write(value.W);
         }
         
         public void Write(Vector2 value)
         {
-            throw new NotImplementedException();
+            Write(value.X);
+			Write(value.Y);
         }
         
         public void Write(Vector3 value)
         {
-            throw new NotImplementedException();
+            Write(value.X);
+			Write(value.Y);
+			Write(value.Z);
         }
         
         public void Write(Vector4 value)
         {
-            throw new NotImplementedException();
+            Write(value.X);
+			Write(value.Y);
+			Write(value.Z);
+			Write(value.W);
         }
         
         public void WriteExternalReference<T>(ExternalReference<T> reference)
         {
-            throw new NotImplementedException();
+            Write(reference.Filename);
         }
         
         public void WriteObject<T>(T value)
@@ -117,16 +149,20 @@ namespace Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler
             throw new NotImplementedException();
         }
         
-#endregion
-        
-#region Protected Methods
-
         protected override void Dispose(bool disposing)
         {
-            throw new NotImplementedException();
+            base.Dispose(disposing);
         }
-        
-#endregion
-        
+		
+		private static Stream prepareStream(Stream output)
+		{
+			output.WriteByte(0x58);
+			output.WriteByte(0x4e);
+			output.WriteByte(0x42);
+			
+			return output;	
+		}
+		
+		#endregion Methods	
     }
 }

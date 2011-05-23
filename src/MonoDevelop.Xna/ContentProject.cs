@@ -50,7 +50,7 @@ namespace MonoDevelop.Xna
 		#region Fields
 		
 		[ItemProperty("XnaFrameworkVersion")]
-		private static string xnaFrameworkVersion = "v3.1";
+		protected string xnaFrameworkVersion = "v3.1";
 		
 		private List<ContentImporterInfo> importers;
 		private List<ContentProcessorInfo> processors;
