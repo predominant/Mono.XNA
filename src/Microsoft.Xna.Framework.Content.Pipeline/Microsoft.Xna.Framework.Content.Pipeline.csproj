@@ -190,11 +190,11 @@
   </ItemGroup>
   <ItemGroup>
     <Reference Include="System" />
-    <Reference Include="Microsoft.Build.Utilities" />
-    <Reference Include="Microsoft.Build.Framework" />
     <Reference Include="System.Data" />
     <Reference Include="System.Xml" />
     <Reference Include="System.Core" />
+    <Reference Include="Microsoft.Build.Framework" />
+    <Reference Include="Microsoft.Build.Utilities.v3.5" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Microsoft.Xna.Framework\Microsoft.Xna.Framework.csproj">

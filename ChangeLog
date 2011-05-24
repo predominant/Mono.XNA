@@ -1,3 +1,6 @@
+2011-05-24 Lars Magnusson <lavima@gmail.com>
+ * Changed the xbuild references
+
 2011-05-23 Lars Magnusson <lavima@gmail.com>
  * Started work on the content compilers
  * Minor refactoring in the content readers
