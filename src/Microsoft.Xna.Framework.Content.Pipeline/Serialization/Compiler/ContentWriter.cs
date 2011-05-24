@@ -47,7 +47,7 @@ namespace Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler
 		#region Constructor
         
         internal ContentWriter(TargetPlatform targetPlatform, Stream stream)
-			: base(prepareStream(stream))
+			: base(prepareStream(targetPlatform, stream))
         {
 			this.targetPlatform = targetPlatform;
         }
@@ -154,13 +154,23 @@ namespace Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler
             base.Dispose(disposing);
         }
 		
-		private static Stream prepareStream(Stream output)
+		private static Stream prepareStream(TargetPlatform targetPlatform, Stream output)
 		{
 			output.WriteByte(0x58);
 			output.WriteByte(0x4e);
 			output.WriteByte(0x42);
 			
+			output.WriteByte(getPlatformCode(targetPlatform));
+			
 			return output;	
+		}
+		
+		private static byte getPlatformCode(TargetPlatform targetPlatform)
+		{
+			if (targetPlatform == TargetPlatform.Windows)
+				return 0x77;
+			else if (targetPlatform == TargetPlatform.Xbox360)
+				return 0x78;
 		}
 		
 		#endregion Methods	

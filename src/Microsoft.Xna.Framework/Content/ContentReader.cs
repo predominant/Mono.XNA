@@ -326,17 +326,15 @@ namespace Microsoft.Xna.Framework.Content
                 switch (reader.ReadUInt16()) //Version
                 {
                     case 3:
+					case 4:
                         flag = false; //Not compressed Stream
                         break;
 					
-					case 4:
-						flag = false;
-						break;
-						
                     case 0x8003:
+					case 0x8004:
                         flag = true; //Compressed Stream
                         break;
-
+					
                     default:
                         throw new ContentLoadException("Bad XNB Version");
                 }

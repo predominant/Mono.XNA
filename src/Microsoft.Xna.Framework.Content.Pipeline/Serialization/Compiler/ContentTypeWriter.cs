@@ -85,7 +85,7 @@ namespace Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler
 		
 		protected internal virtual bool ShouldCompressContent(TargetPlatform targetPlatform, Object value)
 		{
-			throw new NotImplementedException();
+			return true;
 		}
 		
 		protected internal abstract void Write(ContentWriter output, Object value);
