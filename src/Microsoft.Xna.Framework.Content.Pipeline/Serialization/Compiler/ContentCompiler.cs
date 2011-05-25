@@ -88,7 +88,7 @@ namespace Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler
 			}
 		}
 		
-		#endregion
+		#endregion Methods
 		
 	}
 }
