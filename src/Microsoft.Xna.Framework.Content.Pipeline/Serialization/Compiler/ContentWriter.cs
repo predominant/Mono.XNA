@@ -46,8 +46,8 @@ namespace Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler
 		
 		#region Constructor
         
-        internal ContentWriter(TargetPlatform targetPlatform, Stream stream)
-			: base(prepareStream(targetPlatform, stream))
+        internal ContentWriter (TargetPlatform targetPlatform, Stream stream, bool compressContent)
+			: base(prepareStream(targetPlatform, stream, compressContent))
         {
 			this.targetPlatform = targetPlatform;
         }
@@ -65,12 +65,12 @@ namespace Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler
         
 		#region Public Methods
 
-        public void Write(Color value)
+        public void Write (Color value)
         {
             Write(value.PackedValue);
         }
         
-        public void Write(Matrix value)
+        public void Write (Matrix value)
         {
             Write(value.M11);
 			Write(value.M12);
@@ -90,7 +90,7 @@ namespace Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler
 			Write(value.M44);
         }
         
-        public void Write(Quaternion value)
+        public void Write (Quaternion value)
         {
             Write(value.X);
 			Write(value.Y);
@@ -104,14 +104,14 @@ namespace Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler
 			Write(value.Y);
         }
         
-        public void Write(Vector3 value)
+        public void Write (Vector3 value)
         {
             Write(value.X);
 			Write(value.Y);
 			Write(value.Z);
         }
         
-        public void Write(Vector4 value)
+        public void Write (Vector4 value)
         {
             Write(value.X);
 			Write(value.Y);
@@ -119,12 +119,12 @@ namespace Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler
 			Write(value.W);
         }
         
-        public void WriteExternalReference<T>(ExternalReference<T> reference)
+        public void WriteExternalReference<T> (ExternalReference<T> reference)
         {
             Write(reference.Filename);
         }
         
-        public void WriteObject<T>(T value)
+        public void WriteObject<T> (T value)
         {
             throw new NotImplementedException();
         }
@@ -134,38 +134,53 @@ namespace Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler
             throw new NotImplementedException();
         }
         
-        public void WriteRawObject<T>(T value)
+        public void WriteRawObject<T> (T value)
         {
             throw new NotImplementedException();
         }
         
-        public void WriteRawObject<T>(T value, ContentTypeWriter typeWriter)
+        public void WriteRawObject<T> (T value, ContentTypeWriter typeWriter)
         {
             throw new NotImplementedException();
         }
         
-        public void WriteSharedResource<T>(T value)
+        public void WriteSharedResource<T> (T value)
         {
             throw new NotImplementedException();
         }
         
-        protected override void Dispose(bool disposing)
+        protected override void Dispose (bool disposing)
         {
             base.Dispose(disposing);
         }
 		
-		private static Stream prepareStream(TargetPlatform targetPlatform, Stream output)
+		private static Stream prepareStream (TargetPlatform targetPlatform, Stream output, bool compressContent)
 		{
-			output.WriteByte(0x58);
-			output.WriteByte(0x4e);
-			output.WriteByte(0x42);
+			output.WriteByte(0x58);	// X
+			output.WriteByte(0x4e); // N
+			output.WriteByte(0x42); // B
 			
 			output.WriteByte(getPlatformCode(targetPlatform));
+			output.WriteByte(getVersionCode());
+			output.WriteByte(getFormatCode(compressContent));
 			
 			return output;	
 		}
 		
-		private static byte getPlatformCode(TargetPlatform targetPlatform)
+		private static byte getVersionCode ()
+		{
+			return 0x4;	
+		}
+		
+		private static byte getFormatCode (bool compressContent)
+		{
+			if (compressContent)
+				return 0x80;
+			else 
+				return 0x0;
+		}
+		
+		private static byte getPlatformCode (TargetPlatform targetPlatform)
 		{
 			if (targetPlatform == TargetPlatform.Windows)
 				return 0x77;
