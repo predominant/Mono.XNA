@@ -46,10 +46,12 @@ namespace Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler
 		
 		#region Constructor
         
-        internal ContentWriter (TargetPlatform targetPlatform, Stream stream, bool compressContent)
-			: base(prepareStream(targetPlatform, stream, compressContent))
+        internal ContentWriter (Stream stream, TargetPlatform targetPlatform, bool compressContent)
+			: base(stream)
         {
 			this.targetPlatform = targetPlatform;
+			
+			insertFileHeader(compressContent);
         }
 
 		#endregion Constructor
@@ -154,25 +156,31 @@ namespace Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler
             base.Dispose(disposing);
         }
 		
-		private static Stream prepareStream (TargetPlatform targetPlatform, Stream output, bool compressContent)
+		internal void FinalizeFileHeader ()
 		{
-			output.WriteByte(0x58);	// X
-			output.WriteByte(0x4e); // N
-			output.WriteByte(0x42); // B
-			
-			output.WriteByte(getPlatformCode(targetPlatform));
-			output.WriteByte(getVersionCode());
-			output.WriteByte(getFormatCode(compressContent));
-			
-			return output;	
+			OutStream.Seek(6, SeekOrigin.Begin);
+			this.Write(OutStream.Length);
 		}
 		
-		private static byte getVersionCode ()
+		private void insertFileHeader (bool compressContent)
+		{
+			OutStream.WriteByte(0x58); // X
+			OutStream.WriteByte(0x4e); // N
+			OutStream.WriteByte(0x42); // B
+			
+			OutStream.WriteByte(getPlatformCode(targetPlatform));
+			OutStream.WriteByte(getVersionCode());
+			OutStream.WriteByte(getFormatCode(compressContent));
+				
+			Write(0);	// Dummy the number of bytes
+		}
+		
+		private byte getVersionCode ()
 		{
 			return 0x4;	
 		}
 		
-		private static byte getFormatCode (bool compressContent)
+		private byte getFormatCode (bool compressContent)
 		{
 			if (compressContent)
 				return 0x80;
@@ -180,12 +188,14 @@ namespace Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler
 				return 0x0;
 		}
 		
-		private static byte getPlatformCode (TargetPlatform targetPlatform)
+		private byte getPlatformCode (TargetPlatform targetPlatform)
 		{
 			if (targetPlatform == TargetPlatform.Windows)
 				return 0x77;
 			else if (targetPlatform == TargetPlatform.Xbox360)
 				return 0x78;
+			else
+				throw new NotSupportedException("The platform is not supported by ContentWriter.");
 		}
 		
 		#endregion Methods	

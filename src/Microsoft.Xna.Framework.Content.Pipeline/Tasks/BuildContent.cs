@@ -29,9 +29,12 @@ SOFTWARE.
 
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Reflection;
 using Microsoft.Build.Framework;
 using Microsoft.Build.Utilities;
+using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler;
 
 namespace Microsoft.Xna.Framework.Content.Pipeline.Tasks
 {    
@@ -204,6 +207,18 @@ namespace Microsoft.Xna.Framework.Content.Pipeline.Tasks
 			return null;
 		}
 		
+		private TargetPlatform getTargetPlatform()
+		{
+			if (TargetPlatform == "Windows")
+				return Microsoft.Xna.Framework.TargetPlatform.Windows;
+			else if (TargetPlatform == "Xbox360")
+				return Microsoft.Xna.Framework.TargetPlatform.Xbox360;
+			else if (TargetPlatform == "Zune")
+				return Microsoft.Xna.Framework.TargetPlatform.Zune;
+			else 
+				return Microsoft.Xna.Framework.TargetPlatform.Unknown;
+		}
+		
 		#endregion Methods
 		
 		#region Task Overrides
@@ -213,20 +228,18 @@ namespace Microsoft.Xna.Framework.Content.Pipeline.Tasks
 			Log.LogMessage("Building content:");
 			
 			XBuildLogger logger = new XBuildLogger(this.Log);
-			
-			foreach (ITaskItem assemblyItem in PipelineAssemblies)
-			{
-				Log.LogMessage("Pipeline Assembly:");
-				//foreach (string metadataName in assemblyItem.MetadataNames)
-				//	Log.LogMessage(metadataName + ": " + assemblyItem.GetMetadata(metadataName));
-				
-				Assembly pipelineAssembly = Assembly.Load(assemblyItem.GetMetadata("OriginalItemSpec"));
-				Log.LogMessage(pipelineAssembly.FullName);
-			}
-			
+			ContentCompiler compiler = new ContentCompiler(PipelineAssemblies);
+		
 			foreach (ITaskItem sourceItem in SourceAssets)
 			{
-				Log.LogMessage("Building " + sourceItem.GetMetadata("Name"));
+				//foreach (string name in sourceItem.MetadataNames)
+				//	Log.LogMessage(name + " : " + sourceItem.GetMetadata(name));
+				string assetName = sourceItem.GetMetadata("Name");
+				
+				Log.LogMessage("Building " + assetName);
+				
+				Stream outputStream = new FileStream(OutputDirectory + assetName + ".xnb", FileMode.OpenOrCreate);
+				ContentWriter contentWriter = new ContentWriter(outputStream, getTargetPlatform(), CompressContent);
 				
 				string importerName = sourceItem.GetMetadata("Importer");
 				string processorName = sourceItem.GetMetadata("Processor");

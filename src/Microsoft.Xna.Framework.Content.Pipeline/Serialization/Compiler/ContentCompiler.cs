@@ -66,7 +66,7 @@ namespace Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler
 			return null;
 		}
 		
-		internal void AddTypeWriter(ContentTypeWriter typeWriter)
+		internal void RegisterTypeWriter(ContentTypeWriter typeWriter)
 		{
 			typeWriters.Add(typeWriter.TargetType, typeWriter);	
 		}

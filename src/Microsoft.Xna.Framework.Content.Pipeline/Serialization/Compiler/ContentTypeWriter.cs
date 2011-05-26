@@ -80,7 +80,7 @@ namespace Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler
 		
 		protected virtual void Initialize(ContentCompiler compiler)
 		{
-			compiler.AddTypeWriter(this);
+			compiler.RegisterTypeWriter(this);
 		}
 		
 		protected internal virtual bool ShouldCompressContent(TargetPlatform targetPlatform, Object value)
