@@ -343,11 +343,81 @@ namespace Microsoft.Xna.Framework.Content
                 {
                     throw new ContentLoadException("Bad XNB Size");
                 }
-                if (flag) //DecompressStream
+				
+                // is the stream compressed?
+                if (flag) 
                 {
-                    //TODO: Add support for compressed Content
+                    // ... let's decompress it!
+                    // get the decompressed size (num is our compressed size)
+                    int decompressedSize = reader.ReadInt32();
+                    // create a memory stream of that size
+                    MemoryStream output = new MemoryStream(decompressedSize);
+
+                    // save our initial position
+                    long pos = input.Position;
+                    // default window size for XNB encoded files is 64Kb (need 16 bits to represent it)
+                    LzxDecoder decoder = new LzxDecoder(16);
+                    // start our decode process
+                    while (pos < num)
+                    {
+                        // the compressed stream is seperated into blocks that will decompress
+                        // into 32Kb or some other size if specified.
+                        // normal, 32Kb output blocks will have a short indicating the size
+                        // of the block before the block starts
+                        // blocks that have a defined output will be preceded by a byte of value
+                        // 0xFF (255), then a short indicating the output size and another
+                        // for the block size
+                        // all shorts for these cases are encoded in big endian order
+                        int hi, lo, block_size, frame_size;
+                        // let's get the first byte
+                        hi = reader.ReadByte();
+                        // does this block define a frame size?
+                        if (hi == 0xFF)
+                        {
+                            // get our bytes
+                            hi = reader.ReadByte();
+                            lo = reader.ReadByte();
+                            // make a beautiful short baby together
+                            frame_size = (hi << 8) | lo;
+                            // let's read the block size
+                            hi = reader.ReadByte();
+                            lo = reader.ReadByte();
+                            block_size = (hi << 8) | lo;
+                            // add the read in bytes to the position
+                            pos += 5;
+                        }
+                        else
+                        {
+                            // just block size, so let's read the rest
+                            lo = reader.ReadByte();
+                            block_size = (hi << 8) | lo;
+                            // frame size is 32Kb by default
+                            frame_size = 32768;
+                            // add the read in bytes to the position
+                            pos += 2;
+                        }
+
+                        // either says there is nothing to decode
+                        if (block_size == 0 || frame_size == 0)
+                            break;
+
+                        // let's decompress the sucker
+                        decoder.Decompress(input, block_size, output, frame_size);
+
+                        // let's increment the input position by the block size
+                        pos += block_size;
+                        // reset the position of the input just incase the bit buffer
+                        // read in some unused bytes
+                        input.Seek(pos, SeekOrigin.Begin);
+                    }
+
+                    // finished decoding everything, let's set the decompressed buffer
+                    // to the beginning and return that
+                    output.Seek(0, SeekOrigin.Begin);
+                    stream = output;
                 }
-                stream = input;
+                else // if not, return the input stream untouched
+                    stream = input;
             }
             catch (IOException exception)
             {
