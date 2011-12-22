@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="3.5">
+<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="4.0">
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">x86</Platform>
@@ -9,7 +9,7 @@
     <OutputType>Library</OutputType>
     <AssemblyName>Microsoft.Xna.Framework.Content.Pipeline.FBXImporter</AssemblyName>
     <RootNamespace>Microsoft.Xna.Framework.Content.Pipeline.FBXImporter</RootNamespace>
-    <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
     <SignAssembly>true</SignAssembly>
     <DelaySign>true</DelaySign>
     <ReleaseVersion>3.1</ReleaseVersion>
@@ -23,7 +23,6 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <AssemblyOriginatorKeyFile>xna.pub</AssemblyOriginatorKeyFile>
-    <DelaySign>true</DelaySign>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|x86' ">
     <DebugType>none</DebugType>
@@ -33,7 +32,6 @@
     <WarningLevel>4</WarningLevel>
     <AssemblyOriginatorKeyFile>xna.pub</AssemblyOriginatorKeyFile>
     <DefineConstants>MONO</DefineConstants>
-    <DelaySign>true</DelaySign>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Test|x86' ">
     <DebugType>none</DebugType>
@@ -42,7 +40,6 @@
     <WarningLevel>4</WarningLevel>
     <AssemblyOriginatorKeyFile>xna.pub</AssemblyOriginatorKeyFile>
     <DefineConstants>NUNITTESTS; MONO</DefineConstants>
-    <DelaySign>true</DelaySign>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug_Dotnet|x86' ">
     <DebugSymbols>true</DebugSymbols>

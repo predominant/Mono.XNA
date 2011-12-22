@@ -68,7 +68,11 @@ namespace Microsoft.Xna.Framework
 
         public static Quaternion Add(Quaternion quaternion1, Quaternion quaternion2)
         {
-            return new Quaternion(quaternion1.X + quaternion2.X, quaternion1.Y + quaternion2.Y, quaternion1.Z + quaternion2.Z, quaternion1.W + quaternion2.W);
+            quaternion1.X += quaternion2.X;
+            quaternion1.Y += quaternion2.Y;
+            quaternion1.Z += quaternion2.Z;
+            quaternion1.W += quaternion2.W;
+            return quaternion1;
         }
 
 
@@ -459,7 +463,11 @@ namespace Microsoft.Xna.Framework
 
         public static Quaternion Subtract(Quaternion quaternion1, Quaternion quaternion2)
         {
-            return new Quaternion(quaternion1.X - quaternion2.X, quaternion1.Y - quaternion2.Y, quaternion1.Z - quaternion2.Z, quaternion1.W - quaternion2.W);
+            quaternion1.X -= quaternion2.X;
+            quaternion1.Y -= quaternion2.Y;
+            quaternion1.Z -= quaternion2.Z;
+            quaternion1.W -= quaternion2.W;
+            return quaternion1;
         }
 
 
@@ -489,12 +497,11 @@ namespace Microsoft.Xna.Framework
 
         public static Quaternion Multiply(Quaternion quaternion1, float scaleFactor)
         {
-            Quaternion result;
-            result.X = quaternion1.X * scaleFactor;
-            result.Y = quaternion1.Y * scaleFactor;
-            result.Z = quaternion1.Z * scaleFactor;
-            result.W = quaternion1.W * scaleFactor;
-            return result;
+            quaternion1.X *= scaleFactor;
+            quaternion1.Y *= scaleFactor;
+            quaternion1.Z *= scaleFactor;
+            quaternion1.W *= scaleFactor;
+            return quaternion1;
         }
 
 
@@ -574,7 +581,11 @@ namespace Microsoft.Xna.Framework
 
         public static Quaternion operator +(Quaternion quaternion1, Quaternion quaternion2)
         {
-            return new Quaternion(quaternion1.X + quaternion2.X, quaternion1.Y + quaternion2.Y, quaternion1.Z + quaternion2.Z, quaternion1.W + quaternion2.W);
+            quaternion1.X += quaternion2.X;
+            quaternion1.Y += quaternion2.Y;
+            quaternion1.Z += quaternion2.Z;
+            quaternion1.W += quaternion2.W;
+            return quaternion1;
         }
 
 
@@ -607,7 +618,10 @@ namespace Microsoft.Xna.Framework
 
         public static bool operator !=(Quaternion quaternion1, Quaternion quaternion2)
         {
-            return !(quaternion1 == quaternion2);
+            return quaternion1.X != quaternion2.X
+                || quaternion1.Y != quaternion2.Y
+                || quaternion1.Z != quaternion2.Z
+                || quaternion1.W != quaternion2.W;
         }
 
 
@@ -628,29 +642,31 @@ namespace Microsoft.Xna.Framework
 
         public static Quaternion operator *(Quaternion quaternion1, float scaleFactor)
         {
-            Quaternion result;
-            result.X = quaternion1.X * scaleFactor;
-            result.Y = quaternion1.Y * scaleFactor;
-            result.Z = quaternion1.Z * scaleFactor;
-            result.W = quaternion1.W * scaleFactor;
-            return result;
+            quaternion1.X *= scaleFactor;
+            quaternion1.Y *= scaleFactor;
+            quaternion1.Z *= scaleFactor;
+            quaternion1.W *= scaleFactor;
+            return quaternion1;
         }
 
 
         public static Quaternion operator -(Quaternion quaternion1, Quaternion quaternion2)
         {
-            return new Quaternion(quaternion1.X - quaternion2.X, quaternion1.Y - quaternion2.Y, quaternion1.Z - quaternion2.Z, quaternion1.W - quaternion2.W);
+            quaternion1.X -= quaternion2.X;
+            quaternion1.Y -= quaternion2.Y;
+            quaternion1.Z -= quaternion2.Z;
+            quaternion1.W -= quaternion2.W;
+            return quaternion1;
         }
 
 
         public static Quaternion operator -(Quaternion quaternion)
         {
-            Quaternion q1;
-            q1.X = -quaternion.X;
-            q1.Y = -quaternion.Y;
-            q1.Z = -quaternion.Z;
-            q1.W = -quaternion.W;
-            return q1;
+            quaternion.X = -quaternion.X;
+            quaternion.Y = -quaternion.Y;
+            quaternion.Z = -quaternion.Z;
+            quaternion.W = -quaternion.W;
+            return quaternion;
         }
 
 

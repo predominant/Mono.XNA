@@ -110,26 +110,26 @@ namespace MonoDevelop.Xna
 			base.Save (monitor);
 		}
 		
-		
-		protected override void OnItemAdded (object obj)
+		protected override void OnItemsAdded (System.Collections.Generic.IEnumerable<ProjectItem> objs)
 		{
-			if (obj is NestedContentProject)
+			foreach (ProjectItem obj in objs) 
 			{
-				NestedContentProject contentProject = obj as NestedContentProject;
-				
-				FilePath contentProjectPath = BaseDirectory.Combine(contentProject.Include);
-				if (File.Exists(contentProjectPath))
+				if (obj is NestedContentProject)
 				{
-					contentProject.Project = (ContentProject)ContentProject.LoadProject(contentProjectPath, new SimpleProgressMonitor());
-					RegisterInternalChild(contentProject.Project);	
+					NestedContentProject contentProject = obj as NestedContentProject;
+					
+					FilePath contentProjectPath = BaseDirectory.Combine(contentProject.Include);
+					if (File.Exists(contentProjectPath))
+					{
+						contentProject.Project = (ContentProject)ContentProject.LoadProject(contentProjectPath, new SimpleProgressMonitor());
+						RegisterInternalChild(contentProject.Project);	
+					}
 				}
 			}
-			base.OnItemAdded (obj);
+			base.OnItemsAdded(objs);
 		}
 		
-		
 		#endregion DotNetProject Overrides
-		
     }
 
 }

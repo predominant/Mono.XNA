@@ -223,35 +223,39 @@ namespace Microsoft.Xna.Framework
 
         public static Vector3 Cross(Vector3 vector1, Vector3 vector2)
         {
-            Cross(ref vector1, ref vector2, out vector1);
-            return vector1;
+            Vector3 result;
+            result.X = vector1.Y * vector2.Z - vector2.Y * vector1.Z;
+            result.Y = vector2.X * vector1.Z - vector1.X * vector2.Z;
+            result.Z = vector1.X * vector2.Y - vector2.X * vector1.Y;
+            return result;
         }
 
         public static void Cross(ref Vector3 vector1, ref Vector3 vector2, out Vector3 result)
         {
-            result = new Vector3(vector1.Y * vector2.Z - vector2.Y * vector1.Z,
-                                 -(vector1.X * vector2.Z - vector2.X * vector1.Z),
-                                 vector1.X * vector2.Y - vector2.X * vector1.Y);
+            result.X = vector1.Y * vector2.Z - vector2.Y * vector1.Z;
+            result.Y = vector2.X * vector1.Z - vector1.X * vector2.Z;
+            result.Z = vector1.X * vector2.Y - vector2.X * vector1.Y;
         }
 
-        public static float Distance(Vector3 vector1, Vector3 vector2)
+        public static float Distance(Vector3 value1, Vector3 value2)
         {
-            float result;
-            DistanceSquared(ref vector1, ref vector2, out result);
-            return (float)Math.Sqrt(result);
+            return (float)Math.Sqrt((value1.X - value2.X) * (value1.X - value2.X) +
+                     (value1.Y - value2.Y) * (value1.Y - value2.Y) +
+                     (value1.Z - value2.Z) * (value1.Z - value2.Z));
         }
 
         public static void Distance(ref Vector3 value1, ref Vector3 value2, out float result)
         {
-            DistanceSquared(ref value1, ref value2, out result);
-            result = (float)Math.Sqrt(result);
+            result = (float)Math.Sqrt((value1.X - value2.X) * (value1.X - value2.X) +
+                     (value1.Y - value2.Y) * (value1.Y - value2.Y) +
+                     (value1.Z - value2.Z) * (value1.Z - value2.Z));
         }
 
         public static float DistanceSquared(Vector3 value1, Vector3 value2)
         {
-            float result;
-            DistanceSquared(ref value1, ref value2, out result);
-            return result;
+            return (value1.X - value2.X) * (value1.X - value2.X) +
+                     (value1.Y - value2.Y) * (value1.Y - value2.Y) +
+                     (value1.Z - value2.Z) * (value1.Z - value2.Z); ;
         }
 
         public static void DistanceSquared(ref Vector3 value1, ref Vector3 value2, out float result)
@@ -271,7 +275,7 @@ namespace Microsoft.Xna.Framework
 
         public static Vector3 Divide(Vector3 value1, float value2)
         {
-            float factor = 1 / value2;
+            float factor = 1.0f / value2;
             value1.X *= factor;
             value1.Y *= factor;
             value1.Z *= factor;
@@ -280,7 +284,7 @@ namespace Microsoft.Xna.Framework
 
         public static void Divide(ref Vector3 value1, float divisor, out Vector3 result)
         {
-            float factor = 1 / divisor;
+            float factor = 1.0f / divisor;
             result.X = value1.X * factor;
             result.Y = value1.Y * factor;
             result.Z = value1.Z * factor;
@@ -320,9 +324,10 @@ namespace Microsoft.Xna.Framework
 
         public static Vector3 Hermite(Vector3 value1, Vector3 tangent1, Vector3 value2, Vector3 tangent2, float amount)
         {
-            Vector3 result = new Vector3();
-            Hermite(ref value1, ref tangent1, ref value2, ref tangent2, amount, out result);
-            return result;
+            value1.X = MathHelper.Hermite(value1.X, tangent1.X, value2.X, tangent2.X, amount);
+            value1.Y = MathHelper.Hermite(value1.Y, tangent1.Y, value2.Y, tangent2.Y, amount);
+            value1.Z = MathHelper.Hermite(value1.Z, tangent1.Z, value2.Z, tangent2.Z, amount);
+            return value1;
         }
 
         public static void Hermite(ref Vector3 value1, ref Vector3 tangent1, ref Vector3 value2, ref Vector3 tangent2, float amount, out Vector3 result)
@@ -334,16 +339,12 @@ namespace Microsoft.Xna.Framework
 
         public float Length()
         {
-            float result;
-            DistanceSquared(ref this, ref zero, out result);
-            return (float)Math.Sqrt(result);
+            return (float)Math.Sqrt((double)(X * X + Y * Y + Z * Z));
         }
 
         public float LengthSquared()
         {
-            float result;
-            DistanceSquared(ref this, ref zero, out result);
-            return result;
+            return X * X + Y * Y + Z * Z;
         }
 
         public static Vector3 Lerp(Vector3 value1, Vector3 value2, float amount)
@@ -426,31 +427,39 @@ namespace Microsoft.Xna.Framework
 
         public static Vector3 Negate(Vector3 value)
         {
-            value = new Vector3(-value.X, -value.Y, -value.Z);
+            value.X = -value.X;
+            value.Y = -value.Y;
+            value.Z = -value.Z;
             return value;
         }
 
         public static void Negate(ref Vector3 value, out Vector3 result)
         {
-            result = new Vector3(-value.X, -value.Y, -value.Z);
+            result.X = -value.X;
+            result.Y = -value.Y;
+            result.Z = -value.Z;
         }
 
         public void Normalize()
         {
-            Normalize(ref this, out this);
+            float factor = 1f / (float)Math.Sqrt((double)(X * X + Y * Y + Z * Z));
+            X *= factor;
+            Y *= factor;
+            Z *= factor;
         }
 
-        public static Vector3 Normalize(Vector3 vector)
+        public static Vector3 Normalize(Vector3 value)
         {
-            Normalize(ref vector, out vector);
-            return vector;
+            float factor = 1f / (float)Math.Sqrt((double)(value.X * value.X + value.Y * value.Y + value.Z * value.Z));
+            value.X *= factor;
+            value.Y *= factor;
+            value.Z *= factor;
+            return value;
         }
 
         public static void Normalize(ref Vector3 value, out Vector3 result)
         {
-            float factor;
-            Distance(ref value, ref zero, out factor);
-            factor = 1f / factor;
+            float factor = 1f / (float)Math.Sqrt((double)(value.X * value.X + value.Y * value.Y + value.Z * value.Z));
             result.X = value.X * factor;
             result.Y = value.Y * factor;
             result.Z = value.Z * factor;
@@ -458,17 +467,19 @@ namespace Microsoft.Xna.Framework
 
         public static Vector3 Reflect(Vector3 vector, Vector3 normal)
         {
-            Vector3 result;
-			Reflect(ref vector, ref normal, out result);
-			return result;
+            float dotTimesTwo = 2f * Dot(vector, normal);
+            vector.X = vector.X - dotTimesTwo * normal.X;
+            vector.Y = vector.Y - dotTimesTwo * normal.Y;
+            vector.Z = vector.Z - dotTimesTwo * normal.Z;
+            return vector;
         }
 
         public static void Reflect(ref Vector3 vector, ref Vector3 normal, out Vector3 result)
         {
-			float dot = Dot(vector, normal);
-			result.X = vector.X - ((2f * dot) * normal.X);
-			result.Y = vector.Y - ((2f * dot) * normal.Y);
-			result.Z = vector.Z - ((2f * dot) * normal.Z);
+			float dotTimesTwo = 2f * Dot(vector, normal);
+            result.X = vector.X - dotTimesTwo * normal.X;
+            result.Y = vector.Y - dotTimesTwo * normal.Y;
+            result.Z = vector.Z - dotTimesTwo * normal.Z;
         }
 
         public static Vector3 SmoothStep(Vector3 value1, Vector3 value2, float amount)
@@ -595,7 +606,9 @@ namespace Microsoft.Xna.Framework
 
         public static bool operator !=(Vector3 value1, Vector3 value2)
         {
-            return !(value1 == value2);
+            return value1.X != value2.X
+                || value1.Y != value2.Y
+                || value1.Z != value2.Z;
         }
 
         public static Vector3 operator +(Vector3 value1, Vector3 value2)

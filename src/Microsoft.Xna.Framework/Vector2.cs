@@ -201,23 +201,18 @@ namespace Microsoft.Xna.Framework
 		/// </returns>
         public static float Distance(Vector2 value1, Vector2 value2)
         {
-            float result;
-            DistanceSquared(ref value1, ref value2, out result);
-            return (float)Math.Sqrt(result);
+            return (float)Math.Sqrt((value1.X - value2.X) * (value1.X - value2.X) + (value1.Y - value2.Y) * (value1.Y - value2.Y));
         }
 
 		
         public static void Distance(ref Vector2 value1, ref Vector2 value2, out float result)
         {
-            DistanceSquared(ref value1, ref value2, out result);
-            result = (float)Math.Sqrt(result);
+            result = (float)Math.Sqrt((value1.X - value2.X) * (value1.X - value2.X) + (value1.Y - value2.Y) * (value1.Y - value2.Y));
         }
 
         public static float DistanceSquared(Vector2 value1, Vector2 value2)
         {
-            float result;
-            DistanceSquared(ref value1, ref value2, out result);
-            return result;
+            return (value1.X - value2.X) * (value1.X - value2.X) + (value1.Y - value2.Y) * (value1.Y - value2.Y);
         }
 
         public static void DistanceSquared(ref Vector2 value1, ref Vector2 value2, out float result)
@@ -252,7 +247,7 @@ namespace Microsoft.Xna.Framework
 
         public static Vector2 Divide(Vector2 value1, float divider)
         {
-            float factor = 1 / divider;
+            float factor = 1.0f / divider;
             value1.X *= factor;
             value1.Y *= factor;
             return value1;
@@ -260,7 +255,7 @@ namespace Microsoft.Xna.Framework
 
         public static void Divide(ref Vector2 value1, float divider, out Vector2 result)
         {
-            float factor = 1 / divider;
+            float factor = 1.0f / divider;
             result.X = value1.X * factor;
             result.Y = value1.Y * factor;
         }
@@ -292,9 +287,9 @@ namespace Microsoft.Xna.Framework
 
         public static Vector2 Hermite(Vector2 value1, Vector2 tangent1, Vector2 value2, Vector2 tangent2, float amount)
         {
-            Vector2 result = new Vector2();
-            Hermite(ref value1, ref tangent1, ref value2, ref tangent2, amount, out result);
-            return result;
+            value1.X = MathHelper.Hermite(value1.X, tangent1.X, value2.X, tangent2.X, amount);
+            value1.Y = MathHelper.Hermite(value1.Y, tangent1.Y, value2.Y, tangent2.Y, amount);
+            return value1;
         }
 
         public static void Hermite(ref Vector2 value1, ref Vector2 tangent1, ref Vector2 value2, ref Vector2 tangent2, float amount, out Vector2 result)
@@ -305,16 +300,12 @@ namespace Microsoft.Xna.Framework
 
         public float Length()
         {
-            float result;
-            DistanceSquared(ref this, ref zeroVector, out result);
-            return (float)Math.Sqrt(result);
+            return (float)Math.Sqrt((double)(X * X + Y * Y));
         }
 
         public float LengthSquared()
         {
-            float result;
-            DistanceSquared(ref this, ref zeroVector, out result);
-            return result;
+            return X * X + Y * Y;
         }
 
         public static Vector2 Lerp(Vector2 value1, Vector2 value2, float amount)
@@ -400,20 +391,22 @@ namespace Microsoft.Xna.Framework
 
         public void Normalize()
         {
-            Normalize(ref this, out this);
+            float factor = 1f / (float)Math.Sqrt((double)(X * X + Y * Y));
+            X *= factor;
+            Y *= factor;
         }
 
         public static Vector2 Normalize(Vector2 value)
         {
-            Normalize(ref value, out value);
+            float factor = 1f / (float)Math.Sqrt((double)(value.X * value.X + value.Y * value.Y));
+            value.X *= factor;
+            value.Y *= factor;
             return value;
         }
 
         public static void Normalize(ref Vector2 value, out Vector2 result)
         {
-            float factor;
-            DistanceSquared(ref value, ref zeroVector, out factor);
-            factor = 1f / (float)Math.Sqrt(factor);
+            float factor = 1f / (float)Math.Sqrt((double)(value.X * value.X + value.Y * value.Y));
             result.X = value.X * factor;
             result.Y = value.Y * factor;
         }

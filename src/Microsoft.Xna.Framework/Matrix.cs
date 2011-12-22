@@ -848,31 +848,101 @@ namespace Microsoft.Xna.Framework
 		
 		public static Matrix Divide(Matrix matrix1, Matrix matrix2)
         {
-            Matrix ret;
-			Matrix.Divide(ref matrix1, ref matrix2, out ret);
-			return ret;
+            Matrix inverse = Matrix.Invert(matrix2), result;
+
+            result.M11 = matrix1.M11 * inverse.M11 + matrix1.M12 * inverse.M21 + matrix1.M13 * inverse.M31 + matrix1.M14 * inverse.M41;
+            result.M12 = matrix1.M11 * inverse.M12 + matrix1.M12 * inverse.M22 + matrix1.M13 * inverse.M32 + matrix1.M14 * inverse.M42;
+            result.M13 = matrix1.M11 * inverse.M13 + matrix1.M12 * inverse.M23 + matrix1.M13 * inverse.M33 + matrix1.M14 * inverse.M43;
+            result.M14 = matrix1.M11 * inverse.M14 + matrix1.M12 * inverse.M24 + matrix1.M13 * inverse.M34 + matrix1.M14 * inverse.M44;
+
+            result.M21 = matrix1.M21 * inverse.M11 + matrix1.M22 * inverse.M21 + matrix1.M23 * inverse.M31 + matrix1.M24 * inverse.M41;
+            result.M22 = matrix1.M21 * inverse.M12 + matrix1.M22 * inverse.M22 + matrix1.M23 * inverse.M32 + matrix1.M24 * inverse.M42;
+            result.M23 = matrix1.M21 * inverse.M13 + matrix1.M22 * inverse.M23 + matrix1.M23 * inverse.M33 + matrix1.M24 * inverse.M43;
+            result.M24 = matrix1.M21 * inverse.M14 + matrix1.M22 * inverse.M24 + matrix1.M23 * inverse.M34 + matrix1.M24 * inverse.M44;
+
+            result.M31 = matrix1.M31 * inverse.M11 + matrix1.M32 * inverse.M21 + matrix1.M33 * inverse.M31 + matrix1.M34 * inverse.M41;
+            result.M32 = matrix1.M31 * inverse.M12 + matrix1.M32 * inverse.M22 + matrix1.M33 * inverse.M32 + matrix1.M34 * inverse.M42;
+            result.M33 = matrix1.M31 * inverse.M13 + matrix1.M32 * inverse.M23 + matrix1.M33 * inverse.M33 + matrix1.M34 * inverse.M43;
+            result.M34 = matrix1.M31 * inverse.M14 + matrix1.M32 * inverse.M24 + matrix1.M33 * inverse.M34 + matrix1.M34 * inverse.M44;
+
+            result.M41 = matrix1.M41 * inverse.M11 + matrix1.M42 * inverse.M21 + matrix1.M43 * inverse.M31 + matrix1.M44 * inverse.M41;
+            result.M42 = matrix1.M41 * inverse.M12 + matrix1.M42 * inverse.M22 + matrix1.M43 * inverse.M32 + matrix1.M44 * inverse.M42;
+            result.M43 = matrix1.M41 * inverse.M13 + matrix1.M42 * inverse.M23 + matrix1.M43 * inverse.M33 + matrix1.M44 * inverse.M43;
+            result.M44 = matrix1.M41 * inverse.M14 + matrix1.M42 * inverse.M24 + matrix1.M43 * inverse.M34 + matrix1.M44 * inverse.M44;
+
+            return result;
         }
 
 
         public static void Divide(ref Matrix matrix1, ref Matrix matrix2, out Matrix result)
         {
-			Matrix inverse = Matrix.Invert(matrix2);
-            Matrix.Multiply(ref matrix1, ref inverse, out result);
+            Matrix inverse = Matrix.Invert(matrix2);
+            result.M11 = matrix1.M11 * inverse.M11 + matrix1.M12 * inverse.M21 + matrix1.M13 * inverse.M31 + matrix1.M14 * inverse.M41;
+            result.M12 = matrix1.M11 * inverse.M12 + matrix1.M12 * inverse.M22 + matrix1.M13 * inverse.M32 + matrix1.M14 * inverse.M42;
+            result.M13 = matrix1.M11 * inverse.M13 + matrix1.M12 * inverse.M23 + matrix1.M13 * inverse.M33 + matrix1.M14 * inverse.M43;
+            result.M14 = matrix1.M11 * inverse.M14 + matrix1.M12 * inverse.M24 + matrix1.M13 * inverse.M34 + matrix1.M14 * inverse.M44;
+
+            result.M21 = matrix1.M21 * inverse.M11 + matrix1.M22 * inverse.M21 + matrix1.M23 * inverse.M31 + matrix1.M24 * inverse.M41;
+            result.M22 = matrix1.M21 * inverse.M12 + matrix1.M22 * inverse.M22 + matrix1.M23 * inverse.M32 + matrix1.M24 * inverse.M42;
+            result.M23 = matrix1.M21 * inverse.M13 + matrix1.M22 * inverse.M23 + matrix1.M23 * inverse.M33 + matrix1.M24 * inverse.M43;
+            result.M24 = matrix1.M21 * inverse.M14 + matrix1.M22 * inverse.M24 + matrix1.M23 * inverse.M34 + matrix1.M24 * inverse.M44;
+
+            result.M31 = matrix1.M31 * inverse.M11 + matrix1.M32 * inverse.M21 + matrix1.M33 * inverse.M31 + matrix1.M34 * inverse.M41;
+            result.M32 = matrix1.M31 * inverse.M12 + matrix1.M32 * inverse.M22 + matrix1.M33 * inverse.M32 + matrix1.M34 * inverse.M42;
+            result.M33 = matrix1.M31 * inverse.M13 + matrix1.M32 * inverse.M23 + matrix1.M33 * inverse.M33 + matrix1.M34 * inverse.M43;
+            result.M34 = matrix1.M31 * inverse.M14 + matrix1.M32 * inverse.M24 + matrix1.M33 * inverse.M34 + matrix1.M34 * inverse.M44;
+
+            result.M41 = matrix1.M41 * inverse.M11 + matrix1.M42 * inverse.M21 + matrix1.M43 * inverse.M31 + matrix1.M44 * inverse.M41;
+            result.M42 = matrix1.M41 * inverse.M12 + matrix1.M42 * inverse.M22 + matrix1.M43 * inverse.M32 + matrix1.M44 * inverse.M42;
+            result.M43 = matrix1.M41 * inverse.M13 + matrix1.M42 * inverse.M23 + matrix1.M43 * inverse.M33 + matrix1.M44 * inverse.M43;
+            result.M44 = matrix1.M41 * inverse.M14 + matrix1.M42 * inverse.M24 + matrix1.M43 * inverse.M34 + matrix1.M44 * inverse.M44;
         }
 
 
         public static Matrix Divide(Matrix matrix1, float divider)
         {
-            Matrix ret;
-			Divide(ref matrix1, divider, out ret);
-			return ret;
+            float inverseDivider = 1.0f / divider;
+
+            matrix1.M11 = matrix1.M11 * inverseDivider;
+            matrix1.M12 = matrix1.M12 * inverseDivider;
+            matrix1.M13 = matrix1.M13 * inverseDivider;
+            matrix1.M14 = matrix1.M14 * inverseDivider;
+            matrix1.M21 = matrix1.M21 * inverseDivider;
+            matrix1.M22 = matrix1.M22 * inverseDivider;
+            matrix1.M23 = matrix1.M23 * inverseDivider;
+            matrix1.M24 = matrix1.M24 * inverseDivider;
+            matrix1.M31 = matrix1.M31 * inverseDivider;
+            matrix1.M32 = matrix1.M32 * inverseDivider;
+            matrix1.M33 = matrix1.M33 * inverseDivider;
+            matrix1.M34 = matrix1.M34 * inverseDivider;
+            matrix1.M41 = matrix1.M41 * inverseDivider;
+            matrix1.M42 = matrix1.M42 * inverseDivider;
+            matrix1.M43 = matrix1.M43 * inverseDivider;
+            matrix1.M44 = matrix1.M44 * inverseDivider;
+
+            return matrix1;
         }
 
 
         public static void Divide(ref Matrix matrix1, float divider, out Matrix result)
         {
-            float inverseDivider = 1f / divider;
-			Matrix.Multiply(ref matrix1, inverseDivider, out result);
+            float inverseDivider = 1.0f / divider;
+            result.M11 = matrix1.M11 * inverseDivider;
+            result.M12 = matrix1.M12 * inverseDivider;
+            result.M13 = matrix1.M13 * inverseDivider;
+            result.M14 = matrix1.M14 * inverseDivider;
+            result.M21 = matrix1.M21 * inverseDivider;
+            result.M22 = matrix1.M22 * inverseDivider;
+            result.M23 = matrix1.M23 * inverseDivider;
+            result.M24 = matrix1.M24 * inverseDivider;
+            result.M31 = matrix1.M31 * inverseDivider;
+            result.M32 = matrix1.M32 * inverseDivider;
+            result.M33 = matrix1.M33 * inverseDivider;
+            result.M34 = matrix1.M34 * inverseDivider;
+            result.M41 = matrix1.M41 * inverseDivider;
+            result.M42 = matrix1.M42 * inverseDivider;
+            result.M43 = matrix1.M43 * inverseDivider;
+            result.M44 = matrix1.M44 * inverseDivider;
         }
 		
 		public static Matrix Invert(Matrix matrix)
@@ -944,9 +1014,29 @@ namespace Microsoft.Xna.Framework
 
         public static Matrix Multiply(Matrix matrix1, Matrix matrix2)
         {
-            Matrix ret;
-			Multiply(ref matrix1, ref matrix2, out ret);
-			return ret;
+            Matrix result;
+
+            result.M11 = matrix1.M11 * matrix2.M11 + matrix1.M12 * matrix2.M21 + matrix1.M13 * matrix2.M31 + matrix1.M14 * matrix2.M41;
+            result.M12 = matrix1.M11 * matrix2.M12 + matrix1.M12 * matrix2.M22 + matrix1.M13 * matrix2.M32 + matrix1.M14 * matrix2.M42;
+            result.M13 = matrix1.M11 * matrix2.M13 + matrix1.M12 * matrix2.M23 + matrix1.M13 * matrix2.M33 + matrix1.M14 * matrix2.M43;
+            result.M14 = matrix1.M11 * matrix2.M14 + matrix1.M12 * matrix2.M24 + matrix1.M13 * matrix2.M34 + matrix1.M14 * matrix2.M44;
+
+            result.M21 = matrix1.M21 * matrix2.M11 + matrix1.M22 * matrix2.M21 + matrix1.M23 * matrix2.M31 + matrix1.M24 * matrix2.M41;
+            result.M22 = matrix1.M21 * matrix2.M12 + matrix1.M22 * matrix2.M22 + matrix1.M23 * matrix2.M32 + matrix1.M24 * matrix2.M42;
+            result.M23 = matrix1.M21 * matrix2.M13 + matrix1.M22 * matrix2.M23 + matrix1.M23 * matrix2.M33 + matrix1.M24 * matrix2.M43;
+            result.M24 = matrix1.M21 * matrix2.M14 + matrix1.M22 * matrix2.M24 + matrix1.M23 * matrix2.M34 + matrix1.M24 * matrix2.M44;
+
+            result.M31 = matrix1.M31 * matrix2.M11 + matrix1.M32 * matrix2.M21 + matrix1.M33 * matrix2.M31 + matrix1.M34 * matrix2.M41;
+            result.M32 = matrix1.M31 * matrix2.M12 + matrix1.M32 * matrix2.M22 + matrix1.M33 * matrix2.M32 + matrix1.M34 * matrix2.M42;
+            result.M33 = matrix1.M31 * matrix2.M13 + matrix1.M32 * matrix2.M23 + matrix1.M33 * matrix2.M33 + matrix1.M34 * matrix2.M43;
+            result.M34 = matrix1.M31 * matrix2.M14 + matrix1.M32 * matrix2.M24 + matrix1.M33 * matrix2.M34 + matrix1.M34 * matrix2.M44;
+
+            result.M41 = matrix1.M41 * matrix2.M11 + matrix1.M42 * matrix2.M21 + matrix1.M43 * matrix2.M31 + matrix1.M44 * matrix2.M41;
+            result.M42 = matrix1.M41 * matrix2.M12 + matrix1.M42 * matrix2.M22 + matrix1.M43 * matrix2.M32 + matrix1.M44 * matrix2.M42;
+            result.M43 = matrix1.M41 * matrix2.M13 + matrix1.M42 * matrix2.M23 + matrix1.M43 * matrix2.M33 + matrix1.M44 * matrix2.M43;
+            result.M44 = matrix1.M41 * matrix2.M14 + matrix1.M42 * matrix2.M24 + matrix1.M43 * matrix2.M34 + matrix1.M44 * matrix2.M44;    
+ 
+			return result;
         }
 
 
@@ -1019,14 +1109,44 @@ namespace Microsoft.Xna.Framework
 
         public static Matrix Negate(Matrix matrix)
         {
-            Matrix.Multiply(ref matrix, -1.0f, out matrix);
+            matrix.M11 = -matrix.M11;
+            matrix.M12 = -matrix.M12;
+            matrix.M13 = -matrix.M13;
+            matrix.M14 = -matrix.M14;
+            matrix.M21 = -matrix.M21;
+            matrix.M22 = -matrix.M22;
+            matrix.M23 = -matrix.M23;
+            matrix.M24 = -matrix.M24;
+            matrix.M31 = -matrix.M31;
+            matrix.M32 = -matrix.M32;
+            matrix.M33 = -matrix.M33;
+            matrix.M34 = -matrix.M34;
+            matrix.M41 = -matrix.M41;
+            matrix.M42 = -matrix.M42;
+            matrix.M43 = -matrix.M43;
+            matrix.M44 = -matrix.M44;
             return matrix;
         }
 
 
         public static void Negate(ref Matrix matrix, out Matrix result)
         {
-            Matrix.Multiply(ref matrix, -1.0f, out result);
+            result.M11 = matrix.M11;
+            result.M12 = matrix.M12;
+            result.M13 = matrix.M13;
+            result.M14 = matrix.M14;
+            result.M21 = matrix.M21;
+            result.M22 = matrix.M22;
+            result.M23 = matrix.M23;
+            result.M24 = matrix.M24;
+            result.M31 = matrix.M31;
+            result.M32 = matrix.M32;
+            result.M33 = matrix.M33;
+            result.M34 = matrix.M34;
+            result.M41 = matrix.M41;
+            result.M42 = matrix.M42;
+            result.M43 = matrix.M43;
+            result.M44 = matrix.M44;
         }        
 
         public static Matrix Subtract(Matrix matrix1, Matrix matrix2)
@@ -1072,9 +1192,29 @@ namespace Microsoft.Xna.Framework
 		
 		public static Matrix Transpose(Matrix matrix)
         {
-			Matrix ret;
-			Transpose(ref matrix, out ret);
-			return ret;
+            Matrix result;
+
+            result.M11 = matrix.M11;
+            result.M12 = matrix.M21;
+            result.M13 = matrix.M31;
+            result.M14 = matrix.M41;
+
+            result.M21 = matrix.M12;
+            result.M22 = matrix.M22;
+            result.M23 = matrix.M32;
+            result.M24 = matrix.M42;
+
+            result.M31 = matrix.M13;
+            result.M32 = matrix.M23;
+            result.M33 = matrix.M33;
+            result.M34 = matrix.M43;
+
+            result.M41 = matrix.M14;
+            result.M42 = matrix.M24;
+            result.M43 = matrix.M34;
+            result.M44 = matrix.M44;
+
+			return result;
         }
 
         
@@ -1124,7 +1264,14 @@ namespace Microsoft.Xna.Framework
 
         public bool Equals(Matrix other)
         {
-            return this == other;
+            return (this.M11 == other.M11) && (this.M12 == other.M12) &&
+                   (this.M13 == other.M13) && (this.M14 == other.M14) &&
+                   (this.M21 == other.M21) && (this.M22 == other.M22) &&
+                   (this.M23 == other.M23) && (this.M24 == other.M24) &&
+                   (this.M31 == other.M31) && (this.M32 == other.M32) &&
+                   (this.M33 == other.M33) && (this.M34 == other.M34) &&
+                   (this.M41 == other.M41) && (this.M42 == other.M42) &&
+                   (this.M43 == other.M43) && (this.M44 == other.M44);
         }
 
         #endregion Public Methods
@@ -1133,22 +1280,74 @@ namespace Microsoft.Xna.Framework
 		
 		public static Matrix operator +(Matrix matrix1, Matrix matrix2)
         {
-            Matrix.Add(ref matrix1, ref matrix2, out matrix1);
+            matrix1.M11 += matrix2.M11;
+            matrix1.M12 += matrix2.M12;
+            matrix1.M13 += matrix2.M13;
+            matrix1.M14 += matrix2.M14;
+            matrix1.M21 += matrix2.M21;
+            matrix1.M22 += matrix2.M22;
+            matrix1.M23 += matrix2.M23;
+            matrix1.M24 += matrix2.M24;
+            matrix1.M31 += matrix2.M31;
+            matrix1.M32 += matrix2.M32;
+            matrix1.M33 += matrix2.M33;
+            matrix1.M34 += matrix2.M34;
+            matrix1.M41 += matrix2.M41;
+            matrix1.M42 += matrix2.M42;
+            matrix1.M43 += matrix2.M43;
+            matrix1.M44 += matrix2.M44;
             return matrix1;
         }
 
         public static Matrix operator /(Matrix matrix1, Matrix matrix2)
         {
-            Matrix ret;
-			Matrix.Divide(ref matrix1, ref matrix2, out ret);
-			return ret;
+            Matrix inverse = Matrix.Invert(matrix2), result;
+
+            result.M11 = matrix1.M11 * inverse.M11 + matrix1.M12 * inverse.M21 + matrix1.M13 * inverse.M31 + matrix1.M14 * inverse.M41;
+            result.M12 = matrix1.M11 * inverse.M12 + matrix1.M12 * inverse.M22 + matrix1.M13 * inverse.M32 + matrix1.M14 * inverse.M42;
+            result.M13 = matrix1.M11 * inverse.M13 + matrix1.M12 * inverse.M23 + matrix1.M13 * inverse.M33 + matrix1.M14 * inverse.M43;
+            result.M14 = matrix1.M11 * inverse.M14 + matrix1.M12 * inverse.M24 + matrix1.M13 * inverse.M34 + matrix1.M14 * inverse.M44;
+
+            result.M21 = matrix1.M21 * inverse.M11 + matrix1.M22 * inverse.M21 + matrix1.M23 * inverse.M31 + matrix1.M24 * inverse.M41;
+            result.M22 = matrix1.M21 * inverse.M12 + matrix1.M22 * inverse.M22 + matrix1.M23 * inverse.M32 + matrix1.M24 * inverse.M42;
+            result.M23 = matrix1.M21 * inverse.M13 + matrix1.M22 * inverse.M23 + matrix1.M23 * inverse.M33 + matrix1.M24 * inverse.M43;
+            result.M24 = matrix1.M21 * inverse.M14 + matrix1.M22 * inverse.M24 + matrix1.M23 * inverse.M34 + matrix1.M24 * inverse.M44;
+
+            result.M31 = matrix1.M31 * inverse.M11 + matrix1.M32 * inverse.M21 + matrix1.M33 * inverse.M31 + matrix1.M34 * inverse.M41;
+            result.M32 = matrix1.M31 * inverse.M12 + matrix1.M32 * inverse.M22 + matrix1.M33 * inverse.M32 + matrix1.M34 * inverse.M42;
+            result.M33 = matrix1.M31 * inverse.M13 + matrix1.M32 * inverse.M23 + matrix1.M33 * inverse.M33 + matrix1.M34 * inverse.M43;
+            result.M34 = matrix1.M31 * inverse.M14 + matrix1.M32 * inverse.M24 + matrix1.M33 * inverse.M34 + matrix1.M34 * inverse.M44;
+
+            result.M41 = matrix1.M41 * inverse.M11 + matrix1.M42 * inverse.M21 + matrix1.M43 * inverse.M31 + matrix1.M44 * inverse.M41;
+            result.M42 = matrix1.M41 * inverse.M12 + matrix1.M42 * inverse.M22 + matrix1.M43 * inverse.M32 + matrix1.M44 * inverse.M42;
+            result.M43 = matrix1.M41 * inverse.M13 + matrix1.M42 * inverse.M23 + matrix1.M43 * inverse.M33 + matrix1.M44 * inverse.M43;
+            result.M44 = matrix1.M41 * inverse.M14 + matrix1.M42 * inverse.M24 + matrix1.M43 * inverse.M34 + matrix1.M44 * inverse.M44;
+
+            return result;
         }
 
         public static Matrix operator /(Matrix matrix1, float divider)
         {
-            Matrix ret;
-			Matrix.Divide(ref matrix1, divider, out ret);
-			return ret;
+            float inverseDivider = 1.0f / divider;
+
+            matrix1.M11 = matrix1.M11 * inverseDivider;
+            matrix1.M12 = matrix1.M12 * inverseDivider;
+            matrix1.M13 = matrix1.M13 * inverseDivider;
+            matrix1.M14 = matrix1.M14 * inverseDivider;
+            matrix1.M21 = matrix1.M21 * inverseDivider;
+            matrix1.M22 = matrix1.M22 * inverseDivider;
+            matrix1.M23 = matrix1.M23 * inverseDivider;
+            matrix1.M24 = matrix1.M24 * inverseDivider;
+            matrix1.M31 = matrix1.M31 * inverseDivider;
+            matrix1.M32 = matrix1.M32 * inverseDivider;
+            matrix1.M33 = matrix1.M33 * inverseDivider;
+            matrix1.M34 = matrix1.M34 * inverseDivider;
+            matrix1.M41 = matrix1.M41 * inverseDivider;
+            matrix1.M42 = matrix1.M42 * inverseDivider;
+            matrix1.M43 = matrix1.M43 * inverseDivider;
+            matrix1.M44 = matrix1.M44 * inverseDivider;
+
+            return matrix1;
         }
 
         public static bool operator ==(Matrix matrix1, Matrix matrix2)
@@ -1165,56 +1364,126 @@ namespace Microsoft.Xna.Framework
 
         public static bool operator !=(Matrix matrix1, Matrix matrix2)
         {
-            return !(matrix1 == matrix2);
+            return (matrix1.M11 != matrix2.M11) || (matrix1.M12 != matrix2.M12) ||
+                   (matrix1.M13 != matrix2.M13) || (matrix1.M14 != matrix2.M14) ||
+                   (matrix1.M21 != matrix2.M21) || (matrix1.M22 != matrix2.M22) ||
+                   (matrix1.M23 != matrix2.M23) || (matrix1.M24 != matrix2.M24) ||
+                   (matrix1.M31 != matrix2.M31) || (matrix1.M32 != matrix2.M32) ||
+                   (matrix1.M33 != matrix2.M33) || (matrix1.M34 != matrix2.M34) ||
+                   (matrix1.M41 != matrix2.M41) || (matrix1.M42 != matrix2.M42) ||
+                   (matrix1.M43 != matrix2.M43) || (matrix1.M44 != matrix2.M44);
         }
 
         public static Matrix operator *(Matrix matrix1, Matrix matrix2)
         {
-            Matrix returnMatrix = new Matrix();
-            Matrix.Multiply(ref matrix1, ref matrix2, out returnMatrix);
-            return returnMatrix;
+            Matrix result;
+
+            result.M11 = matrix1.M11 * matrix2.M11 + matrix1.M12 * matrix2.M21 + matrix1.M13 * matrix2.M31 + matrix1.M14 * matrix2.M41;
+            result.M12 = matrix1.M11 * matrix2.M12 + matrix1.M12 * matrix2.M22 + matrix1.M13 * matrix2.M32 + matrix1.M14 * matrix2.M42;
+            result.M13 = matrix1.M11 * matrix2.M13 + matrix1.M12 * matrix2.M23 + matrix1.M13 * matrix2.M33 + matrix1.M14 * matrix2.M43;
+            result.M14 = matrix1.M11 * matrix2.M14 + matrix1.M12 * matrix2.M24 + matrix1.M13 * matrix2.M34 + matrix1.M14 * matrix2.M44;
+
+            result.M21 = matrix1.M21 * matrix2.M11 + matrix1.M22 * matrix2.M21 + matrix1.M23 * matrix2.M31 + matrix1.M24 * matrix2.M41;
+            result.M22 = matrix1.M21 * matrix2.M12 + matrix1.M22 * matrix2.M22 + matrix1.M23 * matrix2.M32 + matrix1.M24 * matrix2.M42;
+            result.M23 = matrix1.M21 * matrix2.M13 + matrix1.M22 * matrix2.M23 + matrix1.M23 * matrix2.M33 + matrix1.M24 * matrix2.M43;
+            result.M24 = matrix1.M21 * matrix2.M14 + matrix1.M22 * matrix2.M24 + matrix1.M23 * matrix2.M34 + matrix1.M24 * matrix2.M44;
+
+            result.M31 = matrix1.M31 * matrix2.M11 + matrix1.M32 * matrix2.M21 + matrix1.M33 * matrix2.M31 + matrix1.M34 * matrix2.M41;
+            result.M32 = matrix1.M31 * matrix2.M12 + matrix1.M32 * matrix2.M22 + matrix1.M33 * matrix2.M32 + matrix1.M34 * matrix2.M42;
+            result.M33 = matrix1.M31 * matrix2.M13 + matrix1.M32 * matrix2.M23 + matrix1.M33 * matrix2.M33 + matrix1.M34 * matrix2.M43;
+            result.M34 = matrix1.M31 * matrix2.M14 + matrix1.M32 * matrix2.M24 + matrix1.M33 * matrix2.M34 + matrix1.M34 * matrix2.M44;
+
+            result.M41 = matrix1.M41 * matrix2.M11 + matrix1.M42 * matrix2.M21 + matrix1.M43 * matrix2.M31 + matrix1.M44 * matrix2.M41;
+            result.M42 = matrix1.M41 * matrix2.M12 + matrix1.M42 * matrix2.M22 + matrix1.M43 * matrix2.M32 + matrix1.M44 * matrix2.M42;
+            result.M43 = matrix1.M41 * matrix2.M13 + matrix1.M42 * matrix2.M23 + matrix1.M43 * matrix2.M33 + matrix1.M44 * matrix2.M43;
+            result.M44 = matrix1.M41 * matrix2.M14 + matrix1.M42 * matrix2.M24 + matrix1.M43 * matrix2.M34 + matrix1.M44 * matrix2.M44;
+
+            return result;
         }
 
         public static Matrix operator *(Matrix matrix, float scaleFactor)
         {
-            Matrix.Multiply(ref matrix, scaleFactor, out matrix);
+            matrix.M11 = matrix.M11 * scaleFactor;
+            matrix.M12 = matrix.M12 * scaleFactor;
+            matrix.M13 = matrix.M13 * scaleFactor;
+            matrix.M14 = matrix.M14 * scaleFactor;
+            matrix.M21 = matrix.M21 * scaleFactor;
+            matrix.M22 = matrix.M22 * scaleFactor;
+            matrix.M23 = matrix.M23 * scaleFactor;
+            matrix.M24 = matrix.M24 * scaleFactor;
+            matrix.M31 = matrix.M31 * scaleFactor;
+            matrix.M32 = matrix.M32 * scaleFactor;
+            matrix.M33 = matrix.M33 * scaleFactor;
+            matrix.M34 = matrix.M34 * scaleFactor;
+            matrix.M41 = matrix.M41 * scaleFactor;
+            matrix.M42 = matrix.M42 * scaleFactor;
+            matrix.M43 = matrix.M43 * scaleFactor;
+            matrix.M44 = matrix.M44 * scaleFactor;
             return matrix;
         }
 
         public static Matrix operator *(float scaleFactor, Matrix matrix)
         {
-            Matrix target;
-            target.M11 = matrix.M11 * scaleFactor;
-            target.M12 = matrix.M12 * scaleFactor;
-            target.M13 = matrix.M13 * scaleFactor;
-            target.M14 = matrix.M14 * scaleFactor;
-            target.M21 = matrix.M21 * scaleFactor;
-            target.M22 = matrix.M22 * scaleFactor;
-            target.M23 = matrix.M23 * scaleFactor;
-            target.M24 = matrix.M24 * scaleFactor;
-            target.M31 = matrix.M31 * scaleFactor;
-            target.M32 = matrix.M32 * scaleFactor;
-            target.M33 = matrix.M33 * scaleFactor;
-            target.M34 = matrix.M34 * scaleFactor;
-            target.M41 = matrix.M41 * scaleFactor;
-            target.M42 = matrix.M42 * scaleFactor;
-            target.M43 = matrix.M43 * scaleFactor;
-            target.M44 = matrix.M44 * scaleFactor;
-            return target;
+            matrix.M11 = matrix.M11 * scaleFactor;
+            matrix.M12 = matrix.M12 * scaleFactor;
+            matrix.M13 = matrix.M13 * scaleFactor;
+            matrix.M14 = matrix.M14 * scaleFactor;
+            matrix.M21 = matrix.M21 * scaleFactor;
+            matrix.M22 = matrix.M22 * scaleFactor;
+            matrix.M23 = matrix.M23 * scaleFactor;
+            matrix.M24 = matrix.M24 * scaleFactor;
+            matrix.M31 = matrix.M31 * scaleFactor;
+            matrix.M32 = matrix.M32 * scaleFactor;
+            matrix.M33 = matrix.M33 * scaleFactor;
+            matrix.M34 = matrix.M34 * scaleFactor;
+            matrix.M41 = matrix.M41 * scaleFactor;
+            matrix.M42 = matrix.M42 * scaleFactor;
+            matrix.M43 = matrix.M43 * scaleFactor;
+            matrix.M44 = matrix.M44 * scaleFactor;
+            return matrix;
         }
 
         public static Matrix operator -(Matrix matrix1, Matrix matrix2)
         {
-            Matrix returnMatrix = new Matrix();
-            Matrix.Subtract(ref matrix1, ref matrix2, out returnMatrix);
-            return returnMatrix;
+            matrix1.M11 -= matrix2.M11;
+            matrix1.M12 -= matrix2.M12;
+            matrix1.M13 -= matrix2.M13;
+            matrix1.M14 -= matrix2.M14;
+            matrix1.M21 -= matrix2.M21;
+            matrix1.M22 -= matrix2.M22;
+            matrix1.M23 -= matrix2.M23;
+            matrix1.M24 -= matrix2.M24;
+            matrix1.M31 -= matrix2.M31;
+            matrix1.M32 -= matrix2.M32;
+            matrix1.M33 -= matrix2.M33;
+            matrix1.M34 -= matrix2.M34;
+            matrix1.M41 -= matrix2.M41;
+            matrix1.M42 -= matrix2.M42;
+            matrix1.M43 -= matrix2.M43;
+            matrix1.M44 -= matrix2.M44;
+            return matrix1;
         }
 
 
-        public static Matrix operator -(Matrix matrix1)
+        public static Matrix operator -(Matrix matrix)
         {
-            Matrix.Negate(ref matrix1, out matrix1);
-            return matrix1;
+            matrix.M11 = -matrix.M11;
+            matrix.M12 = -matrix.M12;
+            matrix.M13 = -matrix.M13;
+            matrix.M14 = -matrix.M14;
+            matrix.M21 = -matrix.M21;
+            matrix.M22 = -matrix.M22;
+            matrix.M23 = -matrix.M23;
+            matrix.M24 = -matrix.M24;
+            matrix.M31 = -matrix.M31;
+            matrix.M32 = -matrix.M32;
+            matrix.M33 = -matrix.M33;
+            matrix.M34 = -matrix.M34;
+            matrix.M41 = -matrix.M41;
+            matrix.M42 = -matrix.M42;
+            matrix.M43 = -matrix.M43;
+            matrix.M44 = -matrix.M44;
+            return matrix;
         }
 		
 		#endregion
@@ -1223,7 +1492,9 @@ namespace Microsoft.Xna.Framework
 		
 		public override bool Equals(object obj)
         {
-            return this == (Matrix)obj;
+            if (obj is Matrix)
+                return this == (Matrix)obj;
+            return false;
         }
 
         public override int GetHashCode()

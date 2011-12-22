@@ -207,19 +207,26 @@ namespace Microsoft.Xna.Framework
 
         public static float Distance(Vector4 value1, Vector4 value2)
         {
-            return (float)Math.Sqrt(DistanceSquared(value1, value2));
+            return (float)Math.Sqrt((value1.W - value2.W) * (value1.W - value2.W) +
+                     (value1.X - value2.X) * (value1.X - value2.X) +
+                     (value1.Y - value2.Y) * (value1.Y - value2.Y) +
+                     (value1.Z - value2.Z) * (value1.Z - value2.Z));
         }
 
         public static void Distance(ref Vector4 value1, ref Vector4 value2, out float result)
         {
-            result = (float)Math.Sqrt(DistanceSquared(value1, value2));
+            result = (float)Math.Sqrt((value1.W - value2.W) * (value1.W - value2.W) +
+                     (value1.X - value2.X) * (value1.X - value2.X) +
+                     (value1.Y - value2.Y) * (value1.Y - value2.Y) +
+                     (value1.Z - value2.Z) * (value1.Z - value2.Z));
         }
 
         public static float DistanceSquared(Vector4 value1, Vector4 value2)
         {
-            float result;
-            DistanceSquared(ref value1, ref value2, out result);
-            return result;
+            return (value1.W - value2.W) * (value1.W - value2.W) +
+                     (value1.X - value2.X) * (value1.X - value2.X) +
+                     (value1.Y - value2.Y) * (value1.Y - value2.Y) +
+                     (value1.Z - value2.Z) * (value1.Z - value2.Z);
         }
 
         public static void DistanceSquared(ref Vector4 value1, ref Vector4 value2, out float result)
@@ -296,9 +303,12 @@ namespace Microsoft.Xna.Framework
 
         public static Vector4 Hermite(Vector4 value1, Vector4 tangent1, Vector4 value2, Vector4 tangent2, float amount)
         {
-            Vector4 result = new Vector4();
-            Hermite(ref value1, ref tangent1, ref value2, ref tangent2, amount, out result);
-            return result;
+            value1.W = MathHelper.Hermite(value1.W, tangent1.W, value2.W, tangent2.W, amount);
+            value1.X = MathHelper.Hermite(value1.X, tangent1.X, value2.X, tangent2.X, amount);
+            value1.Y = MathHelper.Hermite(value1.Y, tangent1.Y, value2.Y, tangent2.Y, amount);
+            value1.Z = MathHelper.Hermite(value1.Z, tangent1.Z, value2.Z, tangent2.Z, amount);
+
+            return value1;
         }
 
         public static void Hermite(ref Vector4 value1, ref Vector4 tangent1, ref Vector4 value2, ref Vector4 tangent2, float amount, out Vector4 result)
@@ -311,16 +321,12 @@ namespace Microsoft.Xna.Framework
 
         public float Length()
         {
-            float result;
-            DistanceSquared(ref this, ref zeroVector, out result);
-            return (float)Math.Sqrt(result);
+            return (float)Math.Sqrt((double)(X * X + Y * Y + Z * Z + W * W));
         }
 
         public float LengthSquared()
         {
-            float result;
-            DistanceSquared(ref this, ref zeroVector, out result);
-            return result;
+            return X * X + Y * Y + Z * Z + W * W;
         }
 
         public static Vector4 Lerp(Vector4 value1, Vector4 value2, float amount)
@@ -413,31 +419,46 @@ namespace Microsoft.Xna.Framework
 
         public static Vector4 Negate(Vector4 value)
         {
-            value = new Vector4(-value.X, -value.Y, -value.Z, -value.W);
+            value.X = -value.X;
+            value.Y = -value.Y;
+            value.Z = -value.Z;
+            value.W = -value.W;
             return value;
         }
 
         public static void Negate(ref Vector4 value, out Vector4 result)
         {
-            result = new Vector4(-value.X, -value.Y, -value.Z,-value.W);
+            result.X = -value.X;
+            result.Y = -value.Y;
+            result.Z = -value.Z;
+            result.W = -value.W;
         }
 
         public void Normalize()
         {
-            Normalize(ref this, out this);
+            float factor = 1f / (float)Math.Sqrt((double)(X * X + Y * Y + Z * Z + W * W));
+
+            W = W * factor;
+            X = X * factor;
+            Y = Y * factor;
+            Z = Z * factor;
         }
 
         public static Vector4 Normalize(Vector4 vector)
         {
-            Normalize(ref vector, out vector);
+            float factor = 1f / (float)Math.Sqrt((double)(vector.X * vector.X + vector.Y * vector.Y + vector.Z * vector.Z + vector.W * vector.W));
+
+            vector.W = vector.W * factor;
+            vector.X = vector.X * factor;
+            vector.Y = vector.Y * factor;
+            vector.Z = vector.Z * factor;
+
             return vector;
         }
 
         public static void Normalize(ref Vector4 vector, out Vector4 result)
         {
-            float factor;
-            DistanceSquared(ref vector, ref zeroVector, out factor);
-            factor = 1f / (float)Math.Sqrt(factor);
+            float factor = 1f / (float)Math.Sqrt((double)(vector.X * vector.X + vector.Y * vector.Y + vector.Z * vector.Z + vector.W * vector.W));
 
             result.W = vector.W * factor;
             result.X = vector.X * factor;
@@ -596,7 +617,11 @@ namespace Microsoft.Xna.Framework
 
         public static Vector4 operator -(Vector4 value)
         {
-            return new Vector4(-value.X, -value.Y, -value.Z, -value.W);
+            value.X = -value.X;
+            value.Y = -value.Y;
+            value.Z = -value.Z;
+            value.W = -value.W;
+            return value;
         }
 
         public static bool operator ==(Vector4 value1, Vector4 value2)
@@ -609,7 +634,10 @@ namespace Microsoft.Xna.Framework
 
         public static bool operator !=(Vector4 value1, Vector4 value2)
         {
-            return !(value1 == value2);
+            return value1.W != value2.W
+                || value1.X != value2.X
+                || value1.Y != value2.Y
+                || value1.Z != value2.Z;
         }
 
         public static Vector4 operator +(Vector4 value1, Vector4 value2)

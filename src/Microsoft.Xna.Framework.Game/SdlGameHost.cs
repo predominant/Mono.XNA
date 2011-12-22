@@ -73,6 +73,10 @@ namespace Microsoft.Xna.Framework
 					case Sdl.SDL_QUIT:
 						Exit();
 						break;
+						
+					case Sdl.SDL_MOUSEBUTTONDOWN:
+						
+						break;
 					}
 				}				
 				game.Tick();

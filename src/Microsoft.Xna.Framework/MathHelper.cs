@@ -52,22 +52,15 @@ namespace Microsoft.Xna.Framework
             // Internally using doubles not to lose precission
             double amountSquared = amount * amount;
             double amountCubed = amountSquared * amount;
-            return (float)(0.5 * (2.0 * value2 +
+            return (float)(0.5f * (2.0f * value2 +
                 (value3 - value1) * amount +
-                (2.0 * value1 - 5.0 * value2 + 4.0 * value3 - value4) * amountSquared +
-                (3.0 * value2 - value1 - 3.0 * value3 + value4) * amountCubed));
+                (2.0f * value1 - 5.0f * value2 + 4.0f * value3 - value4) * amountSquared +
+                (3.0f * value2 - value1 - 3.0f * value3 + value4) * amountCubed));
         }
 
         public static float Clamp(float value, float min, float max)
         {
-            // First we check to see if we're greater than the max
-            value = (value > max) ? max : value;
-
-            // Then we check to see if we're less than the min.
-            value = (value < min) ? min : value;
-
-            // There's no check to see if min > max.
-            return value;
+            return value > max ? max : (value < min ? min : value);
         }
         
         public static float Distance(float value1, float value2)
@@ -88,8 +81,8 @@ namespace Microsoft.Xna.Framework
             else if (amount == 1f)
                 result = value2;
             else
-                result = (2 * v1 - 2 * v2 + t2 + t1) * sCubed +
-                    (3 * v2 - 3 * v1 - 2 * t1 - t2) * sSquared +
+                result = (2.0f * v1 - 2.0f * v2 + t2 + t1) * sCubed +
+                    (3.0f * v2 - 3.0f * v1 - 2.0f * t1 - t2) * sSquared +
                     t1 * s +
                     v1;
             return (float)result;

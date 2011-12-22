@@ -1,3 +1,8 @@
+2011-12-22 Lars Magnusson <lavima@gmail.com>
+ * Changed runtime to Mono/.NET 40
+ * Added patch by ggulati@live.com
+ * Fixed build error in MonoDevelop.Xna addin
+
 2011-05-24 Lars Magnusson <lavima@gmail.com>
  * Changed the xbuild references
 
