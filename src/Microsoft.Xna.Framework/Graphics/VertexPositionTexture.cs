@@ -59,7 +59,8 @@ namespace Microsoft.Xna.Framework.Graphics
         #region Constructors
         public VertexPositionTexture(Vector3 position, Vector2 textureCoordinate)
         {
-            throw new NotImplementedException();
+            Position = position;
+            TextureCoordinate = textureCoordinate;
         }
         #endregion Constructors
 
@@ -67,12 +68,31 @@ namespace Microsoft.Xna.Framework.Graphics
         #region Methods
         public static bool operator ==(VertexPositionTexture left, VertexPositionTexture right)
         {
-            throw new NotImplementedException();
+            return left.TextureCoordinate.Equals(right) && left.Position.Equals(right);
         }
 
         public static bool operator !=(VertexPositionTexture left, VertexPositionTexture right)
         {
+            return !left.TextureCoordinate.Equals(right) || !left.Position.Equals(right);
+        }
+
+        public override int GetHashCode()
+        {
             throw new NotImplementedException();
+        }
+
+        public override string ToString()
+        {
+            throw new NotImplementedException();
+        }
+
+        public override bool Equals(object obj)
+        {
+            if ((obj != null) && (obj.GetType() == this.GetType())) 
+            {
+                return this == (VertexPositionTexture)obj;
+            }
+            return false;
         }
 
         #endregion
